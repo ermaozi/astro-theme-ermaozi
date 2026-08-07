@@ -77,7 +77,7 @@ navbar: [
 
 ## 页面与正文选项
 
-`pageLayout` 支持 `home`、`posts`、`doc`、`page`、`friends`、`custom`、`false` 和自定义组件名。`posts` 可配合 `collection` 指定 Post 集合；`page` 只保留专页正文；`custom`/`false` 只输出 Markdown 正文；自定义组件放在 `theme/components/layouts/`，文件名就是布局名。
+`pageLayout` 支持 `home`、`posts`、`doc`、`page`、`friends`、`custom`、`false` 和自定义组件名，并兼容 Plume 旧名 `blog`（等同于 `posts`）。`posts` 可配合 `collection` 指定 Post 集合；`page` 只保留专页正文；`custom`/`false` 只输出 Markdown 正文；自定义组件放在 `theme/components/layouts/`，文件名就是布局名。
 
 正文目录可通过全局、locale 或单页的 `outline` 与 `aside` 配置。`externalLinkIcon` 默认开启，单页也可关闭；旧字段 `externalLink` 仍兼容。`createTime: 'only-posts'` 只在博客文章和文章列表显示创建时间，`false` 则全站隐藏。`plugins.nprogress: false` 可关闭站内页面切换时的顶部进度条。
 
@@ -127,7 +127,7 @@ locales: {
 },
 ```
 
-Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`linkPrefix`，标签/分类/归档页的开关、自定义路径与标题，以及集合级 `tagsTheme`、`meta`、`postCover`、`profile`、`social`、`categoriesExpand` 和 `categoriesTransform`。生成页、面包屑、分页 JSON、站点地图和多语言切换都会使用集合的实际路径。
+Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`linkPrefix`，标签/分类/归档页的开关、自定义路径与标题，以及集合级 `tagsTheme`、`meta`、`postCover`、`profile`、`social`、`categoriesExpand` 和 `categoriesTransform`。`categoriesTransform` 会像 Plume 一样为每篇文章接收从外到内的 `{ id, name, sort }[]` 分类链，返回值会统一用于文章卡片、面包屑、统计和分类树。生成页、分页 JSON、站点地图和多语言切换都会使用集合的实际路径。
 
 从旧版 Plume 迁移时，已弃用的顶层 `blog`、`article`、`notes` 以及 locale 内的 `notes` 会在启动时转换为集合；目标位置已有非空 `collections` 时以新配置为准。全局、locale 和 Post 集合中的旧 `profile.url` 也会归一化为 `profile.avatar`。这些兼容项只用于平滑迁移，新配置应直接使用 `collections` 与 `profile.avatar`。
 

@@ -2,7 +2,6 @@
 title: Page layout example
 description: Verifies the Plume page layout without the documentation shell.
 permalink: /en/page-layout/
-type: page
 pageLayout: page
 translationOf: /page-layout/
 createTime: 2026-08-06

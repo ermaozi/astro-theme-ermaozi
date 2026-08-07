@@ -6,7 +6,7 @@ const visibleText = html => html.replace(/<[^>]+>/g, '')
 const outsideFences = markdown => markdown.replace(/(^|\n)\s*(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\s*\2(?=\n|$)/gu, '\n')
 
 test('build contains generic blog, docs, enhanced Markdown, search, and crawler files', async () => {
-  const [home, englishHome, landing, hero, banner, singleHero, effects, pageLayout, customLayout, post, showcase, encryptedPage, rawShowcase, plumeShowcase, docs, configuration, rawDocs, plumeDocs, categories, robots, sitemap, llms] = await Promise.all([
+  const [home, englishHome, landing, hero, banner, singleHero, effects, pageLayout, customLayout, post, showcase, encryptedPage, rawShowcase, plumeShowcase, docsHome, docs, configuration, rawDocs, plumeDocs, categories, robots, sitemap, llms] = await Promise.all([
     readFile('dist/index.html', 'utf8'),
     readFile('dist/en/index.html', 'utf8'),
     readFile('dist/landing/index.html', 'utf8'),
@@ -21,6 +21,7 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
     readFile('dist/blog/encrypted-example/index.html', 'utf8'),
     readFile('dist/raw/blog/markdown-showcase.md', 'utf8'),
     readFile('dist/blog/markdown-showcase/index.md', 'utf8'),
+    readFile('dist/docs/index.html', 'utf8'),
     readFile('dist/docs/guide/content/index.html', 'utf8'),
     readFile('dist/docs/guide/configuration/index.html', 'utf8'),
     readFile('dist/raw/docs/guide/content.md', 'utf8'),
@@ -77,6 +78,9 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   assert.doesNotMatch(customLayout, /class="theme-plume vp-layout|<header class="vp-nav|<footer class="vp-footer/)
   assert.match(post, /https:\/\/example\.com\/blog\/getting-started\//)
   assert.match(post, /<title>ermaozi 快速开始 \| 博客 \| ermaozi<\/title>/)
+  assert.match(post, /property="article:published_time" content="2026-08-05T00:00:00.000Z"/)
+  assert.match(post, /"datePublished":"2026-08-05T00:00:00.000Z"/)
+  assert.match(post, /"@type":"BreadcrumbList","itemListElement":\[\{"@type":"ListItem","position":1,"name":"首页","item":"https:\/\/example\.com\/"\},\{"@type":"ListItem","position":2,"name":"博客","item":"https:\/\/example\.com\/blog\/"\},\{"@type":"ListItem","position":3,"name":"指南","item":"https:\/\/example\.com\/blog\/categories\/\?id=0941aa"\},\{"@type":"ListItem","position":4,"name":"ermaozi 快速开始","item":"https:\/\/example\.com\/blog\/getting-started\/"\}\]/)
   assert.doesNotMatch(post, /data-comment-provider/)
   assert.doesNotMatch(post, /hreflang=/i)
   assert.doesNotMatch(post, /vp-navbar-translations/)
@@ -132,9 +136,12 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   await assert.rejects(access('dist/raw/blog/encrypted-example.md'))
   await assert.rejects(access('dist/blog/encrypted-example/index.md'))
   assert.match(docs, /vp-sidebar/)
+  assert.match(docsHome, /<h1 class="page-title">文档中心<span> <\/span><span class="vp-badge tip"[^>]*>开始<\/span><\/h1>/)
   assert.match(docs, /<title>内容能力 \| 文档中心 \| ermaozi<\/title>/)
   assert.match(docs, /<meta data-ermaozi-managed-head property="og:type" content="article">/)
   assert.match(docs, /"articleSection":"文档中心"/)
+  assert.match(docs, /"@type":"BreadcrumbList","itemListElement":\[\{"@type":"ListItem","position":1,"name":"首页","item":"https:\/\/example\.com\/"\},\{"@type":"ListItem","position":2,"name":"文档中心","item":"https:\/\/example\.com\/docs\/"\},\{"@type":"ListItem","position":3,"name":"指南"\},\{"@type":"ListItem","position":4,"name":"内容能力","item":"https:\/\/example\.com\/docs\/guide\/content\/"\}\]/)
+  assert.match(docs, /<span property="item" typeof="WebPage"[^>]*class="vp-link no-icon breadcrumb">指南<\/span>/)
   assert.match(docs, /code-block-title/)
   assert.match(docs, /line-numbers-mode/)
   assert.match(docs, /class="line highlighted"/)

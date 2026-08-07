@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { docsFor, postMetaConfigOf, postsFor, routeOf, showsStickyBadge } from '../../theme/lib/content.ts'
+import { categoryListOf, docsFor, postMetaConfigOf, postsFor, routeOf, showsStickyBadge } from '../../theme/lib/content.ts'
 import { postExcerptOf } from '../../theme/lib/post-excerpt.ts'
 import { flatSidebarLinks } from '../../theme/lib/sidebar.ts'
 import { resolvePageNav } from '../../theme/lib/page-nav.ts'
@@ -38,6 +38,31 @@ test('permalinks, article exclusion, and every sticky value keep the frozen post
   assert.deepEqual(postsFor(posts, 'zh-CN').map(item => item.id), ['blog/high', 'blog/zero', 'blog/negative', 'blog/normal'])
   assert.equal(routeOf(posts[3]), '/fixed/')
   assert.deepEqual([true, false, 0, -1, undefined].map(showsStickyBadge), [true, false, true, false, false])
+})
+
+test('category transforms receive each post category chain before shared consumers render it', () => {
+  const post = entry('blog/02.Guides/Private/article')
+  const config = {
+    locales: {
+      'zh-CN': {
+        home: '/',
+        collections: [{
+          type: 'post',
+          dir: 'blog',
+          categoriesTransform: categories => categories
+            .filter(category => category.name !== 'Private')
+            .map(category => ({ ...category, name: 'Public guides' })),
+        }],
+      },
+    },
+  }
+  assert.deepEqual(categoryListOf(post, config), [{
+    id: '952dee',
+    name: 'Public guides',
+    sort: 2,
+  }])
+  config.locales['zh-CN'].collections[0].categories = false
+  assert.deepEqual(categoryListOf(post, config), [])
 })
 
 test('post excerpts require an explicit marker or frontmatter override and omit headings', async () => {

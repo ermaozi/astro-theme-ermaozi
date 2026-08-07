@@ -88,7 +88,9 @@ const postsEndpoint = withBase('/posts.json', base)
         <div class="post-meta">
           {categories.length > 0 && <div class="category-list"><span class="icon vpi-folder" aria-hidden="true"></span>{categories.map((category, index) => <><a class="vp-link link no-icon" href={`${categoriesLink}?id=${category.id}`}>{category.name}</a>{index < categories.length - 1 && <span>/</span>}</>)}</div>}
           {readingTime && (metaConfig.readingTime !== false || metaConfig.wordCount !== false) && <div class="reading-time"><span class="vpi-books icon" aria-hidden="true"></span>{metaConfig.wordCount !== false && <span>{readingTime.words}</span>}{metaConfig.readingTime !== false && <span>{readingTime.time}</span>}</div>}
-          {metaConfig.tags !== false && post.data.tags.length > 0 && <div class="tag-list"><span class="icon vpi-tag" aria-hidden="true"></span>{post.data.tags.slice(0, 4).map(tag => <a class:list={['vp-link link tag', tagClassOf(tag, tagsTheme)]} href={`${tagsLink}?tag=${encodeURIComponent(tag)}`}>{tag}</a>)}</div>}
+          {metaConfig.tags !== false && post.data.tags.length > 0 && <div class="tag-list"><span class="icon vpi-tag" aria-hidden="true"></span>{post.data.tags.slice(0, 4).map(tag => tagsLink
+            ? <a class:list={['vp-link link tag', tagClassOf(tag, tagsTheme)]} href={`${tagsLink}?tag=${encodeURIComponent(tag)}`}>{tag}</a>
+            : <span class:list={['vp-link tag', tagClassOf(tag, tagsTheme)]}>{tag}</span>)}</div>}
           {date && <div class="create-time"><span class="icon vpi-clock" aria-hidden="true"></span><span>{date}</span></div>}
           {siteConfig.features.engagement && <span class="meta-group post-engagement"><PageViews path={routeOf(post)} client:visible /><ArticleLikeButton path={routeOf(post)} lang={lang} compact={true} client:visible /></span>}
         </div>
@@ -177,7 +179,9 @@ const postsEndpoint = withBase('/posts.json', base)
       if (metaConfig.tags !== false && post.tags?.length) {
         const group = createElement('div', 'tag-list')
         group.append(createElement('span', 'icon vpi-tag'))
-        post.tags.forEach(tag => group.append(createLink(`${tagsLink}?tag=${encodeURIComponent(tag.name)}`, `vp-link link tag ${tag.className}`, tag.name)))
+        post.tags.forEach(tag => group.append(tagsLink
+          ? createLink(`${tagsLink}?tag=${encodeURIComponent(tag.name)}`, `vp-link link tag ${tag.className}`, tag.name)
+          : createElement('span', `vp-link tag ${tag.className}`, tag.name)))
         meta.append(group)
       }
       if (post.date) {

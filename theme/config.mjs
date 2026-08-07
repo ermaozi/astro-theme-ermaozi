@@ -137,12 +137,30 @@ export const defineSiteConfig = config => {
   }
   if (!homes.has('/')) invalid("locales 中必须有一种语言使用根路径 path: '/'")
 
-  const pagination = typeof resolved.pagination === 'number'
-    ? resolved.pagination
-    : resolved.pagination && typeof resolved.pagination === 'object'
-      ? resolved.pagination.perPage
-      : undefined
-  if (pagination !== undefined && (!Number.isInteger(pagination) || pagination < 1)) invalid('pagination.perPage 必须是正整数')
+  /** @param {string} field @param {false | number | { perPage?: number } | undefined} value */
+  const validatePagination = (field, value) => {
+    const perPage = typeof value === 'number' ? value : value && typeof value === 'object' ? value.perPage : undefined
+    if (perPage !== undefined && (!Number.isInteger(perPage) || perPage < 1)) invalid(`${field}.perPage 必须是正整数`)
+  }
+  validatePagination('pagination', resolved.pagination)
+  for (const [field, configured] of [
+    ['collections', resolved.collections],
+    ...locales.map(([lang, locale]) => [`locales.${lang}.collections`, locale.collections]),
+  ]) {
+    if (configured === undefined) continue
+    if (!Array.isArray(configured)) invalid(`${field} 必须是数组`)
+    for (const [index, collection] of configured.entries()) {
+      const name = `${field}[${index}]`
+      if (!collection || !['post', 'doc'].includes(collection.type)) invalid(`${name}.type 只能是 'post' 或 'doc'`)
+      if (typeof collection.dir !== 'string' || !collection.dir.trim()
+        || collection.dir !== '/' && (/^(?:[A-Za-z]:|[\\/])/u.test(collection.dir) || collection.dir.split(/[\\/]/u).includes('..'))) invalid(`${name}.dir 必须是 content 内的相对目录`)
+      if (collection.type !== 'post') continue
+      validatePagination(`${name}.pagination`, collection.pagination)
+      if (collection.categoriesExpand !== undefined && collection.categoriesExpand !== 'deep'
+        && (!Number.isInteger(collection.categoriesExpand) || collection.categoriesExpand < 0)) invalid(`${name}.categoriesExpand 必须是非负整数或 'deep'`)
+      if (collection.categoriesTransform !== undefined && typeof collection.categoriesTransform !== 'function') invalid(`${name}.categoriesTransform 必须是函数`)
+    }
+  }
   const wordPerMinute = resolved.readingTime && typeof resolved.readingTime === 'object' ? resolved.readingTime.wordPerMinute : undefined
   if (wordPerMinute !== undefined && (!Number.isFinite(wordPerMinute) || wordPerMinute <= 0)) invalid('readingTime.wordPerMinute 必须大于 0')
   if ((resolved.features.engagement || resolved.features.popularPosts) && !String(resolved.services?.statsBase ?? '').trim()) invalid('启用互动统计或热门文章时必须配置 services.statsBase')

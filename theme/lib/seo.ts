@@ -14,6 +14,8 @@ export const absoluteUrl = (route: string) => new URL(withBase(route, import.met
 export const modifiedTimeOf = (entry: ContentEntry) => modifiedTimes[routeOf(entry) as keyof typeof modifiedTimes]
   ?? iso(entry.data.updateTime ?? entry.data.createTime ?? entry.data.date)
 
+export const publishedTimeOf = (entry: ContentEntry) => iso(entry.data.createTime ?? entry.data.date ?? entry.data.time)
+
 export const iso = (value: unknown) => {
   if (!value) return undefined
   const date = value instanceof Date ? value : new Date(String(value).replaceAll('/', '-'))
@@ -65,13 +67,21 @@ const siteData = (lang: Lang, url = absoluteUrl) => {
   return { page, authorId, websiteId, site }
 }
 
-export const structuredPageData = (title: string, description: string, lang: Lang, route: string, entry?: ContentEntry, articleOverride?: boolean, defaultAuthor?: unknown, hostnameOverride?: string) => {
+export const structuredPageData = (title: string, description: string, lang: Lang, route: string, entry?: ContentEntry, articleOverride?: boolean, defaultAuthor?: unknown, hostnameOverride?: string, pageBreadcrumbs?: Array<{ text: string, href?: string }>) => {
   const url = hostnameOverride ? (path: string) => new URL(withBase(path, import.meta.env.BASE_URL), hostnameOverride).toString() : absoluteUrl
   const { page, authorId, websiteId, site } = siteData(lang, url)
   const post = entry ? isPost(entry) : false
-  const items = [{ '@type': 'ListItem', position: 1, name: page.homeText, item: url(page.home) }]
-  if (post) items.push({ '@type': 'ListItem', position: 2, name: page.postsText, item: url(`${page.home}blog/`) })
-  items.push({ '@type': 'ListItem', position: items.length + 1, name: title, item: url(route) })
+  const fallbackBreadcrumbs = [
+    { text: page.homeText, href: page.home },
+    ...(post ? [{ text: page.postsText, href: `${page.home}blog/` }] : []),
+    { text: title, href: route },
+  ]
+  const items = (pageBreadcrumbs?.length ? pageBreadcrumbs : fallbackBreadcrumbs).map(({ text, href }, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: text,
+    ...(href ? { item: url(href) } : {}),
+  }))
 
   const breadcrumb = {
     '@context': 'https://schema.org',
@@ -88,7 +98,7 @@ export const structuredPageData = (title: string, description: string, lang: Lan
     '@type': 'Article',
     headline: title,
     image: articleImages.length ? articleImages : [url(page.logo ?? siteConfig.logo)],
-    datePublished: iso(entry.data.date ?? entry.data.time),
+    datePublished: publishedTimeOf(entry),
     dateModified: modifiedTimeOf(entry),
     author: authors.map(author => ({ '@type': 'Person', ...author })),
     '@id': `${url(route)}#article`,

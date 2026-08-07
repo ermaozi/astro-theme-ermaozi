@@ -11,12 +11,12 @@ export {
 export { defineSiteConfig } from './config.mjs'
 export type {
   BaseCollection,
-  CategoryTreeItem,
   Collection,
   DocCollection,
   PostCoverLayout,
   PostCoverOptions,
   PostCollection,
+  PostsCategoryItem,
   SidebarItem,
 } from './lib/collections.ts'
 export type { AppearanceTransition, AutoFrontmatterContext, AutoFrontmatterData, AutoFrontmatterOptions, BulletinOptions, ChangelogOptions, CodeHighlighterOptions, Contributor, ContributorsOptions, LastUpdatedOptions, LegacyBlogOptions, LegacyNotesOptions, LocaleConfig, LocaleTextOptions, MarkdownImageOptions, MarkdownIncludeOptions, MarkdownMathOptions, MarkdownOptions, NavigationItem, ProfileOptions, SiteConfig, SocialLink, ThemeIcon, TransitionOptions } from './config-types.ts'

@@ -6,7 +6,7 @@ import { localePrefix, type Lang } from './locales.ts'
 export type SidebarBadge = string | { text?: string, type?: string, color?: string, bgColor?: string, borderColor?: string }
 export type PostCoverLayout = 'left' | 'right' | 'odd-left' | 'odd-right' | 'top'
 export type PostCoverOptions = PostCoverLayout | { layout?: PostCoverLayout, ratio?: number | `${number}:${number}` | `${number}/${number}`, width?: number, compact?: boolean }
-export type CategoryTreeItem = { type: 'post', title: string, path: string } | { type: 'category', title: string, id: string, sort: number, items: CategoryTreeItem[] }
+export type PostsCategoryItem = { id: string, name: string, sort: number }
 
 export type SidebarItem = string | {
   text?: string
@@ -48,7 +48,7 @@ export type PostCollection = BaseCollection & {
   categoriesLink?: string
   categoriesText?: string
   categoriesExpand?: number | 'deep'
-  categoriesTransform?: (categories: CategoryTreeItem[]) => CategoryTreeItem[]
+  categoriesTransform?: (categories: PostsCategoryItem[]) => PostsCategoryItem[]
   postCover?: PostCoverOptions
   profile?: ProfileOptions | false
   social?: SocialLink[] | false
@@ -98,6 +98,9 @@ export function collectionsFor(lang: Lang, config: any = siteConfig): ResolvedCo
     }
     const link = withLocale(lang, collection.link ?? dir)
     const linkPrefix = withLocale(lang, collection.linkPrefix ?? collection.link ?? dir)
+    const tags = collection.tags ?? true
+    const archives = collection.archives ?? true
+    const categories = collection.categories ?? true
     return {
       ...collection,
       dir,
@@ -105,12 +108,12 @@ export function collectionsFor(lang: Lang, config: any = siteConfig): ResolvedCo
       title,
       link,
       linkPrefix,
-      tags: collection.tags ?? true,
-      archives: collection.archives ?? true,
-      categories: collection.categories ?? true,
-      tagsLink: withLocale(lang, collection.tagsLink ?? `${clean(collection.linkPrefix ?? collection.link ?? dir)}/tags`),
-      archivesLink: withLocale(lang, collection.archivesLink ?? `${clean(collection.linkPrefix ?? collection.link ?? dir)}/archives`),
-      categoriesLink: withLocale(lang, collection.categoriesLink ?? `${clean(collection.linkPrefix ?? collection.link ?? dir)}/categories`),
+      tags,
+      archives,
+      categories,
+      tagsLink: tags ? withLocale(lang, collection.tagsLink ?? `${clean(collection.linkPrefix ?? collection.link ?? dir)}/tags`) : '',
+      archivesLink: archives ? withLocale(lang, collection.archivesLink ?? `${clean(collection.linkPrefix ?? collection.link ?? dir)}/archives`) : '',
+      categoriesLink: categories ? withLocale(lang, collection.categoriesLink ?? `${clean(collection.linkPrefix ?? collection.link ?? dir)}/categories`) : '',
     }
   })
 }

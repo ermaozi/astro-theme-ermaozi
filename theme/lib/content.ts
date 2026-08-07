@@ -44,16 +44,13 @@ export const isPost = (entry: ContentEntry) => contentType(entry) === 'post'
 
 export const isDoc = (entry: ContentEntry) => contentType(entry) === 'doc'
 
-const categoryPartsOf = (entry: ContentEntry) => {
-  const collection = collectionForEntry(entry.id, langOf(entry))
-  if (collection?.type !== 'post') return []
-  const relative = relativeContentId(entry.id, langOf(entry))
-  return relative.slice(collection.dir.length).replace(/^\//u, '').split('/').slice(0, -1)
-}
-
-export const categoryListOf = (entry: ContentEntry) => {
-  const categories = categoryPartsOf(entry)
-  return categories.map((category, index) => {
+export const categoryListOf = (entry: ContentEntry, config?: any) => {
+  const lang = langOf(entry)
+  const collection = collectionForEntry(entry.id, lang, config)
+  if (collection?.type !== 'post' || collection.categories === false) return []
+  const relative = relativeContentId(entry.id, lang)
+  const categories = relative.slice(collection.dir.length).replace(/^\//u, '').split('/').slice(0, -1)
+  const list = categories.map((category, index) => {
     const match = category.match(/^(?:(\d+)\.)?([\s\S]+)$/)!
     return {
       id: createHash('md5').update(categories.slice(0, index + 1).join('-')).digest('hex').slice(0, 6),
@@ -61,6 +58,7 @@ export const categoryListOf = (entry: ContentEntry) => {
       sort: match[1] ? Number(match[1]) : Number.MAX_SAFE_INTEGER,
     }
   })
+  return collection.categoriesTransform?.(list) ?? list
 }
 
 export const categoriesOf = (entry: ContentEntry) => categoryListOf(entry).map(category => category.name)

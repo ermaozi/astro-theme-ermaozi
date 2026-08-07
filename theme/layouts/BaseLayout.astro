@@ -1,7 +1,7 @@
 ---
 import { createHash } from 'node:crypto'
 import type { ContentEntry, Lang } from '../lib/content'
-import { authorsOf, imagesOf, iso, modifiedTimeOf, siteLocale, structuredPageData } from '../lib/seo'
+import { authorsOf, imagesOf, modifiedTimeOf, publishedTimeOf, siteLocale, structuredPageData } from '../lib/seo'
 import { hasRobotsDirective, headMetaContent, serializeHeadItems, type HeadItem } from '../lib/head'
 import { seoEnabled as automaticSeoEnabled } from '../lib/seo-options.mjs'
 import Footer from '../components/Footer.astro'
@@ -40,16 +40,16 @@ interface Props {
   route: string
   translationRoute?: string
   languageLinks?: Array<{ lang: Lang, href: string, fallback?: boolean }>
+  breadcrumbs?: Array<{ text: string, href?: string }>
   pageClass?: string
   noindex?: boolean
-  article?: boolean
   minimal404?: boolean
   layout?: 'doc' | 'friends' | 'home' | 'page' | 'posts'
   hasSidebar?: boolean
   bare?: boolean
 }
 
-const { entry, title, collectionTitle, description, lang, route, translationRoute, languageLinks = [], pageClass = '', noindex = false, minimal404 = false, layout = 'doc', hasSidebar = false, bare = false } = Astro.props
+const { entry, title, collectionTitle, description, lang, route, translationRoute, languageLinks = [], breadcrumbs, pageClass = '', noindex = false, minimal404 = false, layout = 'doc', hasSidebar = false, bare = false } = Astro.props
 const isHome = layout === 'home' || entry?.data.home === true || entry?.data.pageLayout === 'home'
 const site = siteLocale(lang)
 const seoOptions = ((siteConfig.plugins as { seo?: false | SeoOptions })?.seo || {}) as SeoOptions
@@ -91,7 +91,7 @@ const imageSource = socialCover ?? imagesOf(entry)[0] ?? seoOptions.fallBackImag
 const image = imageSource.startsWith('/') ? seoUrl(imageSource) : imageSource
 const seoTags = entry?.data.tags.length ? entry.data.tags : typeof entry?.data.tag === 'string' ? [entry.data.tag] : entry?.data.tag ?? []
 const seoAuthors = authorsOf(entry?.data.author, seoOptions.author ?? site.authorName)
-const published = entry ? iso(entry.data.date ?? entry.data.time) : undefined
+const published = entry ? publishedTimeOf(entry) : undefined
 const preconnectMedia = Boolean(siteConfig.mediaOrigin && image.startsWith(`${siteConfig.mediaOrigin}/`))
 const modified = entry && !isHome ? modifiedTimeOf(entry) : undefined
 const automaticOgp: Record<string, unknown> = {
@@ -119,7 +119,7 @@ const automaticOgp: Record<string, unknown> = {
 const ogp = seoOptions.ogp?.(automaticOgp, pluginPage, pluginApp) ?? automaticOgp
 const automaticJsonLd = minimal404
   ? [{ '@context': 'https://schema.org', '@type': 'WebPage', name: '', description: seoDescription }]
-  : seoEnabled ? structuredPageData(title, seoDescription, lang, route, entry, seoArticle, seoOptions.author, seoHostname) : []
+  : seoEnabled ? structuredPageData(title, seoDescription, lang, route, entry, seoArticle, seoOptions.author, seoHostname, breadcrumbs) : []
 const jsonLd = automaticJsonLd.length && seoOptions.jsonLd
   ? [seoOptions.jsonLd(automaticJsonLd[0], pluginPage, pluginApp), ...automaticJsonLd.slice(1)]
   : automaticJsonLd

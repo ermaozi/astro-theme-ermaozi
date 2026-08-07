@@ -58,7 +58,7 @@ const sortCategories = (items: CategoryTreeItem[]): CategoryTreeItem[] => {
     return 0
   })
 }
-const orderedRoots = collection?.categoriesTransform ? collection.categoriesTransform(sortCategories(categoryRoots)) : sortCategories(categoryRoots)
+const orderedRoots = sortCategories(categoryRoots)
 const categoryExpand = collection?.categoriesExpand ?? siteConfig.categoriesExpand ?? 'deep'
 const expandDepth = categoryExpand === 'deep' ? Infinity : Number(categoryExpand)
 

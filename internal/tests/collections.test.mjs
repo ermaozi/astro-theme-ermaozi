@@ -40,6 +40,10 @@ test('multiple locale collections resolve frozen Plume routes, filters, and iden
   assert.equal(localized.linkPrefix, '/en/articles/')
   assert.equal(localized.tagsLink, '/en/topics/')
   assert.equal(localized.archivesLink, '/en/articles/archives/')
+  const [disabled] = collectionsFor('en-US', {
+    locales: { 'en-US': { home: '/en/', collections: [{ type: 'post', dir: 'notes', title: 'Notes', tags: false, categories: false, archives: false }] } },
+  })
+  assert.deepEqual([disabled.tagsLink, disabled.categoriesLink, disabled.archivesLink], ['', '', ''])
   for (const helper of [defineThemeConfig, defineNavbarConfig, defineCollections, defineCollection]) {
     const value = {}
     assert.equal(helper(value), value)

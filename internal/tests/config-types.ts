@@ -32,7 +32,7 @@ defineSiteConfig({
       siteName: 'Site',
       path: '/',
       home: '/',
-      collections: [{ type: 'post', dir: 'blog', categoriesTransform: categories => categories.filter(item => item.type === 'category') }],
+      collections: [{ type: 'post', dir: 'blog', categoriesTransform: categories => categories.filter(item => item.name !== 'Private') }],
     },
   },
   markdown: { include: { resolvePath: (reference, cwd) => `${cwd ?? ''}/${reference}` } },

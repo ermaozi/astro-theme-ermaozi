@@ -77,8 +77,18 @@ test('site config fails early with actionable boundary errors', () => {
   assert.throws(() => defineSiteConfig({ ...valid(), origin: 'example.com' }), /origin 必须是有效的 http\(s\) URL/)
   assert.throws(() => defineSiteConfig({ ...valid(), base: '/docs' }), /base 必须以 \/ 开头和结尾/)
   assert.throws(() => defineSiteConfig({ ...valid(), pagination: 0 }), /pagination\.perPage 必须是正整数/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: 'blog', pagination: 0 }] } } }), /collections\[0\]\.pagination\.perPage 必须是正整数/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: '../blog' }] } } }), /collections\[0\]\.dir 必须是 content 内的相对目录/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: '/blog' }] } } }), /collections\[0\]\.dir 必须是 content 内的相对目录/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: 'blog', categoriesExpand: -1 }] } } }), /categoriesExpand 必须是非负整数/)
   assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', path: '/zh/' } } }), /必须有一种语言使用根路径/)
   assert.throws(() => defineSiteConfig({ ...valid(), features: { engagement: true, popularPosts: false, comments: false } }), /services\.statsBase/)
+})
+
+test('legacy blog pageLayout remains a built-in posts alias', async () => {
+  const route = await readFile('theme/pages/[...path].astro', 'utf8')
+  assert.match(route, /standardLayouts = new Set\(\['home', 'posts', 'blog', 'doc', 'page', 'friends'\]\)/)
+  assert.match(route, /pageLayout === 'posts' \|\| entry\?\.data\.pageLayout === 'blog'/)
 })
 
 test('top-level Plume locale text remains a global fallback', async () => {

@@ -2,7 +2,6 @@
 title: 专页布局示例
 description: 验证不带文档导航壳的 Plume 专页布局。
 permalink: /page-layout/
-type: page
 pageLayout: page
 translationOf: /page-layout/
 createTime: 2026-08-06

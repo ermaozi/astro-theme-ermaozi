@@ -74,7 +74,7 @@ Global options provide defaults and object-valued locale options are shallow-mer
 
 ## Page and content options
 
-`pageLayout` supports `home`, `posts`, `doc`, `page`, `friends`, `custom`, `false`, and custom component names. A `posts` page may select a Post collection with `collection`; `page` keeps the standalone body; `custom`/`false` output only the Markdown body. Put named layouts in `theme/components/layouts/`; the filename is the layout name.
+`pageLayout` supports `home`, `posts`, `doc`, `page`, `friends`, `custom`, `false`, and custom component names, plus Plume's legacy `blog` alias for `posts`. A `posts` page may select a Post collection with `collection`; `page` keeps the standalone body; `custom`/`false` output only the Markdown body. Put named layouts in `theme/components/layouts/`; the filename is the layout name.
 
 Global, locale, and page-level `outline` and `aside` values control the content outline. `externalLinkIcon` is enabled by default and can be disabled per page; the old `externalLink` name remains compatible. `createTime: 'only-posts'` limits creation dates to posts and post lists, while `false` hides them everywhere. Set `plugins.nprogress: false` to disable the top progress bar during internal navigation.
 
@@ -124,7 +124,7 @@ locales: {
 },
 ```
 
-Post collections support `include`, `exclude`, `pagination`, `postList`, `link`, `linkPrefix`, independent tag/category/archive switches, paths and labels, plus collection-level `tagsTheme`, `meta`, `postCover`, `profile`, `social`, `categoriesExpand`, and `categoriesTransform`. Generated pages, breadcrumbs, pagination JSON, sitemap entries, and language switching use the resolved collection routes.
+Post collections support `include`, `exclude`, `pagination`, `postList`, `link`, `linkPrefix`, independent tag/category/archive switches, paths and labels, plus collection-level `tagsTheme`, `meta`, `postCover`, `profile`, `social`, `categoriesExpand`, and `categoriesTransform`. As in Plume, `categoriesTransform` receives each post's outer-to-inner `{ id, name, sort }[]` category chain; its result is shared by cards, breadcrumbs, statistics, and the category tree. Generated pages, pagination JSON, sitemap entries, and language switching use the resolved collection routes.
 
 When migrating an older Plume site, deprecated top-level `blog`, `article`, and `notes` settings plus locale-level `notes` are converted into collections at startup; a non-empty `collections` array at the target level takes precedence. Legacy `profile.url` is also normalized to `profile.avatar` globally, per locale, and in Post collections. These aliases are migration aids only; new configuration should use `collections` and `profile.avatar` directly.
 
