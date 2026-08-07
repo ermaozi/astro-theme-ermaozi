@@ -73,7 +73,7 @@ const generatedPostCollection = props.kind === 'content' ? undefined : postColle
 const translation = entry ? findTranslation(entry, entries) : undefined
 const routeWithoutLocale = routePrefix && route.startsWith(`${routePrefix}/`) ? route.slice(routePrefix.length) : route
 const translationBase = entry?.data.translationOf ?? route
-const languageLinks = configuredLanguages().flatMap(targetLang => {
+const languageLinks = siteConfig.multilingual === false ? [] : configuredLanguages().flatMap(targetLang => {
   if (targetLang === lang) return [{ lang: targetLang, href: route }]
   if (!entry) {
     const target = postCollectionsFor(targetLang).find(collection => collection.dir === generatedPostCollection?.dir) ?? postCollectionsFor(targetLang)[0]
@@ -90,7 +90,7 @@ const languageLinks = configuredLanguages().flatMap(targetLang => {
     ? [{ lang: targetLang, href: routeOf(candidate) }]
     : [{ lang: targetLang, href: fallback ?? localePath(targetLang), fallback: true }]
 })
-const translationRoute = languageLinks.find(item => item.lang !== lang)?.href ?? (translation ? routeOf(translation) : undefined)
+const translationRoute = siteConfig.multilingual === false ? undefined : languageLinks.find(item => item.lang !== lang)?.href ?? (translation ? routeOf(translation) : undefined)
 const pageMap = Object.fromEntries(entries.map(item => [routeOf(item), item.data.title]))
 const post = entry ? isPost(entry) : false
 const doc = entry ? isDoc(entry) : false
@@ -107,6 +107,7 @@ const renderedContent = entry ? await renderMarkdown(entry.body ?? '', {
   sourcePath: entry.filePath,
   plot: entry.data.plot,
   removeTitle: entry.data.type !== 'page' && entry.data.pageLayout !== 'page',
+  base: import.meta.env.BASE_URL,
 }) : ''
 const encryptPolicy = entry ? encryptionPolicy(entry) : undefined
 const pageEncryption = encryptPolicy?.pageEncrypted

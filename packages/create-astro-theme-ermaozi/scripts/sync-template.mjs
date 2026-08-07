@@ -37,6 +37,7 @@ delete pkg.scripts['test:create']
 delete pkg.scripts.test
 delete pkg.scripts['test:visual']
 delete pkg.devDependencies['@playwright/test']
+delete pkg.devDependencies['@clack/prompts']
 pkg.scripts.validate = `${pkg.scripts.build} && node scripts/audit.mjs`
 await writeFile(packagePath, `${JSON.stringify(pkg, null, 2)}\n`)
 

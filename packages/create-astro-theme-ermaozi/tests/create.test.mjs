@@ -5,8 +5,43 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { configureSiteConfig } from '../bin/configure-site.mjs'
+import { deploymentFiles } from '../bin/deployment-files.mjs'
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+
+test('deployment choices generate current static-host configuration', () => {
+  const github = deploymentFiles('github-pages', 'pnpm')['.github/workflows/deploy.yml']
+  assert.match(github, /withastro\/action@v6/)
+  assert.match(github, /actions\/deploy-pages@v5/)
+  assert.match(github, /BASE_PATH:/)
+
+  const gitlab = deploymentFiles('gitlab-pages', 'pnpm')['.gitlab-ci.yml']
+  assert.match(gitlab, /pnpm install --frozen-lockfile/)
+  assert.match(gitlab, /pages:\s*\n\s+publish: dist/)
+
+  assert.match(deploymentFiles('netlify', 'yarn')['netlify.toml'], /command = "yarn build"/)
+  assert.equal(JSON.parse(deploymentFiles('vercel')['vercel.json']).outputDirectory, 'dist')
+  assert.equal(JSON.parse(deploymentFiles('firebase', 'npm', 'my-project')['.firebaserc']).projects.default, 'my-project')
+  assert.deepEqual(deploymentFiles('custom'), {})
+})
+
+test('interactive answers update the generated site identity and multilingual switch', () => {
+  const source = readFileSync(path.resolve(packageRoot, '../..', 'site.config.mjs'), 'utf8')
+  const configured = configureSiteConfig(source, {
+    siteName: 'My $ Astro Site',
+    siteDescription: 'A clear "description".',
+    multilingual: true,
+  })
+  assert.match(configured, /^\s*multilingual: true,$/m)
+  assert.equal([...configured.matchAll(/^\s*siteName: "My \$ Astro Site",$/gm)].length, 2)
+  assert.match(configured, /^\s*description: "A clear \\"description\\"\.",$/m)
+  assert.doesNotThrow(() => configureSiteConfig(source, {
+    siteName: 'ermaozi',
+    siteDescription: '一个支持全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。',
+    multilingual: false,
+  }))
+})
 
 test('creates a complete ermaozi project without installing when requested', () => {
   execFileSync(process.execPath, [path.join(packageRoot, 'scripts/sync-template.mjs')])
@@ -24,6 +59,7 @@ test('creates a complete ermaozi project without installing when requested', () 
   assert.equal(pkg.scripts.test, undefined)
   assert.equal(pkg.scripts['test:visual'], undefined)
   assert.equal(pkg.devDependencies['@playwright/test'], undefined)
+  assert.equal(pkg.devDependencies['@clack/prompts'], undefined)
   assert.doesNotMatch(pkg.scripts.validate, /node --test|packages\/create-astro-theme-ermaozi/)
   assert.throws(() => readFileSync(path.join(created, 'tests/build.test.mjs')), error => error.code === 'ENOENT')
   assert.throws(() => readFileSync(path.join(created, 'playwright.config.ts')), error => error.code === 'ENOENT')
@@ -78,7 +114,7 @@ test('creates a complete ermaozi project without installing when requested', () 
   const layout = readFileSync(path.join(created, 'src/layouts/BaseLayout.astro'), 'utf8')
   assert.match(layout, /<!doctype html>/i)
   assert.match(layout, /loadSwipers/)
-  assert.match(readFileSync(path.join(created, 'public/img/logo.svg'), 'utf8'), /viewBox="0 0 170 150"/)
+  assert.match(readFileSync(path.join(created, 'public/img/logo.svg'), 'utf8'), /viewBox="0 0 1073 1024"/)
 })
 
 test('refuses to overwrite a non-empty directory', () => {
@@ -91,6 +127,20 @@ test('refuses to overwrite a non-empty directory', () => {
     /Command failed/,
   )
   assert.equal(readFileSync(path.join(target, 'keep.txt'), 'utf8'), 'keep')
+})
+
+test('expands a leading home-directory shortcut instead of creating a literal tilde folder', () => {
+  const cwd = mkdtempSync(path.join(tmpdir(), 'ermaozi-create-tilde-'))
+  const home = path.join(cwd, 'home')
+  mkdirSync(home)
+  const output = execFileSync(process.execPath, [path.join(packageRoot, 'bin/create.mjs'), '~/tilde-site', '--no-install'], {
+    cwd,
+    env: { ...process.env, HOME: home, USERPROFILE: home },
+    encoding: 'utf8',
+  })
+  assert.equal(JSON.parse(readFileSync(path.join(home, 'tilde-site/package.json'), 'utf8')).name, 'tilde-site')
+  assert.throws(() => readFileSync(path.join(cwd, '~/tilde-site/package.json')), error => error.code === 'ENOENT')
+  assert.match(output, /cd ~\/tilde-site/)
 })
 
 test('reuses the invoking package manager without leaking a Yarn dlx PnP loader', () => {
@@ -118,4 +168,5 @@ test('GitHub releases publish only a matching package version through trusted pu
   assert.match(workflow, /Release tag must be v/)
   assert.doesNotMatch(workflow, /NODE_AUTH_TOKEN|NPM_TOKEN/)
   assert.match(workflow, /npm publish --access public/)
+  assert.match(workflow, /case "\$VERSION" in \*-\*\) TAG=beta/)
 })

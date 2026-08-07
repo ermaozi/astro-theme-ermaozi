@@ -36,15 +36,9 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
   await page.locator('.vp-navbar-title a').focus()
   await expect(groups.first().locator('.flyout-button')).toHaveAttribute('aria-expanded', 'false')
 
-  const language = page.locator('.vp-navbar-translations .flyout-button')
-  await language.click()
-  await expect(page.locator('.language-panel a')).toHaveText('English')
-  await expect(page.locator('.language-panel a')).toHaveAttribute('href', '/en/')
-  await page.locator('body').dispatchEvent('pointerdown')
-  await expect(language).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.locator('.vp-navbar-translations')).toHaveCount(0)
 
   await page.goto('/effects/', { waitUntil: 'domcontentloaded' })
-  await expect(page.locator('.language-panel a')).toHaveAttribute('href', '/en/')
   await expect(page.locator('link[rel="alternate"][hreflang="en-US"]')).toHaveCount(0)
   await page.goto('/', { waitUntil: 'domcontentloaded' })
 
@@ -83,8 +77,7 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
   await expect(mobileGroupContainer).toBeHidden()
   await mobileGroupButton.click()
   await expect(mobileGroupContainer).toBeVisible()
-  await page.locator('.mobile-translations > .title').click()
-  await expect(page.locator('.mobile-translations a')).toBeVisible()
+  await expect(page.locator('.mobile-translations')).toHaveCount(0)
   await expect(page.locator('.mobile-appearance')).toHaveCSS('padding', '12px 14px 12px 16px')
   await hamburger.click()
   await expect(mobileMenu).toHaveClass(/fade-in-leave-active/)
@@ -98,8 +91,8 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
 
 test('desktop navigation resolves every official link, badge, active, and external variant', async ({ page }) => {
   await page.goto('/docs/guide/content/', { waitUntil: 'domcontentloaded' })
-  await expect(page.locator('.language-panel a')).toHaveAttribute('href', '/en/docs/guide/content/')
-  await expect(page.locator('link[rel="alternate"][hreflang="en-US"]')).toHaveAttribute('href', 'https://example.com/en/docs/guide/content/')
+  await expect(page.locator('.vp-navbar-translations')).toHaveCount(0)
+  await expect(page.locator('link[rel="alternate"][hreflang="en-US"]')).toHaveCount(0)
   await expect(page.locator('.vp-navbar-menu')).toHaveAttribute('aria-labelledby', 'main-nav-aria-label')
   await expect(page.locator('#main-nav-aria-label')).toHaveText('Main Navigation')
 
@@ -528,7 +521,7 @@ test('documentation navigation and content tools work', async ({ page, context }
 
   const sidebar = page.locator('.vp-sidebar')
   await expect(sidebar).toBeVisible()
-  await expect(sidebar.locator('section a')).toHaveCount(4)
+  await expect(sidebar.locator('section a')).toHaveCount(6)
   await expect(sidebar.locator('.is-active a')).toHaveText('内容能力')
   await expect(sidebar.locator('.group.no-transition')).toHaveCount(0)
   await expect(sidebar.locator('.level-0 > .item > h2.text')).toHaveText('指南')
@@ -1267,14 +1260,14 @@ test('copyright preserves Plume licenses, locale labels, and live original URL',
 
 test('document footer follows sidebar order and browser date locale', async ({ page }) => {
   await page.goto('/docs/')
-  await expect(page.locator('.vp-doc-footer')).toHaveCount(0)
+  await expect(page.locator('.vp-doc-footer .prev-next')).toHaveCount(0)
 
   await page.goto('/docs/guide/configuration/')
-  await expect(page.locator('.pager-link.prev')).toHaveCount(0)
-  await expect(page.locator('.pager-link.next')).toHaveAttribute('href', '/docs/guide/api/')
+  await expect(page.locator('.pager-link.prev')).toHaveAttribute('href', '/docs/guide/getting-started/')
+  await expect(page.locator('.pager-link.next')).toHaveAttribute('href', '/docs/guide/deployment/')
 
   await page.goto('/docs/guide/api/')
-  await expect(page.locator('.pager-link.prev')).toHaveAttribute('href', '/docs/guide/configuration/')
+  await expect(page.locator('.pager-link.prev')).toHaveAttribute('href', '/docs/guide/deployment/')
   await expect(page.locator('.pager-link.next')).toHaveAttribute('href', '/docs/guide/content/')
   await expect(page.locator('.pager-link.next .vp-icon')).toBeVisible()
 

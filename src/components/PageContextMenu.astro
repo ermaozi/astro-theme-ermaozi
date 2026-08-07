@@ -2,15 +2,17 @@
 import { siteConfig } from '../../site.config.mjs'
 import type { Lang } from '../lib/content'
 import { localeOf } from '../lib/locales'
+import { withBase } from '../lib/client-utils'
 
 const { rawRoute, lang } = Astro.props as { rawRoute: string, lang: Lang }
 const en = !lang.startsWith('zh')
 const locale = localeOf(lang)
 const providers = siteConfig.pageContextMenu
+const resolvedRawRoute = withBase(rawRoute, import.meta.env.BASE_URL)
 const aiText = (name: string) => locale.askAIText.replace('{name}', name)
 const aiTagline = (name: string) => locale.askAITagline.replace('{name}', name)
 const items = [
-  { href: rawRoute, icon: 'vpi-markdown', text: locale.viewMarkdown, tagline: locale.viewMarkdownTagline },
+  { href: resolvedRawRoute, icon: 'vpi-markdown', text: locale.viewMarkdown, tagline: locale.viewMarkdownTagline },
   ...(providers.chatgpt ? [{ href: 'https://chat.openai.com/?prompt=', icon: 'vpi-chatgpt', text: aiText('ChatGPT'), tagline: aiTagline('ChatGPT'), ai: true }] : []),
   ...(providers.claude ? [{ href: 'https://claude.ai/new?q=', icon: 'vpi-claude', text: aiText('Claude'), tagline: aiTagline('Claude'), ai: true }] : []),
   ...(providers.perplexity ? [{ href: 'https://perplexity.ai/?q=', icon: 'vpi-perplexity', text: aiText('Perplexity'), tagline: aiTagline('Perplexity'), ai: true }] : []),
@@ -19,17 +21,17 @@ const items = [
 
 <div
   class="vp-page-context-menu"
-  data-raw-route={rawRoute}
+  data-raw-route={resolvedRawRoute}
   data-copy-label={locale.copyPageText}
   data-copying-label={locale.copingPageText}
   data-copied-label={locale.copiedPageText}
 >
   <div class="page-context-button">
-    <span class="page-context-copy" role="button" tabindex="0" data-copy-page={rawRoute}><span class="vpi-copy" aria-hidden="true"></span><span class="text">{locale.copyPageText}</span></span>
+    <span class="page-context-copy" role="button" tabindex="0" data-copy-page={resolvedRawRoute}><span class="vpi-copy" aria-hidden="true"></span><span class="text">{locale.copyPageText}</span></span>
     <span class="page-context-toggle" role="button" tabindex="0" aria-expanded="false" aria-label={en ? 'More page actions' : '更多页面操作'}><span class="vpi-chevron-down" aria-hidden="true"></span></span>
   </div>
   <ul class="page-context-menu" hidden>
-    <li><a href="javascript:void(0)" data-copy-page={rawRoute}><span class="vpi-copy" aria-hidden="true"></span><span><span class="text">{locale.copyPageText}</span><small>{locale.copyTagline}</small></span></a></li>
+    <li><a href="javascript:void(0)" data-copy-page={resolvedRawRoute}><span class="vpi-copy" aria-hidden="true"></span><span><span class="text">{locale.copyPageText}</span><small>{locale.copyTagline}</small></span></a></li>
     {items.map(item => <li><a href={item.href} data-ai-url={item.ai ? item.href : undefined} data-ai-prompt={item.ai ? locale.askAIMessage : undefined} target="_blank" rel="noopener noreferrer" aria-label={item.text} type={item.icon === 'vpi-markdown' ? 'text/markdown' : undefined}><span class={item.icon} aria-hidden="true"></span><span>{item.text}<span class="vpi-external-link" aria-hidden="true"></span><small>{item.tagline}</small></span></a></li>)}
   </ul>
 </div>

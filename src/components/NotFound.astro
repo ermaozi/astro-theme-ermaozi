@@ -3,10 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import UserSlot from './UserSlot.astro'
 import { configuredLanguages, localeOf, localePath, rootLanguage } from '../lib/locales'
 import { hasUserSlot } from '../lib/user-slots'
+import { withBase } from '../lib/client-utils'
 
 const { lang = rootLanguage(), route = '/404.html' } = Astro.props
 const locale = localeOf(lang)
-const localeRecords = configuredLanguages().map(lang => ({ lang, home: localePath(lang), ...localeOf(lang).notFound }))
+const localeRecords = configuredLanguages().map(lang => ({ lang, root: localePath(lang) === '/', home: withBase(localePath(lang), import.meta.env.BASE_URL), ...localeOf(lang).notFound }))
+const home = withBase(locale.home, import.meta.env.BASE_URL)
 const customNotFound = hasUserSlot('not-found')
 ---
 
@@ -17,13 +19,13 @@ const customNotFound = hasUserSlot('not-found')
       <h1 class="title">{locale.notFound.title}</h1>
       <div class="divider"></div>
       <blockquote class="quote">{locale.notFound.quote}</blockquote>
-      <div class="action"><a class="link" href={locale.home} aria-label={locale.notFound.linkText}>{locale.notFound.linkText}</a></div>
+      <div class="action"><a class="link" href={home} aria-label={locale.notFound.linkText}>{locale.notFound.linkText}</a></div>
     </div>}
   </div>
   {!customNotFound && <script is:inline define:vars={{ localeRecords }}>
     const record = localeRecords
-      .filter(item => item.home !== '/' && location.pathname.startsWith(item.home))
-      .sort((left, right) => right.home.length - left.home.length)[0] || localeRecords.find(item => item.home === '/') || localeRecords[0]
+      .filter(item => !item.root && location.pathname.startsWith(item.home))
+      .sort((left, right) => right.home.length - left.home.length)[0] || localeRecords.find(item => item.root) || localeRecords[0]
     if (record) {
       document.documentElement.lang = record.lang
       document.querySelector('.vp-not-found .code').textContent = record.code

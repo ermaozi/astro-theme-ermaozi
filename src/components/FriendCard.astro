@@ -2,6 +2,7 @@
 import SocialLinks from './SocialLinks.astro'
 import VPLink from './VPLink.astro'
 import type { SocialLink } from '../lib/social'
+import { withBase } from '../lib/client-utils'
 
 type ThemeColor = string | { light: string, dark: string }
 interface FriendItem {
@@ -28,7 +29,7 @@ const onlyTitle = !friend.desc && !friend.socials?.length && !friend.location &&
 ---
 
 <div class:list={['vp-friend', { 'only-title': onlyTitle, 'no-desc': !friend.desc }]} style={style || undefined}>
-  <div class="avatar"><img src={friend.avatar} alt={friend.name} /></div>
+  <div class="avatar"><img src={withBase(friend.avatar, import.meta.env.BASE_URL)} alt={friend.name} /></div>
   <div class="content">
     <VPLink class="title" href={friend.link} text={friend.name} noIcon />
     {friend.location && <p class="location"><span class="vpi-location" aria-hidden="true"></span><span>{friend.location}</span></p>}

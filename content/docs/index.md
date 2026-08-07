@@ -13,6 +13,10 @@ tags: [Astro, 文档]
 
 # 文档中心
 
+::: warning 测试阶段
+当前为 `0.2.0-beta.0` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 GitHub Release 说明。
+:::
+
 主题同时支持博客与产品文档。`content/docs/` 下的页面会自动生成文档侧栏、移动端目录和上一篇/下一篇导航。
 
 ::: card-grid cols="2"
@@ -30,3 +34,10 @@ tags: [Astro, 文档]
 1. 按[零基础快速开始](/docs/guide/getting-started/)完成站点身份和第一篇文章。
 2. 需要更多选项时阅读[站点配置](/docs/guide/configuration/)和[内容能力](/docs/guide/content/)。
 3. 删除不需要的示例内容并运行 `pnpm validate`。
+
+## 当前兼容环境
+
+- Node.js 22.12 或更高版本
+- Astro 7.1
+- Vue 3.5
+- npm、pnpm 或 Yarn

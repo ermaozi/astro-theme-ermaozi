@@ -9,6 +9,7 @@ import { siteConfig } from '../../site.config.mjs'
 import UserSlot from './UserSlot.astro'
 import { postCollectionsFor, type ResolvedPostCollection } from '../lib/collections'
 import { readingTimeOf } from '../lib/locales'
+import { normalizePrefix, withBase, withBaseInHtml } from '../lib/client-utils'
 
 interface Props {
   posts: ContentEntry[]
@@ -34,7 +35,7 @@ const pages = Math.ceil(posts.length / limit)
 const visiblePosts = posts.slice(0, limit)
 const visiblePostData = await Promise.all(visiblePosts.map(async (post, index) => {
   const encrypted = encryptionPolicy(post).pageEncrypted
-  const excerpt = encrypted ? '' : await postExcerptOf(post)
+  const excerpt = encrypted ? '' : withBaseInHtml(await postExcerptOf(post), import.meta.env.BASE_URL)
   const globalCover = typeof configuredPostCover === 'string' ? { layout: configuredPostCover } : configuredPostCover
   const cover = post.data.cover ? { ...globalCover, ...post.data.coverStyle } : undefined
   const baseLayout = cover?.layout ?? 'right'
@@ -59,6 +60,10 @@ const visiblePostData = await Promise.all(visiblePosts.map(async (post, index) =
 const initialPageRange = pages <= 10
   ? Array.from({ length: pages }, (_, index) => ({ value: index + 1 }))
   : [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5, more: true }, { value: pages - 1 }, { value: pages }]
+const base = normalizePrefix(import.meta.env.BASE_URL)
+const categoriesLink = withBase(collection?.categoriesLink, base)
+const tagsLink = withBase(collection?.tagsLink, base)
+const postsEndpoint = withBase('/posts.json', base)
 ---
 
 <div class="vp-post-list">
@@ -75,14 +80,14 @@ const initialPageRange = pages <= 10
         ? `--vp-cover-ratio:${cover.ratio * 100}%;height:0;padding-bottom:${cover.ratio * 100}%`
         : `--vp-cover-ratio:${cover.ratio * 100}%;width:${cover.width}px;height:${cover.width * cover.ratio}px`}
       >
-        <a class="vp-link link" href={routeOf(post)}><img src={post.data.cover} alt={post.data.title} loading="lazy" /></a>
+        <a class="vp-link link" href={withBase(routeOf(post), base)}><img src={withBase(post.data.cover, base)} alt={post.data.title} loading="lazy" /></a>
       </div>}
       <div class="post-item-content">
-        <h3>{showsStickyBadge(post.data.sticky) && <span class="sticky">TOP</span>}{post.data.draft && <span class="draft">DRAFT</span>}{encrypted && <span class="icon-lock vpi-lock" aria-hidden="true"></span>}<a class="vp-link link" href={routeOf(post)}>{post.data.title}</a></h3>
+        <h3>{showsStickyBadge(post.data.sticky) && <span class="sticky">TOP</span>}{post.data.draft && <span class="draft">DRAFT</span>}{encrypted && <span class="icon-lock vpi-lock" aria-hidden="true"></span>}<a class="vp-link link" href={withBase(routeOf(post), base)}>{post.data.title}</a></h3>
         <div class="post-meta">
-          {categories.length > 0 && <div class="category-list"><span class="icon vpi-folder" aria-hidden="true"></span>{categories.map((category, index) => <><a class="vp-link link no-icon" href={`${collection?.categoriesLink}?id=${category.id}`}>{category.name}</a>{index < categories.length - 1 && <span>/</span>}</>)}</div>}
+          {categories.length > 0 && <div class="category-list"><span class="icon vpi-folder" aria-hidden="true"></span>{categories.map((category, index) => <><a class="vp-link link no-icon" href={`${categoriesLink}?id=${category.id}`}>{category.name}</a>{index < categories.length - 1 && <span>/</span>}</>)}</div>}
           {readingTime && (metaConfig.readingTime !== false || metaConfig.wordCount !== false) && <div class="reading-time"><span class="vpi-books icon" aria-hidden="true"></span>{metaConfig.wordCount !== false && <span>{readingTime.words}</span>}{metaConfig.readingTime !== false && <span>{readingTime.time}</span>}</div>}
-          {metaConfig.tags !== false && post.data.tags.length > 0 && <div class="tag-list"><span class="icon vpi-tag" aria-hidden="true"></span>{post.data.tags.slice(0, 4).map(tag => <a class:list={['vp-link link tag', tagClassOf(tag, tagsTheme)]} href={`${collection?.tagsLink}?tag=${encodeURIComponent(tag)}`}>{tag}</a>)}</div>}
+          {metaConfig.tags !== false && post.data.tags.length > 0 && <div class="tag-list"><span class="icon vpi-tag" aria-hidden="true"></span>{post.data.tags.slice(0, 4).map(tag => <a class:list={['vp-link link tag', tagClassOf(tag, tagsTheme)]} href={`${tagsLink}?tag=${encodeURIComponent(tag)}`}>{tag}</a>)}</div>}
           {date && <div class="create-time"><span class="icon vpi-clock" aria-hidden="true"></span><span>{date}</span></div>}
           {siteConfig.features.engagement && <span class="meta-group post-engagement"><PageViews path={routeOf(post)} client:visible /><ArticleLikeButton path={routeOf(post)} lang={lang} compact={true} client:visible /></span>}
         </div>
@@ -103,7 +108,7 @@ const initialPageRange = pages <= 10
   <UserSlot name="posts-post-list-pagination-after" {lang} {posts} />
 </div>
 
-<script is:inline define:vars={{ pageSize: limit, totalPages: pages, postLanguage: lang, postCollection: collection?.key, categoriesLink: collection?.categoriesLink, tagsLink: collection?.tagsLink, showEngagement: siteConfig.features.engagement, postCover: configuredPostCover, postListTransition, metaConfig }}>
+<script is:inline define:vars={{ pageSize: limit, totalPages: pages, postLanguage: lang, postCollection: collection?.key, categoriesLink, tagsLink, postsEndpoint, base, showEngagement: siteConfig.features.engagement, postCover: configuredPostCover, postListTransition, metaConfig }}>
   (() => {
     const list = document.currentScript?.previousElementSibling
     const nav = list?.querySelector(':scope > .vp-pagination')
@@ -149,6 +154,7 @@ const initialPageRange = pages <= 10
       link.href = href
       return link
     }
+    const resolvePath = value => !value || base === '/' || !value.startsWith('/') || value.startsWith(base) ? value : `${base}${value.replace(/^\/+/, '')}`
     const createMeta = post => {
       const meta = createElement('div', 'post-meta')
       if (post.categories?.length) {
@@ -208,9 +214,9 @@ const initialPageRange = pages <= 10
           cover.style.width = `${width}px`
           cover.style.height = `${width * ratio}px`
         }
-        const link = createLink(post.route, 'vp-link link')
+        const link = createLink(resolvePath(post.route), 'vp-link link')
         const image = createElement('img')
-        image.src = post.cover
+        image.src = resolvePath(post.cover)
         image.alt = post.title
         image.loading = 'lazy'
         link.append(image)
@@ -222,7 +228,7 @@ const initialPageRange = pages <= 10
       if (post.sticky === true || typeof post.sticky === 'number' && post.sticky >= 0) heading.append(createElement('span', 'sticky', 'TOP'))
       if (post.draft) heading.append(createElement('span', 'draft', 'DRAFT'))
       if (post.encrypt) heading.append(createElement('span', 'icon-lock vpi-lock'))
-      heading.append(createLink(post.route, 'vp-link link', post.title))
+      heading.append(createLink(resolvePath(post.route), 'vp-link link', post.title))
       content.append(heading, createMeta(post))
       if (post.excerpt) {
         const excerpt = createElement('div', 'vp-doc excerpt')
@@ -270,7 +276,7 @@ const initialPageRange = pages <= 10
       }
       else {
         try {
-          posts ??= (await fetch('/posts.json').then(response => {
+          posts ??= (await fetch(postsEndpoint).then(response => {
             if (!response.ok) throw new Error(`HTTP ${response.status}`)
             return response.json()
           }))[postLanguage]?.[postCollection] ?? []

@@ -37,14 +37,15 @@ export interface LocaleConfig {
 
 export interface SiteConfig {
   origin: string
+  base?: string
   logo: string
+  multilingual?: boolean
   locales: Record<string, LocaleConfig>
   appearance?: boolean | 'dark' | 'force-dark'
   namespace?: string
   mediaOrigin?: string
   replaceAssets?: boolean | Record<string, unknown>
   autoFrontmatter?: boolean | Record<string, unknown>
-  twitterHandle?: string
   social?: SocialLink[]
   navbarSocialInclude?: string[]
   footer?: false | { message?: string, copyright?: string }

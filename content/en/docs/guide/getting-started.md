@@ -24,9 +24,9 @@ Install [Node.js 22.12 or newer](https://nodejs.org/) and a text editor. Windows
 Use one package manager already installed on your computer:
 
 ```sh
-npm create astro-theme-ermaozi@latest my-blog
-pnpm create astro-theme-ermaozi my-blog
-yarn create astro-theme-ermaozi my-blog
+npm create astro-theme-ermaozi@beta my-blog
+pnpm create astro-theme-ermaozi@beta my-blog
+yarn create astro-theme-ermaozi@beta my-blog
 ```
 
 Enter the project and start the fast preview:
@@ -95,7 +95,7 @@ Navigation also supports dropdowns, Iconify icons, and badges. Copying an existi
 npm run validate
 ```
 
-A successful run creates `dist/`. Use it as the output directory on any static host; the theme never uploads or deploys the site automatically.
+A successful run creates `dist/`. Use the provider configuration selected during creation or publish `dist/` with any static host; see [deployment](/en/docs/guide/deployment/).
 
 ## Common problems
 

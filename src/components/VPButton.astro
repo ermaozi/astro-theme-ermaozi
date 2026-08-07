@@ -1,12 +1,12 @@
 ---
 import ThemeIcon from './ThemeIcon.astro'
-import { withBase } from '../lib/client-utils'
+import { withBase, withoutBase } from '../lib/client-utils'
 import { languageFromPath, localeOf } from '../lib/locales'
 
 const { tag, size = 'medium', theme = 'brand', text = '', href, target, rel, icon, suffixIcon, class: className = '', type = 'button', ...attrs } = Astro.props
 const external = target === '_blank' || (typeof href === 'string' && /^(?:[a-z]+:|\/\/)/iu.test(href))
 const Tag = tag ?? (href ? 'a' : 'button')
-const openNewWindowText = localeOf(languageFromPath(Astro.url.pathname)).openNewWindowText
+const openNewWindowText = localeOf(languageFromPath(withoutBase(Astro.url.pathname, import.meta.env.BASE_URL))).openNewWindowText
 const resolvedHref = href && !external ? withBase(href, import.meta.env.BASE_URL) : href
 ---
 

@@ -4,6 +4,8 @@ import { langOf, routeOf, translationsOf } from '../lib/content'
 import { absoluteUrl, modifiedTimeOf } from '../lib/seo'
 import { configuredLanguages } from '../lib/locales'
 import { postCollectionsFor } from '../lib/collections'
+import { siteConfig } from '../../site.config.mjs'
+import { withBase } from '../lib/client-utils'
 
 const xml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
 const node = (name: string, value: unknown) => value === undefined || value === null || value === '' ? '' : `<${name}>${xml(String(value instanceof Date ? value.toISOString() : value))}</${name}>`
@@ -27,7 +29,7 @@ export const GET: APIRoute = async () => {
   })
   const urls = entries.map(entry => {
     const route = routeOf(entry)
-    const alternates = translationsOf(entry, entries)
+    const alternates = siteConfig.multilingual === false ? [] : translationsOf(entry, entries)
     const modified = entry.data.home ? undefined : modifiedTimeOf(entry)
     const options = typeof entry.data.sitemap === 'object' ? entry.data.sitemap : {}
     return `<url><loc>${xml(absoluteUrl(route))}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ''}${node('changefreq', options.changefreq ?? 'daily')}${node('priority', options.priority)}${imageNodes(options.img)}${videoNodes(options.video)}${newsNodes(options.news)}${alternates.map(item => `<xhtml:link rel="alternate" hreflang="${xml(langOf(item))}" href="${xml(absoluteUrl(routeOf(item)))}"/>`).join('')}</url>`
@@ -38,6 +40,6 @@ export const GET: APIRoute = async () => {
     collection.categories === false ? '' : collection.categoriesLink,
     collection.archives === false ? '' : collection.archivesLink,
   ].filter(Boolean).forEach(route => urls.push(`<url><loc>${xml(absoluteUrl(route))}</loc><changefreq>daily</changefreq></url>`))))
-  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls.join('')}</urlset>`
+  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="${withBase('/sitemap.xsl', import.meta.env.BASE_URL)}"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls.join('')}</urlset>`
   return new Response(body, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } })
 }

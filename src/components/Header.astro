@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import { routeOf, type Lang } from '../lib/content'
-import { normalizeLink } from '../lib/client-utils'
+import { normalizeLink, normalizePrefix, withBase, withoutBase } from '../lib/client-utils'
 import { localeOf, localePath as pathForLocale, searchLocaleOf } from '../lib/locales'
 import { navbarSocialLinks, socialLinks } from '../lib/social'
 import AlgoliaSearch from './vue/AlgoliaSearch.vue'
@@ -29,7 +29,9 @@ const languages = languageLinks.length
   ? languageLinks
   : translationRoute ? [{ lang, href: Astro.url.pathname }, { lang: en ? 'zh-CN' : 'en-US', href: translationRoute }] : []
 const otherLanguages = languages.filter(item => item.lang !== lang)
-const currentPath = Astro.url.pathname
+const currentPath = withoutBase(Astro.url.pathname, import.meta.env.BASE_URL)
+const homeHref = withBase(home, import.meta.env.BASE_URL)
+const logo = withBase(siteConfig.logo, import.meta.env.BASE_URL)
 type NavItem = {
   label?: string
   text?: string
@@ -102,6 +104,7 @@ const searchButtonText = searchLocale.buttonText || searchLocale.placeholder || 
 const disableQueryPersistence = search !== false && search.disableQueryPersistence === true
 const localePath = pathForLocale(lang)
 const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean(search.appId && search.apiKey)
+const basePath = normalizePrefix(import.meta.env.BASE_URL)
 ---
 
 <span tabindex="-1"></span>
@@ -113,9 +116,9 @@ const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean
         <div class="title">
           <UserSlot name="nav-bar-title-before" {lang} route={currentPath} />
           <div class="vp-navbar-title">
-            <a class="vp-link link no-icon title" href={home} aria-label={`${locale.siteName} ${locale.homeText}`}>
-              <img class="vp-image dark logo" src={siteConfig.logo} alt="" width="24" height="24" />
-              <img class="vp-image light logo" src={siteConfig.logo} alt="" width="24" height="24" />
+            <a class="vp-link link no-icon title" href={homeHref} aria-label={`${locale.siteName} ${locale.homeText}`}>
+              <img class="vp-image dark logo" src={logo} alt="" width="24" height="24" />
+              <img class="vp-image light logo" src={logo} alt="" width="24" height="24" />
               <span>{locale.siteName}</span>
             </a>
           </div>
@@ -166,7 +169,7 @@ const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean
                   <span class="text"><span class="vpi-languages option-icon" aria-hidden="true"></span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span>
                 </button>
                 <div class="menu flyout-menu"><div class="vp-menu flyout-panel language-panel">
-                  <div class="items"><p class="title">{locale.selectLanguageName}</p>{otherLanguages.map(item => <div class="vp-menu-link"><a class="vp-link link no-icon" href={item.href}>{localeOf(item.lang).selectLanguageName}</a></div>)}</div>
+                  <div class="items"><p class="title">{locale.selectLanguageName}</p>{otherLanguages.map(item => <div class="vp-menu-link"><a class="vp-link link no-icon" href={withBase(item.href, import.meta.env.BASE_URL)}>{localeOf(item.lang).selectLanguageName}</a></div>)}</div>
                 </div></div>
               </div>
             )}
@@ -182,7 +185,7 @@ const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean
             <div class="vp-flyout vp-navbar-extra extra">
               <button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation"><span class="vpi-more-horizontal icon" aria-hidden="true"></span></button>
               <div class="menu flyout-menu"><div class="vp-menu flyout-panel extra-panel">
-                {otherLanguages.length > 0 && <div class="group translations"><p class="trans-title">{locale.selectLanguageName}</p>{otherLanguages.map(item => <div class="vp-menu-link"><a class="vp-link link no-icon" href={item.href} lang={item.lang} hreflang={item.lang} rel="alternate">{localeOf(item.lang).selectLanguageName}</a></div>)}</div>}
+                {otherLanguages.length > 0 && <div class="group translations"><p class="trans-title">{locale.selectLanguageName}</p>{otherLanguages.map(item => <div class="vp-menu-link"><a class="vp-link link no-icon" href={withBase(item.href, import.meta.env.BASE_URL)} lang={item.lang} hreflang={item.lang} rel="alternate">{localeOf(item.lang).selectLanguageName}</a></div>)}</div>}
                 {appearanceEnabled && <div class="group appearance"><div class="item appearance"><p class="label">{locale.appearanceText}</p><div class="appearance-action">
                   <button class="vp-switch vp-switch-appearance" type="button" role="switch" title={locale.darkModeSwitchTitle} aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button>
                 </div></div></div>}
@@ -261,7 +264,7 @@ const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean
   </div>
 </div>}
 
-<script is:inline define:vars={{ appearanceDefault, appearanceEnabled, appearanceTransition, searchProvider, disableQueryPersistence, lightModeSwitchTitle: locale.lightModeSwitchTitle, darkModeSwitchTitle: locale.darkModeSwitchTitle }}>
+<script is:inline define:vars={{ appearanceDefault, appearanceEnabled, appearanceTransition, searchProvider, disableQueryPersistence, basePath, lightModeSwitchTitle: locale.lightModeSwitchTitle, darkModeSwitchTitle: locale.darkModeSwitchTitle }}>
   (() => {
     const root = document.documentElement
     const updateAppearance = dark => {
@@ -616,7 +619,7 @@ const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean
         li.setAttribute('role', 'option')
         li.setAttribute('aria-selected', String(index === 0))
         const link = document.createElement('a')
-        link.href = item.url
+        link.href = !item.url?.startsWith('/') || basePath === '/' || item.url.startsWith(basePath) ? item.url : `${basePath}${item.url.replace(/^\/+/, '')}`
         link.className = `result${index === 0 ? ' selected' : ''}`
         link.setAttribute('aria-label', [...item.parents, item.title].join(' > '))
         const body = document.createElement('div')
@@ -661,7 +664,7 @@ const algoliaReady = search !== false && searchProvider === 'algolia' && Boolean
       }
       setLoading(true)
       try {
-        pagefind ||= await import('/pagefind/pagefind.js').then(async module => {
+        pagefind ||= await import(/* @vite-ignore */ `${basePath}pagefind/pagefind.js`).then(async module => {
           await module.init()
           return module
         })

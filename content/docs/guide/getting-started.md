@@ -23,9 +23,9 @@ tags: [入门, 配置, Astro]
 任选一种已经安装的包管理器：
 
 ```sh
-npm create astro-theme-ermaozi@latest my-blog
-pnpm create astro-theme-ermaozi my-blog
-yarn create astro-theme-ermaozi my-blog
+npm create astro-theme-ermaozi@beta my-blog
+pnpm create astro-theme-ermaozi@beta my-blog
+yarn create astro-theme-ermaozi@beta my-blog
 ```
 
 进入项目并启动预览：
@@ -94,7 +94,7 @@ navigation: [
 npm run validate
 ```
 
-检查通过后会生成 `dist/`。把 `dist/` 作为静态站点目录交给任意托管平台即可；主题不会自动部署或上传内容。
+检查通过后会生成 `dist/`。创建时选择的平台配置可以自动发布，也可以把 `dist/` 交给任意静态托管平台；详见[部署站点](/docs/guide/deployment/)。
 
 ## 常见问题
 

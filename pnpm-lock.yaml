@@ -192,6 +192,9 @@ importers:
       '@astrojs/check':
         specifier: 0.9.9
         version: 0.9.9(prettier@3.9.6)(typescript@5.9.3)
+      '@clack/prompts':
+        specifier: 1.7.0
+        version: 1.7.0
       '@playwright/test':
         specifier: 1.55.1
         version: 1.55.1

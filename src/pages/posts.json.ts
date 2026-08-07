@@ -6,6 +6,7 @@ import { postExcerptOf } from '../lib/post-excerpt'
 import { siteConfig } from '../../site.config.mjs'
 import { configuredLanguages, readingTimeOf } from '../lib/locales'
 import { postCollectionsFor, type ResolvedPostCollection } from '../lib/collections'
+import { withBaseInHtml } from '../lib/client-utils'
 
 const records = (entries: ContentEntry[], lang: Lang, collection: ResolvedPostCollection, includeDrafts = false) => Promise.all(postsFor(entries, lang, collection, includeDrafts).map(async post => {
   const tagsTheme = (collection.tagsTheme ?? siteConfig.tagsTheme ?? 'colored') as 'colored' | 'gray' | 'brand'
@@ -25,7 +26,7 @@ const records = (entries: ContentEntry[], lang: Lang, collection: ResolvedPostCo
     encrypt: encrypted,
     cover: post.data.cover,
     coverStyle: post.data.coverStyle,
-    excerpt: encrypted ? '' : await postExcerptOf(post),
+    excerpt: encrypted ? '' : withBaseInHtml(await postExcerptOf(post), import.meta.env.BASE_URL),
   }
 }))
 

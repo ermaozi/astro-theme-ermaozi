@@ -16,9 +16,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: '24'
           package-manager-cache: false
@@ -38,7 +38,7 @@ jobs:
         run: node -e "const p=require('./packages/create-astro-theme-ermaozi/package.json'); if (process.env.RELEASE_TAG !== 'v' + p.version) throw new Error('Release tag must be v' + p.version)"
 
       - name: Configure npm registry
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
           registry-url: https://registry.npmjs.org
@@ -46,4 +46,8 @@ jobs:
 
       - name: Publish
         working-directory: packages/create-astro-theme-ermaozi
-        run: npm publish --access public
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG=latest
+          case "$VERSION" in *-*) TAG=beta ;; esac
+          npm publish --access public --tag "$TAG"

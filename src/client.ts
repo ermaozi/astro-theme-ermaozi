@@ -3,6 +3,7 @@ import { localeOf } from './lib/locales.ts'
 import { ref, watch, type Ref } from 'vue'
 import Layout from './layouts/BaseLayout.astro'
 import NotFound from './components/NotFound.astro'
+import { withBase } from './lib/client-utils.ts'
 
 export * from './lib/client-utils.ts'
 export * from './lib/echarts-config.ts'
@@ -62,7 +63,7 @@ export function useLocalePostList(lang = browser() ? document.documentElement.la
   if (!postLists.has(key)) {
     const posts = ref<unknown[]>([])
     postLists.set(key, posts)
-    if (browser()) void fetch('/posts.json').then(response => {
+    if (browser()) void fetch(withBase('/posts.json', import.meta.env.BASE_URL)).then(response => {
       if (!response.ok) throw new Error(`Unable to load posts: HTTP ${response.status}`)
       return response.json()
     }).then(data => { posts.value = data[lang]?.[key] ?? [] }).catch(error => console.error('[ermaozi] Unable to load posts', error))

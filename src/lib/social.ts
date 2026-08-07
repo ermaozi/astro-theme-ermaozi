@@ -9,6 +9,21 @@ const aliases: Record<string, string> = { twitter: 'x', weibo: 'sinaweibo' }
 
 export const socialLinks = siteConfig.social as SocialLink[]
 
+export const twitterHandleOf = (links: SocialLink[]) => {
+  for (const { link } of links) {
+    try {
+      const url = new URL(link)
+      if (!['x.com', 'www.x.com', 'twitter.com', 'www.twitter.com'].includes(url.hostname)) continue
+      const handle = url.pathname.split('/').find(Boolean)
+      if (handle) return `@${handle.replace(/^@/, '')}`
+    }
+    catch {}
+  }
+  return ''
+}
+
+export const twitterHandle = twitterHandleOf(socialLinks)
+
 export const navbarSocialLinks = socialLinks.filter(({ icon }) => {
   const includes = siteConfig.navbarSocialInclude as string[]
   if (!includes.length) return true

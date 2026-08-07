@@ -4,18 +4,21 @@
 
 > The ermaozi Astro theme with full-text search, dark mode, taxonomies, SEO, and enhanced Markdown.
 
+> [!WARNING]
+> 当前为 `0.2.0-beta.0` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
+
 创建新站点并自动安装依赖：
 
 ```bash
-npm create astro-theme-ermaozi@latest
+npm create astro-theme-ermaozi@beta
 ```
 
 也可以直接指定目录，或使用对应包管理器的创建命令：
 
 ```bash
-npm create astro-theme-ermaozi@latest my-site
-pnpm create astro-theme-ermaozi my-site
-yarn create astro-theme-ermaozi my-site
+npm create astro-theme-ermaozi@beta my-site
+pnpm create astro-theme-ermaozi@beta my-site
+yarn create astro-theme-ermaozi@beta my-site
 ```
 
 ## 开始使用
@@ -97,7 +100,7 @@ npm run validate       # 发布前完整非浏览器检查
 
 ## 静态部署
 
-项目不绑定部署平台，也不会在构建时调用外部发布 API。三种包管理器都可直接生成同一份 `dist/`：
+创建向导可生成 GitHub Pages、GitLab Pages、Netlify、Vercel 或 Firebase Hosting 配置，也可选择 Custom。三种包管理器都会生成同一份 `dist/`：
 
 ```bash
 npm install && npm run deploy
@@ -105,13 +108,13 @@ pnpm install && pnpm run deploy
 yarn install && yarn deploy
 ```
 
-将生成的 `dist/` 设为静态站点发布目录即可。托管平台的构建命令使用上面任意一行，输出目录填写 `dist`；本地可运行 `python3 -m http.server 8080 --directory dist` 检查成品。
+选择 Custom 时，将 `dist/` 设为静态站点发布目录即可。托管平台的构建命令使用上面任意一行，输出目录填写 `dist`。项目站部署在子路径时设置 `site.config.mjs` 的 `base`；CI 也可通过 `SITE_ORIGIN` 和 `BASE_PATH` 覆盖域名与子路径。完整步骤见[部署站点](./content/docs/guide/deployment.md)。
 
 依赖审计命令因包管理器不同而不同：分别使用 `npm audit --omit=dev`、`pnpm audit --prod` 或 `yarn npm audit --environment production`。
 
 ## 发布初始化器
 
-`npm create astro-theme-ermaozi@latest` 会由 npm 解析并执行 `create-astro-theme-ermaozi`。发布前在初始化器目录检查模板包：
+`npm create astro-theme-ermaozi@beta` 会由 npm 解析并执行 `create-astro-theme-ermaozi` 的测试版本。发布前在初始化器目录检查模板包：
 
 ```bash
 cd packages/create-astro-theme-ermaozi
@@ -120,7 +123,7 @@ npm pack --dry-run
 npm publish --access public
 ```
 
-只有最后一步成功发布到 npm 后，公开的 `npm create astro-theme-ermaozi@latest` 命令才会生效；本项目不会在构建或测试时自动发布。
+只有最后一步成功发布到 npm 后，公开的 `npm create astro-theme-ermaozi@beta` 命令才会生效；本项目不会在构建或测试时自动发布。预发布版本使用 npm `beta` 标签，不覆盖现有 `latest`。
 
 后续版本可由 [`.github/workflows/publish-npm.yml`](./.github/workflows/publish-npm.yml) 自动发布：
 

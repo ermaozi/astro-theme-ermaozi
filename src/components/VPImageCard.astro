@@ -1,9 +1,9 @@
 ---
-import { numToUnit, withBase } from '../lib/client-utils'
+import { numToUnit, withBase, withoutBase } from '../lib/client-utils'
 import { languageFromPath } from '../lib/locales'
 
 const { image, title = '', description = '', href, author = '', date, width, center = false, class: className = '', ...attrs } = Astro.props
-const lang = languageFromPath(Astro.url.pathname)
+const lang = languageFromPath(withoutBase(Astro.url.pathname, import.meta.env.BASE_URL))
 const instance = date instanceof Date ? date : date ? new Date(date) : undefined
 const dateText = instance && !Number.isNaN(instance.getTime())
   ? new Intl.DateTimeFormat(lang, { year: 'numeric', month: 'short', day: 'numeric' }).format(instance)

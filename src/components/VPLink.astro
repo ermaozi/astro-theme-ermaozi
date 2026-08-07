@@ -1,11 +1,11 @@
 ---
-import { withBase, resolveNavLink } from '../lib/client-utils'
+import { withBase, withoutBase, resolveNavLink } from '../lib/client-utils'
 import { languageFromPath, localeOf } from '../lib/locales'
 
 const { tag, href, text = '', noIcon = false, target, rel, class: className = '', ...attrs } = Astro.props
 const external = target === '_blank' || (typeof href === 'string' && /^(?:[a-z]+:|\/\/)/iu.test(href))
 const Tag = tag ?? (href ? 'a' : 'span')
-const openNewWindowText = localeOf(languageFromPath(Astro.url.pathname)).openNewWindowText
+const openNewWindowText = localeOf(languageFromPath(withoutBase(Astro.url.pathname, import.meta.env.BASE_URL))).openNewWindowText
 const resolvedHref = href && !external ? withBase(href, import.meta.env.BASE_URL) : href
 const resolvedText = text || external || !href ? text : resolveNavLink(href).text
 ---

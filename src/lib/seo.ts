@@ -4,11 +4,12 @@ import modifiedTimes from '../data/modified-times.json'
 import { socialLinks } from './social'
 import { siteConfig } from '../../site.config.mjs'
 import { localeOf } from './locales'
+import { withBase } from './client-utils'
 
-export const hostname = siteConfig.origin
+export const hostname = import.meta.env.SITE || siteConfig.origin
 
 export const siteLocale = (lang: Lang) => localeOf(lang)
-export const absoluteUrl = (route: string) => new URL(route, hostname).toString()
+export const absoluteUrl = (route: string) => new URL(withBase(route, import.meta.env.BASE_URL), hostname).toString()
 
 export const modifiedTimeOf = (entry: ContentEntry) => modifiedTimes[routeOf(entry) as keyof typeof modifiedTimes]
   ?? iso(entry.data.updateTime ?? entry.data.createTime ?? entry.data.date)
@@ -33,8 +34,8 @@ export const authorsOf = (value: unknown, fallback = '') => {
 
 const siteData = (lang: Lang) => {
   const page = localeOf(lang)
-  const authorId = `${hostname}${page.home}about/#person`
-  const websiteId = `${hostname}${page.home}#website`
+  const authorId = `${absoluteUrl(`${page.home}about/`)}#person`
+  const websiteId = `${absoluteUrl(page.home)}#website`
   const site = {
     '@context': 'https://schema.org',
     '@graph': [

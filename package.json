@@ -1,6 +1,6 @@
 {
   "name": "ermaozi",
-  "version": "0.1.0",
+  "version": "0.2.0-beta.0",
   "description": "The ermaozi Astro theme for blogs and documentation sites.",
   "private": true,
   "license": "MIT",
@@ -17,17 +17,17 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist && astro preview --host 127.0.0.1",
+    "dev": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent && astro preview --host 127.0.0.1",
     "dev:fast": "node scripts/auto-frontmatter.mjs && astro dev --host 127.0.0.1",
     "check": "node scripts/auto-frontmatter.mjs && astro check",
-    "build": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist",
-    "deploy": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist",
+    "build": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent",
+    "deploy": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent",
     "preview": "astro preview --host 127.0.0.1",
     "audit": "node scripts/audit.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:create": "node --test packages/create-astro-theme-ermaozi/tests/*.test.mjs",
     "test:visual": "playwright test",
-    "validate": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist && node --test tests/*.test.mjs && node --test packages/create-astro-theme-ermaozi/tests/*.test.mjs && node scripts/audit.mjs"
+    "validate": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent && node --test tests/*.test.mjs && node --test packages/create-astro-theme-ermaozi/tests/*.test.mjs && node scripts/audit.mjs"
   },
   "dependencies": {
     "@astrojs/vue": "7.0.1",
@@ -93,6 +93,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
+    "@clack/prompts": "1.7.0",
     "@playwright/test": "1.55.1",
     "@types/markdown-it": "14.1.2",
     "@types/markdown-it-emoji": "3.0.1",

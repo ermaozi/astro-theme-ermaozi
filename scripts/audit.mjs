@@ -2,10 +2,13 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { siteConfig } from '../site.config.mjs'
+import { withBase, withoutBase } from '../src/lib/client-utils.ts'
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const output = path.join(project, 'dist')
 const reportFile = path.join(project, 'reports/audit.json')
+const siteOrigin = process.env.SITE_ORIGIN || siteConfig.origin
+const base = process.env.BASE_PATH || siteConfig.base || '/'
 
 const walk = async directory => {
   const files = []
@@ -39,12 +42,12 @@ for (const [route, html] of pages) {
   if (!/<title>[^<]+<\/title>/i.test(html)) seoErrors.push({ route, field: 'title' })
   if (!/<meta\s+name="description"\s+content="[^"]+"/i.test(html)) seoErrors.push({ route, field: 'description' })
   const canonical = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i)?.[1]
-  if (canonical !== new URL(route, siteConfig.origin).toString()) seoErrors.push({ route, field: 'canonical' })
+  if (canonical !== new URL(withBase(route, base), siteOrigin).toString()) seoErrors.push({ route, field: 'canonical' })
   const rendered = html.replace(/<(pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi, '')
   for (const marker of rawMarkers) if (rendered.includes(marker)) markerHits.push({ route, marker })
 
   for (const match of html.matchAll(/\shref="(\/[^"]*)"/g)) {
-    const target = new URL(match[1], siteConfig.origin).pathname
+    const target = withoutBase(new URL(match[1], siteOrigin).pathname, base)
     if (outputFiles.has(path.resolve(output, target.replace(/^\/+/, '')))) continue
     if (/^\/(?:_astro|pagefind|img|api)\//.test(target) || /\.(?:md|xml|xsl|txt|json|svg|png|jpe?g|webp|ico)$/i.test(target)) continue
     if (!pages.has(target)) brokenLinks.push({ route, target })
@@ -53,7 +56,7 @@ for (const [route, html] of pages) {
 
 const sitemapText = await readFile(path.join(output, 'sitemap.xml'), 'utf8')
 const sitemapLocations = [...sitemapText.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1])
-const sitemapErrors = sitemapLocations.filter(location => !location.startsWith(`${siteConfig.origin}/`))
+const sitemapErrors = sitemapLocations.filter(location => !location.startsWith(new URL(withBase('/', base), siteOrigin).toString()))
 
 const personalTerms = [
   ['二', '毛'].join(''),

@@ -42,6 +42,7 @@ import { installObsidian, resolveContentPage, transformObsidian, type ObsidianOp
 import { injectImageSizes } from './image-size.ts'
 import { languageFromPath, localeOf } from './locales.ts'
 import { normalMarkdownSource } from './llm-markdown.ts'
+import { withBaseInHtml } from './client-utils.ts'
 
 const debugEnvironment = process.env.DEBUG
 delete process.env.DEBUG
@@ -3070,11 +3071,12 @@ const renderPlain = (source: string, removeTitle = true, sourcePath?: string, ob
   return createMarkdown().render(cleanSource(transformed, removeTitle, plot, sourcePath), { imageIndex: 0, sourcePath, obsidianStack, obsidianPages, plot })
 }
 
-export const renderMarkdown = async (source: string, options: { sourcePath?: string, plot?: PlotOptions, removeTitle?: boolean } = {}) => {
+export const renderMarkdown = async (source: string, options: { sourcePath?: string, plot?: PlotOptions, removeTitle?: boolean, base?: string } = {}) => {
   const expanded = await dynamicImageCards(normalMarkdownSource(await expandFileDirectives(source, options.sourcePath)), options.sourcePath)
   const encrypted = await encryptContainers(expanded, options.sourcePath)
   let html = renderPlain(await demoContainers(encrypted, options.sourcePath), options.removeTitle ?? true, options.sourcePath, [], undefined, options.plot)
   html = await injectImageSizes(html, { sourcePath: options.sourcePath, mode: siteConfig.plugins?.markdownPower?.imageSize })
+  html = withBaseInHtml(html, options.base)
   if (!mathjaxInstance) return html
   const style = mathjaxInstance.outputStyle()
   mathjaxInstance.reset()

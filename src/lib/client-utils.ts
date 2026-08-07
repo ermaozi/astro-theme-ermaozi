@@ -34,8 +34,23 @@ export function normalizeLink(base = '', link = '') {
 export const normalizePrefix = (base: string, link = '') => `${normalizeLink(base, link).replace(/\/+$/u, '')}/`
 
 export function withBase(path = '', base = '/') {
-  if (!path.startsWith('/') || path.startsWith('//') || base === '/') return path
-  return `${base.replace(/\/?$/u, '/')}${path.replace(/^\/+/, '')}`
+  if (!path.startsWith('/') || path.startsWith('//')) return path
+  const prefix = normalizePrefix(base)
+  if (prefix === '/' || path === prefix.slice(0, -1) || path.startsWith(prefix)) return path
+  return `${prefix}${path.replace(/^\/+/, '')}`
+}
+
+export function withoutBase(path = '', base = '/') {
+  const prefix = normalizePrefix(base)
+  if (prefix === '/') return path
+  if (path === prefix.slice(0, -1)) return '/'
+  return path.startsWith(prefix) ? `/${path.slice(prefix.length)}` : path
+}
+
+export function withBaseInHtml(html = '', base = '/') {
+  if (normalizePrefix(base) === '/') return html
+  return html.replace(/\b(href|src|poster|data-(?:artplayer-src|audio-src|pdf-src|qrcode-logo))=(['"])(\/(?!\/)[^'"]*)\2/gu,
+    (_match, attribute, quote, value) => `${attribute}=${quote}${withBase(value, base)}${quote}`)
 }
 
 export type RepoType = 'GitHub' | 'GitLab' | 'Gitee' | 'Bitbucket' | null

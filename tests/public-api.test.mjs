@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import plumeTheme, { defineCollection, defineCollections, defineNavbarConfig, defineSiteConfig, defineThemeConfig } from '../src/node.ts'
 import { defineEChartsConfig, useEChartsConfig } from '../src/lib/echarts-config.ts'
-import { isActive, isGradient, normalize, normalizeLink, normalizePrefix, numToUnit, resolveEditLink, resolveNavLink, resolveRepoType, toArray, withBase } from '../src/lib/client-utils.ts'
+import { isActive, isGradient, normalize, normalizeLink, normalizePrefix, numToUnit, resolveEditLink, resolveNavLink, resolveRepoType, toArray, withBase, withBaseInHtml, withoutBase } from '../src/lib/client-utils.ts'
 import { languageFromPath } from '../src/lib/locales.ts'
 import { isIOS } from '../src/components/vue/background/helpers.ts'
 import { tintPlateColors } from '../src/lib/tint-plate.ts'
@@ -55,7 +55,11 @@ test('public client utilities preserve the frozen path, CSS, and repository cont
   assert.equal(normalizeLink('/docs/', 'guide/'), '/docs/guide/')
   assert.equal(normalizePrefix('/docs/', 'guide'), '/docs/guide/')
   assert.equal(withBase('/logo.svg', '/theme/'), '/theme/logo.svg')
+  assert.equal(withBase('/theme/logo.svg', '/theme/'), '/theme/logo.svg')
   assert.equal(withBase('https://example.com/logo.svg', '/theme/'), 'https://example.com/logo.svg')
+  assert.equal(withoutBase('/theme/docs/', '/theme/'), '/docs/')
+  assert.equal(withoutBase('/theme', '/theme/'), '/')
+  assert.equal(withBaseInHtml('<a href="/docs/"><img src="/img/a.png"><a href="https://example.com/">', '/theme/'), '<a href="/theme/docs/"><img src="/theme/img/a.png"><a href="https://example.com/">')
   assert.equal(resolveRepoType('owner/repo'), 'GitHub')
   assert.equal(resolveRepoType('https://gitlab.com/owner/repo'), 'GitLab')
   assert.equal(resolveEditLink({ docsRepo: 'owner/repo', docsBranch: 'main', docsDir: 'content', filePathRelative: 'guide.md' }), 'https://github.com/owner/repo/edit/main/content/guide.md')

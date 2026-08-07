@@ -10,6 +10,7 @@ import UserSlot from './UserSlot.astro'
 import { postCollectionsFor, type ResolvedPostCollection } from '../lib/collections'
 import type { SocialLink } from '../lib/social'
 import VPLink from './VPLink.astro'
+import { withBase } from '../lib/client-utils'
 
 interface ProfileOptions {
   avatar?: string
@@ -28,7 +29,7 @@ const locale = localeOf(lang)
 const configuredProfile = (collection?.profile === undefined ? (siteConfig as { profile?: ProfileOptions | false }).profile : collection.profile) as ProfileOptions | false | undefined ?? {}
 const profileSocial = (collection?.social === false ? [] : collection?.social ?? socialLinks) as SocialLink[]
 const profile = configuredProfile === false ? false : {
-  avatar: configuredProfile.avatar ?? configuredProfile.url ?? siteConfig.logo,
+  avatar: withBase(configuredProfile.avatar ?? configuredProfile.url ?? siteConfig.logo, import.meta.env.BASE_URL),
   name: configuredProfile.name ?? locale.siteName,
   description: configuredProfile.description ?? locale.profileTagline,
   circle: Boolean(configuredProfile.circle),

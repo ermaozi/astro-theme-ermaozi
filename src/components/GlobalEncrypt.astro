@@ -4,6 +4,7 @@ import Footer from './Footer.astro'
 import { siteConfig } from '../../site.config.mjs'
 import type { Lang } from '../lib/content'
 import { localeOf } from '../lib/locales'
+import { withBase } from '../lib/client-utils'
 
 const { payloads, lang } = Astro.props as { payloads: EncryptedContent[], lang: Lang }
 const locale = localeOf(lang)
@@ -17,7 +18,7 @@ const first = payloads[0]
   <div class="vp-global-encrypt">
     <div class="global-encrypt-container">
       {(profile || title) && <div class="profile">
-        {profile && <p class:list={['avatar', { circle: profile.circle }]}><img src={profile.avatar || '/img/logo.svg'} alt={profile.name || title} /></p>}
+        {profile && <p class:list={['avatar', { circle: profile.circle }]}><img src={withBase(profile.avatar || '/img/logo.svg', import.meta.env.BASE_URL)} alt={profile.name || title} /></p>}
         {title && <h3>{title}</h3>}
       </div>}
       <div class="vp-encrypt-form">

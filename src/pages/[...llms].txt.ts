@@ -5,6 +5,8 @@ import { redactEncryptedSource } from '../lib/encryption'
 import { encryptionPolicy } from '../lib/encrypt-policy'
 import { siteLocale } from '../lib/seo'
 import { configuredLanguages, localeOf, localePrefix } from '../lib/locales'
+import { siteConfig } from '../../site.config.mjs'
+import { withBase } from '../lib/client-utils'
 
 const paths = configuredLanguages().flatMap(lang => {
   const prefix = localePrefix(lang).replace(/^\//u, '')
@@ -16,7 +18,7 @@ const paths = configuredLanguages().flatMap(lang => {
 
 export const getStaticPaths = (() => paths.map(page => ({ params: { llms: page.route }, props: page }))) satisfies GetStaticPaths
 
-const mdUrl = (route: string) => `${route}${route.endsWith('/') ? '' : '/'}index.md`
+const mdUrl = (route: string) => withBase(`${route}${route.endsWith('/') ? '' : '/'}index.md`, import.meta.env.BASE_URL)
 
 export const GET: APIRoute = async ({ props }) => {
   const { lang, full } = props as { lang: Lang, full: boolean }
@@ -25,8 +27,8 @@ export const GET: APIRoute = async ({ props }) => {
     .filter(entry => langOf(entry) === lang && !entry.data.draft && entry.data.llmstxt !== false && !encryptionPolicy(entry).pageEncrypted)
     .sort((a, b) => routeOf(a).localeCompare(routeOf(b)))
   const { siteName, description: siteDescription } = siteLocale(lang)
-  const alternates = configuredLanguages().filter(item => item !== lang).map(item => `- [${localeOf(item).selectLanguageName}](${localePrefix(item)}/llms.md)`).join('\n')
-  const header = `# ${siteName}\n\n> ${siteDescription}\n\n## Alternate Language Versions\n\n${alternates}\n\n`
+  const alternates = siteConfig.multilingual === false ? '' : configuredLanguages().filter(item => item !== lang).map(item => `- [${localeOf(item).selectLanguageName}](${withBase(`${localePrefix(item)}/llms.md`, import.meta.env.BASE_URL)})`).join('\n')
+  const header = `# ${siteName}\n\n> ${siteDescription}\n\n${alternates ? `## Alternate Language Versions\n\n${alternates}\n\n` : ''}`
   const body = full
     ? entries.map(entry => `---\nurl: ${mdUrl(routeOf(entry))}\ndescription: ${entry.data.description.replaceAll('\n', ' ')}\n---\n# ${entry.data.title}\n\n${redactEncryptedSource(entry.body ?? '').trim()}\n`).join('\n')
     : [
