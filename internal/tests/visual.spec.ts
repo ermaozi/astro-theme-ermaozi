@@ -143,11 +143,20 @@ test('mobile navigation and local document navigation keep the frozen matrix', a
 
       const outlineButton = local.locator('.vp-local-nav-outline-dropdown > button')
       const outlineItems = local.locator('.vp-local-nav-outline-dropdown .items')
-      const outlineMask = local.locator('.vp-local-nav-outline-dropdown .outline-mask')
-      await outlineButton.click()
-      await expect(outlineMask).toHaveClass(/fade-in-enter-active/)
-      await expect(outlineItems).toHaveClass(/fade-in-scale-up-enter-active/)
-      await expect(outlineItems).toHaveCSS('transition-property', 'opacity, transform')
+      const entering = await outlineButton.evaluate(button => {
+        (button as HTMLButtonElement).click()
+        const dropdown = button.parentElement!
+        const mask = dropdown.querySelector<HTMLElement>('.outline-mask')!
+        const items = dropdown.querySelector<HTMLElement>('.items')!
+        return {
+          maskClass: mask.className,
+          itemsClass: items.className,
+          transitionProperty: getComputedStyle(items).transitionProperty,
+        }
+      })
+      expect(entering.maskClass).toContain('fade-in-enter-active')
+      expect(entering.itemsClass).toContain('fade-in-scale-up-enter-active')
+      expect(entering.transitionProperty).toBe('opacity, transform')
       await expect(outlineButton).toHaveCSS('position', 'relative')
       await expect(outlineButton).toHaveCSS('color', colors[theme].text)
       await expect(outlineItems).toHaveCSS('display', 'grid')

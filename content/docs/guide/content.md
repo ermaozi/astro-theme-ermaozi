@@ -131,7 +131,7 @@ Wiki 链接、内容嵌入、Callout 与 `%%` 注释默认开启，并可在 `si
 
 ## 媒体语法
 
-YouTube、Bilibili、音视频和 PDF 使用简短的块级语法；只有使用时才产生对应标签。
+YouTube、Bilibili、音视频和 PDF 使用简短的块级语法；只有使用时才产生对应标签。块级指令必须独占一行，可以放在引用或列表项中，指令后不能追加正文。
 
 ```md
 @[youtube](video-id)

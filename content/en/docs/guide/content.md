@@ -132,7 +132,7 @@ This sentence contains an %%editor-only comment%% that is omitted from the build
 
 ## Media syntax
 
-YouTube, Bilibili, audio, video, and PDF embeds use small block directives and only render when used.
+YouTube, Bilibili, audio, video, and PDF embeds use small block directives and only render when used. A block directive must occupy its own line; it may appear in a blockquote or list item, but no text may follow it on that line.
 
 ```md
 @[youtube](video-id)

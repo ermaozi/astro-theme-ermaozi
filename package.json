@@ -1,6 +1,6 @@
 {
   "name": "ermaozi",
-  "version": "0.2.0-beta.10",
+  "version": "0.2.0-beta.11",
   "description": "The ermaozi Astro theme for blogs and documentation sites.",
   "private": true,
   "keywords": [
@@ -38,7 +38,7 @@
     "validate": "node theme/scripts/auto-frontmatter.mjs && astro check && tsc -p theme/tsconfig.check-js.json && astro build && pagefind --site dist --silent && node --test internal/tests/*.test.mjs && tsc -p internal/create/tsconfig.json && node --test internal/create/tests/*.test.mjs && node theme/scripts/audit.mjs"
   },
   "dependencies": {
-    "@astrojs/vue": "7.0.1",
+    "@astrojs/vue": "7.0.2",
     "@docsearch/css": "4.6.3",
     "@docsearch/js": "4.6.3",
     "@iconify-json/simple-icons": "1.2.93",
@@ -66,7 +66,7 @@
     "@waline/client": "3.13.0",
     "artalk": "2.9.1",
     "artplayer": "5.4.0",
-    "astro": "7.1.6",
+    "astro": "7.2.0",
     "chart.js": "4.5.1",
     "dashjs": "5.2.0",
     "echarts": "6.1.0",
@@ -90,7 +90,7 @@
     "mermaid": "11.16.1",
     "mpegts.js": "1.7.3",
     "ogl": "1.0.11",
-    "pagefind": "1.4.0",
+    "pagefind": "1.5.2",
     "photoswipe": "5.4.4",
     "postprocessing": "6.39.2",
     "qrcode": "1.5.4",
@@ -103,7 +103,7 @@
     "yaml": "2.9.0"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.9",
+    "@astrojs/check": "0.9.10",
     "@clack/prompts": "1.7.0",
     "@playwright/test": "1.55.1",
     "@types/markdown-it": "14.1.2",

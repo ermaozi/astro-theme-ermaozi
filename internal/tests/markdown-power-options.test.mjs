@@ -65,6 +65,54 @@ test('block embeds keep working inside blockquotes and lists', async () => {
   assert.match(html, /<blockquote>\s*<div[^>]+data-pdf-viewer/)
 })
 
+test('block embeds use Plume strict line syntax', async () => {
+  const { renderMarkdown } = await import('../../theme/lib/markdown.ts')
+  const valid = await renderMarkdown(`@[codepen   preview](  user/example  )
+
+@[youtube](first)
+@[youtube](second)
+
+@[qrcode](  plain text  )`, { sourcePath: 'content/embed-syntax.md' })
+  assert.match(valid, /data-code-embed="codepen"/)
+  assert.match(valid, /src="https:\/\/codepen\.io\/user\/embed\/preview\/example\?default-tab=result/)
+  assert.equal((valid.match(/class="video-iframe youtube"/g) ?? []).length, 2)
+  assert.match(valid, /data-qrcode-text="plain text"/)
+
+  const invalid = await renderMarkdown(`@[codepenpreview](user/example)
+
+@[codepen](user/example)extra)
+
+@[youtube](video) suffix
+
+@[YouTube](video)
+
+@[artplayer](/video.mp4)`, { sourcePath: 'content/embed-syntax.md' })
+  assert.doesNotMatch(invalid, /data-code-embed=|class="video-iframe youtube"/)
+  assert.match(invalid, /codepenpreview/)
+  assert.match(invalid, /extra/)
+  assert.match(invalid, /suffix/)
+  assert.match(invalid, /YouTube/)
+  assert.match(invalid, /artplayer/)
+})
+
+test('demo embeds use strict syntax inside blockquotes and lists', async () => {
+  const { renderMarkdown } = await import('../../theme/lib/markdown.ts')
+  const html = await renderMarkdown(`> @[demo markdown title="Quoted"](/snippets/demo/example.md.txt)
+
+- @[demo markdown title="Listed"](/snippets/demo/example.md.txt)
+
+> \`\`\`md
+> @[demo markdown](/snippets/demo/example.md.txt)
+> \`\`\`
+
+@[demo markdown](/snippets/demo/example.md.txt) suffix`, { sourcePath: 'content/embed-syntax.md' })
+  assert.equal((html.match(/class="vp-demo-wrapper markdown"/g) ?? []).length, 2)
+  assert.match(html, /<blockquote>[\s\S]*class="vp-demo-wrapper markdown"/)
+  assert.match(html, /<ul>[\s\S]*class="vp-demo-wrapper markdown"/)
+  assert.match(html, /class="language-md" data-highlighter="shiki"/)
+  assert.match(html, /suffix/)
+})
+
 test('codeTree object options provide overridable global defaults', async () => {
   const previous = siteConfig.markdown.codeTree
   try {

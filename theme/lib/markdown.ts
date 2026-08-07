@@ -822,7 +822,7 @@ const expandFileDirectives = async (source: string, sourcePath?: string, stack: 
       output.push(line)
       continue
     }
-    const codeTree = block.content.match(/^@\[code-tree(?:\s+([^\]]+))?\]\(([^)]+)\)\s*$/)
+    const codeTree = block.content.match(/^@\[code-tree(?:\s+([^\]]*))?\]\(([^)]*)\)$/)
     if (codeTree) {
       const info = codeTree[1]?.trim() ?? ''
       const root = codeTreeDirectory(codeTree[2].trim(), sourcePath)
@@ -1732,7 +1732,8 @@ const demoContainers = async (source: string, sourcePath?: string) => {
   const output: string[] = []
   let sourceFence = ''
   for (let index = 0; index < lines.length; index++) {
-    const marker = lines[index].match(/^\s*(`{3,}|~{3,})/)?.[1]
+    const block = markdownBlockLine(lines[index])
+    const marker = block.content.match(/^(`{3,}|~{3,})/)?.[1]
     if (marker) {
       if (!sourceFence) sourceFence = marker[0]
       else if (sourceFence === marker[0]) sourceFence = ''
@@ -1744,17 +1745,23 @@ const demoContainers = async (source: string, sourcePath?: string) => {
       continue
     }
 
-    const embed = lines[index].match(/^\s*@\[demo(?:\s+([^\]]+))?\]\(([^)]+)\)\s*$/)
+    const embed = block.content.match(/^@\[demo(?:\s+([^\]]*))?\]\(([^)]*)\)$/)
     if (embed) {
       const info = embed[1]?.trim() ?? ''
-      const typeMatch = info.match(/^(normal|vue|markdown)(?:\s+|$)/)
-      const type = (typeMatch?.[1] ?? 'normal') as DemoType
-      const meta = demoMeta(typeMatch ? info.slice(typeMatch[0].length) : info)
-      const filename = resolveDemoFile(embed[2].trim(), sourcePath)
-      const imported = await readFile(filename, 'utf8')
-      if (type === 'normal') output.push(await renderNormalDemo(parseNormalFile(imported), meta, filename, sourcePath))
-      else if (type === 'markdown') output.push(renderMarkdownDemo(imported, meta, filename))
-      else output.push(await renderVueDemo(imported, path.extname(filename).slice(1), meta, filename, sourcePath))
+      const type = (hasFlag(info, 'vue') ? 'vue' : hasFlag(info, 'markdown') ? 'markdown' : 'normal') as DemoType
+      const meta = demoMeta(info)
+      const reference = embed[2].trim()
+      let rendered = `<p style="color:red;">@[demo ${type}] filepath is empty</p>`
+      if (reference) {
+        const filename = resolveDemoFile(reference, sourcePath)
+        const imported = await readFile(filename, 'utf8')
+        rendered = type === 'normal'
+          ? await renderNormalDemo(parseNormalFile(imported), meta, filename, sourcePath)
+          : type === 'markdown'
+            ? renderMarkdownDemo(imported, meta, filename)
+            : await renderVueDemo(imported, path.extname(filename).slice(1), meta, filename, sourcePath)
+      }
+      output.push(rendered.split('\n').map((value, offset) => `${offset ? block.continuationPrefix : block.firstPrefix}${value}`).join('\n'))
       continue
     }
 
@@ -2120,10 +2127,11 @@ const artPlayerComponents = (source: string) => {
 }
 
 const renderEmbedDirective = (source: string, sourcePath: string | undefined, index: number) => {
-  const match = source.match(/^@\[([A-Za-z][\w-]*)((?:"[^"]*"|'[^']*'|[^\]])*)\]\((.*)\)\s*$/)
+  const match = source.match(/^@\[([A-Za-z][\w-]*)(?:\s+((?:"[^"]*"|'[^']*'|[^\]])*))?\]\(([^)]*)\)$/)
+    ?? source.match(/^@\[(caniuse)(\{[^\]]*\})\]\(([^)]*)\)$/)
   if (!match) return
-  const [, rawType, rawInfo, rawValue] = match
-  const type = rawType.toLowerCase()
+  const [, rawType, rawInfo = '', rawValue] = match
+  const type = rawType === 'artPlayer' ? 'artplayer' : rawType
   const info = rawInfo.trim()
   const value = rawValue.trim()
   if (type === 'caniuse' && canIUseOptions()) return renderCanIUse(info, value, index, (canIUseOptions() || {}).mode)
@@ -2138,14 +2146,14 @@ const renderEmbedDirective = (source: string, sourcePath: string | undefined, in
   if (type === 'video' && /^(?:https?:\/\/|\/)/.test(value)) return `<video class="vp-media" src="${escapeHtml(value)}" controls preload="metadata"></video>`
   if (type === 'audio' && /^(?:https?:\/\/|\/)/.test(value)) return `<audio class="vp-media" src="${escapeHtml(value)}" controls preload="metadata"></audio>`
   if (type === 'pdf') return markdownPower.pdf ? renderPdfEmbed(info, value) : undefined
-  if (type === 'qrcode') return markdownPower.qrcode ? renderQrCode(info, rawValue, sourcePath) : undefined
+  if (type === 'qrcode') return markdownPower.qrcode ? renderQrCode(info, value, sourcePath) : undefined
 }
 
 const cleanSource = (source: string, removeTitle = true, plotOptions: PlotOptions = {}, sourcePath = ''): string => {
   let fence = ''
   let scriptSetup = false
   let titleRemoved = false
-  return npmBadges(source).split('\n').map((line, lineIndex) => {
+  return npmBadges(source).split('\n').map((line) => {
     const marker = line.match(/^\s*(`{3,}|~{3,})/)?.[1]
     if (marker) {
       if (!fence) fence = marker[0]
@@ -2169,13 +2177,6 @@ const cleanSource = (source: string, removeTitle = true, plotOptions: PlotOption
       .replace(/^\s*<\/(?:VP)?CardMasonry>\s*$/i, '</div>')
       .replace(/^\s*<(?:VP)?Card(?:\s+([^>]*))?>\s*$/i, (_match, raw = '') => cardOpen(raw))
       .replace(/^\s*<\/(?:VP)?Card>\s*$/i, '</section></article>')
-      .replace(canIUseOptions() ? /^@\[caniuse([^\]]*)\]\(([^)]*)\)\s*$/i : /(?!)/, (_match, raw: string, feature: string) => renderCanIUse(raw, feature, lineIndex, (canIUseOptions() || {}).mode))
-      .replace(/^@\[(codepen|jsfiddle|codesandbox|replit)([^\]]*)\]\(([^)]*)\)\s*$/i, (_match, type: string, raw: string, value: string) => {
-        const normalized = type.toLowerCase()
-        const enabled = markdownPower[normalized === 'codesandbox' ? 'codeSandbox' : normalized as 'codepen' | 'jsfiddle' | 'replit']
-        return enabled ? renderCodeEmbed(normalized, raw.trim(), value.trim()) : _match
-      })
-      .replace(markdownPower.artPlayer ? /^@\[artPlayer((?:"[^"]*"|'[^']*'|[^\]])*)\]\(([^)]*)\)\s*$/i : /(?!)/, (_match, raw: string, src: string) => renderArtPlayer(raw.trim(), src.trim()))
       .replace(markdownPower.audioReader ? /@\[audioReader((?:"[^"]*"|'[^']*'|[^\]])*)\]\(([^)]*)\)/gi : /(?!)/, (_match, raw: string, src: string) => safeMediaSource(src) ? renderAudioReader(raw.trim(), src) : _match)
       .replace(markdownPower.audioReader ? /<AudioReader\b([^>]*)>(.*?)<\/AudioReader>/gi : /(?!)/, (_match, raw: string, content: string) => safeMediaSource(attributes(raw).src || '') ? renderAudioReader(raw, attributes(raw).src, content) : _match)
       .replace(/<Plot\b([^>]*)>(.*?)<\/Plot>/gi, (_match, raw: string, content: string) => {
@@ -2193,11 +2194,6 @@ const cleanSource = (source: string, removeTitle = true, plotOptions: PlotOption
         const fullname = props.fullname ?? props[':fullname'] ?? (hasFlag(raw, 'fullname') ? 'true' : '')
         return `<div class="vp-repo-card" data-repo-card data-repo="${escapeHtml(props.repo)}" data-provider="${provider}"${fullname ? ` data-fullname="${escapeHtml(fullname)}"` : ''} hidden></div>`
       })
-      .replace(/^@\[(youtube|bilibili|acfun)((?:"[^"]*"|'[^']*'|[^\]])*)\]\(([^)]*)\)\s*$/i, (_match, type: 'youtube' | 'bilibili' | 'acfun', raw: string, value: string) => markdownPower[type.toLowerCase() as 'youtube' | 'bilibili' | 'acfun'] ? renderVideoEmbed(type.toLowerCase() as 'youtube' | 'bilibili' | 'acfun', raw.trim(), value.trim()) : _match)
-      .replace(/^@\[video[^\]]*\]\((https?:\/\/[^\s)]+|\/[^\s)]+)\)\s*$/i, (_match, url: string) => `<video class="vp-media" src="${escapeHtml(url)}" controls preload="metadata"></video>`)
-      .replace(/^@\[audio[^\]]*\]\((https?:\/\/[^\s)]+|\/[^\s)]+)\)\s*$/i, (_match, url: string) => `<audio class="vp-media" src="${escapeHtml(url)}" controls preload="metadata"></audio>`)
-      .replace(markdownPower.pdf ? /^@\[pdf((?:"[^"]*"|'[^']*'|[^\]])*)\]\(([^)]*)\)\s*$/i : /(?!)/, (_match, raw: string, url: string) => renderPdfEmbed(raw.trim(), url.trim()))
-      .replace(markdownPower.qrcode ? /^@\[qrcode([^\]]*)\]\((.*)\)\s*$/i : /(?!)/, (_match, raw: string, text: string) => renderQrCode(raw.trim(), text, sourcePath))
       .replace(markdownPower.qrcode ? /^\s*<VPQRCode\b([^>]*)\/?>\s*$/i : /(?!)/, (_match, raw: string) => {
         const props = attributes(raw)
         return renderQrCode(raw, props.text || '', sourcePath)
