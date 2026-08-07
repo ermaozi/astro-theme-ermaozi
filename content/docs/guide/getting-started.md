@@ -12,7 +12,7 @@ tags: [入门, 配置, Astro]
 
 # 零基础快速开始
 
-日常搭建博客只需要接触两个位置：`site.config.mjs` 管站点，`content/` 管文章。不要修改 `src/`，以后更新主题会更轻松。
+日常搭建博客只需要接触两个位置：`site.config.mjs` 管站点，`content/` 管文章。不要修改 `theme/`，以后更新主题会更轻松。
 
 ## 1. 准备环境
 
@@ -32,10 +32,10 @@ yarn create astro-theme-ermaozi@beta my-blog
 
 ```sh
 cd my-blog
-npm run dev:fast
+npm run dev
 ```
 
-使用 pnpm 时运行 `pnpm dev:fast`，使用 Yarn 时运行 `yarn dev:fast`。终端会显示本地网址，通常是 `http://localhost:4321/`。
+使用 pnpm 时运行 `pnpm dev`，使用 Yarn 时运行 `yarn dev`。终端会显示本地网址，通常是 `http://localhost:4321/`；修改配置或 Markdown 后会自动刷新。
 
 ## 3. 只改这六处配置
 
@@ -98,7 +98,7 @@ npm run validate
 
 ## 常见问题
 
-- **修改文章后搜索不到**：`dev:fast` 不生成搜索索引，改用 `npm run build && npm run preview`。
+- **开发时搜索不到新文章**：开发服务器不生成 Pagefind 索引，改用 `npm run build && npm run preview` 验收搜索。
 - **页面地址重复或失效**：确保每篇文章的 `permalink` 唯一，并以 `/` 开头和结尾。
 - **图片不显示**：文件应放在 `public/`，引用路径不要写 `public`，例如 `/img/photo.webp`。
 - **配置后白屏**：先运行 `npm run check`，根据文件名和行号修正缺失的逗号、引号或括号。

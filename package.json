@@ -1,6 +1,6 @@
 {
   "name": "ermaozi",
-  "version": "0.2.0-beta.0",
+  "version": "0.2.0-beta.1",
   "description": "The ermaozi Astro theme for blogs and documentation sites.",
   "private": true,
   "license": "MIT",
@@ -17,17 +17,18 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent && astro preview --host 127.0.0.1",
-    "dev:fast": "node scripts/auto-frontmatter.mjs && astro dev --host 127.0.0.1",
-    "check": "node scripts/auto-frontmatter.mjs && astro check",
-    "build": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent",
-    "deploy": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent",
+    "dev": "node theme/scripts/auto-frontmatter.mjs && astro dev --host 127.0.0.1",
+    "dev:fast": "node theme/scripts/auto-frontmatter.mjs && astro dev --host 127.0.0.1",
+    "check": "node theme/scripts/auto-frontmatter.mjs && astro check && tsc -p theme/tsconfig.check-js.json",
+    "check:js": "tsc -p theme/tsconfig.check-js.json",
+    "build": "node theme/scripts/auto-frontmatter.mjs && astro check && tsc -p theme/tsconfig.check-js.json && astro build && pagefind --site dist --silent",
+    "deploy": "node theme/scripts/auto-frontmatter.mjs && astro check && tsc -p theme/tsconfig.check-js.json && astro build && pagefind --site dist --silent",
     "preview": "astro preview --host 127.0.0.1",
-    "audit": "node scripts/audit.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "test:create": "node --test packages/create-astro-theme-ermaozi/tests/*.test.mjs",
-    "test:visual": "playwright test",
-    "validate": "node scripts/auto-frontmatter.mjs && astro check && astro build && pagefind --site dist --silent && node --test tests/*.test.mjs && node --test packages/create-astro-theme-ermaozi/tests/*.test.mjs && node scripts/audit.mjs"
+    "audit": "node theme/scripts/audit.mjs",
+    "test": "node --test internal/tests/*.test.mjs",
+    "test:create": "tsc -p internal/create/tsconfig.json && node --test internal/create/tests/*.test.mjs",
+    "test:visual": "playwright test --config internal/playwright.config.ts",
+    "validate": "node theme/scripts/auto-frontmatter.mjs && astro check && tsc -p theme/tsconfig.check-js.json && astro build && pagefind --site dist --silent && node --test internal/tests/*.test.mjs && tsc -p internal/create/tsconfig.json && node --test internal/create/tests/*.test.mjs && node theme/scripts/audit.mjs"
   },
   "dependencies": {
     "@astrojs/vue": "7.0.1",

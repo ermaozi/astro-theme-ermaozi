@@ -13,11 +13,11 @@ tags: [API, 组件, 样式]
 
 ## 布局与通用组件
 
-Astro 组件可从 `src/client.ts` 统一导入，也可直接从 `src/components/` 导入：
+Astro 组件可从 `theme/client.ts` 统一导入，也可直接从 `theme/components/` 导入：
 
 ```astro
 ---
-import { VPBadge, VPButton, VPCard, VPCardGrid, VPIcon, VPImage, VPLink, VPHomeFeatures } from '../../../src/client'
+import { VPBadge, VPButton, VPCard, VPCardGrid, VPIcon, VPImage, VPLink, VPHomeFeatures } from '../../../theme/client'
 ---
 
 <VPBadge type="tip" text="稳定" />
@@ -36,7 +36,7 @@ import { VPBadge, VPButton, VPCard, VPCardGrid, VPIcon, VPImage, VPLink, VPHomeF
 `useDarkMode()` 返回 Vue `Ref<boolean>`，可读取或切换当前外观；`useData()` 返回与 Plume 同形的 `theme`、`page`、`frontmatter`、`lang`、`site` 和 `isDark` refs。页面数据来自构建时写入的安全 JSON，密码和密码提示不会发送到该接口。
 
 ```ts
-import { useDarkMode, useData, useLocalePostList } from '../../../src/client'
+import { useDarkMode, useData, useLocalePostList } from '../../../theme/client'
 
 const isDark = useDarkMode()
 isDark.value = true
@@ -52,7 +52,7 @@ const posts = useLocalePostList()
 
 ## ECharts 全局配置
 
-在浏览器启动前编辑 `src/client-config.ts`，通过 `defineEChartsConfig()` 设置一次性初始化逻辑和所有 ECharts 实例共享的选项。页面级图表选项会覆盖同名全局项：
+在浏览器启动前编辑 `theme/client-config.ts`，通过 `defineEChartsConfig()` 设置一次性初始化逻辑和所有 ECharts 实例共享的选项。页面级图表选项会覆盖同名全局项：
 
 ```ts
 import { defineEChartsConfig } from './lib/echarts-config'
@@ -67,10 +67,10 @@ defineEChartsConfig({
 
 ## Node 配置帮助函数
 
-`src/node.ts` 导出 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`，用于保留 TypeScript 推导；它们不会改变传入配置。
+`theme/node.ts` 导出 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`，用于保留 TypeScript 推导；它们不会改变传入配置。
 
 ```ts
-import { defineCollections } from '../../../src/node'
+import { defineCollections } from '../../../theme/node'
 
 export const collections = defineCollections([
   { type: 'post', dir: 'blog', title: '博客' },
@@ -80,7 +80,7 @@ export const collections = defineCollections([
 
 ## 自定义样式
 
-把站点专属样式写入 `src/styles/custom.css`。该文件在主题和第三方样式之后加载，适合覆盖 CSS 变量或追加选择器：
+把站点专属样式写入 `theme/styles/custom.css`。该文件在主题和第三方样式之后加载，适合覆盖 CSS 变量或追加选择器：
 
 ```css
 :root {

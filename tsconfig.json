@@ -1,5 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "packages/create-astro-theme-ermaozi/template"]
+  "exclude": ["dist", "internal/create/template"]
 }

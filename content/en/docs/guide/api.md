@@ -14,11 +14,11 @@ tags: [API, Components, Styles]
 
 ## Layouts and common components
 
-Astro components can be imported from the `src/client.ts` barrel or directly from `src/components/`:
+Astro components can be imported from the `theme/client.ts` barrel or directly from `theme/components/`:
 
 ```astro
 ---
-import { VPBadge, VPButton, VPCard, VPCardGrid, VPIcon, VPImage, VPLink, VPHomeFeatures } from '../../../../src/client'
+import { VPBadge, VPButton, VPCard, VPCardGrid, VPIcon, VPImage, VPLink, VPHomeFeatures } from '../../../../theme/client'
 ---
 
 <VPBadge type="tip" text="Stable" />
@@ -37,7 +37,7 @@ The home exports are `VPHomeBanner`, `VPHomeBox`, `VPHomeCustom`, `VPHomeFeature
 `useDarkMode()` returns a Vue `Ref<boolean>` for reading or changing the current appearance. `useData()` returns Plume-shaped `theme`, `page`, `frontmatter`, `lang`, `site`, and `isDark` refs. Page data comes from build-time safe JSON; passwords and password hints are never exposed through this API.
 
 ```ts
-import { useDarkMode, useData, useLocalePostList } from '../../../../src/client'
+import { useDarkMode, useData, useLocalePostList } from '../../../../theme/client'
 
 const isDark = useDarkMode()
 isDark.value = true
@@ -53,7 +53,7 @@ The optional second argument of `useLocalePostList(lang, collection)` accepts ei
 
 ## Global ECharts configuration
 
-Edit `src/client-config.ts` before the browser starts and call `defineEChartsConfig()` for one-time setup and options shared by every ECharts instance. Per-chart options override global keys:
+Edit `theme/client-config.ts` before the browser starts and call `defineEChartsConfig()` for one-time setup and options shared by every ECharts instance. Per-chart options override global keys:
 
 ```ts
 import { defineEChartsConfig } from './lib/echarts-config'
@@ -68,10 +68,10 @@ defineEChartsConfig({
 
 ## Node configuration helpers
 
-`src/node.ts` exports `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` for TypeScript inference. They return the supplied configuration unchanged.
+`theme/node.ts` exports `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` for TypeScript inference. They return the supplied configuration unchanged.
 
 ```ts
-import { defineCollections } from '../../../../src/node'
+import { defineCollections } from '../../../../theme/node'
 
 export const collections = defineCollections([
   { type: 'post', dir: 'blog', title: 'Blog' },
@@ -81,7 +81,7 @@ export const collections = defineCollections([
 
 ## Custom styles
 
-Put site-specific overrides in `src/styles/custom.css`. It loads after theme and third-party styles, so it can override CSS variables or add selectors:
+Put site-specific overrides in `theme/styles/custom.css`. It loads after theme and third-party styles, so it can override CSS variables or add selectors:
 
 ```css
 :root {

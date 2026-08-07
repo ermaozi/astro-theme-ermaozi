@@ -32,4 +32,4 @@ ermaozi 是一个偏内容型的静态站点起点，适合博客、个人知识
 
 ## 定制入口
 
-站点信息在 `site.config.mjs`，文章在 `content/`，样式在 `src/styles/`。如果不需要评论、浏览量或点赞，不配置对应服务即可。
+站点信息在 `site.config.mjs`，文章在 `content/`，样式在 `theme/styles/`。如果不需要评论、浏览量或点赞，不配置对应服务即可。

@@ -1,5 +1,5 @@
 // @ts-check
-import { defineSiteConfig } from './src/config.mjs'
+import { defineSiteConfig } from './theme/config.mjs'
 
 /**
  * 站点总配置。
@@ -473,6 +473,7 @@ export const siteConfig = defineSiteConfig({
     // always 每次显示；session 当前标签会话只关闭一次；once 跨会话记住关闭状态。
     lifetime: 'session',
     // 可返回布尔值限制公告出现的页面；删除此项表示所有页面。
+    /** @param {{ path: string }} page 当前页面。 */
     enablePage: ({ path }) => path === '/landing/',
     title: 'Welcome',
     // text、html 或 markdown；contentFile 可改为读取独立文件。

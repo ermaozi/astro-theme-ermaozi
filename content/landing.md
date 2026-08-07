@@ -87,7 +87,7 @@ config:
     circle: true
   - type: announcement
     title: 可扩展首页区域
-    description: src/components/home 中的 Astro 或 Vue 组件会按文件名自动注册。
+    description: theme/components/home 中的 Astro 或 Vue 组件会按文件名自动注册。
   - type: posts
     collection: blog
   - type: custom

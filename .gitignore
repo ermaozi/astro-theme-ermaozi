@@ -2,10 +2,8 @@
 .tmp/
 dist/
 node_modules/
-reports/
-test-results/
-playwright-report/
-packages/create-astro-theme-ermaozi/template/
+internal/artifacts/
+internal/create/template/
 *.tgz
 coverage/
 *.log

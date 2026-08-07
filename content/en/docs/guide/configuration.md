@@ -72,7 +72,7 @@ External links open in a new window and show the external-link marker by default
 
 ## Layout slots
 
-Add an `.astro` or `.vue` file named after a Plume slot under `src/components/slots/`, for example `doc-top.astro` or `DocTop.astro`. Components receive the currently available `lang`, `route`, `entry`, `layout`, and `posts` props. A missing component produces no extra DOM.
+Add an `.astro` or `.vue` file named after a Plume slot under `theme/components/slots/`, for example `doc-top.astro` or `DocTop.astro`. Components receive the currently available `lang`, `route`, `entry`, `layout`, and `posts` props. A missing component produces no extra DOM.
 
 Supported names include:
 
@@ -120,7 +120,7 @@ Post collections support `include`, `exclude`, `pagination`, `postList`, `link`,
 
 Doc collections support recursive directory and numeric-prefix navigation through `sidebar: 'auto'`; `sidebarCollapsed` controls initial group state and `sidebarScrollbar` controls the scrollbar. A manual array accepts strings or `{ text, link, prefix, icon, badge, collapsed, items }`, including scoped `items: 'auto'` and `link: '---'` separators.
 
-`site.config.mjs` already imports `defineSiteConfig` from `./src/config.mjs`. Theme integrations may also use `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` from `src/node.ts`. These helpers preserve the supplied object unchanged.
+`site.config.mjs` already imports `defineSiteConfig` from `./theme/config.mjs`. Theme integrations may also use `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` from `theme/node.ts`. These helpers preserve the supplied object unchanged.
 
 ## Trusted chart scripts
 

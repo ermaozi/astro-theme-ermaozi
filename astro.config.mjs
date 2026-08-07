@@ -1,10 +1,11 @@
 import vue from '@astrojs/vue'
 import { defineConfig } from 'astro/config'
-import { replaceAssetsIntegration } from './src/lib/replace-assets.mjs'
-import { autoFrontmatterIntegration } from './src/lib/auto-frontmatter.mjs'
+import { replaceAssetsIntegration } from './theme/lib/replace-assets.mjs'
+import { autoFrontmatterIntegration } from './theme/lib/auto-frontmatter.mjs'
 import { siteConfig } from './site.config.mjs'
 
 export default defineConfig({
+  srcDir: './theme/',
   site: process.env.SITE_ORIGIN || siteConfig.origin,
   base: process.env.BASE_PATH || siteConfig.base || '/',
   output: 'static',

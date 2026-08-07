@@ -30,4 +30,4 @@ Personal blogs, project documentation, and lightweight knowledge bases can share
 
 ## Customize it
 
-Edit site information in `site.config.mjs`, content in `content/`, and presentation in `src/styles/`. Comments, views, and likes remain disabled until their services are configured.
+Edit site information in `site.config.mjs`, content in `content/`, and presentation in `theme/styles/`. Comments, views, and likes remain disabled until their services are configured.

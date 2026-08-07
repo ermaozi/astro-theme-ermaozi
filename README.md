@@ -5,7 +5,7 @@
 > The ermaozi Astro theme with full-text search, dark mode, taxonomies, SEO, and enhanced Markdown.
 
 > [!WARNING]
-> 当前为 `0.2.0-beta.0` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
+> 当前为 `0.2.0-beta.1` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
 
 创建新站点并自动安装依赖：
 
@@ -39,11 +39,11 @@ yarn install
 yarn dev
 ```
 
-`dev` 会先构建站点和 Pagefind 索引，再启动本地预览。只调整布局时可用 `dev:fast`，快速模式不生成搜索索引，例如 `npm run dev:fast`、`pnpm dev:fast` 或 `yarn dev:fast`。
+`dev` 直接启动支持热更新的 Astro 开发服务器。开发模式不生成 Pagefind 索引；需要验收搜索和生产产物时运行 `npm run build && npm run preview`。`dev:fast` 作为旧命令别名保留。
 
 ## 定制站点
 
-第一次搭建建议按[零基础快速开始](./content/docs/guide/getting-started.md)操作。日常只需要修改 `site.config.mjs` 和 `content/`；不改 `src/` 更便于以后更新主题。`defineSiteConfig()` 会为常用配置提供编辑器补全，`npm run check` 会定位常见配置错误。
+第一次搭建建议按[零基础快速开始](./content/docs/guide/getting-started.md)操作。日常只需要修改 `site.config.mjs` 和 `content/`；不改 `theme/` 更便于以后更新主题。`defineSiteConfig()` 会为常用配置提供编辑器补全，`npm run check` 会定位常见配置错误。
 
 1. 在 [`site.config.mjs`](./site.config.mjs) 修改域名、站名、作者、导航和可选服务。
 2. 替换 [`public/img/logo.svg`](./public/img/logo.svg)。
@@ -117,7 +117,7 @@ yarn install && yarn deploy
 `npm create astro-theme-ermaozi@beta` 会由 npm 解析并执行 `create-astro-theme-ermaozi` 的测试版本。发布前在初始化器目录检查模板包：
 
 ```bash
-cd packages/create-astro-theme-ermaozi
+cd internal/create
 npm test
 npm pack --dry-run
 npm publish --access public
@@ -135,18 +135,20 @@ npm publish --access public
 
 ## 项目结构
 
+顶层只保留日常内容、公开资源、站点配置和 Astro 必需文件；主题实现与维护脚本统一收在 `theme/`，普通使用无需进入该目录。
+
 - `content/`：中英文页面和示例文章
 - `public/`：Logo、图片和其他原样发布的静态文件
 - `site.config.mjs`：站点身份、导航和可选服务
-- `src/components/`：无业务配置的界面组件与少量客户端交互
-- `src/lib/`：共享的内容、导航、Markdown 和 SEO 逻辑
-- `src/styles/`：全局变量、主题样式和 Plume 兼容样式
-- `scripts/audit.mjs`：独立项目审计
+- `theme/components/`：无业务配置的界面组件与少量客户端交互
+- `theme/lib/`：共享的内容、导航、Markdown 和 SEO 逻辑
+- `theme/styles/`：全局变量、主题样式和 Plume 兼容样式
+- `theme/scripts/audit.mjs`：独立项目审计
 
-新增功能时优先复用 `src/lib/` 的共享逻辑；页面负责组装数据，组件负责显示，站点差异留在 `site.config.mjs` 和 Markdown 中。这样初始化器模板与普通站点使用同一套代码，不需要维护两份实现。
+新增功能时优先复用 `theme/lib/` 的共享逻辑；页面负责组装数据，组件负责显示，站点差异留在 `site.config.mjs` 和 Markdown 中。这样初始化器模板与普通站点使用同一套代码，不需要维护两份实现。
 
 ## 许可证与署名
 
-`src/styles/vendor/` 包含来自 VuePress Theme Plume 的兼容样式，其 MIT 许可证保存在 [`src/styles/vendor/LICENSE`](./src/styles/vendor/LICENSE)。
+`theme/styles/vendor/` 包含来自 VuePress Theme Plume 的兼容样式，其 MIT 许可证保存在 [`theme/styles/vendor/LICENSE`](./theme/styles/vendor/LICENSE)。
 
-项目代码使用 [`MIT License`](./LICENSE)，第三方说明见 [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md)。代码许可证不会自动覆盖你添加的文章、图片和第三方素材。
+项目代码使用 [`MIT License`](./LICENSE)，第三方说明见 [`theme/licenses/THIRD_PARTY_NOTICES.md`](./theme/licenses/THIRD_PARTY_NOTICES.md)。代码许可证不会自动覆盖你添加的文章、图片和第三方素材。

@@ -27,7 +27,7 @@ pnpm install
 pnpm dev
 ```
 
-`pnpm dev` builds the static pages and Pagefind index before starting the local preview.
+`pnpm dev` starts Astro's hot-reloading development server. Run `pnpm build && pnpm preview` when checking the Pagefind index and production output.
 
 ## Configure the site
 

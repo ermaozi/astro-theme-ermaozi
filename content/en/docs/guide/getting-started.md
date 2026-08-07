@@ -13,7 +13,7 @@ tags: [Getting started, Configuration, Astro]
 
 # Beginner quick start
 
-Day-to-day blogging only touches two places: `site.config.mjs` controls the site and `content/` contains your writing. Leave `src/` alone so future theme updates stay manageable.
+Day-to-day blogging only touches two places: `site.config.mjs` controls the site and `content/` contains your writing. Leave `theme/` alone so future theme updates stay manageable.
 
 ## 1. Install the prerequisites
 
@@ -33,10 +33,10 @@ Enter the project and start the fast preview:
 
 ```sh
 cd my-blog
-npm run dev:fast
+npm run dev
 ```
 
-Use `pnpm dev:fast` or `yarn dev:fast` for the other package managers. The terminal prints a local URL, normally `http://localhost:4321/`.
+Use `pnpm dev` or `yarn dev` for the other package managers. The terminal prints a local URL, normally `http://localhost:4321/`, and refreshes after configuration or Markdown changes.
 
 ## 3. Change only these six settings
 
@@ -99,7 +99,7 @@ A successful run creates `dist/`. Use the provider configuration selected during
 
 ## Common problems
 
-- **Search misses a changed post**: `dev:fast` skips the search index; run `npm run build && npm run preview`.
+- **Search misses a changed post during development**: the development server does not build the Pagefind index; run `npm run build && npm run preview` for a production check.
 - **A route is duplicated or broken**: every `permalink` must be unique and start and end with `/`.
 - **An image is missing**: place it under `public/` and omit `public` from the URL.
 - **The page is blank after editing config**: run `npm run check` and fix the reported comma, quote, or bracket.

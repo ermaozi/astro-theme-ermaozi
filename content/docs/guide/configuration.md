@@ -75,7 +75,7 @@ navigation: [
 
 ## 布局插槽
 
-在 `src/components/slots/` 新建与 Plume 插槽同名的 `.astro` 或 `.vue` 文件即可注入内容，例如 `doc-top.astro` 或 `DocTop.astro`。组件会收到当前可用的 `lang`、`route`、`entry`、`layout`、`posts` 等属性；没有对应文件时不会增加额外 DOM。
+在 `theme/components/slots/` 新建与 Plume 插槽同名的 `.astro` 或 `.vue` 文件即可注入内容，例如 `doc-top.astro` 或 `DocTop.astro`。组件会收到当前可用的 `lang`、`route`、`entry`、`layout`、`posts` 等属性；没有对应文件时不会增加额外 DOM。
 
 支持的布局文件名包括：
 
@@ -123,7 +123,7 @@ Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`
 
 Doc 集合支持 `sidebar: 'auto'`，会按目录层级和数字前缀递归生成导航；`sidebarCollapsed` 控制自动分组初始折叠，`sidebarScrollbar` 控制滚动条。也可传入字符串或 `{ text, link, prefix, icon, badge, collapsed, items }` 数组手动编排，`items: 'auto'` 只自动读取当前分组，`link: '---'` 生成分隔符。
 
-`site.config.mjs` 已从 `./src/config.mjs` 导入 `defineSiteConfig`。开发主题集成时还可从 `src/node.ts` 使用 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`；这些帮助函数只保留原对象，不改变运行结果。
+`site.config.mjs` 已从 `./theme/config.mjs` 导入 `defineSiteConfig`。开发主题集成时还可从 `theme/node.ts` 使用 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`；这些帮助函数只保留原对象，不改变运行结果。
 
 ## 可信图表脚本
 

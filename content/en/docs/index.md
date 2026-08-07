@@ -15,7 +15,7 @@ tags: [Astro, Documentation]
 # Documentation
 
 ::: warning Testing stage
-This is the `0.2.0-beta.0` prerelease. Features and configuration are not fully stable, and later versions may contain breaking changes. Pin the version during testing and read the GitHub Release notes before upgrading.
+This is the `0.2.0-beta.1` prerelease. Features and configuration are not fully stable, and later versions may contain breaking changes. Pin the version during testing and read the GitHub Release notes before upgrading.
 :::
 
 The theme supports blogs and product documentation. Pages under `content/en/docs/` automatically receive a documentation sidebar, a mobile outline, and previous/next navigation.
