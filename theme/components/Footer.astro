@@ -1,6 +1,5 @@
 ---
 import type { Lang } from '../lib/content'
-import { siteConfig } from '../../site.config.mjs'
 import { localeOf } from '../lib/locales'
 import UserSlot from './UserSlot.astro'
 import { hasUserSlot } from '../lib/user-slots'
@@ -8,9 +7,7 @@ import { hasUserSlot } from '../lib/user-slots'
 type FooterConfig = { message?: string, copyright?: string }
 const { lang, hasSidebar = false, enabled = true } = Astro.props as { lang: Lang, hasSidebar?: boolean, enabled?: boolean }
 const locale = localeOf(lang)
-const globalFooter = siteConfig.footer as false | FooterConfig
-const localeFooter = (locale as typeof locale & { footer?: FooterConfig }).footer
-const footer = globalFooter === false ? false : { ...globalFooter, ...localeFooter }
+const footer = locale.footer as false | FooterConfig
 const userComponents = import.meta.glob<{ default: any }>('./footer/*.{astro,vue}', { eager: true })
 const FooterContent = userComponents['./footer/FooterContent.astro']?.default ?? userComponents['./footer/FooterContent.vue']?.default
 const hasFooterSlot = hasUserSlot('footer-content')

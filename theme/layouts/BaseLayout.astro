@@ -1,6 +1,7 @@
 ---
 import type { ContentEntry, Lang } from '../lib/content'
-import { absoluteUrl, authorsOf, imagesOf, iso, modifiedTimeOf, siteLocale, structuredPageData } from '../lib/seo'
+import { authorsOf, imagesOf, iso, modifiedTimeOf, siteLocale, structuredPageData } from '../lib/seo'
+import { seoEnabled as automaticSeoEnabled } from '../lib/seo-options.mjs'
 import Footer from '../components/Footer.astro'
 import Header from '../components/Header.astro'
 import BackToTop from '../components/BackToTop.astro'
@@ -18,12 +19,15 @@ import '../styles/custom.css'
 import { siteConfig } from '../../site.config.mjs'
 import { encryptContent } from '../lib/encryption'
 import { globalAdminCredentials } from '../lib/encrypt-policy'
-import { localeOf, rootLanguage } from '../lib/locales'
+import { localeOf, localePath, rootLanguage } from '../lib/locales'
 import { hasUserSlot } from '../lib/user-slots'
 import { iconAssetUrls } from '../lib/iconify'
 import { homeConfigOf } from '../lib/home'
-import { twitterHandle } from '../lib/social'
+import { socialLinksFor, twitterHandleOf } from '../lib/social'
 import { withBase } from '../lib/client-utils'
+import type { PhotoSwipeOptions, SeoHeadItem, SeoOptions, SeoPage } from '../config-types'
+import { photoSwipeLocaleOf } from '../lib/photo-swipe'
+import { isPageSearchable } from '../lib/search-options'
 
 interface Props {
   entry?: ContentEntry
@@ -38,30 +42,91 @@ interface Props {
   article?: boolean
   minimal404?: boolean
   layout?: 'doc' | 'friends' | 'home' | 'page' | 'posts'
+  hasSidebar?: boolean
+  bare?: boolean
 }
 
-const { entry, title, description, lang, route, translationRoute, languageLinks = [], pageClass = '', noindex = false, article = false, minimal404 = false, layout = 'doc' } = Astro.props
+const { entry, title, description, lang, route, translationRoute, languageLinks = [], pageClass = '', noindex = false, minimal404 = false, layout = 'doc', hasSidebar = false, bare = false } = Astro.props
 const isHome = layout === 'home' || entry?.data.home === true || entry?.data.pageLayout === 'home'
 const site = siteLocale(lang)
-const generated = !entry && !minimal404
+const seoOptions = ((siteConfig.plugins as { seo?: false | SeoOptions })?.seo || {}) as SeoOptions
+const seoHostname = seoOptions.hostname ?? import.meta.env.SITE ?? siteConfig.origin
+const seoUrl = (path: string) => new URL(withBase(path, import.meta.env.BASE_URL), seoHostname).toString()
+const pluginPage: SeoPage = { path: route, pathLocale: route, lang, title, filePathRelative: entry?.id, frontmatter: entry?.data ?? {}, data: {}, content: entry?.body }
+const pluginApp = { options: { base: import.meta.env.BASE_URL }, siteData: { ...siteConfig, ...site, base: import.meta.env.BASE_URL }, env: { isDebug: import.meta.env.DEV } }
+const automaticDescription = (source = '') => source
+  .replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/gu, ' ')
+  .replace(/<!--[\s\S]*?-->|<[^>]+>/gu, ' ')
+  .replace(/!\[[^\]]*\]\([^)]*\)/gu, ' ')
+  .replace(/\[([^\]]+)\]\([^)]*\)/gu, '$1')
+  .replace(/(?:^|\n)\s*(?:#{1,6}|>|[-+*]|\d+\.)\s*/gu, ' ')
+  .replace(/[*_`~={}:|]/gu, ' ')
+  .replace(/\s+/gu, ' ')
+  .trim()
+  .slice(0, 180)
+const seoDescription = description || (seoOptions.autoDescription === false ? '' : automaticDescription(entry?.body))
 const fullTitle = minimal404 ? site.siteName : `${title} | ${site.siteName}`
-const canonical = absoluteUrl(route)
+const canonicalOption = typeof seoOptions.canonical === 'function' ? seoOptions.canonical(pluginPage) : seoOptions.canonical
+const canonical = canonicalOption === null ? null : typeof canonicalOption === 'string' ? `${canonicalOption.replace(/\/$/u, '')}${route}` : seoUrl(route)
 const alternates = languageLinks.length ? languageLinks.filter(item => !item.fallback) : [{ lang, href: route }, ...(translationRoute ? [{ lang: lang === 'en-US' ? 'zh-CN' : 'en-US', href: translationRoute }] : [])]
 const defaultRoute = alternates.find(item => item.lang === rootLanguage())?.href ?? route
 const locale = localeOf(lang)
-const seoEnabled = entry?.data.seo !== false
-const jsonLd = minimal404
-  ? [{ '@context': 'https://schema.org', '@type': 'WebPage', name: '', description }]
-  : seoEnabled ? structuredPageData(title, description, lang, route, entry) : []
-const seoOptions = ((siteConfig.plugins as Record<string, unknown>)?.seo ?? {}) as { fallBackImage?: string }
+const configuredTwitter = seoOptions.twitterID ? `@${seoOptions.twitterID.replace(/^@/u, '')}` : ''
+const twitterHandle = twitterHandleOf(socialLinksFor(lang)) || configuredTwitter
+const seoEnabled = automaticSeoEnabled(siteConfig, entry?.data.seo)
+const seoArticle = seoOptions.isArticle?.(pluginPage) ?? Boolean(entry && !isHome)
 const socialCover = entry?.data.banner ?? entry?.data.cover
-const imageSource = socialCover ?? imagesOf(entry)[0] ?? seoOptions.fallBackImage ?? siteConfig.logo
-const image = imageSource.startsWith('/') ? absoluteUrl(imageSource) : imageSource
+const imageSource = socialCover ?? imagesOf(entry)[0] ?? seoOptions.fallBackImage ?? locale.logo ?? siteConfig.logo
+const image = imageSource.startsWith('/') ? seoUrl(imageSource) : imageSource
 const seoTags = entry?.data.tags.length ? entry.data.tags : typeof entry?.data.tag === 'string' ? [entry.data.tag] : entry?.data.tag ?? []
-const seoAuthors = authorsOf(entry?.data.author, site.authorName)
+const seoAuthors = authorsOf(entry?.data.author, seoOptions.author ?? site.authorName)
 const published = entry ? iso(entry.data.date ?? entry.data.time) : undefined
 const preconnectMedia = Boolean(siteConfig.mediaOrigin && image.startsWith(`${siteConfig.mediaOrigin}/`))
 const modified = entry && !isHome ? modifiedTimeOf(entry) : undefined
+const automaticOgp: Record<string, unknown> = {
+  'og:title': title,
+  'og:description': seoDescription,
+  'og:url': canonical ?? undefined,
+  'og:type': seoArticle ? 'article' : 'website',
+  'og:site_name': site.siteName,
+  'og:locale': lang,
+  'og:locale:alternate': alternates.filter(item => item.lang !== lang).map(item => item.lang),
+  'og:image': image,
+  'og:image:alt': title,
+  'og:updated_time': modified,
+  'og:restrictions:age': seoOptions.restrictions,
+  'twitter:creator': twitterHandle || undefined,
+  'twitter:site': twitterHandle || undefined,
+  'twitter:card': socialCover ? 'summary_large_image' : undefined,
+  'twitter:image:src': socialCover ? image : undefined,
+  'twitter:image:alt': socialCover ? title : undefined,
+  'article:author': seoArticle ? seoAuthors[0]?.name : undefined,
+  'article:tag': seoArticle ? seoTags.toReversed() : undefined,
+  'article:published_time': seoArticle ? published : undefined,
+  'article:modified_time': seoArticle ? modified : undefined,
+}
+const ogp = seoOptions.ogp?.(automaticOgp, pluginPage, pluginApp) ?? automaticOgp
+const automaticJsonLd = minimal404
+  ? [{ '@context': 'https://schema.org', '@type': 'WebPage', name: '', description: seoDescription }]
+  : seoEnabled ? structuredPageData(title, seoDescription, lang, route, entry, seoArticle, seoOptions.author, seoHostname) : []
+const jsonLd = automaticJsonLd.length && seoOptions.jsonLd
+  ? [seoOptions.jsonLd(automaticJsonLd[0], pluginPage, pluginApp), ...automaticJsonLd.slice(1)]
+  : automaticJsonLd
+const managedHead: SeoHeadItem[] = [
+  ...(canonical ? [['link', { rel: 'canonical', href: canonical }] as SeoHeadItem] : []),
+  ...(!minimal404 ? alternates.map(item => ['link', { rel: 'alternate', hreflang: item.lang, href: seoUrl(item.href) }] as SeoHeadItem) : []),
+  ...(!minimal404 ? [['link', { rel: 'alternate', hreflang: 'x-default', href: seoUrl(defaultRoute) }] as SeoHeadItem] : []),
+  ...(seoEnabled ? Object.entries(ogp).flatMap(([name, value]) => (Array.isArray(value) ? value : [value]).filter(item => item !== undefined && item !== null && item !== '').map(item => ['meta', { [name.startsWith('twitter:') ? 'name' : 'property']: name, content: String(item) }] as SeoHeadItem)) : []),
+  ...jsonLd.map(data => ['script', { type: 'application/ld+json' }, JSON.stringify(data).replaceAll('<', '\\u003c')] as SeoHeadItem),
+]
+seoOptions.customHead?.(managedHead, pluginPage, pluginApp)
+const escapeAttribute = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')
+const managedHeadHtml = managedHead.map(([tag, attrs, content = '']) => {
+  if (!/^[a-z][\w-]*$/u.test(tag) || Object.keys(attrs).some(name => !/^[\w:-]+$/u.test(name))) return ''
+  const attributes = Object.entries(attrs).map(([name, value]) => ` ${name}="${escapeAttribute(String(value))}"`).join('')
+  return ['meta', 'link', 'base'].includes(tag) ? `<${tag}${attributes}>` : `<${tag}${attributes}>${tag === 'script' || tag === 'style' ? content : escapeAttribute(content)}</${tag}>`
+}).join('')
+const pageSearchable = isPageSearchable(siteConfig.search, pluginPage, entry?.data.search !== false)
 const defaultKeywords = site.keywords
 const head = entry?.data.head ?? []
 const headItems = head.filter(Array.isArray) as unknown as Array<[string, Record<string, string>, string?]>
@@ -109,15 +174,16 @@ const comment = siteConfig.comment as { provider?: string, repo?: string, server
 const commentOrigin = comment.provider === 'Giscus'
   ? 'https://giscus.app'
   : [comment.serverURL, comment.server, comment.envId].find(value => typeof value === 'string' && /^https?:\/\//.test(value))
-const transition = siteConfig.transition as false | { page?: boolean }
+const transition = (locale.transition ?? siteConfig.transition) as false | { page?: boolean }
 const pageTransition = transition !== false && (typeof transition !== 'object' || transition.page !== false)
+const nprogressEnabled = (siteConfig.plugins as { nprogress?: boolean }).nprogress !== false
 const katexCopy = (siteConfig.markdown.math as { type?: string, copy?: boolean }).type !== 'mathjax' && (siteConfig.markdown.math as { copy?: boolean }).copy === true
 const markMode = (siteConfig.markdown as { mark?: 'lazy' | 'eager' }).mark === 'lazy' ? 'lazy' : undefined
-type PhotoSwipeConfig = { selector?: string | string[], download?: boolean, fullscreen?: boolean, scrollToClose?: boolean }
-const globalPhotoSwipe = (siteConfig.plugins as { photoSwipe?: false | PhotoSwipeConfig })?.photoSwipe
+const globalPhotoSwipe = (siteConfig.plugins as { photoSwipe?: false | PhotoSwipeOptions })?.photoSwipe
 const pagePhotoSwipe = (entry?.data as { photoSwipe?: false | string | string[] } | undefined)?.photoSwipe
 const photoSwipeConfig = globalPhotoSwipe === false || pagePhotoSwipe === false ? false : typeof globalPhotoSwipe === 'object' ? globalPhotoSwipe : {}
 const photoSwipeSelector = photoSwipeConfig === false ? '' : (Array.isArray(pagePhotoSwipe) ? pagePhotoSwipe : Array.isArray(photoSwipeConfig.selector) ? photoSwipeConfig.selector : [typeof pagePhotoSwipe === 'string' ? pagePhotoSwipe : photoSwipeConfig.selector ?? '.vp-doc :not(a) > img:not([no-view],.no-view,.ignore)']).join(', ')
+const photoSwipeLocale = photoSwipeLocaleOf(lang, localePath(lang), photoSwipeConfig === false ? {} : photoSwipeConfig.locales)
 const markdownIcon = (siteConfig.markdown as { icon?: { provider?: string, assets?: string | string[] } }).icon ?? {}
 const iconAssets = iconAssetUrls(markdownIcon)
 const globalCredentials = (siteConfig.encrypt as { global?: boolean }).global ? globalAdminCredentials() : []
@@ -130,7 +196,7 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
 ---
 
 <!doctype html>
-<html class:list={[!minimal404 && `layout-${layout}`, forceDark && 'force-dark dark', forceDarkEffect && `effect-${forceDarkEffect}`, { 'bg-gray': !minimal404 && layout === 'posts' }]} lang={lang} data-page-transition={pageTransition ? '' : undefined} data-katex-copy={katexCopy ? 'true' : undefined} data-mark-mode={markMode} data-photo-swipe-selector={photoSwipeSelector || undefined} data-photo-swipe-download={photoSwipeConfig !== false && photoSwipeConfig.download !== false ? 'true' : 'false'} data-photo-swipe-fullscreen={photoSwipeConfig !== false && photoSwipeConfig.fullscreen !== false ? 'true' : 'false'} data-photo-swipe-scroll-close={photoSwipeConfig !== false && photoSwipeConfig.scrollToClose !== false ? 'true' : 'false'}>
+<html class:list={[!minimal404 && `layout-${layout}`, forceDark && 'force-dark dark', forceDarkEffect && `effect-${forceDarkEffect}`, { 'bg-gray': !minimal404 && layout === 'posts' }]} lang={lang} data-page-transition={pageTransition ? '' : undefined} data-katex-copy={katexCopy ? 'true' : undefined} data-mark-mode={markMode} data-photo-swipe-selector={photoSwipeSelector || undefined} data-photo-swipe-download={photoSwipeConfig !== false && photoSwipeConfig.download !== false ? 'true' : 'false'} data-photo-swipe-fullscreen={photoSwipeConfig !== false && photoSwipeConfig.fullscreen !== false ? 'true' : 'false'} data-photo-swipe-scroll-close={photoSwipeConfig !== false && photoSwipeConfig.scrollToClose !== false ? 'true' : 'false'} data-photo-swipe-locale={JSON.stringify(photoSwipeLocale)}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -148,61 +214,42 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
     </script>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title set:html={fullTitle}></title>
-    <meta name="description" content={description} />
+    <meta name="description" content={seoDescription} />
     {noindex && <meta name="robots" content="noindex,follow" />}
-    <link rel="canonical" href={canonical} />
-    {!minimal404 && alternates.map(item => <link rel="alternate" hreflang={item.lang} href={absoluteUrl(item.href)} />)}
-    {!minimal404 && <link rel="alternate" hreflang="x-default" href={absoluteUrl(defaultRoute)} />}
+    <Fragment set:html={managedHeadHtml} />
     <link rel="icon" href={withBase('/img/logo.svg', import.meta.env.BASE_URL)} type="image/svg+xml" />
     {preconnectMedia && <link rel="preconnect" href={siteConfig.mediaOrigin} />}
     {iconAssets.filter(asset => asset.endsWith('.css')).map(asset => <link rel="stylesheet" href={asset} />)}
     {iconAssets.filter(asset => asset.endsWith('.js')).map(asset => <script is:inline src={asset} data-auto-replace-svg={markdownIcon.provider === 'fontawesome' ? 'nest' : undefined}></script>)}
     {siteConfig.features.comments && commentOrigin && <link rel="dns-prefetch" href={commentOrigin} />}
-    {seoEnabled && !minimal404 && !generated && <meta property="og:title" content={title} />}
-    {seoEnabled && !generated && <meta property="og:description" content={description} />}
-    {seoEnabled && <meta property="og:url" content={canonical} />}
-    {seoEnabled && <meta property="og:type" content={article ? 'article' : 'website'} />}
-    {seoEnabled && <meta property="og:site_name" content={site.siteName} />}
-    {seoEnabled && <meta property="og:locale" content={lang} />}
-    {seoEnabled && alternates.filter(item => item.lang !== lang).map(item => <meta property="og:locale:alternate" content={item.lang} />)}
-    {seoEnabled && !generated && <meta property="og:image" content={image} />}
-    {seoEnabled && modified && <meta property="og:updated_time" content={modified} />}
-    {seoEnabled && !generated && twitterHandle && <meta name="twitter:creator" content={twitterHandle} />}
-    {seoEnabled && socialCover && <meta name="twitter:card" content="summary_large_image" />}
-    {seoEnabled && socialCover && <meta name="twitter:image:src" content={image} />}
-    {seoEnabled && socialCover && <meta name="twitter:image:alt" content={title} />}
-    {seoEnabled && article && seoAuthors[0] && <meta property="article:author" content={seoAuthors[0].name} />}
-    {seoEnabled && seoTags.toReversed().map(tag => <meta property="article:tag" content={tag} />)}
-    {seoEnabled && published && <meta property="article:published_time" content={published} />}
-    {seoEnabled && modified && <meta property="article:modified_time" content={modified} />}
-    {seoEnabled && !generated && <meta property="og:image:alt" content={title} />}
     <meta name="keywords" content={keywords} />
-    {seoEnabled && twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
     {siteConfig.verification.yandex && <meta name="yandex-verification" content={siteConfig.verification.yandex} />}
     {siteConfig.verification.baidu && <meta name="baidu-site-verification" content={siteConfig.verification.baidu} />}
     {metaHead.map(([, attrs]) => <meta {...attrs} />)}
     {linkHead.map(([, attrs]) => <link {...attrs} />)}
-    {jsonLd[0] && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd[0])}></script>}
     {scriptHead.map(([, attrs, content]) => <script is:inline {...attrs} set:html={content ?? ''}></script>)}
-    {jsonLd.slice(1).map(data => <script is:inline type="application/ld+json" set:html={JSON.stringify(data)}></script>)}
   </head>
-  <body data-pagefind-ignore={noindex ? 'all' : undefined} data-pagefind-ready={String(import.meta.env.PROD)}>
+  <body data-pagefind-ignore={noindex || !pageSearchable ? 'all' : undefined} data-pagefind-ready={String(import.meta.env.PROD)}>
+    {nprogressEnabled && <div id="nprogress" aria-hidden="true" hidden><div class="bar"></div></div>}
     <script is:inline id="ermaozi-page-data" type="application/json" set:html={clientPageData}></script>
     <div id="app">
-      <div class:list={['theme-plume vp-layout', pageClass, { 'footer-no-border': singleHomeSection }]}>
+      {bare ? <>
+        {globalEncryption && <GlobalEncrypt payloads={globalEncryption} {lang} />}
+        <div class="global-protected" data-global-protected hidden={Boolean(globalEncryption)}><slot /></div>
+      </> : <div class:list={['theme-plume vp-layout', pageClass, { 'footer-no-border': singleHomeSection }]}>
         {globalEncryption && <GlobalEncrypt payloads={globalEncryption} {lang} />}
         <div class="global-protected" data-global-protected hidden={Boolean(globalEncryption)}>
           <UserSlot name="layout-top" {entry} {lang} {route} {layout} />
-          <Header {lang} {translationRoute} {languageLinks} home={isHome} hasSidebar={entry?.data.type === 'doc' && entry.data.sidebar !== false} fixed={layout === 'posts'} />
+          {entry?.data.navbar !== false && <Header {lang} {translationRoute} {languageLinks} home={isHome} {hasSidebar} fixed={layout === 'posts'} />}
           <Watermark options={watermarkOptions} title={site.siteName} />
           {customContent ? <UserSlot name="custom-content" {entry} {lang} {route} {layout} /> : <slot />}
           {showSignDown && <SignDown {lang} />}
-          <Footer {lang} hasSidebar={entry?.data.type === 'doc' && entry.data.sidebar !== false} enabled={entry?.data.footer !== false} />
+          <Footer {lang} {hasSidebar} enabled={entry?.data.footer !== false} />
           <UserSlot name="layout-bottom" {entry} {lang} {route} {layout} />
           <BackToTop {lang} enabled={entry?.data.backToTop !== false && !shortHomeConfig} />
           <Bulletin pageEnabled={entry?.data.bulletin !== false} {lang} {route} />
         </div>
-      </div>
+      </div>}
     </div>
     {pageTransition && <script is:inline>
       (() => {
@@ -231,6 +278,7 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
           const next = new URL(link.href, location.href)
           if (next.origin !== location.origin || !/^https?:$/.test(next.protocol) || next.pathname === location.pathname && next.search === location.search) return
           event.preventDefault()
+          document.dispatchEvent(new CustomEvent('plume-navigation-start'))
           if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
             location.href = next.href
             return
@@ -257,6 +305,44 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
       import { useEChartsConfig } from '../lib/echarts-config.ts'
       import { outlineOfHtml, type OutlineItem, type ThemeOutline } from '../lib/outline.ts'
       import { initPageNavigation } from '../lib/page-navigation.ts'
+
+      const nprogress = document.getElementById('nprogress')
+      const nprogressBar = nprogress?.querySelector<HTMLElement>('.bar')
+      if (nprogress && nprogressBar) {
+        let pendingNavigations = 0
+        let finishTimer = 0
+        document.addEventListener('plume-navigation-start', () => {
+          pendingNavigations += 1
+          if (pendingNavigations > 1) return
+          clearTimeout(finishTimer)
+          nprogress.hidden = false
+          nprogress.style.opacity = '1'
+          nprogressBar.style.transition = 'none'
+          nprogressBar.style.transform = 'translate3d(-92%,0,0)'
+          void nprogress.offsetWidth
+          nprogressBar.style.transition = 'transform 800ms ease'
+          nprogressBar.style.transform = 'translate3d(-20%,0,0)'
+        })
+        document.addEventListener('plume-navigation-end', () => {
+          pendingNavigations = Math.max(0, pendingNavigations - 1)
+          if (pendingNavigations) return
+          nprogressBar.style.transition = 'transform 200ms ease'
+          nprogressBar.style.transform = 'translate3d(0,0,0)'
+          finishTimer = window.setTimeout(() => {
+            nprogress.style.opacity = '0'
+            nprogress.hidden = true
+          }, 200)
+        })
+        document.addEventListener('click', event => {
+          if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+          const link = event.target instanceof Element ? event.target.closest('a[href]') : null
+          if (!(link instanceof HTMLAnchorElement) || link.target && link.target !== '_self' || link.hasAttribute('download')) return
+          const next = new URL(link.href, location.href)
+          if (next.origin === location.origin && /^https?:$/.test(next.protocol) && (next.pathname !== location.pathname || next.search !== location.search)) {
+            document.dispatchEvent(new CustomEvent('plume-navigation-start'))
+          }
+        })
+      }
 
       initPageNavigation()
 
@@ -638,6 +724,7 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
       }
 
       const photoSwipeSelector = document.documentElement.dataset.photoSwipeSelector ?? ''
+      const photoSwipeLocale = JSON.parse(document.documentElement.dataset.photoSwipeLocale ?? '{}') as Record<string, string>
       const photoSwipeLoading = '<div class="photo-swipe-loading"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" preserveAspectRatio="xMidYMid" viewBox="25 25 50 50"><animateTransform attributeName="transform" type="rotate" dur="2s" keyTimes="0;1" repeatCount="indefinite" values="0;360"></animateTransform><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><animate attributeName="stroke-dasharray" dur="1.5s" keyTimes="0;0.5;1" repeatCount="indefinite" values="1,200;90,200;1,200"></animate><animate attributeName="stroke-dashoffset" dur="1.5s" keyTimes="0;0.5;1" repeatCount="indefinite" values="0;-35px;-125px"></animate></circle></svg></div>'
       let activePhotoSwipe: PhotoSwipeInstance | null = null
       const photoSwipeLoader = photoSwipeSelector ? import('photoswipe').then(module => module.default) : null
@@ -660,12 +747,12 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
           },
         })
         if (document.documentElement.dataset.photoSwipeFullscreen === 'true' && document.fullscreenEnabled) viewer.ui?.registerElement({
-          name: 'fullscreen', order: 7, isButton: true, title: document.documentElement.lang.startsWith('zh') ? '切换全屏' : 'Switch to fullscreen',
+          name: 'fullscreen', order: 7, isButton: true, title: photoSwipeLocale.fullscreen,
           html: '<svg class="pswp__icn" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M249.5 270.833H437v-75H212a37.5 37.5 0 0 0-37.5 37.5v225h75v-187.5zm-37.5 600h225v-75H249.5v-187.5h-75v225a37.5 37.5 0 0 0 37.5 37.5zm637.5-37.5v-225h-75v187.5H587v75h225a37.5 37.5 0 0 0 37.5-37.5zM587 270.833h187.5v187.5h75v-225a37.5 37.5 0 0 0-37.5-37.5H587v75z"/></svg>',
           onClick: () => { void (document.fullscreenElement ? document.exitFullscreen() : viewer.element?.requestFullscreen()) },
         })
         if (document.documentElement.dataset.photoSwipeDownload === 'true') viewer.ui?.registerElement({
-          name: 'download', order: 8, isButton: true, tagName: 'a', title: document.documentElement.lang.startsWith('zh') ? '下载图片' : 'Download Image',
+          name: 'download', order: 8, isButton: true, tagName: 'a', title: photoSwipeLocale.download,
           html: { isCustomSVG: true, inner: '<path d="M20.5 14.3 17.1 18V10h-2.2v7.9l-3.4-3.6L10 16l6 6.1 6-6.1-1.5-1.6ZM23 23H9v2h14" id="pswp__icn-download"/>', outlineID: 'pswp__icn-download' },
           onInit: element => {
             element.setAttribute('download', '')
@@ -681,7 +768,6 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
         const PhotoSwipe = await photoSwipeLoader
         const images = [...document.querySelectorAll<HTMLImageElement>(photoSwipeSelector)]
         const dataSource: any[] = images.map(element => ({ html: photoSwipeLoading, element, msrc: element.src }))
-        const chinese = document.documentElement.lang.startsWith('zh')
         const viewer = new PhotoSwipe({
           preloaderDelay: 0,
           showHideAnimationType: 'zoom',
@@ -689,10 +775,10 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
           index: images.indexOf(image),
           closeOnVerticalDrag: document.documentElement.dataset.photoSwipeScrollClose === 'true',
           wheelToZoom: document.documentElement.dataset.photoSwipeScrollClose !== 'true',
-          closeTitle: chinese ? '关闭' : 'Close',
-          zoomTitle: chinese ? '缩放' : 'Zoom in/out',
-          arrowPrevTitle: chinese ? '上一个 (左箭头)' : 'Prev (Arrow Left)',
-          arrowNextTitle: chinese ? '下一个 (右箭头)' : 'Next (Arrow Right)',
+          closeTitle: photoSwipeLocale.close,
+          zoomTitle: photoSwipeLocale.zoom,
+          arrowPrevTitle: photoSwipeLocale.arrowPrev,
+          arrowNextTitle: photoSwipeLocale.arrowNext,
         })
         activePhotoSwipe = viewer
         registerPhotoSwipeUi(viewer)

@@ -3,6 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { siteConfig } from '../../site.config.mjs'
 import { withBase, withoutBase } from '../lib/client-utils.ts'
+import { sitemapOutputNames } from '../lib/sitemap-options.mjs'
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const output = path.join(project, 'dist')
@@ -56,7 +57,7 @@ for (const [route, html] of pages) {
   }
 }
 
-const sitemapText = await readFile(path.join(output, 'sitemap.xml'), 'utf8')
+const sitemapText = await readFile(path.join(output, sitemapOutputNames(siteConfig).sitemap), 'utf8')
 const sitemapLocations = [...sitemapText.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1])
 const sitemapErrors = sitemapLocations.filter(location => !location.startsWith(new URL(withBase('/', base), siteOrigin).toString()))
 

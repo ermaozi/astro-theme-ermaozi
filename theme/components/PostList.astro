@@ -8,7 +8,7 @@ import PageViews from './vue/stats/PageViews.vue'
 import { siteConfig } from '../../site.config.mjs'
 import UserSlot from './UserSlot.astro'
 import { postCollectionsFor, type ResolvedPostCollection } from '../lib/collections'
-import { readingTimeOf } from '../lib/locales'
+import { localeOf, readingTimeOf } from '../lib/locales'
 import { normalizePrefix, withBase, withBaseInHtml } from '../lib/client-utils'
 
 interface Props {
@@ -20,8 +20,8 @@ interface Props {
 
 const { posts, lang, limit: requestedLimit, collection = postCollectionsFor(lang)[0] } = Astro.props as Props
 const pagination = (collection?.pagination ?? siteConfig.pagination) as false | number | { perPage?: number } | undefined
-const transition = siteConfig.transition as false | { postList?: boolean }
-const postListTransition = transition !== false && transition.postList !== false
+const transition = localeOf(lang).transition as boolean | { postList?: boolean }
+const postListTransition = transition !== false && (typeof transition !== 'object' || transition.postList !== false)
 const limit = requestedLimit ?? (pagination === false
   ? posts.length
   : typeof pagination === 'number'
@@ -30,6 +30,7 @@ const limit = requestedLimit ?? (pagination === false
 const en = !lang.startsWith('zh')
 const tagsTheme = (collection?.tagsTheme ?? siteConfig.tagsTheme ?? 'colored') as 'colored' | 'gray' | 'brand'
 const metaConfig = { ...(siteConfig.meta ?? {}), ...(collection?.meta ?? {}) } as PostMetaConfig
+const createTimeEnabled = localeOf(lang).createTime !== false
 const configuredPostCover = collection?.postCover ?? siteConfig.postCover
 const pages = Math.ceil(posts.length / limit)
 const visiblePosts = posts.slice(0, limit)
@@ -51,7 +52,7 @@ const visiblePostData = await Promise.all(visiblePosts.map(async (post, index) =
     post,
     encrypted,
     categories: categoryListOf(post),
-    date: metaConfig.createTime === false ? '' : createTimeTextOf(post, metaConfig.createTime === true ? 'short' : metaConfig.createTime ?? 'short'),
+    date: !createTimeEnabled || metaConfig.createTime === false ? '' : createTimeTextOf(post, metaConfig.createTime === true ? 'short' : metaConfig.createTime ?? 'short'),
     readingTime: readingTimeOf(lang, wordCountOf(post)),
     excerpt,
     cover: cover && { layout, compact: !excerpt && layout !== 'top' && Boolean(cover.compact), compactEnabled: !excerpt && Boolean(cover.compact), ratio, width },

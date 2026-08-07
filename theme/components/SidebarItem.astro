@@ -21,7 +21,7 @@ const badge = typeof item.badge === 'string' ? { text: item.badge } : item.badge
     <div class="indicator"></div>
     {item.icon && <ThemeIcon icon={item.icon} class={item.separator ? 'separator' : ''} />}
     {item.link && !item.separator
-      ? <VPLink href={item.link} aria-current={active ? 'page' : undefined}><TextTag class="text"><span set:html={item.text}></span>{badge && <VPBadge class="vp-menu-badge" {...badge} />}</TextTag></VPLink>
+      ? <VPLink href={item.link} rel={item.rel} target={item.target} aria-current={active ? 'page' : undefined}><TextTag class="text"><span set:html={item.text}></span>{badge && <VPBadge class="vp-menu-badge" {...badge} />}</TextTag></VPLink>
       : <TextTag class:list={['text', { separator: item.separator }]}><span set:html={item.text}></span>{badge && <VPBadge class="vp-menu-badge" {...badge} />}</TextTag>}
     {collapsible && <button class="caret" type="button" aria-label={`${collapsed ? 'Expand' : 'Collapse'} ${item.text}`} aria-expanded={!collapsed} tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button>}
   </div>}

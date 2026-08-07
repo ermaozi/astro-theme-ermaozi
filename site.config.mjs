@@ -14,7 +14,7 @@ export const siteConfig = defineSiteConfig({
   // ── 站点身份与全局行为 ──────────────────────────────────────────────
 
   // 生产站点完整域名，用于 canonical、站点地图、分享卡片等绝对地址。
-  // 必须包含协议；正式发布前请替换示例域名。
+  // 必须包含协议；正式发布前请替换示例域名。迁移 Plume 配置时也可继续使用同义字段 hostname。
   origin: 'https://example.com',
 
   // 部署子路径。自定义域名或根域名使用 '/'；部署到 example.com/project/ 时填写 '/project/'。
@@ -23,6 +23,9 @@ export const siteConfig = defineSiteConfig({
 
   // 全站 Logo。支持站内路径或完整 URL，同时用作默认头像和部分 SEO 图片。
   logo: '/img/logo.svg',
+
+  // 深色模式 Logo。若深浅主题共用同一图片，可与 logo 相同；省略时自动回退到 logo。
+  logoDark: '/img/logo.svg',
 
   // 外观模式：true 允许浅色/深色/跟随系统；false 固定浅色；
   // 'dark' 默认深色但允许切换；'force-dark' 固定深色并隐藏开关。
@@ -86,6 +89,22 @@ export const siteConfig = defineSiteConfig({
     createTime: 'short',
   },
 
+  // 是否显示创建时间。'only-posts' 只在博客文章及列表显示，false 全站隐藏。
+  // 具体日期格式仍由上方 meta.createTime 决定。
+  createTime: true,
+
+  // Markdown 正文中的外部链接是否显示外链图标；单页可用 frontmatter 覆盖。
+  externalLinkIcon: true,
+
+  // 正文目录的标题层级和位置。outline 可设为 false、单个层级、[最小, 最大] 或 'deep'；
+  // aside 可设为 false 隐藏，也可设为 'left' 放到正文左侧。
+  outline: [2, 3],
+  aside: true,
+
+  // 文档/文章底部的自动前后页导航，可分别全局关闭，也可在单页 frontmatter 覆盖。
+  prevPage: true,
+  nextPage: true,
+
   // 阅读时长估算速度；中文站通常可按“字/分钟”理解。
   readingTime: { wordPerMinute: 300 },
 
@@ -125,8 +144,16 @@ export const siteConfig = defineSiteConfig({
   // 代码高亮：Twoslash 类型提示、行号起始阈值、缩进线和彩色括号。
   codeHighlighter: { twoslash: true, lineNumbers: 10, renderIndentGuides: true, colorizedBrackets: true },
 
-  // 兼容插件选项。imageSize 为 true 时会在构建期读取图片尺寸并补全宽高。
-  plugins: { markdownPower: { imageSize: false } },
+  // Plume 内置插件兼容选项。nprogress 显示站内页面切换进度；设为 false 可关闭。
+  // copyCode、shiki、readingTime 等旧 plugins 写法仍兼容，但新配置优先使用同名顶层字段。
+  // Plume 的 cache、configFile 与 miniSearch 属于 VuePress/MiniSearch 平台能力，Astro/Pagefind 没有同构行为；迁移配置时请删除。
+  plugins: {
+    nprogress: true,
+    // markdownPower: false, // 一次关闭 Markdown Power 整组增强；图片、数学、提示与图表仍由各自选项控制。
+    // seo: false, // 关闭自动 Open Graph、Twitter Card 和 JSON-LD；对象写法可配置 author、canonical、restrictions 等。
+    // twitterID 仅用于兼容 Plume SEO 插件；通常直接在上方 social 中配置 X/Twitter 主页即可自动识别账号。
+    // sitemap: false, // 不生成 sitemap；对象写法可配置 extraUrls、excludePaths、changefreq 和输出文件名等。
+  },
 
   // 代码块和增强表格的复制按钮。
   copyCode: true,
@@ -134,13 +161,27 @@ export const siteConfig = defineSiteConfig({
   // 页面右上角上下文菜单中的 AI 服务入口；false 可关闭整个菜单。
   pageContextMenu: { chatgpt: true, claude: true, perplexity: true },
 
+  // 为 LLM 生成站点目录、全文合集和每页 Markdown，并启用标题旁的页面上下文菜单。
+  // Plume 默认关闭；设为 false 后不会生成这些额外文件，单页也可用 frontmatter 的 llmstxt: false 排除。
+  llmstxt: {
+    llmsTxt: true,
+    llmsFullTxt: true,
+    llmsPageTxt: true,
+    stripHTML: true,
+    // '/' 只输出根语言；启用多语言后可改为 'all'，也可填写某个 locale 的 home 路径。
+    locale: '/',
+    // domain: 'https://example.com', // 给生成链接补充完整域名。
+    // linkExtension: '.md',          // 可改为 '.html'，让目录直接链接普通页面。
+  },
+
   // ── 语言、内容集合与导航 ───────────────────────────────────────────
 
   // 多语言总开关。false 会隐藏语言切换器，并停止输出页面及站点地图中的 hreflang；
   // 已存在的 /en/ 示例页仍可直接访问，便于以后启用或测试。改为 true 即可重新开启。
   multilingual: false,
 
-  // locales 保存各语言的路径、文案、内容集合和导航。
+  // locales 保存各语言的路径、文案、内容集合和导航。对象字段会与全局默认值浅合并；
+  // 可按语言覆盖 logo/logoDark、profile、social、navbar、footer、appearance、outline 等。
   // 即使 multilingual 为 false，也应保留已有内容对应的 locale，确保这些文件仍能正确构建。
   // 新增语言时应增加完整语言块、对应 content/<语言目录>/，并使用独立的 home 前缀。
   locales: {
@@ -207,8 +248,9 @@ export const siteConfig = defineSiteConfig({
         },
       ],
 
-      // 顶部导航。支持 text/link，也兼容 label/href；items 创建下拉菜单。
-      navigation: [
+      // 顶部导航。navbar 是 Plume 的标准字段；也兼容旧字段 navigation。
+      // 支持 text/link 和 label/href；items 创建下拉菜单。省略时会生成首页、博客、标签、归档入口。
+      navbar: [
         // activeMatch 是匹配当前路径的正则字符串，用于高亮导航项。
         { label: '<span>博客</span>', href: '/blog/', icon: 'home', activeMatch: '^/(blog|article)/' },
         {
@@ -290,7 +332,7 @@ export const siteConfig = defineSiteConfig({
           ],
         },
       ],
-      navigation: [
+      navbar: [
         { label: '<span>Blog</span>', href: '/en/blog/', icon: 'home', activeMatch: '^/en/(blog|article)/' },
         {
           label: 'Docs',
@@ -326,6 +368,11 @@ export const siteConfig = defineSiteConfig({
     },
   },
 
+  // 可选的传统全局多侧栏。通常优先使用上方 Doc 集合的 sidebar；需要按路径复用时可启用：
+  // sidebar: { '/docs/': 'auto', '/guide/': [{ text: '开始', link: 'getting-started' }] },
+  // 设为 false 只隐藏滚动条，侧栏仍可滚动；集合内的同名配置优先。
+  sidebarScrollbar: true,
+
   // ── 可选的互动与外部服务 ───────────────────────────────────────────
 
   // 功能总开关。只有总开关和对应服务配置都有效时，客户端代码才会加载。
@@ -339,6 +386,7 @@ export const siteConfig = defineSiteConfig({
   },
 
   // 源码仓库信息，用于“编辑此页”、贡献者链接和变更记录。
+  // 迁移 Plume 配置时也兼容顶层 docsRepo、docsBranch、docsDir 和 editLinkPattern。
   repository: {
     // 仓库首页 URL；留空时不显示“编辑此页”。
     url: '',
@@ -375,6 +423,14 @@ export const siteConfig = defineSiteConfig({
 
   // 大部分开关只有在正文使用对应语法时才加载客户端依赖；不使用时不会增加页面请求。
   markdown: {
+    // Markdown 图片增强。各功能默认关闭；这里启用 Plume 的 `![说明 =宽x高](地址)` 尺寸语法。
+    // 可选功能：figure（图注）、lazyload（全部懒加载）、mark（#light/#dark 主题图片）、
+    // legacySize（旧尺寸语法）、obsidianSize（`说明|宽x高`）。
+    image: { size: true },
+
+    // 构建期图片尺寸：false 关闭，true/'local' 只读取本地图片，'all' 也探测远程图片。
+    imageSize: false,
+
     // ==标记== 的渲染方式；lazy 保持按需交互。
     mark: 'lazy',
 
@@ -395,6 +451,15 @@ export const siteConfig = defineSiteConfig({
 
     // 增强表格复制与显示。
     table: true,
+
+    // 按需启用的 Markdown Power 模块；示例站开启这些功能用于文档演示。
+    demo: true,
+    encrypt: true,
+    codeTree: true,
+    collapse: true,
+    timeline: true,
+    chat: true,
+    field: true,
 
     // Obsidian 兼容：Wiki 链接、嵌入、Callout 和 Obsidian 注释。
     obsidian: { wikiLink: true, embedLink: true, callout: true, comment: true },

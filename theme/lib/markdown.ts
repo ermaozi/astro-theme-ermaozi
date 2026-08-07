@@ -1,6 +1,11 @@
 import { attrs } from '@mdit/plugin-attrs'
 import { alert as alertPlugin } from '@mdit/plugin-alert'
+import { figure, type MarkdownItFigureOptions } from '@mdit/plugin-figure'
 import { footnote } from '@mdit/plugin-footnote'
+import { imgLazyload } from '@mdit/plugin-img-lazyload'
+import { imgMark, type MarkdownItImgMarkOptions } from '@mdit/plugin-img-mark'
+import { imgSize, obsidianImgSize } from '@mdit/plugin-img-size'
+import * as imageSizePlugins from '@mdit/plugin-img-size'
 import { katex, type MarkdownItKatexOptions } from '@mdit/plugin-katex-slim'
 import { mark } from '@mdit/plugin-mark'
 import { plantuml, type MarkdownItPlantumlOptions } from '@mdit/plugin-plantuml'
@@ -69,7 +74,7 @@ if (mathConfiguration && mathConfiguration.type === 'mathjax') {
   mathjaxInstance = mathjax.createMathjaxInstance(options)
 }
 
-const highlighter = await createHighlighter({
+const highlighter = siteConfig.codeHighlighter === false ? null : await createHighlighter({
   themes: ['vitesse-light', 'vitesse-dark'],
   langs: ['astro', 'bash', 'css', 'diff', 'go', 'html', 'javascript', 'json', 'markdown', 'python', 'rust', 'sql', 'tsx', 'typescript', 'vue', 'yaml'],
 })
@@ -115,7 +120,8 @@ const copyCodeLocale = (sourcePath = '') => {
   const localePath = Object.keys(copyCodeOptions.locales ?? {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]
   return { ...preset, ...copyCodeOptions.locales?.[localePath] }
 }
-const obsidianOptions = ((siteConfig.markdown as { obsidian?: ObsidianOptions }).obsidian ?? true) as ObsidianOptions
+const markdownPowerEnabled = siteConfig.plugins.markdownPower !== false
+const obsidianOptions = (markdownPowerEnabled ? (siteConfig.markdown as { obsidian?: ObsidianOptions }).obsidian ?? true : false) as ObsidianOptions
 type PlotOptions = { trigger?: 'hover' | 'click', effect?: 'mask' | 'blur' }
 type CanIUseOptions = { mode?: 'embed' | 'baseline' | 'image' | string }
 type NpmToPackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun' | 'deno'
@@ -126,7 +132,16 @@ type IncludeOptions = {
   resolveImagePath?: boolean
   resolveLinkPath?: boolean
 }
-const markdownPower = siteConfig.markdown as {
+type MarkdownImageOptions = {
+  figure?: boolean | MarkdownItFigureOptions
+  lazyload?: boolean
+  mark?: boolean | MarkdownItImgMarkOptions
+  size?: boolean
+  legacySize?: boolean
+  obsidianSize?: boolean
+}
+const legacyImageSize = (imageSizePlugins as unknown as { legacyImgSize: typeof imgSize }).legacyImgSize
+const markdownOptions = siteConfig.markdown as {
   abbr?: boolean | Record<string, string>
   annotation?: boolean | Record<string, string | string[]>
   plot?: boolean | PlotOptions
@@ -146,12 +161,25 @@ const markdownPower = siteConfig.markdown as {
   pdf?: boolean | { pdfjsUrl?: string }
   audioReader?: boolean
   artPlayer?: boolean
+  demo?: boolean
+  encrypt?: boolean | Record<string, unknown>
+  codeTree?: boolean | Record<string, unknown>
+  collapse?: boolean
+  fileTree?: boolean | Record<string, unknown>
+  timeline?: boolean
+  chat?: boolean
+  field?: boolean
   env?: {
     references?: Record<string, string | { href: string, title?: string }>
     abbreviations?: Record<string, string>
     annotations?: Record<string, string | string[]>
   }
 }
+const markdownPower = (markdownPowerEnabled ? markdownOptions : {}) as typeof markdownOptions
+const markdownChart = markdownOptions
+const markdownImage = typeof (siteConfig.markdown as { image?: unknown }).image === 'object'
+  ? (siteConfig.markdown as { image: MarkdownImageOptions }).image
+  : false
 const markdownEnv = markdownPower.env ?? {}
 const abbreviationPresets = {
   ...markdownEnv.abbreviations,
@@ -163,13 +191,13 @@ const annotationPresets = {
 }
 const globalPlotOptions = typeof markdownPower.plot === 'object' ? markdownPower.plot : {}
 const canIUseOptions = () => markdownPower.caniuse === true ? {} : typeof markdownPower.caniuse === 'object' ? markdownPower.caniuse : false
-const includeOptions = (): Required<IncludeOptions> | false => markdownPower.include === false ? false : {
+const includeOptions = (): Required<IncludeOptions> | false => markdownOptions.include === false ? false : {
   resolvePath: reference => reference,
   deep: false,
   useComment: true,
   resolveImagePath: true,
   resolveLinkPath: true,
-  ...(typeof markdownPower.include === 'object' ? markdownPower.include : {}),
+  ...(typeof markdownOptions.include === 'object' ? markdownOptions.include : {}),
 }
 const twoslashConfig = typeof highlighterOptions.twoslash === 'object' ? highlighterOptions.twoslash : {}
 const defaultTwoslash = defaultTwoslashOptions()
@@ -2471,7 +2499,7 @@ const chartPlugin = (md: MarkdownIt) => {
       : `${heading}<div class="echarts-wrapper" data-echarts data-chart-type="${configType}" data-chart-config="${data}" data-chart-index="${index++}"><div class="echarts-container"></div>${loading('echarts-loading', 360)}</div>`
   }
   for (const type of ['chartjs', 'echarts'] as const) {
-    if (!markdownPower[type]) continue
+    if (!markdownChart[type]) continue
     md.use(container, type, {
       render(tokens: any[], tokenIndex: number, _options: unknown, env: { sourcePath?: string }) {
         if (tokens[tokenIndex].nesting === -1) return ''
@@ -2496,21 +2524,21 @@ const chartPlugin = (md: MarkdownIt) => {
     })
   }
   md.renderer.rules.chart_empty = () => ''
-  if (markdownPower.flowchart) md.renderer.rules.flowchart = (tokens, tokenIndex) => {
+  if (markdownChart.flowchart) md.renderer.rules.flowchart = (tokens, tokenIndex) => {
     const configuredPreset = tokens[tokenIndex].info.trim().split(':', 2)[1]
     const preset = configuredPreset === 'ant' || configuredPreset === 'pie' || configuredPreset === 'vue' ? configuredPreset : 'vue'
     const data = Buffer.from(tokens[tokenIndex].content).toString('base64')
     const id = `flowchart-${flowIndex++}`
     return `${loading('flowchart-loading', 192)}<div class="flowchart-wrapper ${preset}" style="display:none" id="${id}" data-flowchart data-flow-code="${data}" data-flow-preset="${preset}"></div>\n`
   }
-  if (markdownPower.markmap) md.renderer.rules.markmap = (tokens, tokenIndex) => {
+  if (markdownChart.markmap) md.renderer.rules.markmap = (tokens, tokenIndex) => {
     const data = Buffer.from(tokens[tokenIndex].content).toString('base64')
     return `<div class="markmap-wrapper" data-markmap data-markmap-content="${data}" data-markmap-index="${markmapIndex++}"><svg class="markmap-svg"></svg>${loading('markmap-loading', 360)}</div>\n`
   }
   const fence = md.renderer.rules.fence
   md.renderer.rules.fence = (tokens, tokenIndex, options, env, self) => {
     const [type, title = ''] = tokens[tokenIndex].info.trim().split(':', 2)
-    if (markdownPower.echarts && type === 'echarts') return render('echarts', title, tokens[tokenIndex].content)
+    if (markdownChart.echarts && type === 'echarts') return render('echarts', title, tokens[tokenIndex].content)
     return fence ? fence(tokens, tokenIndex, options, env, self) : self.renderToken(tokens, tokenIndex, options)
   }
 }
@@ -2559,9 +2587,11 @@ const createMarkdown = () => {
     token.attrSet(attribute, `${resolved}${suffix}`)
   }
 
-  md.use(cjkFriendly)
-  md.use(attrs)
-  md.use(footnote)
+  if (markdownPowerEnabled) {
+    md.use(cjkFriendly)
+    md.use(attrs)
+    md.use(footnote)
+  }
   if (mathjaxPlugin && mathjaxInstance) md.use(mathjaxPlugin, mathjaxInstance)
   else if (mathConfiguration !== false) {
     const { type: _mathType, copy: _mathCopy, mhchem: _mathMhchem, ...mathOptions } = mathConfiguration
@@ -2570,24 +2600,35 @@ const createMarkdown = () => {
       transformer: (content: string) => content.replaceAll(/^(?<tag><[a-z]+ )/gu, '$<tag>v-pre '),
     })
   }
-  md.use(mark)
-  md.use(sub)
-  md.use(sup)
   md.use(emoji)
-  md.use(tasklist)
-  md.use(iconPlugin)
-  md.use(envPresetPlugin)
-  if (markdownPower.abbr) md.use(abbrPlugin, abbreviationPresets)
-  if (markdownPower.annotation) md.use(annotationPlugin, annotationPresets)
-  if (markdownPower.plot !== false) md.use(plotPlugin)
-  installObsidian(md, container, obsidianOptions, {
-    artPlayer: src => markdownPower.artPlayer ? renderArtPlayer('', src) : `<ArtPlayer src="${escapeHtml(src)}" />`,
-    pdf: (src, page, height) => markdownPower.pdf ? renderPdfEmbed(`${page}${height ? ` height="${height}"` : ''}`, src) : `<PDFViewer src="${escapeHtml(src)}" width="100%" page="${escapeHtml(page)}"${height ? ` height="${escapeHtml(height)}"` : ''} />`,
-    markdown: (source, sourcePath, stack, pages) => renderPlain(source, false, sourcePath, stack, pages),
-  })
-  const plantumlOptions = markdownPower.plantuml
+  if (markdownPowerEnabled) {
+    md.use(mark)
+    md.use(sub)
+    md.use(sup)
+    md.use(tasklist)
+    md.use(iconPlugin)
+    md.use(envPresetPlugin)
+    if (markdownPower.abbr) md.use(abbrPlugin, abbreviationPresets)
+    if (markdownPower.annotation) md.use(annotationPlugin, annotationPresets)
+    if (markdownPower.plot !== false) md.use(plotPlugin)
+    installObsidian(md, container, obsidianOptions, {
+      artPlayer: src => markdownPower.artPlayer ? renderArtPlayer('', src) : `<ArtPlayer src="${escapeHtml(src)}" />`,
+      pdf: (src, page, height) => markdownPower.pdf ? renderPdfEmbed(`${page}${height ? ` height="${height}"` : ''}`, src) : `<PDFViewer src="${escapeHtml(src)}" width="100%" page="${escapeHtml(page)}"${height ? ` height="${escapeHtml(height)}"` : ''} />`,
+      markdown: (source, sourcePath, stack, pages) => renderPlain(source, false, sourcePath, stack, pages),
+    })
+  }
+  const plantumlOptions = markdownChart.plantuml
   if (Array.isArray(plantumlOptions)) plantumlOptions.forEach(options => md.use(plantuml, options))
   else if (plantumlOptions) for (const name of ['chronology', 'gantt', 'json', 'latex', 'math', 'mindmap', 'regex', 'salt', 'uml', 'wbs', 'yaml']) md.use(plantuml, { name })
+
+  if (markdownImage) {
+    if (markdownImage.figure) md.use(figure, typeof markdownImage.figure === 'object' ? markdownImage.figure : {})
+    if (markdownImage.lazyload) md.use(imgLazyload)
+    if (markdownImage.size) md.use(imgSize)
+    if (markdownImage.legacySize) md.use(legacyImageSize)
+    if (markdownImage.obsidianSize) md.use(obsidianImgSize)
+    if (markdownImage.mark) md.use(imgMark, typeof markdownImage.mark === 'object' ? markdownImage.mark : {})
+  }
 
   md.use(anchor, {
     slugify: (value: string) => slugger.slug(value),
@@ -2689,6 +2730,9 @@ const createMarkdown = () => {
     },
   })
 
+  md.use(chartPlugin)
+
+  if (markdownPowerEnabled) {
   const tableSetting = (siteConfig.markdown as { table?: boolean | { align?: 'left' | 'center' | 'right', copy?: boolean | 'all' | 'html' | 'md', maxContent?: boolean, fullWidth?: boolean } }).table
   if (tableSetting) {
     const defaults = typeof tableSetting === 'object' ? tableSetting : {}
@@ -2750,7 +2794,7 @@ const createMarkdown = () => {
     })
   }
 
-  md.use(collapsePlugin)
+  if (markdownPower.collapse) md.use(collapsePlugin)
 
   const repl = (siteConfig.markdown as { repl?: false | Record<string, boolean> }).repl
   for (const lang of ['go', 'kotlin', 'rust', 'python']) {
@@ -2769,11 +2813,9 @@ const createMarkdown = () => {
     })
   }
 
-  md.use(fileTreePlugin)
+  if (markdownPower.fileTree !== false) md.use(fileTreePlugin)
 
-  md.use(timelinePlugin)
-
-  md.use(chartPlugin)
+  if (markdownPower.timeline) md.use(timelinePlugin)
 
   md.use(container, 'steps', {
     render(tokens: any[], index: number) {
@@ -2829,7 +2871,7 @@ const createMarkdown = () => {
   md.use(container, 'window', windowContainer('window'))
   md.use(container, 'demo-wrapper', windowContainer('demo-wrapper'))
 
-  md.use(container, 'code-tree', {
+  if (markdownPower.codeTree) md.use(container, 'code-tree', {
     render(tokens: any[], index: number) {
       if (tokens[index].nesting === -1) return '<div class="code-tree-empty" hidden><span class="vpi-code-tree-empty"></span></div></div></div>\n'
       const info = tokens[index].info.slice('code-tree'.length).trim()
@@ -2942,32 +2984,28 @@ const createMarkdown = () => {
     const active = tabIndex === activeIndex
     return `</div><div id="${prefix}-${group}-${tabIndex}" class="${panelClass}${active ? ' active' : ''}" role="tabpanel" aria-expanded="${active}"><div class="${panelClass}-title">${md.renderInline(label ?? '')}</div>`
   }
+  }
 
   const originalImage = md.renderer.rules.image
   md.renderer.rules.image = (tokens, index, options, env: any, self) => {
     const token = tokens[index]
     resolveIncludedPath('src', token, env)
-    const rawAlt = token.content
-    const size = rawAlt.match(/\s+=(\d+)x(\d+)$/)
-    if (size) {
-      token.content = rawAlt.slice(0, size.index).trimEnd()
-      token.attrSet('alt', token.content)
-      token.attrSet('width', size[1])
-      token.attrSet('height', size[2])
-    }
     const src = token.attrGet('src') ?? ''
-    if (siteConfig.mediaOrigin && src.startsWith(`${siteConfig.mediaOrigin}/`) && size) {
+    const width = token.attrGet('width') ?? ''
+    if (siteConfig.mediaOrigin && src.startsWith(`${siteConfig.mediaOrigin}/`) && /^\d+$/.test(width)) {
       const path = new URL(src).pathname
-      const widths = [480, 768, 1080, 1440].filter(width => width < Number(size[1]))
+      const widths = [480, 768, 1080, 1440].filter(candidate => candidate < Number(width))
       token.attrSet('srcset', [
-        ...widths.map(width => `${siteConfig.mediaOrigin}/cdn-cgi/image/width=${width}%2Cformat=auto${path} ${width}w`),
-        `${src} ${size[1]}w`,
+        ...widths.map(candidate => `${siteConfig.mediaOrigin}/cdn-cgi/image/width=${candidate}%2Cformat=auto${path} ${candidate}w`),
+        `${src} ${width}w`,
       ].join(', '))
       token.attrSet('sizes', '(max-width: 768px) calc(100vw - 32px), 770px')
     }
+    const imageIndex = env.imageIndex++
     token.attrSet('decoding', 'async')
-    token.attrSet('loading', env.imageIndex++ === 0 ? 'eager' : 'lazy')
-    if (env.imageIndex === 1) token.attrSet('fetchpriority', 'high')
+    if (markdownImage && markdownImage.lazyload) token.attrSet('loading', 'lazy')
+    if (!token.attrGet('loading')) token.attrSet('loading', imageIndex === 0 ? 'eager' : 'lazy')
+    if (imageIndex === 0 && token.attrGet('loading') !== 'lazy') token.attrSet('fetchpriority', 'high')
     return originalImage
       ? originalImage(tokens, index, options, env, self)
       : self.renderToken(tokens, index, options)
@@ -2977,13 +3015,13 @@ const createMarkdown = () => {
   md.renderer.rules.fence = (tokens, index, options, env, self) => {
     const info = tokens[index].info.trim()
     if (info === 'math' && mathConfiguration && mathConfiguration.mathFence) return originalFence ? originalFence(tokens, index, options, env, self) : self.renderToken(tokens, index, options)
-    if (/(?:^|\s):tree-only(?:\s|$)/.test(info)) return ''
-    if (markdownPower.echarts && info.split(':', 2)[0] === 'echarts') return originalFence!(tokens, index, options, env, self)
-    if (markdownPower.flowchart && ['flow', 'flowchart'].includes(info.split(':', 1)[0])) {
+    if (markdownPowerEnabled && /(?:^|\s):tree-only(?:\s|$)/.test(info)) return ''
+    if (markdownChart.echarts && info.split(':', 2)[0] === 'echarts') return originalFence!(tokens, index, options, env, self)
+    if (markdownChart.flowchart && ['flow', 'flowchart'].includes(info.split(':', 1)[0])) {
       return md.renderer.rules.flowchart!(tokens, index, options, env, self)
     }
-    if (markdownPower.markmap && /^markmap(?:\s|$)/.test(info)) return md.renderer.rules.markmap!(tokens, index, options, env, self)
-    if (/^(?:file-)?tree(?:\s|$)/.test(info)) {
+    if (markdownChart.markmap && /^markmap(?:\s|$)/.test(info)) return md.renderer.rules.markmap!(tokens, index, options, env, self)
+    if (markdownPowerEnabled && markdownPower.fileTree !== false && /^(?:file-)?tree(?:\s|$)/.test(info)) {
       const props = attributes(info.replace(/^(?:file-)?tree/, '').trim())
       const nodes = parseFileTreeFence(tokens[index].content)
       const mode = (props.icon === 'simple' ? 'simple' : (siteConfig.markdown as { fileTree?: { icon?: FileTreeIconMode } }).fileTree?.icon ?? 'colored') as FileTreeIconMode
@@ -2991,11 +3029,12 @@ const createMarkdown = () => {
       const copyText = Buffer.from(tokens[index].content.trim()).toString('base64')
       return `<div class="vp-file-tree">${props.title ? `<p class="vp-file-tree-title">${escapeHtml(props.title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree data-copy-tree-text="${copyText}" aria-label="${en ? 'Copy' : '复制'}" data-copied="${en ? 'Copied' : '已复制'}"></button>${renderFileTreeNodes(nodes, mode, source => md.renderInline(source))}</div>\n`
     }
-    if (markdownPower.mermaid && info.split(/\s+/)[0] === 'mermaid') {
+    if (markdownChart.mermaid && info.split(/\s+/)[0] === 'mermaid') {
       const title = attributes(info.slice('mermaid'.length)).title ?? ''
       const source = Buffer.from(tokens[index].content).toString('base64')
       return `<div class="mermaid-actions"><button class="preview-button" type="button" title="preview" aria-label="preview"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1316 1024" fill="currentColor" aria-hidden="true"><path d="M658.286 0C415.89 0 0 297.106 0 512c0 214.82 415.89 512 658.286 512 242.322 0 658.285-294.839 658.285-512S900.608 0 658.286 0zm0 877.714c-161.573 0-512-221.769-512-365.714 0-144.018 350.427-365.714 512-365.714 161.572 0 512 217.16 512 365.714s-350.428 365.714-512 365.714z"/><path d="M658.286 292.571a219.429 219.429 0 1 0 0 438.858 219.429 219.429 0 0 0 0-438.858zm0 292.572a73.143 73.143 0 1 1 0-146.286 73.143 73.143 0 0 1 0 146.286z"/></svg></button><button class="download-button" type="button" title="download" aria-label="download"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true"><path d="M828.976 894.125H190.189c-70.55 0-127.754-57.185-127.754-127.753V606.674c0-17.634 14.31-31.933 31.933-31.933h63.889c17.634 0 31.932 14.299 31.932 31.933v95.822c0 35.282 28.596 63.877 63.877 63.877h511.033c35.281 0 63.877-28.595 63.877-63.877v-95.822c0-17.634 14.298-31.933 31.943-31.933h63.878c17.635 0 31.933 14.299 31.933 31.933v159.7c0 70.566-57.191 127.751-127.754 127.751zM249.939 267.51c12.921-12.92 33.885-12.92 46.807 0l148.97 148.972V94.893c0-17.634 14.302-31.947 31.934-31.947h63.876c17.638 0 31.946 14.313 31.946 31.947v321.589l148.97-148.972c12.922-12.92 33.876-12.92 46.797 0l46.814 46.818c12.922 12.922 12.922 33.874 0 46.807L552.261 624.93c-1.14 1.138-21.664 13.684-42.315 13.693-20.877.01-41.88-12.542-43.021-13.693L203.122 361.135c-12.923-12.934-12.923-33.885 0-46.807l46.817-46.818z"/></svg></button></div><div class="mermaid-wrapper" data-mermaid-source="${source}" data-mermaid-title="${escapeHtml(title)}" data-mermaid-id="mermaid-${index}"><div class="mermaid-content"></div></div>\n`
     }
+    if (!highlighter) return originalFence ? originalFence(tokens, index, options, env, self) : self.renderToken(tokens, index, options)
     const rawLanguage = (info.split(/\s+/)[0] || 'text').replace(/\{[\d,\-\s]+\}$/, '')
     const aliases: Record<string, string> = { js: 'javascript', ts: 'typescript', md: 'markdown', py: 'python', sh: 'bash', shell: 'bash', yml: 'yaml' }
     const language = aliases[rawLanguage] ?? rawLanguage
@@ -3057,7 +3096,7 @@ const createMarkdown = () => {
 }
 
 const renderPlain = (source: string, removeTitle = true, sourcePath?: string, obsidianStack: string[] = [], obsidianPages?: unknown, plotOptions: PlotOptions = {}): string => {
-  let transformed = transformObsidian(source, obsidianOptions)
+  let transformed = markdownPowerEnabled ? transformObsidian(source, obsidianOptions) : source
   if (markdownPower.artPlayer) transformed = artPlayerComponents(transformed)
   transformed = iconComponents(transformed)
   transformed = linkComponents(transformed, sourcePath)
@@ -3066,18 +3105,22 @@ const renderPlain = (source: string, removeTitle = true, sourcePath?: string, ob
   transformed = imageCards(transformed, sourcePath)
   transformed = pairedCards(transformed)
   transformed = pairedLinkCards(transformed)
-  transformed = fieldContainers(transformed)
+  if (markdownPower.field) transformed = fieldContainers(transformed)
   transformed = swiperComponents(transformed)
-  transformed = chatContainers(transformed)
+  if (markdownPower.chat) transformed = chatContainers(transformed)
   const plot = { ...globalPlotOptions, ...plotOptions }
   return createMarkdown().render(cleanSource(transformed, removeTitle, plot, sourcePath), { imageIndex: 0, sourcePath, obsidianStack, obsidianPages, plot })
 }
 
 export const renderMarkdown = async (source: string, options: { sourcePath?: string, plot?: PlotOptions, removeTitle?: boolean, base?: string } = {}) => {
   const expanded = await dynamicImageCards(normalMarkdownSource(await expandFileDirectives(source, options.sourcePath)), options.sourcePath)
-  const encrypted = await encryptContainers(expanded, options.sourcePath)
-  let html = renderPlain(await demoContainers(encrypted, options.sourcePath), options.removeTitle ?? true, options.sourcePath, [], undefined, options.plot)
-  html = await injectImageSizes(html, { sourcePath: options.sourcePath, mode: siteConfig.plugins?.markdownPower?.imageSize })
+  const encrypted = markdownPower.encrypt ? await encryptContainers(expanded, options.sourcePath) : expanded
+  const demos = markdownPower.demo ? await demoContainers(encrypted, options.sourcePath) : encrypted
+  let html = renderPlain(demos, options.removeTitle ?? true, options.sourcePath, [], undefined, options.plot)
+  html = await injectImageSizes(html, {
+    sourcePath: options.sourcePath,
+    mode: markdownPowerEnabled ? (siteConfig.markdown as { imageSize?: boolean | 'all' }).imageSize : false,
+  })
   html = withBaseInHtml(html, options.base)
   if (!mathjaxInstance) return html
   const style = mathjaxInstance.outputStyle()

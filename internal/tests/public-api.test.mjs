@@ -8,6 +8,7 @@ import { languageFromPath } from '../../theme/lib/locales.ts'
 import { isIOS } from '../../theme/components/vue/background/helpers.ts'
 import { tintPlateColors } from '../../theme/lib/tint-plate.ts'
 import { homeConfigOf } from '../../theme/lib/home.ts'
+import { seoEnabled } from '../../theme/lib/seo-options.mjs'
 
 test('public Node helpers preserve identity and the client barrel covers the frozen documented API', async () => {
   const values = [
@@ -41,10 +42,64 @@ test('public Node helpers preserve identity and the client barrel covers the fro
 
 test('site config fails early with actionable boundary errors', () => {
   const valid = () => ({ origin: 'https://example.com', logo: '/logo.svg', locales: { 'zh-CN': { siteName: 'Site', home: '/' } } })
+  const plume = defineSiteConfig({ hostname: 'https://example.com', logo: '/logo.svg', docsRepo: 'owner/repo', docsBranch: 'dev', docsDir: 'docs', locales: { 'zh-CN': { siteName: 'Site', home: '/' } } })
+  assert.equal(plume.origin, 'https://example.com')
+  assert.deepEqual(plume.repository, { url: 'owner/repo', branch: 'dev', contentDir: 'docs' })
   assert.throws(() => defineSiteConfig({ ...valid(), origin: 'example.com' }), /origin 必须是有效的 http\(s\) URL/)
   assert.throws(() => defineSiteConfig({ ...valid(), base: '/docs' }), /base 必须以 \/ 开头和结尾/)
   assert.throws(() => defineSiteConfig({ ...valid(), pagination: 0 }), /pagination\.perPage 必须是正整数/)
   assert.throws(() => defineSiteConfig({ ...valid(), features: { engagement: true, popularPosts: false, comments: false } }), /services\.statsBase/)
+})
+
+test('legacy Plume plugin options fall back to the canonical flat configuration', () => {
+  const copyCode = { duration: 1200 }
+  const shiki = { lineNumbers: true }
+  const readingTime = { wordPerMinute: 240 }
+  const markdownPower = { mermaid: true, imageSize: 'all' }
+  const markdownChart = { echarts: true }
+  const configured = defineSiteConfig({
+    origin: 'https://example.com',
+    logo: '/logo.svg',
+    locales: { 'zh-CN': { siteName: 'Site', home: '/' } },
+    plugins: {
+      copyCode,
+      shiki,
+      readingTime,
+      markdownPower,
+      markdownChart,
+      markdownMath: false,
+      docsearch: { appId: 'app', apiKey: 'key', indexName: 'index' },
+      llmstxt: true,
+    },
+  })
+  assert.equal(configured.copyCode, copyCode)
+  assert.equal(configured.codeHighlighter, shiki)
+  assert.equal(configured.readingTime, readingTime)
+  assert.deepEqual(configured.search, { provider: 'algolia', appId: 'app', apiKey: 'key', indexName: 'index' })
+  assert.equal(configured.markdown.math, false)
+  assert.equal(configured.markdown.mermaid, true)
+  assert.equal(configured.markdown.echarts, true)
+  assert.equal(configured.markdown.imageSize, 'all')
+  assert.equal(configured.llmstxt, true)
+})
+
+test('deprecated Plume avatar settings fall back to profile globally and per locale', () => {
+  const globalAvatar = { name: 'Global' }
+  const localeAvatar = { name: 'Locale' }
+  const configured = defineSiteConfig({
+    origin: 'https://example.com',
+    logo: '/logo.svg',
+    avatar: globalAvatar,
+    locales: { 'zh-CN': { siteName: 'Site', home: '/', avatar: localeAvatar } },
+  })
+  assert.equal(configured.profile, globalAvatar)
+  assert.equal(configured.locales['zh-CN'].profile, localeAvatar)
+})
+
+test('plugins.seo false disables generated SEO metadata', () => {
+  assert.equal(seoEnabled({ plugins: { seo: false } }), false)
+  assert.equal(seoEnabled({ plugins: { seo: {} } }, false), false)
+  assert.equal(seoEnabled({ plugins: { seo: {} } }), true)
 })
 
 test('ECharts public config preserves the frozen singleton contract', () => {

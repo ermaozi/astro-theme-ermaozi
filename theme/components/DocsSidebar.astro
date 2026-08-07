@@ -4,19 +4,21 @@ import UserSlot from './UserSlot.astro'
 import SidebarItems from './SidebarItems.astro'
 import LocalNav from './LocalNav.astro'
 import { collectionForEntry, type ResolvedDocCollection } from '../lib/collections'
-import { resolveSidebar, sidebarGroups } from '../lib/sidebar'
+import { resolveSidebar, sidebarGroups, type ResolvedSidebarItem } from '../lib/sidebar'
 import type { OutlineItem } from '../lib/outline'
+import { localeOf } from '../lib/locales'
 
-const { docs, current, lang, toc = [], locked = false } = Astro.props as { docs: ContentEntry[], current: ContentEntry, lang: Lang, toc?: OutlineItem[], locked?: boolean }
+const { docs, current, lang, toc = [], locked = false, collection: configuredCollection, sidebarItems } = Astro.props as { docs: ContentEntry[], current: ContentEntry, lang: Lang, toc?: OutlineItem[], locked?: boolean, collection?: ResolvedDocCollection, sidebarItems?: ResolvedSidebarItem[] }
 const en = !lang.startsWith('zh')
-const collection = collectionForEntry(current.id, lang) as ResolvedDocCollection
-const items = sidebarGroups(resolveSidebar(docs, lang, collection))
+const collection = configuredCollection ?? collectionForEntry(current.id, lang) as ResolvedDocCollection
+const items = sidebarGroups(sidebarItems ?? resolveSidebar(docs, lang, collection))
+const hideScrollbar = collection.sidebarScrollbar ?? localeOf(lang).sidebarScrollbar
 ---
 
 <LocalNav {lang} {toc} {locked} hasSidebar />
 
 <div class="vp-backdrop" hidden></div>
-<aside class:list={['vp-sidebar', { 'hide-scrollbar': collection.sidebarScrollbar === false }]}>
+<aside class:list={['vp-sidebar', { 'hide-scrollbar': hideScrollbar === false }]}>
   <div class="curtain"></div>
   <nav id="SidebarNav" class="nav" aria-labelledby="sidebar-aria-label" tabindex="-1">
     <span id="sidebar-aria-label" class="visually-hidden">{en ? 'Sidebar Navigation' : '侧边栏导航'}</span>

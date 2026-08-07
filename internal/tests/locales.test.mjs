@@ -50,3 +50,30 @@ test('search and reading-time locale presets match frozen Plume strings', () => 
     siteConfig.readingTime = original
   }
 })
+
+test('locale options follow Plume global then current-locale precedence without leaking the root locale', () => {
+  const originalLogoDark = siteConfig.logoDark
+  const originalProfile = siteConfig.profile
+  const originalExternalLinkIcon = siteConfig.externalLinkIcon
+  const originalChinese = siteConfig.locales['zh-CN']
+  const originalEnglish = siteConfig.locales['en-US']
+  try {
+    siteConfig.logoDark = '/global-dark.svg'
+    siteConfig.profile = { name: 'Global profile' }
+    siteConfig.externalLinkIcon = true
+    siteConfig.locales['zh-CN'] = { ...originalChinese, logoDark: '/zh-dark.svg', externalLinkIcon: false }
+    siteConfig.locales['en-US'] = { ...originalEnglish, profile: { name: 'English profile' } }
+
+    assert.equal(localeOf('zh-CN').logoDark, '/zh-dark.svg')
+    assert.equal(localeOf('zh-CN').externalLinkIcon, false)
+    assert.equal(localeOf('en-US').logoDark, '/global-dark.svg')
+    assert.equal(localeOf('en-US').externalLinkIcon, true)
+    assert.equal(localeOf('en-US').profile.name, 'English profile')
+  } finally {
+    siteConfig.logoDark = originalLogoDark
+    siteConfig.profile = originalProfile
+    siteConfig.externalLinkIcon = originalExternalLinkIcon
+    siteConfig.locales['zh-CN'] = originalChinese
+    siteConfig.locales['en-US'] = originalEnglish
+  }
+})

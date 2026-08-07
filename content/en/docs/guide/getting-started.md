@@ -78,10 +78,10 @@ Save and refresh the browser. Folders become categories. Put images in `public/i
 
 ## 5. Adjust navigation
 
-Each locale owns a `navigation` array. A minimal navigation looks like this:
+Each locale owns a `navbar` array; the old `navigation` name remains supported. A minimal navbar looks like this:
 
 ```js
-navigation: [
+navbar: [
   { text: 'Blog', link: '/en/blog/', icon: 'home' },
   { text: 'About', link: '/en/about/', icon: 'info' },
 ]

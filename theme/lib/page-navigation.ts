@@ -81,6 +81,7 @@ export function initPageNavigation() {
     const currentContent = document.querySelector<HTMLElement>('#VPContent')
     if (!currentContent) return location.assign(url.href)
     currentContent.setAttribute('aria-busy', 'true')
+    document.dispatchEvent(new CustomEvent('plume-navigation-start'))
     try {
       const response = await fetch(url, { signal: navigation.signal, headers: { Accept: 'text/html' } })
       if (!response.ok) throw new Error(`Navigation failed: ${response.status}`)
@@ -107,6 +108,7 @@ export function initPageNavigation() {
       location.assign(url.href)
     } finally {
       document.querySelector('#VPContent')?.removeAttribute('aria-busy')
+      document.dispatchEvent(new CustomEvent('plume-navigation-end'))
     }
   }
 

@@ -8,7 +8,7 @@ import { withBase } from '../lib/client-utils'
 
 const { payloads, lang } = Astro.props as { payloads: EncryptedContent[], lang: Lang }
 const locale = localeOf(lang)
-const profileConfig = siteConfig.profile as false | { avatar?: string, circle?: boolean, name?: string }
+const profileConfig = (locale.profile ?? siteConfig.profile) as false | { avatar?: string, circle?: boolean, name?: string }
 const profile = profileConfig === false ? undefined : profileConfig
 const title = profile?.name || locale.siteName
 const first = payloads[0]
@@ -18,7 +18,7 @@ const first = payloads[0]
   <div class="vp-global-encrypt">
     <div class="global-encrypt-container">
       {(profile || title) && <div class="profile">
-        {profile && <p class:list={['avatar', { circle: profile.circle }]}><img src={withBase(profile.avatar || '/img/logo.svg', import.meta.env.BASE_URL)} alt={profile.name || title} /></p>}
+        {profile && <p class:list={['avatar', { circle: profile.circle }]}><img src={withBase(profile.avatar || locale.logo || siteConfig.logo, import.meta.env.BASE_URL)} alt={profile.name || title} /></p>}
         {title && <h3>{title}</h3>}
       </div>}
       <div class="vp-encrypt-form">

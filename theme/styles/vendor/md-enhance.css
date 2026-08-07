@@ -153,6 +153,11 @@
   font-size: 0.8rem;
 }
 
+[data-theme="light"] :where(img[data-mode="darkmode-only"], figure:has(img[data-mode="darkmode-only"])),
+[data-theme="dark"] :where(img[data-mode="lightmode-only"], figure:has(img[data-mode="lightmode-only"])) {
+  display: none !important;
+}
+
 /* --------------------- Markdown Chart: Mermaid ------------------------  */
 .mermaid-actions {
   padding-right: 20px;

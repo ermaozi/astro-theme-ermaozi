@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { collectionForEntry, collectionsFor, defineCollection, defineCollections, defineNavbarConfig, defineThemeConfig } from '../../theme/lib/collections.ts'
-import { resolveSidebar, sidebarGroups } from '../../theme/lib/sidebar.ts'
+import { collectionForEntry, collectionsFor, defineCollection, defineCollections, defineNavbarConfig, defineThemeConfig, docCollectionForSidebar } from '../../theme/lib/collections.ts'
+import { configuredSidebarFor, resolveSidebar, sidebarGroups } from '../../theme/lib/sidebar.ts'
 
 const config = {
   locales: {
@@ -25,6 +25,9 @@ test('multiple locale collections resolve frozen Plume routes, filters, and iden
   assert.equal(notes.link, '/en/notes/')
   assert.equal(notes.archivesLink, '/en/notes/archives/')
   assert.equal(manual.linkPrefix, '/en/manual/')
+  assert.equal(docCollectionForSidebar('en-US', 'manual', config)?.key, 'en-US:manual')
+  assert.equal(docCollectionForSidebar('en-US', '/en/manual/', config)?.key, 'en-US:manual')
+  assert.equal(docCollectionForSidebar('en-US', 'en-US:manual', config)?.key, 'en-US:manual')
   for (const helper of [defineThemeConfig, defineNavbarConfig, defineCollections, defineCollection]) {
     const value = {}
     assert.equal(helper(value), value)
@@ -35,7 +38,7 @@ test('auto and manual doc sidebars retain hierarchy, ordering, badges, prefixes,
   const collection = collectionsFor('en-US', config)[1]
   const entries = [
     { id: 'en/manual/02.guide/02.install', data: { title: 'Install', order: 2, tags: [], description: '', permalink: '/en/manual/install/' } },
-    { id: 'en/manual/02.guide/01.intro', data: { title: 'Intro', order: 1, group: 'Guide', badge: { text: 'New', type: 'tip' }, tags: [], description: '', permalink: '/en/manual/intro/' } },
+    { id: 'en/manual/02.guide/01.intro', data: { title: 'Intro', order: 1, group: 'Guide', icon: 'rocket', badge: { text: 'New', type: 'tip' }, tags: [], description: '', permalink: '/en/manual/intro/' } },
     { id: 'en/manual/index', data: { title: 'Manual', tags: [], description: '', permalink: '/en/manual/' } },
   ]
   const [guide] = resolveSidebar(entries, 'en-US', collection)
@@ -43,6 +46,14 @@ test('auto and manual doc sidebars retain hierarchy, ordering, badges, prefixes,
   assert.equal(guide.collapsed, true)
   assert.deepEqual(guide.items.map(item => item.text), ['Intro', 'Install'])
   assert.deepEqual(guide.items[0].badge, { text: 'New', type: 'tip' })
+  assert.equal(guide.items[0].icon, 'rocket')
+
+  const configured = configuredSidebarFor(entries, 'en-US', '/en/manual/intro/', {
+    ...config,
+    sidebar: { '/manual/': [{ text: 'Start', link: '02.guide/01.intro', target: '_blank', rel: 'help' }] },
+  })
+  assert.equal(configured.collection.linkPrefix, '/en/manual/')
+  assert.deepEqual(configured.items[0], { text: 'Start', link: '/en/manual/intro/', target: '_blank', rel: 'help', icon: 'rocket', badge: { text: 'New', type: 'tip' }, items: undefined, collapsed: undefined, entryId: 'en/manual/02.guide/01.intro' })
 
   const manual = { ...collection, sidebar: [{ text: 'Start', prefix: '02.guide', items: ['01.intro', { text: 'Install now', link: '02.install' }] }] }
   const [start] = resolveSidebar(entries, 'en-US', manual)

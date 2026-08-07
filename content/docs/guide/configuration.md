@@ -30,7 +30,7 @@ coverStyle:
   compact: false
 ```
 
-`siteConfig.profile` 支持 `avatar`（兼容旧名 `url`）、`name`、`description`、`circle`、`location`、`organization` 和 `layout: 'left' | 'right'`。移动端会使用同一份资料显示底部弹窗和分类导航。
+`siteConfig.profile` 支持 `avatar`（兼容旧名 `url`）、`name`、`description`、`circle`、`location`、`organization` 和 `layout: 'left' | 'right'`。移动端会使用同一份资料显示底部弹窗和分类导航；Plume 已弃用的顶层或 locale `avatar: { ... }` 也会回退为 `profile`。
 
 将 `profile` 设为 `false` 会移除桌面资料卡，并像 Plume 一样在文章列表上方显示标签、分类和归档的横向本地导航；移动端仍保留包含这三项入口的弹层按钮。
 
@@ -54,10 +54,10 @@ Plume 的简体中文、繁体中文、英语、德语、法语、俄语、日�
 
 ## 导航栏
 
-每个 locale 的 `navigation` 接受 Plume 的字符串链接，以及 `{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }`。`label` 与 `href` 作为兼容别名保留。字符串指向站内内容时会自动读取页面标题、图标和徽章；`prefix` 会递归拼接组内相对链接，最多显示两层下拉分组。
+每个 locale 的 `navbar` 接受 Plume 的字符串链接，以及 `{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }`；旧字段 `navigation` 继续兼容。`label` 与 `href` 也作为兼容别名保留。字符串指向站内内容时会自动读取页面标题、图标和徽章；`prefix` 会递归拼接组内相对链接，最多显示两层下拉分组。省略 `navbar` 时会根据当前语言的第一个 Post 集合自动生成首页、文章、标签和归档入口。
 
 ```js
-navigation: [
+navbar: [
   '/docs/',
   { text: '博客', link: '/blog/', activeMatch: '^/(blog|article)/', icon: 'material-symbols:article-outline' },
   {
@@ -72,6 +72,14 @@ navigation: [
 ```
 
 外链默认在新窗口打开并显示外链标识，`noIcon: true` 可隐藏该标识。导航图标复用 Markdown 图标提供方，因此支持 Iconify、IconFont、Font Awesome、图片 URL 和 `{ svg }`。
+
+全局配置先作为默认值，再与当前 locale 的对象字段浅合并；一个语言只需填写不同的部分。locale 可独立覆盖 `logo`、`logoDark`、`profile`、`social`、`navbarSocialInclude`、`appearance`、`transition`、`footer`、`outline`、`aside`、`externalLinkIcon` 和 `createTime`，不会继承另一种语言的导航或文案。单页 frontmatter 使用 `navbar: false` 可隐藏导航栏。
+
+## 页面与正文选项
+
+`pageLayout` 支持 `home`、`posts`、`doc`、`page`、`friends`、`custom`、`false` 和自定义组件名。`posts` 可配合 `collection` 指定 Post 集合；`page` 只保留专页正文；`custom`/`false` 只输出 Markdown 正文；自定义组件放在 `theme/components/layouts/`，文件名就是布局名。
+
+正文目录可通过全局、locale 或单页的 `outline` 与 `aside` 配置。`externalLinkIcon` 默认开启，单页也可关闭；旧字段 `externalLink` 仍兼容。`createTime: 'only-posts'` 只在博客文章和文章列表显示创建时间，`false` 则全站隐藏。`plugins.nprogress: false` 可关闭站内页面切换时的顶部进度条。
 
 ## 布局插槽
 
@@ -123,7 +131,15 @@ Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`
 
 Doc 集合支持 `sidebar: 'auto'`，会按目录层级和数字前缀递归生成导航；`sidebarCollapsed` 控制自动分组初始折叠，`sidebarScrollbar` 控制滚动条。也可传入字符串或 `{ text, link, prefix, icon, badge, collapsed, items }` 数组手动编排，`items: 'auto'` 只自动读取当前分组，`link: '---'` 生成分隔符。
 
+还可使用 Plume 的全局多侧栏写法：`sidebar: { '/docs/': 'auto', '/guide/': [...] }`，按最长路径前缀匹配。值也可写成 `{ items, prefix }`；单页 `sidebar: '/guide/'` 可强制选择指定侧栏，`sidebar: false` 关闭当前页侧栏。侧栏项兼容旧 `dir` 字段以及 `target`、`rel`。
+
 `site.config.mjs` 已从 `./theme/config.mjs` 导入 `defineSiteConfig`。它保留传入的对象引用，并为主题运行必需的可选区块补充默认值。开发主题集成时还可从 `theme/node.ts` 使用 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`；其余帮助函数仍原样返回传入值。
+
+Plume 旧式 `plugins.copyCode`、`plugins.shiki`、`plugins.readingTime`、`plugins.comment`、`plugins.watermark`、`plugins.replaceAssets`、`plugins.llmstxt`、`plugins.markdownPower`、`plugins.markdownChart`、`plugins.markdownImage`、`plugins.markdownInclude`、`plugins.markdownMath`、`plugins.search` 和 `plugins.docsearch` 均会回退到对应的新式扁平配置；新旧同时存在时以顶层或 `markdown` 配置为准。`markdown.image` 完整支持 Plume 的 `figure`、`lazyload`、`mark`、`size`、`legacySize` 和 `obsidianSize` 选项；`codeHighlighter: false` 会回退到普通代码块。`plugins.markdownPower: false` 只关闭该增强组，图片、数学、包含、提示与图表仍由各自开关控制。
+
+`plugins.seo` 对象支持 Plume 的 `hostname`、`author`、`restrictions`、`autoDescription`、`fallBackImage`、`twitterID`、`isArticle`、`ogp`、`jsonLd`、`customHead` 和 `canonical`；设为 `false` 会关闭自动 Open Graph、Twitter Card 与 JSON-LD。Twitter/X 账号优先从 `social` 链接识别，`twitterID` 只作为兼容回退。`plugins.sitemap` 支持 `hostname`、`extraUrls`、`excludePaths`、`sitemapFilename`、`sitemapXSLFilename`、`sitemapXSLTemplate`、`changefreq`、`modifyTimeGetter`、`devServer`、`devHostname` 和 `xmlNameSpace`；设为 `false` 会删除 sitemap 输出及 robots.txt 中的地址。
+
+本地搜索使用 Pagefind；`plugins.search.isSearchable(page)` 会控制页面是否进入索引，`disableQueryPersistence` 和 `locales` 也会生效。Plume 原插件的 `miniSearch` 分词器选项没有 Pagefind 等价能力，因此只为配置迁移保留类型，不会改变 Pagefind 的分词算法。Plume 顶层的 `cache` 和 `configFile` 分别控制 VuePress 编译缓存与配置文件加载；Astro 没有对应运行阶段，这两个字段同样只保留迁移类型，配置后不会改变构建行为，迁移时应删除。
 
 ## 可信图表脚本
 
@@ -198,6 +214,8 @@ footer: {
 
 ## 搜索服务
 
+`llmstxt: true` 会生成 `/llms.txt`、`/llms-full.txt`、每页 Plume 风格的 `index.md` 及兼容的 `/raw/` 路径，并启用标题旁的页面上下文菜单。Plume 默认关闭此能力；设为 `false` 后这些文件和菜单会一起消失，单页 `llmstxt: false` 只排除当前页面。对象写法支持 `llmsTxt`、`llmsFullTxt`、`llmsPageTxt`、`stripHTML`、`locale`、`domain`、`linkExtension`、`filter`、`transformMarkdown`、`llmsTxtTemplate` 和 `llmsTxtTemplateGetter`；`locale` 默认只处理根语言，设为 `'all'` 才处理全部语言。也兼容 `plugins.llmstxt`，但推荐使用顶层字段。
+
 默认使用构建时生成的 Pagefind 本地索引，不需要外部服务：
 
 ```js
@@ -241,11 +259,11 @@ replaceAssets: process.env.NODE_ENV === 'production'
 
 ## 构建期图片尺寸
 
-`plugins.markdownPower.imageSize` 默认关闭。设为 `true` 或 `'local'` 后，生产构建会读取本地图片并为正文 `<img>` 自动补齐 `width`、`height`；设为 `'all'` 时也会探测远程图片：
+`markdown.imageSize` 默认关闭。设为 `true` 或 `'local'` 后，生产构建会读取本地图片并为正文 `<img>` 自动补齐 `width`、`height`；设为 `'all'` 时也会探测远程图片。旧写法 `plugins.markdownPower.imageSize` 仍兼容：
 
 ```js
-plugins: {
-  markdownPower: { imageSize: 'local' },
+markdown: {
+  imageSize: 'local',
 },
 ```
 

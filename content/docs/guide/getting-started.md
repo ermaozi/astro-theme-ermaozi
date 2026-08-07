@@ -77,10 +77,10 @@ type: post
 
 ## 5. 调整导航
 
-每种语言都有自己的 `navigation`。最常用的单层链接如下：
+每种语言都有自己的 `navbar`（旧字段 `navigation` 仍兼容）。最常用的单层链接如下：
 
 ```js
-navigation: [
+navbar: [
   { text: '博客', link: '/blog/', icon: 'home' },
   { text: '关于', link: '/about/', icon: 'info' },
 ]

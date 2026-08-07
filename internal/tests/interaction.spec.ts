@@ -236,6 +236,11 @@ test('page transitions keep Plume timing without whole-page snapshots', async ({
 test('document sidebar navigation keeps the shell mounted', async ({ page }) => {
   await page.goto('/docs/guide/configuration/', { waitUntil: 'domcontentloaded' })
   const documentRequests: string[] = []
+  let resumeRequest: (() => void) | undefined
+  await page.route('**/docs/guide/api/', async route => {
+    await new Promise<void>(resolve => { resumeRequest = resolve })
+    await route.continue()
+  }, { times: 1 })
   page.on('request', request => { if (request.resourceType() === 'document' && request.frame() === page.mainFrame()) documentRequests.push(request.url()) })
   await page.evaluate(() => {
     ;(window as any).__ERMAOZI_HEADER__ = document.querySelector('.vp-navbar')
@@ -245,8 +250,16 @@ test('document sidebar navigation keeps the shell mounted', async ({ page }) => 
     const { x, y, width, height } = document.querySelector(selector)!.getBoundingClientRect()
     return { x, y, width, height }
   }))
-  await page.locator('.vp-sidebar a[href="/docs/guide/api/"]').click()
+  const navigation = page.locator('.vp-sidebar a[href="/docs/guide/api/"]').click()
+  const progress = page.locator('#nprogress')
+  await expect(progress).not.toHaveAttribute('hidden', '')
+  await expect(progress.locator('.bar')).toBeVisible()
+  await expect(progress.locator('.bar')).not.toHaveCSS('transform', 'none')
+  await expect.poll(() => Boolean(resumeRequest)).toBe(true)
+  resumeRequest!()
+  await navigation
   await expect(page).toHaveURL(/\/docs\/guide\/api\/$/)
+  await expect(progress).toHaveAttribute('hidden', '')
   await expect(page.locator('h1.page-title')).toHaveText('公共 API 与样式定制')
   await expect(page.locator('.vp-sidebar a[href="/docs/guide/api/"]')).toHaveAttribute('aria-current', 'page')
   expect(await page.evaluate(() => (window as any).__ERMAOZI_HEADER__ === document.querySelector('.vp-navbar'))).toBe(true)

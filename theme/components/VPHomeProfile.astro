@@ -2,9 +2,11 @@
 import { siteConfig } from '../../site.config.mjs'
 import VPHomeBox from './VPHomeBox.astro'
 import VPImage from './VPImage.astro'
+import { localeOf } from '../lib/locales'
 
-const { name, description, avatar, circle, ...boxProps } = Astro.props
-const fallback = (typeof siteConfig.profile === 'object' ? siteConfig.profile : {}) as Record<string, any>
+const { name, description, avatar, circle, lang, ...boxProps } = Astro.props
+const locale = localeOf(lang)
+const fallback = (typeof locale.profile === 'object' ? locale.profile : typeof siteConfig.profile === 'object' ? siteConfig.profile : {}) as Record<string, any>
 const profile = {
   name: name || fallback.name,
   description: description || fallback.description,

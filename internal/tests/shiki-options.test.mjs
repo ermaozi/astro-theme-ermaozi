@@ -42,3 +42,18 @@ test('Shiki preserves the frozen whitespace, indent-guide, bracket, and line-num
     siteConfig.codeHighlighter = previous
   }
 })
+
+test('codeHighlighter false keeps plain fenced code and skips Shiki output', async () => {
+  const previous = siteConfig.codeHighlighter
+  try {
+    siteConfig.codeHighlighter = false
+    const url = new URL('../../theme/lib/markdown.ts', import.meta.url)
+    url.searchParams.set('shiki-options', 'disabled')
+    const { renderMarkdown } = await import(url.href)
+    const html = await renderMarkdown('```ts\nconst value = 1 < 2\n```')
+    assert.match(html, /<pre><code class="language-ts">const value = 1 &lt; 2/)
+    assert.doesNotMatch(html, /data-highlighter="shiki"/)
+  } finally {
+    siteConfig.codeHighlighter = previous
+  }
+})

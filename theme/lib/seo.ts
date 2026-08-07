@@ -1,7 +1,7 @@
 import type { ContentEntry, Lang } from './content'
 import { isPost, langOf, routeOf, sectionOf } from './content'
 import modifiedTimes from '../data/modified-times.json'
-import { socialLinks } from './social'
+import { socialLinksFor } from './social'
 import { siteConfig } from '../../site.config.mjs'
 import { localeOf } from './locales'
 import { withBase } from './client-utils'
@@ -27,22 +27,24 @@ export const imagesOf = (entry?: ContentEntry) => entry
       .map(url => url.startsWith('/') ? absoluteUrl(url) : url)
   : []
 
-export const authorsOf = (value: unknown, fallback = '') => {
-  const authors = (Array.isArray(value) ? value : value ? [value] : fallback ? [fallback] : []) as Array<string | { name?: string, url?: string, email?: string }>
+export const authorsOf = (value: unknown, fallback: unknown = '') => {
+  const source = value || fallback
+  const authors = (Array.isArray(source) ? source : source ? [source] : []) as Array<string | { name?: string, url?: string, email?: string }>
   return authors.map(author => typeof author === 'string' ? { name: author } : author).filter(author => author.name)
 }
 
-const siteData = (lang: Lang) => {
+const siteData = (lang: Lang, url = absoluteUrl) => {
   const page = localeOf(lang)
-  const authorId = `${absoluteUrl(`${page.home}about/`)}#person`
-  const websiteId = `${absoluteUrl(page.home)}#website`
+  const logo = page.logo ?? siteConfig.logo
+  const authorId = `${url(`${page.home}about/`)}#person`
+  const websiteId = `${url(page.home)}#website`
   const site = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebSite',
         '@id': websiteId,
-        url: absoluteUrl(page.home),
+        url: url(page.home),
         name: page.siteName,
         description: page.description,
         inLanguage: lang,
@@ -52,10 +54,10 @@ const siteData = (lang: Lang) => {
         '@type': 'Person',
         '@id': authorId,
         name: page.authorName,
-        url: absoluteUrl(`${page.home}about/`),
-        image: absoluteUrl(siteConfig.logo),
+        url: url(`${page.home}about/`),
+        image: url(logo),
         description: page.authorDescription,
-        sameAs: socialLinks.map(({ link }) => link).filter(link => /^https?:\/\//.test(link)),
+        sameAs: socialLinksFor(lang).map(({ link }) => link).filter(link => /^https?:\/\//.test(link)),
       },
     ],
   }
@@ -63,12 +65,13 @@ const siteData = (lang: Lang) => {
   return { page, authorId, websiteId, site }
 }
 
-export const structuredPageData = (title: string, description: string, lang: Lang, route: string, entry?: ContentEntry) => {
-  const { page, authorId, websiteId, site } = siteData(lang)
+export const structuredPageData = (title: string, description: string, lang: Lang, route: string, entry?: ContentEntry, articleOverride?: boolean, defaultAuthor?: unknown, hostnameOverride?: string) => {
+  const url = hostnameOverride ? (path: string) => new URL(withBase(path, import.meta.env.BASE_URL), hostnameOverride).toString() : absoluteUrl
+  const { page, authorId, websiteId, site } = siteData(lang, url)
   const post = entry ? isPost(entry) : false
-  const items = [{ '@type': 'ListItem', position: 1, name: page.homeText, item: absoluteUrl(page.home) }]
-  if (post) items.push({ '@type': 'ListItem', position: 2, name: page.postsText, item: absoluteUrl(`${page.home}blog/`) })
-  items.push({ '@type': 'ListItem', position: items.length + 1, name: title, item: absoluteUrl(route) })
+  const items = [{ '@type': 'ListItem', position: 1, name: page.homeText, item: url(page.home) }]
+  if (post) items.push({ '@type': 'ListItem', position: 2, name: page.postsText, item: url(`${page.home}blog/`) })
+  items.push({ '@type': 'ListItem', position: items.length + 1, name: title, item: url(route) })
 
   const breadcrumb = {
     '@context': 'https://schema.org',
@@ -78,20 +81,20 @@ export const structuredPageData = (title: string, description: string, lang: Lan
 
   const images = imagesOf(entry)
   const cover = entry?.data.banner ?? entry?.data.cover
-  const articleImages = cover ? [cover.startsWith('/') ? absoluteUrl(cover) : cover] : images
-  const authors = authorsOf(entry?.data.author, page.authorName)
-  const article = entry && post ? {
+  const articleImages = cover ? [cover.startsWith('/') ? url(cover) : cover] : images
+  const authors = authorsOf(entry?.data.author, defaultAuthor ?? page.authorName)
+  const article = entry && (articleOverride ?? post) ? {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: title,
-    image: articleImages.length ? articleImages : [absoluteUrl(siteConfig.logo)],
+    image: articleImages.length ? articleImages : [url(page.logo ?? siteConfig.logo)],
     datePublished: iso(entry.data.date ?? entry.data.time),
     dateModified: modifiedTimeOf(entry),
     author: authors.map(author => ({ '@type': 'Person', ...author })),
-    '@id': `${absoluteUrl(route)}#article`,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(route) },
+    '@id': `${url(route)}#article`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url(route) },
     inLanguage: lang,
-    articleSection: sectionOf(entry) || page.postsText,
+    articleSection: sectionOf(entry) || (post ? page.postsText : page.docsName ?? 'Docs'),
     keywords: entry.data.tags.join(', '),
     publisher: { '@id': authorId },
     isPartOf: { '@id': websiteId },

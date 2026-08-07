@@ -10,8 +10,11 @@ export type SidebarItem = string | {
   icon?: string | { svg: string }
   badge?: SidebarBadge
   prefix?: string
+  dir?: string
   items?: 'auto' | SidebarItem[]
   collapsed?: boolean
+  rel?: string
+  target?: string
 }
 
 export type BaseCollection = {
@@ -137,6 +140,11 @@ export function collectionForEntry(id: string, lang: Lang, config: any = siteCon
 
 export const postCollectionsFor = (lang: Lang, config?: any) => collectionsFor(lang, config).filter((collection): collection is ResolvedPostCollection => collection.type === 'post')
 export const docCollectionsFor = (lang: Lang, config?: any) => collectionsFor(lang, config).filter((collection): collection is ResolvedDocCollection => collection.type === 'doc')
+export const docCollectionForSidebar = (lang: Lang, selector: string, config?: any) => {
+  const target = clean(selector)
+  return docCollectionsFor(lang, config).find(collection =>
+    collection.key === selector || collection.dir === target || clean(collection.linkPrefix) === target)
+}
 
 export const defineThemeConfig = <T>(options: T): T => options
 export const defineNavbarConfig = <T>(options: T): T => options

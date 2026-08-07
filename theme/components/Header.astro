@@ -3,7 +3,8 @@ import { getCollection } from 'astro:content'
 import { routeOf, type Lang } from '../lib/content'
 import { normalizeLink, normalizePrefix, withBase, withoutBase } from '../lib/client-utils'
 import { localeOf, localePath as pathForLocale, searchLocaleOf } from '../lib/locales'
-import { navbarSocialLinks, socialLinks } from '../lib/social'
+import { navbarSocialLinksFor, socialLinksFor } from '../lib/social'
+import { navbarFor } from '../lib/navbar'
 import AlgoliaSearch from './vue/AlgoliaSearch.vue'
 import SocialLinks from './SocialLinks.astro'
 import ThemeIcon from './ThemeIcon.astro'
@@ -31,7 +32,10 @@ const languages = languageLinks.length
 const otherLanguages = languages.filter(item => item.lang !== lang)
 const currentPath = withoutBase(Astro.url.pathname, import.meta.env.BASE_URL)
 const homeHref = withBase(home, import.meta.env.BASE_URL)
-const logo = withBase(siteConfig.logo, import.meta.env.BASE_URL)
+const logo = withBase(locale.logo ?? siteConfig.logo, import.meta.env.BASE_URL)
+const logoDark = withBase(locale.logoDark ?? siteConfig.logoDark ?? locale.logo ?? siteConfig.logo, import.meta.env.BASE_URL)
+const socialLinks = socialLinksFor(lang)
+const navbarSocialLinks = navbarSocialLinksFor(lang)
 type NavItem = {
   label?: string
   text?: string
@@ -80,7 +84,7 @@ const normalizeItem = (item: NavItem | string, parentPrefix = ''): ResolvedNavIt
     items: item.items?.map(child => normalizeItem(child, prefix)),
   }
 }
-const navigation = (locale.navigation as Array<NavItem | string>).map(item => normalizeItem(item))
+const navigation = navbarFor(lang).map(item => normalizeItem(item as NavItem | string))
 const badgeText = (badge: ResolvedNavItem['badge']) => typeof badge === 'string' ? badge : badge?.text
 const badgeProps = (badge: ResolvedNavItem['badge']) => typeof badge === 'string' ? { text: badge } : badge ?? {}
 const navGroupId = (label: string) => `nav-screen-menu-group-${label.replace(' ', '-').toLowerCase()}`
@@ -90,14 +94,14 @@ const activeGroup = (item: ResolvedNavItem): boolean => {
   }
   return item.href === currentPath || item.items?.some(activeGroup) === true
 }
-const transition = siteConfig.transition as false | { appearance?: false | string }
+const transition = (locale.transition ?? siteConfig.transition) as false | { appearance?: false | string }
 const appearanceTransition = transition === false ? false : typeof transition === 'object' ? transition.appearance ?? 'fade' : 'fade'
 const appearance = (locale.appearance ?? siteConfig.appearance ?? true) as boolean | 'dark' | 'force-dark'
 const appearanceEnabled = Boolean(appearance) && appearance !== 'force-dark'
 const appearanceDefault = appearance === 'dark' ? 'dark' : 'auto'
 type SearchConfig = { provider?: 'local' | 'algolia'; appId?: string; apiKey?: string; locales?: Record<string, any>; [key: string]: unknown }
-const configuredSearch = siteConfig.search as false | SearchConfig | undefined
-const search = configuredSearch === false ? false : configuredSearch ?? { provider: 'local' as const }
+const configuredSearch = siteConfig.search as boolean | SearchConfig | undefined
+const search = configuredSearch === false ? false : typeof configuredSearch === 'object' ? configuredSearch : { provider: 'local' as const }
 const searchProvider = search === false ? false : search.provider ?? 'local'
 const searchLocale = searchLocaleOf(lang, search === false ? {} : search.locales ?? {})
 const searchButtonText = searchLocale.buttonText || searchLocale.placeholder || 'Search'
@@ -117,7 +121,7 @@ const basePath = normalizePrefix(import.meta.env.BASE_URL)
           <UserSlot name="nav-bar-title-before" {lang} route={currentPath} />
           <div class="vp-navbar-title">
             <a class="vp-link link no-icon title" href={homeHref} aria-label={`${locale.siteName} ${locale.homeText}`}>
-              <img class="vp-image dark logo" src={logo} alt="" width="24" height="24" />
+              <img class="vp-image dark logo" src={logoDark} alt="" width="24" height="24" />
               <img class="vp-image light logo" src={logo} alt="" width="24" height="24" />
               <span>{locale.siteName}</span>
             </a>
@@ -165,7 +169,7 @@ const basePath = normalizePrefix(import.meta.env.BASE_URL)
 
             {otherLanguages.length > 0 && (
               <div class="vp-flyout vp-navbar-translations translations">
-                <button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label={locale.selectLanguageText}>
+                <button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label={locale.selectLanguageAriaLabel ?? locale.selectLanguageText}>
                   <span class="text"><span class="vpi-languages option-icon" aria-hidden="true"></span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span>
                 </button>
                 <div class="menu flyout-menu"><div class="vp-menu flyout-panel language-panel">
@@ -230,7 +234,7 @@ const basePath = normalizePrefix(import.meta.env.BASE_URL)
       </nav>
       <UserSlot name="nav-screen-menu-after" {lang} route={currentPath} />
       {otherLanguages.length > 0 && <div class="vp-nav-screen-translations mobile-translations translations">
-        <button class="title" type="button" aria-expanded="false"><span class="vpi-languages icon lang" aria-hidden="true"></span>{locale.selectLanguageName}<span class="vpi-chevron-down icon chevron" aria-hidden="true"></span></button>
+        <button class="title" type="button" aria-expanded="false" aria-label={locale.selectLanguageAriaLabel ?? locale.selectLanguageText}><span class="vpi-languages icon lang" aria-hidden="true"></span>{locale.selectLanguageName}<span class="vpi-chevron-down icon chevron" aria-hidden="true"></span></button>
         <div class="vp-nav-screen-translations-container" style="display:none"><ul class="list">{otherLanguages.map(item => <li class="item"><VPLink class="link" href={item.href} lang={item.lang}>{localeOf(item.lang).selectLanguageName}</VPLink></li>)}</ul></div>
       </div>}
       {appearanceEnabled && <div class="vp-nav-screen-appearance mobile-appearance appearance"><p class="text">{locale.appearanceText}</p>

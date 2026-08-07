@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../lib/content'
-import { socialLinks } from '../lib/social'
+import { socialLinksFor } from '../lib/social'
 import PopularPosts from './PopularPosts.astro'
 import PostsNav from './PostsNav.astro'
 import SocialLinks from './SocialLinks.astro'
@@ -26,10 +26,10 @@ interface ProfileOptions {
 const { lang, pageMap = {}, blogStats = { tags: 0, categories: 0, posts: 0 }, collection = postCollectionsFor(lang)[0] } = Astro.props as { lang: Lang, pageMap?: Record<string, string>, blogStats?: { tags: number, categories: number, posts: number }, collection?: ResolvedPostCollection }
 const en = !lang.startsWith('zh')
 const locale = localeOf(lang)
-const configuredProfile = (collection?.profile === undefined ? (siteConfig as { profile?: ProfileOptions | false }).profile : collection.profile) as ProfileOptions | false | undefined ?? {}
-const profileSocial = (collection?.social === false ? [] : collection?.social ?? socialLinks) as SocialLink[]
+const configuredProfile = (collection?.profile === undefined ? (locale.profile ?? siteConfig.profile) : collection.profile) as ProfileOptions | false | undefined ?? {}
+const profileSocial = (collection?.social === false ? [] : collection?.social ?? socialLinksFor(lang)) as SocialLink[]
 const profile = configuredProfile === false ? false : {
-  avatar: withBase(configuredProfile.avatar ?? configuredProfile.url ?? siteConfig.logo, import.meta.env.BASE_URL),
+  avatar: withBase(configuredProfile.avatar ?? configuredProfile.url ?? locale.logo ?? siteConfig.logo, import.meta.env.BASE_URL),
   name: configuredProfile.name ?? locale.siteName,
   description: configuredProfile.description ?? locale.profileTagline,
   circle: Boolean(configuredProfile.circle),

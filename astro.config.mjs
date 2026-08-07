@@ -2,6 +2,7 @@ import vue from '@astrojs/vue'
 import { defineConfig } from 'astro/config'
 import { replaceAssetsIntegration } from './theme/lib/replace-assets.mjs'
 import { autoFrontmatterIntegration } from './theme/lib/auto-frontmatter.mjs'
+import { optionalOutputsIntegration } from './theme/lib/optional-outputs.mjs'
 import { siteConfig } from './site.config.mjs'
 
 export default defineConfig({
@@ -11,7 +12,7 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   markdown: { syntaxHighlight: false },
-  integrations: [vue(), autoFrontmatterIntegration(siteConfig), replaceAssetsIntegration(siteConfig.replaceAssets)],
+  integrations: [vue(), autoFrontmatterIntegration(siteConfig), replaceAssetsIntegration(siteConfig.replaceAssets), optionalOutputsIntegration(siteConfig)],
   vite: {
     build: {
       chunkSizeWarningLimit: 1200,

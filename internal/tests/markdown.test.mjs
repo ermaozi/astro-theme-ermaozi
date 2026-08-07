@@ -12,6 +12,12 @@ test('page layouts keep their source title while document layouts consume it', a
   assert.match(await renderMarkdown(source, { removeTitle: false }), /<h1 id="standalone-page"/)
 })
 
+test('Markdown images preserve the frozen size syntax and native loading policy', async () => {
+  const html = await renderMarkdown('![Logo =160x80](/img/logo.svg)\n\n![Second](/img/logo.svg)')
+  assert.match(html, /<img src="\/img\/logo\.svg" alt="Logo" width="160" height="80" decoding="async" loading="eager" fetchpriority="high">/)
+  assert.match(html, /<img src="\/img\/logo\.svg" alt="Second" decoding="async" loading="lazy">/)
+})
+
 test('directory code trees resolve relative paths and omit binary source panels', async () => {
   const sourcePath = path.resolve('internal/tests/fixtures/page.md')
   const html = await renderMarkdown('@[code-tree title="Fixture" entry="main.ts"](./code-tree)', { sourcePath })

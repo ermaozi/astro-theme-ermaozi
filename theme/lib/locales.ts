@@ -91,7 +91,16 @@ export const languageFromPath = (pathname: string): Lang => configuredLanguages(
   .filter(lang => localePath(lang) !== '/')
   .sort((left, right) => localePath(right).length - localePath(left).length)
   .find(lang => pathname === localePrefix(lang) || pathname.startsWith(localePath(lang))) ?? rootLanguage()
-export const localeOf = (lang: Lang): Record<string, any> => ({ ...en, ...localeConfigs[rootLanguage()], ...presets[aliases[lang] ?? 'en'], ...localeConfigs[lang] })
+const plainObject = (value: unknown): value is Record<string, any> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+export const localeOf = (lang: Lang): Record<string, any> => {
+  const { locales: _, ...globalConfig } = siteConfig
+  const base: Record<string, any> = { ...en, ...presets[aliases[lang] ?? 'en'], ...globalConfig }
+  const locale: Record<string, any> = localeConfigs[lang] ?? {}
+  return Object.fromEntries([...new Set([...Object.keys(base), ...Object.keys(locale)])].map(key => [
+    key,
+    plainObject(base[key]) && plainObject(locale[key]) ? { ...base[key], ...locale[key] } : key in locale ? locale[key] : base[key],
+  ]))
+}
 export const searchLocaleOf = (lang: Lang, configured: Record<string, Partial<SearchLocale>> = {}): SearchLocale => {
   const preset = searchLocales[aliases[lang] ?? 'en'] ?? searchEn
   const custom = configured[localePath(lang)] ?? configured[lang] ?? {}

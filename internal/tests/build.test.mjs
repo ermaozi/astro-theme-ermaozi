@@ -3,9 +3,10 @@ import { access, readFile, readdir } from 'node:fs/promises'
 import test from 'node:test'
 
 const visibleText = html => html.replace(/<[^>]+>/g, '')
+const outsideFences = markdown => markdown.replace(/(^|\n)\s*(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\s*\2(?=\n|$)/gu, '\n')
 
 test('build contains generic blog, docs, enhanced Markdown, search, and crawler files', async () => {
-  const [home, englishHome, landing, hero, banner, singleHero, effects, pageLayout, post, showcase, encryptedPage, rawShowcase, plumeShowcase, docs, configuration, rawDocs, plumeDocs, categories, robots, sitemap, llms] = await Promise.all([
+  const [home, englishHome, landing, hero, banner, singleHero, effects, pageLayout, customLayout, post, showcase, encryptedPage, rawShowcase, plumeShowcase, docs, configuration, rawDocs, plumeDocs, categories, robots, sitemap, llms] = await Promise.all([
     readFile('dist/index.html', 'utf8'),
     readFile('dist/en/index.html', 'utf8'),
     readFile('dist/landing/index.html', 'utf8'),
@@ -14,6 +15,7 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
     readFile('dist/single-hero/index.html', 'utf8'),
     readFile('dist/effects/index.html', 'utf8'),
     readFile('dist/page-layout/index.html', 'utf8'),
+    readFile('dist/custom-layout/index.html', 'utf8'),
     readFile('dist/blog/getting-started/index.html', 'utf8'),
     readFile('dist/blog/markdown-showcase/index.html', 'utf8'),
     readFile('dist/blog/encrypted-example/index.html', 'utf8'),
@@ -30,6 +32,7 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   ])
 
   assert.match(home, /ermaozi/)
+  assert.match(home, /<div id="nprogress" aria-hidden="true" hidden><div class="bar"><\/div><\/div>/)
   assert.match(home, /class="vp-profile"/)
   assert.match(home, /data-page-transition/)
   assert.doesNotMatch(home, /@view-transition \{ navigation: auto; \}/)
@@ -63,12 +66,15 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   assert.match(effects, /effect-config-dot/)
   assert.match(effects, /effect-config-orb/)
   assert.match(pageLayout, /<html class="layout-page"/)
-  assert.match(pageLayout, /<main id="VPContent" class="vp-content"><div class="vp-page"><article class="vp-doc plume-content" data-pagefind-body><h1 id="专页布局示例"/)
+  assert.match(pageLayout, /<main id="VPContent" class="vp-content"><div class="vp-page"><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><h1 id="专页布局示例"/)
   assert.doesNotMatch(pageLayout, /vp-doc-container|vp-doc-title|vp-doc-meta|vp-breadcrumb|vp-page-context-menu|data-comment-provider/)
+  assert.match(customLayout, /<main id="VPContent" class="vp-content"><article class="custom-layout-example plume-content" lang="zh-CN"><h1 id="自定义布局示例"/)
+  assert.doesNotMatch(customLayout, /class="theme-plume vp-layout|<header class="vp-nav|<footer class="vp-footer/)
   assert.match(post, /https:\/\/example\.com\/blog\/getting-started\//)
   assert.doesNotMatch(post, /data-comment-provider/)
   assert.doesNotMatch(post, /hreflang="en-us"/i)
   assert.doesNotMatch(post, /vp-navbar-translations/)
+  assert.match(showcase, /class="vp-doc plume-content external-link-icon-enabled"/)
   assert.match(showcase, /<mark>重点标记<\/mark>/)
   assert.match(showcase, /class="vp-annotation ignore-header bottom"/)
   assert.doesNotMatch(showcase, /\[\+静态站点\]:/)
@@ -120,6 +126,8 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   await assert.rejects(access('dist/raw/blog/encrypted-example.md'))
   await assert.rejects(access('dist/blog/encrypted-example/index.md'))
   assert.match(docs, /vp-sidebar/)
+  assert.match(docs, /<meta property="og:type" content="article">/)
+  assert.match(docs, /"articleSection":"文档中心"/)
   assert.match(docs, /code-block-title/)
   assert.match(docs, /line-numbers-mode/)
   assert.match(docs, /class="line highlighted"/)
@@ -167,10 +175,13 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   assert.doesNotMatch(sitemap, /hreflang=/)
   assert.match(llms, /ermaozi/)
   assert.doesNotMatch(llms, /Alternate Language Versions/)
+  assert.doesNotMatch(outsideFences(llms), /(?:^|\n)\s*<(?:RepoCard|Swiper|VPButton)\b/m)
   assert.doesNotMatch(llms, /整页加密验证内容|局部加密验证内容/)
   assert.doesNotMatch(home, /草稿预览/)
   assert.doesNotMatch(sitemap, /draft-preview/)
   assert.doesNotMatch(llms, /草稿预览|Draft preview/)
+  await assert.rejects(access('dist/en/llms-full.txt'))
+  await assert.rejects(access('dist/en/docs/guide/content/index.md'))
   await assert.rejects(access('dist/blog/draft-preview/index.html'))
   await assert.rejects(access('dist/en/blog/draft-preview/index.html'))
 })

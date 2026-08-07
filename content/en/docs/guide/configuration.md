@@ -27,7 +27,7 @@ coverStyle:
   compact: false
 ```
 
-`siteConfig.profile` accepts `avatar` (plus the legacy `url` alias), `name`, `description`, `circle`, `location`, `organization`, and `layout: 'left' | 'right'`. Mobile pages reuse the same profile in the bottom sheet with taxonomy navigation.
+`siteConfig.profile` accepts `avatar` (plus the legacy `url` alias), `name`, `description`, `circle`, `location`, `organization`, and `layout: 'left' | 'right'`. Mobile pages reuse the same profile in the bottom sheet with taxonomy navigation. Plume's deprecated top-level or locale `avatar: { ... }` form also falls back to `profile`.
 
 Set `profile` to `false` to remove the desktop card. As in Plume, a horizontal Tags/Categories/Archives navigation then appears above the post list, while mobile keeps those links in the extract sheet.
 
@@ -51,10 +51,10 @@ The frozen Plume presets for Simplified Chinese, Traditional Chinese, English, G
 
 ## Navbar
 
-Each locale's `navigation` accepts Plume string links and `{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }`. The legacy `label` and `href` aliases remain supported. An internal string link inherits the target page's title, icon, and badge. `prefix` recursively resolves relative child links, with up to two visible dropdown levels.
+Each locale's canonical `navbar` field accepts Plume string links and `{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }`; the old `navigation` field remains an alias. The legacy `label` and `href` names also remain supported. An internal string link inherits the target page's title, icon, and badge. `prefix` recursively resolves relative child links, with up to two visible dropdown levels. When omitted, Home, Posts, Tags, and Archives are generated from the locale's first Post collection.
 
 ```js
-navigation: [
+navbar: [
   '/docs/',
   { text: 'Blog', link: '/blog/', activeMatch: '^/(blog|article)/', icon: 'material-symbols:article-outline' },
   {
@@ -69,6 +69,14 @@ navigation: [
 ```
 
 External links open in a new window and show the external-link marker by default; set `noIcon: true` to hide it. Navbar icons share the Markdown icon provider and support Iconify, IconFont, Font Awesome, image URLs, and `{ svg }`.
+
+Global options provide defaults and object-valued locale options are shallow-merged over them. A locale may independently override `logo`, `logoDark`, `profile`, `social`, `navbarSocialInclude`, `appearance`, `transition`, `footer`, `outline`, `aside`, `externalLinkIcon`, and `createTime` without inheriting another locale's navbar or labels. Use `navbar: false` in page frontmatter to hide the navbar on that page.
+
+## Page and content options
+
+`pageLayout` supports `home`, `posts`, `doc`, `page`, `friends`, `custom`, `false`, and custom component names. A `posts` page may select a Post collection with `collection`; `page` keeps the standalone body; `custom`/`false` output only the Markdown body. Put named layouts in `theme/components/layouts/`; the filename is the layout name.
+
+Global, locale, and page-level `outline` and `aside` values control the content outline. `externalLinkIcon` is enabled by default and can be disabled per page; the old `externalLink` name remains compatible. `createTime: 'only-posts'` limits creation dates to posts and post lists, while `false` hides them everywhere. Set `plugins.nprogress: false` to disable the top progress bar during internal navigation.
 
 ## Layout slots
 
@@ -120,7 +128,15 @@ Post collections support `include`, `exclude`, `pagination`, `postList`, `link`,
 
 Doc collections support recursive directory and numeric-prefix navigation through `sidebar: 'auto'`; `sidebarCollapsed` controls initial group state and `sidebarScrollbar` controls the scrollbar. A manual array accepts strings or `{ text, link, prefix, icon, badge, collapsed, items }`, including scoped `items: 'auto'` and `link: '---'` separators.
 
+Plume's global multi-sidebar form is also supported: `sidebar: { '/docs/': 'auto', '/guide/': [...] }`, with longest-prefix matching. A value may also use `{ items, prefix }`; page frontmatter can force a configured sidebar with `sidebar: '/guide/'` or disable it with `sidebar: false`. Sidebar items retain the legacy `dir` alias plus `target` and `rel`.
+
 `site.config.mjs` already imports `defineSiteConfig` from `./theme/config.mjs`. It preserves the supplied object reference while filling defaults required by the theme runtime. Theme integrations may also use `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` from `theme/node.ts`; the other helpers still return their input unchanged.
+
+Legacy Plume options under `plugins.copyCode`, `plugins.shiki`, `plugins.readingTime`, `plugins.comment`, `plugins.watermark`, `plugins.replaceAssets`, `plugins.llmstxt`, `plugins.markdownPower`, `plugins.markdownChart`, `plugins.markdownImage`, `plugins.markdownInclude`, `plugins.markdownMath`, `plugins.search`, and `plugins.docsearch` fall back to their flat equivalents. Flat or `markdown` options win when both forms exist. `markdown.image` supports Plume's complete `figure`, `lazyload`, `mark`, `size`, `legacySize`, and `obsidianSize` option set; `codeHighlighter: false` falls back to plain fenced code. `plugins.markdownPower: false` disables only that enhancement group, leaving image, math, include, hint, and chart features under their own switches.
+
+The `plugins.seo` object supports Plume's `hostname`, `author`, `restrictions`, `autoDescription`, `fallBackImage`, `twitterID`, `isArticle`, `ogp`, `jsonLd`, `customHead`, and `canonical`; `false` disables generated Open Graph, Twitter Card, and JSON-LD data. Twitter/X handles are resolved from `social` first, with `twitterID` kept only as a compatibility fallback. `plugins.sitemap` supports `hostname`, `extraUrls`, `excludePaths`, `sitemapFilename`, `sitemapXSLFilename`, `sitemapXSLTemplate`, `changefreq`, `modifyTimeGetter`, `devServer`, `devHostname`, and `xmlNameSpace`; `false` removes sitemap output and its robots.txt entry.
+
+Local search uses Pagefind. `plugins.search.isSearchable(page)` controls indexing, while `disableQueryPersistence` and `locales` remain effective. Plume's `miniSearch` tokenizer options have no Pagefind equivalent, so their types are retained for migration but they do not alter Pagefind tokenization. Plume's top-level `cache` and `configFile` options control VuePress compilation caching and configuration loading; Astro has no matching runtime stage, so these fields are type-only migration shims and should be removed from migrated configuration.
 
 ## Trusted chart scripts
 
@@ -195,6 +211,8 @@ Set `pageLayout: friends` in frontmatter (the legacy `friends: true` also works)
 
 ## Search providers
 
+`llmstxt: true` generates `/llms.txt`, `/llms-full.txt`, each page's Plume-style `index.md`, the legacy `/raw/` route, and the page-context menu beside document titles. As in Plume, the feature defaults to disabled; `false` removes the files and menu together, while page frontmatter `llmstxt: false` excludes only that page. Object form supports `llmsTxt`, `llmsFullTxt`, `llmsPageTxt`, `stripHTML`, `locale`, `domain`, `linkExtension`, `filter`, `transformMarkdown`, `llmsTxtTemplate`, and `llmsTxtTemplateGetter`; `locale` defaults to the root locale and must be set to `'all'` for every language. `plugins.llmstxt` remains an alias, though the top-level field is preferred.
+
 The default Pagefind index is generated at build time and needs no external service:
 
 ```js
@@ -238,11 +256,11 @@ A string or function replaces every built-in asset type. `{ find, replacement }`
 
 ## Build-time image dimensions
 
-`plugins.markdownPower.imageSize` is disabled by default. Set it to `true` or `'local'` to read local images during production builds and add intrinsic `width` and `height` attributes to content images; use `'all'` to inspect remote images too:
+`markdown.imageSize` is disabled by default. Set it to `true` or `'local'` to read local images during production builds and add intrinsic `width` and `height` attributes to content images; use `'all'` to inspect remote images too. The legacy `plugins.markdownPower.imageSize` form remains supported:
 
 ```js
-plugins: {
-  markdownPower: { imageSize: 'local' },
+markdown: {
+  imageSize: 'local',
 },
 ```
 

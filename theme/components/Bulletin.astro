@@ -4,7 +4,6 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import type { Lang } from '../lib/content'
 import { renderMarkdown } from '../lib/markdown'
-import { siteConfig } from '../../site.config.mjs'
 import { localeOf } from '../lib/locales'
 import UserSlot from './UserSlot.astro'
 import { hasUserSlot } from '../lib/user-slots'
@@ -23,11 +22,8 @@ type BulletinConfig = {
 }
 
 const { pageEnabled = true, lang, route } = Astro.props as { pageEnabled?: boolean, lang: Lang, route: string }
-const globalBulletin = siteConfig.bulletin as BulletinConfig | false
-const localeBulletin = (localeOf(lang) as { bulletin?: BulletinConfig | boolean }).bulletin
-const bulletin = globalBulletin === false || localeBulletin === false
-  ? false
-  : { ...globalBulletin, ...(typeof localeBulletin === 'object' ? localeBulletin : {}) }
+const configuredBulletin = (localeOf(lang) as { bulletin?: BulletinConfig | boolean }).bulletin
+const bulletin = configuredBulletin === true ? {} : configuredBulletin
 const enablePage = bulletin && (typeof bulletin.enablePage === 'function' ? bulletin.enablePage({ path: route }) : bulletin.enablePage ?? true)
 const id = bulletin && (bulletin.id || createHash('sha256').update(JSON.stringify(bulletin)).digest('hex').slice(0, 8))
 let source = bulletin ? bulletin.content ?? '' : ''
