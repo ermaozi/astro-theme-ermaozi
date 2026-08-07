@@ -44,7 +44,7 @@ interface Props {
   pageClass?: string
   noindex?: boolean
   minimal404?: boolean
-  layout?: 'doc' | 'friends' | 'home' | 'page' | 'posts'
+  layout?: string
   hasSidebar?: boolean
   bare?: boolean
 }
@@ -88,7 +88,7 @@ const seoEnabled = automaticSeoEnabled(siteConfig, entry?.data.seo)
 const seoArticle = seoOptions.isArticle?.(pluginPage) ?? Boolean(entry && !isHome)
 const socialCover = entry?.data.banner ?? entry?.data.cover
 const imageSource = socialCover ?? imagesOf(entry)[0] ?? seoOptions.fallBackImage ?? locale.logo ?? siteConfig.logo
-const image = imageSource.startsWith('/') ? seoUrl(imageSource) : imageSource
+const image = typeof imageSource !== 'string' ? '' : imageSource.startsWith('/') ? seoUrl(imageSource) : imageSource
 const seoTags = entry?.data.tags.length ? entry.data.tags : typeof entry?.data.tag === 'string' ? [entry.data.tag] : entry?.data.tag ?? []
 const seoAuthors = authorsOf(entry?.data.author, seoOptions.author ?? site.authorName)
 const published = entry ? publishedTimeOf(entry) : undefined
@@ -103,7 +103,7 @@ const automaticOgp: Record<string, unknown> = {
   'og:locale': lang,
   'og:locale:alternate': alternates.filter(item => item.lang !== lang).map(item => item.lang),
   'og:image': image,
-  'og:image:alt': title,
+  'og:image:alt': image ? title : undefined,
   'og:updated_time': modified,
   'og:restrictions:age': seoOptions.restrictions,
   'twitter:creator': twitterHandle || undefined,
@@ -157,6 +157,7 @@ const watermarkOptions = !watermarkSetting
     }
 const keywords = customKeywords || defaultKeywords
 const hasCustomIcon = headItems.some(([tag, attrs]) => tag.toLowerCase() === 'link' && String(attrs?.rel ?? '').toLowerCase() === 'icon')
+const favicon = typeof siteConfig.logo === 'string' ? withBase(siteConfig.logo, import.meta.env.BASE_URL) : ''
 const userHeadHtml = serializeHeadItems(headItems.filter(([tag, attrs]) => tag.toLowerCase() !== 'title'
   && !(tag.toLowerCase() === 'meta' && ['description', 'keywords', 'robots'].includes(String(attrs?.name ?? '').toLowerCase()))
   && !(tag.toLowerCase() === 'link' && ['canonical', 'alternate'].includes(String(attrs?.rel ?? '').toLowerCase()))))
@@ -183,6 +184,8 @@ const pageTransition = transition !== false && (typeof transition !== 'object' |
 const nprogressEnabled = (siteConfig.plugins as { nprogress?: boolean }).nprogress !== false
 const katexCopy = (siteConfig.markdown.math as { type?: string, copy?: boolean }).type !== 'mathjax' && (siteConfig.markdown.math as { copy?: boolean }).copy === true
 const markMode = (siteConfig.markdown as { mark?: 'lazy' | 'eager' }).mark === 'lazy' ? 'lazy' : undefined
+const replOptions = (siteConfig.markdown as { repl?: false | { theme?: string | { light: string, dark: string } } }).repl
+const replTheme = replOptions && typeof replOptions === 'object' ? replOptions.theme ?? { light: 'github-light', dark: 'github-dark' } : undefined
 const globalPhotoSwipe = (siteConfig.plugins as { photoSwipe?: false | PhotoSwipeOptions })?.photoSwipe
 const pagePhotoSwipe = (entry?.data as { photoSwipe?: false | string | string[] } | undefined)?.photoSwipe
 const photoSwipeConfig = globalPhotoSwipe === false || pagePhotoSwipe === false ? false : typeof globalPhotoSwipe === 'object' ? globalPhotoSwipe : {}
@@ -225,7 +228,7 @@ const pageShellSignature = createHash('sha256').update(JSON.stringify({
 ---
 
 <!doctype html>
-<html class:list={[!minimal404 && `layout-${layout}`, forceDark && 'force-dark dark', forceDarkEffect && `effect-${forceDarkEffect}`, { 'bg-gray': !minimal404 && layout === 'posts' }]} lang={lang} data-page-transition={pageTransition ? '' : undefined} data-katex-copy={katexCopy ? 'true' : undefined} data-mark-mode={markMode} data-photo-swipe-selector={photoSwipeSelector || undefined} data-photo-swipe-download={photoSwipeConfig !== false && photoSwipeConfig.download !== false ? 'true' : 'false'} data-photo-swipe-fullscreen={photoSwipeConfig !== false && photoSwipeConfig.fullscreen !== false ? 'true' : 'false'} data-photo-swipe-scroll-close={photoSwipeConfig !== false && photoSwipeConfig.scrollToClose !== false ? 'true' : 'false'} data-photo-swipe-locale={JSON.stringify(photoSwipeLocale)}>
+<html class:list={[!minimal404 && `layout-${layout}`, forceDark && 'force-dark dark', forceDarkEffect && `effect-${forceDarkEffect}`, { 'bg-gray': !minimal404 && layout === 'posts' }]} lang={lang} data-page-transition={pageTransition ? '' : undefined} data-katex-copy={katexCopy ? 'true' : undefined} data-mark-mode={markMode} data-repl-theme={replTheme ? JSON.stringify(replTheme) : undefined} data-photo-swipe-selector={photoSwipeSelector || undefined} data-photo-swipe-download={photoSwipeConfig !== false && photoSwipeConfig.download !== false ? 'true' : 'false'} data-photo-swipe-fullscreen={photoSwipeConfig !== false && photoSwipeConfig.fullscreen !== false ? 'true' : 'false'} data-photo-swipe-scroll-close={photoSwipeConfig !== false && photoSwipeConfig.scrollToClose !== false ? 'true' : 'false'} data-photo-swipe-locale={JSON.stringify(photoSwipeLocale)}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -247,7 +250,7 @@ const pageShellSignature = createHash('sha256').update(JSON.stringify({
     {(customRobots || pageNoindex) && <meta data-ermaozi-managed-head name="robots" content={String(customRobots || 'noindex,follow')} />}
     <Fragment set:html={managedHeadHtml} />
     <Fragment set:html={userHeadHtml} />
-    {!hasCustomIcon && <link rel="icon" href={withBase(siteConfig.logo, import.meta.env.BASE_URL)} />}
+    {!hasCustomIcon && favicon && <link rel="icon" href={favicon} />}
     {preconnectMedia && <link rel="preconnect" href={siteConfig.mediaOrigin} />}
     {iconAssets.filter(asset => asset.endsWith('.css')).map(asset => <link rel="stylesheet" href={asset} />)}
     {iconAssets.filter(asset => asset.endsWith('.js')).map(asset => <script is:inline src={asset} data-auto-replace-svg={markdownIcon.provider === 'fontawesome' ? 'nest' : undefined}></script>)}
@@ -1381,7 +1384,20 @@ const pageShellSignature = createHash('sha256').update(JSON.stringify({
       document.addEventListener('plume-content-updated', refreshOutlines)
 
       type ReplResult = { stdout: string[], stderr: string[], error?: string, version?: string }
+      type ReplTheme = string | { light: string, dark: string }
       let pyodidePromise: Promise<any> | undefined
+      const createReplHighlighter = async () => {
+        const raw = document.documentElement.dataset.replTheme
+        if (!raw) return
+        const parsed = JSON.parse(raw) as ReplTheme
+        const theme = typeof parsed === 'string' ? parsed : { light: parsed.light, dark: parsed.dark }
+        const { createHighlighter } = await import('shiki')
+        const themes = (typeof theme === 'string' ? [theme] : [theme.light, theme.dark]) as Parameters<typeof createHighlighter>[0]['themes']
+        const langs = ['go', 'kotlin', 'rust', 'python'] as Parameters<typeof createHighlighter>[0]['langs']
+        return { highlighter: await createHighlighter({ themes, langs }), theme }
+      }
+      let replHighlighterPromise: ReturnType<typeof createReplHighlighter> | undefined
+      const getReplHighlighter = () => replHighlighterPromise ??= createReplHighlighter()
       const loadPyodide = () => pyodidePromise ??= new Promise((resolve, reject) => {
         const ready = () => (globalThis as any).loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v314.0.2/full/' }).then(resolve, reject)
         if ((globalThis as any).loadPyodide) return ready()
@@ -1477,8 +1493,28 @@ const pageShellSignature = createHash('sha256').update(JSON.stringify({
           textarea.spellcheck = false
           textarea.setAttribute('aria-label', `${repl.dataset.replLang} code`)
           textarea.value = code()
-          textarea.addEventListener('input', () => { codeElement.textContent = textarea.value })
+          let highlightRun = 0
+          const highlight = async () => {
+            const run = ++highlightRun
+            const configured = await getReplHighlighter()
+            if (!configured || run !== highlightRun) return
+            const options = typeof configured.theme === 'string'
+              ? { lang: repl.dataset.replLang ?? 'text', theme: configured.theme }
+              : { lang: repl.dataset.replLang ?? 'text', themes: configured.theme, defaultColor: false }
+            const template = document.createElement('template')
+            template.innerHTML = configured.highlighter.codeToHtml(textarea.value, options as Parameters<typeof configured.highlighter.codeToHtml>[1])
+            const renderedPre = template.content.querySelector('pre')
+            const renderedCode = renderedPre?.querySelector('code')
+            if (!renderedPre || !renderedCode || run !== highlightRun) return
+            codeElement.innerHTML = renderedCode.innerHTML
+            codeElement.setAttribute('style', renderedCode.getAttribute('style') ?? '')
+            pre.setAttribute('style', renderedPre.getAttribute('style') ?? '')
+            const numbers = editor.querySelector<HTMLElement>('.line-numbers')
+            if (numbers) numbers.innerHTML = Array.from({ length: textarea.value.split('\n').length }, () => '<div class="line-number"></div>').join('')
+          }
+          textarea.addEventListener('input', () => void highlight())
           editor.append(textarea)
+          void highlight()
         }
         const run = repl.querySelector<HTMLButtonElement>('.icon-run')
         const output = repl.querySelector<HTMLElement>('.code-repl-output')

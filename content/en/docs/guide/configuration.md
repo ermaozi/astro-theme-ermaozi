@@ -74,7 +74,7 @@ Global options provide defaults and object-valued locale options are shallow-mer
 
 ## Page and content options
 
-`pageLayout` supports `home`, `posts`, `doc`, `page`, `friends`, `custom`, `false`, and custom component names, plus Plume's legacy `blog` alias for `posts`. A `posts` page may select a Post collection with `collection`; `page` keeps the standalone body; `custom`/`false` output only the Markdown body. Put named layouts in `theme/components/layouts/`; the filename is the layout name.
+`pageLayout` supports `home`, `posts`, `doc`, `page`, `friends`, `custom`, `false`, and custom component names, plus Plume's legacy `blog` alias for `posts`. A `posts` page may select a Post collection with `collection`; `page` keeps the navigation and standalone body; `custom`/`false` output only the Markdown body. Named component layouts replace the main content region while retaining the theme navigation, footer, and applicable collection sidebar. Put them in `theme/components/layouts/` with the layout name as the filename.
 
 Global, locale, and page-level `outline` and `aside` values control the content outline. `externalLinkIcon` is enabled by default and can be disabled per page; the old `externalLink` name remains compatible. `createTime: 'only-posts'` limits creation dates to posts and post lists, while `false` hides them everywhere. Set `plugins.nprogress: false` to disable the top progress bar during internal navigation.
 
@@ -184,7 +184,7 @@ markdown: {
 
 Set `provider` to `iconfont` or `fontawesome` and use `assets` for one or more `.css` / `.js` URLs. Font Awesome also accepts the built-ins `fontawesome` and `fontawesome-with-brands`, while `::fontawesome fas:house 2xl::` overrides the provider for one icon.
 
-`markdown.repl` independently enables `go`, `kotlin`, `rust`, and `python`. The first three submit code to Plume's public playground services; Python lazily loads Pyodide and executes locally in the browser. Run only trusted, lightweight examples.
+`markdown.repl` independently enables `go`, `kotlin`, `rust`, and `python`, while `theme` selects one Shiki theme or a `{ light, dark }` pair. Editable REPLs lazily load the highlighter and refresh syntax highlighting as you type. The first three submit code to Plume's public playground services; Python lazily loads Pyodide and executes locally in the browser. Run only trusted, lightweight examples. `markdown.codeTree` also accepts `{ height, icon }` defaults; attributes on an individual container take precedence.
 
 ## Social links and footer
 
@@ -268,7 +268,7 @@ markdown: {
 },
 ```
 
-Existing dimensions are preserved, and a single missing dimension is derived from the original ratio. Only built output changes; Markdown sources remain untouched. Remote mode adds network work and waits up to three seconds for each unreadable URL, so prefer local mode unless remote sizing is required.
+Existing dimensions are preserved, and a single missing dimension is derived from the original ratio. Only built output changes; Markdown sources remain untouched. Remote mode adds network work and waits up to three seconds for each unreadable URL, so prefer local mode unless remote sizing is required. For parser safety, automatic sizing is temporarily skipped for AVIF, HEIF, HEIC, JXL, and ICNS files; the images themselves remain usable.
 
 ## Content encryption
 
@@ -286,7 +286,7 @@ encrypt: {
 },
 ```
 
-Individual pages still accept `password` and `passwordHint` in frontmatter. A partial `::: encrypt` container accepts either its own password or an administrator password. Page and partial content use PBKDF2 and AES-GCM at build time, but a static-site gate is not a substitute for server-side access control; do not ship sensitive data in a public build. Replace or remove every demonstration password before using the theme for real content.
+Individual pages still accept `password` and `passwordHint` in frontmatter. A partial `::: encrypt` container accepts either its own password or an administrator password, while `markdown.encrypt: { password: 'default password' }` supplies a default. Page and partial content use PBKDF2 and AES-GCM at build time, but a static-site gate is not a substitute for server-side access control; do not ship sensitive data in a public build. Replace or remove every demonstration password before using the theme for real content.
 
 ## Git contributors and changelog
 

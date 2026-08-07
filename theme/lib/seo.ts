@@ -3,7 +3,7 @@ import { isPost, langOf, routeOf, sectionOf } from './content'
 import modifiedTimes from '../data/modified-times.json'
 import { socialLinksFor } from './social'
 import { siteConfig } from '../../site.config.mjs'
-import { localeOf } from './locales'
+import { localeOf, localePath } from './locales'
 import { withBase } from './client-utils'
 
 export const hostname = import.meta.env.SITE || siteConfig.origin
@@ -37,16 +37,17 @@ export const authorsOf = (value: unknown, fallback: unknown = '') => {
 
 const siteData = (lang: Lang, url = absoluteUrl) => {
   const page = localeOf(lang)
+  const home = localePath(lang)
   const logo = page.logo ?? siteConfig.logo
-  const authorId = `${url(`${page.home}about/`)}#person`
-  const websiteId = `${url(page.home)}#website`
+  const authorId = `${url(`${home}about/`)}#person`
+  const websiteId = `${url(home)}#website`
   const site = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebSite',
         '@id': websiteId,
-        url: url(page.home),
+        url: url(home),
         name: page.siteName,
         description: page.description,
         inLanguage: lang,
@@ -56,8 +57,8 @@ const siteData = (lang: Lang, url = absoluteUrl) => {
         '@type': 'Person',
         '@id': authorId,
         name: page.authorName,
-        url: url(`${page.home}about/`),
-        image: url(logo),
+        url: url(`${home}about/`),
+        ...(typeof logo === 'string' && logo ? { image: url(logo) } : {}),
         description: page.authorDescription,
         sameAs: socialLinksFor(lang).map(({ link }) => link).filter(link => /^https?:\/\//.test(link)),
       },
@@ -71,9 +72,10 @@ export const structuredPageData = (title: string, description: string, lang: Lan
   const url = hostnameOverride ? (path: string) => new URL(withBase(path, import.meta.env.BASE_URL), hostnameOverride).toString() : absoluteUrl
   const { page, authorId, websiteId, site } = siteData(lang, url)
   const post = entry ? isPost(entry) : false
+  const home = localePath(lang)
   const fallbackBreadcrumbs = [
-    { text: page.homeText, href: page.home },
-    ...(post ? [{ text: page.postsText, href: `${page.home}blog/` }] : []),
+    { text: page.homeText, href: home },
+    ...(post ? [{ text: page.postsText, href: `${home}blog/` }] : []),
     { text: title, href: route },
   ]
   const items = (pageBreadcrumbs?.length ? pageBreadcrumbs : fallbackBreadcrumbs).map(({ text, href }, index) => ({
@@ -92,12 +94,13 @@ export const structuredPageData = (title: string, description: string, lang: Lan
   const images = imagesOf(entry)
   const cover = entry?.data.banner ?? entry?.data.cover
   const articleImages = cover ? [cover.startsWith('/') ? url(cover) : cover] : images
+  const logo = page.logo ?? siteConfig.logo
   const authors = authorsOf(entry?.data.author, defaultAuthor ?? page.authorName)
   const article = entry && (articleOverride ?? post) ? {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: title,
-    image: articleImages.length ? articleImages : [url(page.logo ?? siteConfig.logo)],
+    image: articleImages.length ? articleImages : typeof logo === 'string' && logo ? [url(logo)] : [],
     datePublished: publishedTimeOf(entry),
     dateModified: modifiedTimeOf(entry),
     author: authors.map(author => ({ '@type': 'Person', ...author })),

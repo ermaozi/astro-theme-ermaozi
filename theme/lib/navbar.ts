@@ -1,6 +1,6 @@
 import type { NavigationItem } from '../config-types.ts'
 import { postCollectionsFor } from './collections.ts'
-import { localeOf, type Lang } from './locales.ts'
+import { localeOf, localePath, type Lang } from './locales.ts'
 
 export function navbarFor(lang: Lang): NavigationItem[] {
   const locale = localeOf(lang)
@@ -10,7 +10,7 @@ export function navbarFor(lang: Lang): NavigationItem[] {
 
   const posts = postCollectionsFor(lang)[0]
   return [
-    { text: locale.homeText, link: locale.home },
+    { text: locale.homeText, link: localePath(lang) },
     ...(posts ? [
       { text: posts.title, link: posts.link },
       ...(posts.tags === false ? [] : [{ text: posts.tagsText ?? locale.tagText, link: posts.tagsLink }]),

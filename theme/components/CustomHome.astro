@@ -38,8 +38,11 @@ const userHomeComponents = Object.fromEntries(Object.entries(userHomeModules).ma
 <main id="VPContent" class="vp-content is-home">
   <div class="vp-home">
   {config.map((item, index) => {
-    const UserHomeComponent = builtInHomeTypes.has(item.type) ? undefined : userHomeComponents[item.type]
+    const componentName = item.type.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+    const UserHomeComponent = builtInHomeTypes.has(item.type) ? undefined : userHomeComponents[componentName]
+    if (!builtInHomeTypes.has(item.type) && !UserHomeComponent) throw new Error(`[ermaozi] 首页区块 type "${item.type}" 未找到对应组件；请添加 theme/components/home/${item.type}.astro 或 .vue`)
     const collection = item.collection ? postCollections.find(entry => entry.dir === item.collection) : postCollections[0]
+    if (['posts', 'blog'].includes(item.type) && item.collection && !collection) throw new Error(`[ermaozi] 首页 ${item.type} 区块找不到 Post 集合 "${item.collection}"`)
     const itemPosts = collection ? postsFor(posts, lang, collection, true) : []
     const itemStats = { tags: new Set(itemPosts.flatMap(post => post.data.tags)).size, categories: new Set(itemPosts.flatMap(post => categoryListOf(post).map(category => category.id))).size, posts: itemPosts.length }
     const profileLayout = (collection?.profile === undefined ? (locale.profile ?? siteConfig.profile) : collection.profile) as { layout?: 'left' | 'right' } | false | undefined

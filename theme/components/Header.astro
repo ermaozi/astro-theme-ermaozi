@@ -32,9 +32,12 @@ const languages = languageLinks.length
   : translationRoute && fallbackLanguage ? [{ lang, href: Astro.url.pathname }, { lang: fallbackLanguage, href: translationRoute }] : []
 const otherLanguages = languages.filter(item => item.lang !== lang)
 const currentPath = withoutBase(Astro.url.pathname, import.meta.env.BASE_URL)
-const homeHref = withBase(home, import.meta.env.BASE_URL)
-const logo = withBase(locale.logo ?? siteConfig.logo, import.meta.env.BASE_URL)
-const logoDark = withBase(locale.logoDark ?? siteConfig.logoDark ?? locale.logo ?? siteConfig.logo, import.meta.env.BASE_URL)
+const homeHref = typeof home === 'string' ? withBase(home, import.meta.env.BASE_URL) : ''
+const HomeTag = homeHref ? 'a' : 'span'
+const logoSource = locale.logo ?? siteConfig.logo
+const logo = typeof logoSource === 'string' ? withBase(logoSource, import.meta.env.BASE_URL) : ''
+const logoDarkSource = locale.logoDark || logoSource
+const logoDark = typeof logoDarkSource === 'string' ? withBase(logoDarkSource, import.meta.env.BASE_URL) : logo
 const socialLinks = socialLinksFor(lang)
 const navbarSocialLinks = navbarSocialLinksFor(lang)
 type NavItem = {
@@ -121,11 +124,13 @@ const basePath = normalizePrefix(import.meta.env.BASE_URL)
         <div class="title">
           <UserSlot name="nav-bar-title-before" {lang} route={currentPath} />
           <div class="vp-navbar-title">
-            <a class="vp-link link no-icon title" href={homeHref} aria-label={`${locale.siteName} ${locale.homeText}`}>
-              <img class="vp-image dark logo" src={logoDark} alt="" width="24" height="24" />
-              <img class="vp-image light logo" src={logo} alt="" width="24" height="24" />
+            <HomeTag class:list={['vp-link title', { link: Boolean(homeHref), 'no-icon': true }]} href={homeHref || undefined} aria-label={homeHref ? `${locale.siteName} ${locale.homeText}` : undefined}>
+              {logo && <>
+                <img class="vp-image dark logo" src={logoDark} alt="" width="24" height="24" />
+                <img class="vp-image light logo" src={logo} alt="" width="24" height="24" />
+              </>}
               <span>{locale.siteName}</span>
-            </a>
+            </HomeTag>
           </div>
           <UserSlot name="nav-bar-title-after" {lang} route={currentPath} />
         </div>

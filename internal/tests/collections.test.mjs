@@ -25,6 +25,15 @@ test('multiple locale collections resolve frozen Plume routes, filters, and iden
   assert.equal(collectionForEntry('news/draft/post', 'zh-CN', config), undefined)
   assert.equal(collectionForEntry('news/private/post', 'zh-CN', config), undefined)
 
+  const nested = {
+    locales: { 'zh-CN': { home: '/', collections: [
+      { type: 'post', dir: '/', title: 'All posts' },
+      { type: 'post', dir: 'news', title: 'News', exclude: ['private/**'] },
+    ] } },
+  }
+  assert.equal(collectionForEntry('news/public/post', 'zh-CN', nested)?.title, 'News')
+  assert.equal(collectionForEntry('news/private/post', 'zh-CN', nested)?.title, 'All posts')
+
   const [notes, manual] = collectionsFor('en-US', config)
   assert.equal(notes.link, '/en/notes/')
   assert.equal(notes.archivesLink, '/en/notes/archives/')

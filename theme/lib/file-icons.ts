@@ -937,15 +937,20 @@ export function getFileIconName(fileName: string, type: 'file' | 'folder' = 'fil
     return definitions.folders[fileName]
       ?? (fileName.includes('/') ? definitions.folders[fileName.slice(fileName.lastIndexOf('/') + 1)] : undefined)
   }
-  let icon = definitions.named[fileName] ?? definitions.files[fileName]
+  let icon: string | undefined = definitions.named[fileName] ?? definitions.files[fileName]
   if (icon) return icon
+  icon = getFileIconTypeFromExtension(fileName)
+  if (icon) return icon
+  return Object.entries(definitions.partials).find(([partial]) => fileName.includes(partial))?.[1]
+}
+
+export function getFileIconTypeFromExtension(fileName: string): string | undefined {
   let extension = fileName.slice(Math.max(0, fileName.indexOf('.')))
   while (extension) {
-    icon = definitions.extensions[extension]
+    const icon = definitions.extensions[extension]
     if (icon) return icon
     const nextDot = extension.indexOf('.', 1)
     if (nextDot < 0) break
     extension = extension.slice(nextDot)
   }
-  return Object.entries(definitions.partials).find(([partial]) => fileName.includes(partial))?.[1]
 }

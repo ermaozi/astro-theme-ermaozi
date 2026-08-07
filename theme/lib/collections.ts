@@ -133,16 +133,20 @@ const included = (relative: string, collection: Collection) => {
   return !ignores.some(pattern => matchesGlob(file, pattern))
 }
 
-export function collectionForPath(id: string, lang: Lang, config: any = siteConfig): ResolvedCollection | undefined {
+const collectionCandidates = (id: string, lang: Lang, config: any) => {
   const relative = relativeContentId(id, lang)
   return collectionsFor(lang, config)
     .filter(collection => !collection.dir || relative === collection.dir || relative.startsWith(`${collection.dir}/`))
-    .sort((left, right) => right.dir.length - left.dir.length)[0]
+    .sort((left, right) => right.dir.length - left.dir.length)
+}
+
+export function collectionForPath(id: string, lang: Lang, config: any = siteConfig): ResolvedCollection | undefined {
+  return collectionCandidates(id, lang, config)[0]
 }
 
 export function collectionForEntry(id: string, lang: Lang, config: any = siteConfig): ResolvedCollection | undefined {
-  const collection = collectionForPath(id, lang, config)
-  return collection && included(relativeContentId(id, lang), collection) ? collection : undefined
+  const relative = relativeContentId(id, lang)
+  return collectionCandidates(id, lang, config).find(collection => included(relative, collection))
 }
 
 export const postCollectionsFor = (lang: Lang, config?: any) => collectionsFor(lang, config).filter((collection): collection is ResolvedPostCollection => collection.type === 'post')

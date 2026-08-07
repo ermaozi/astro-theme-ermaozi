@@ -28,8 +28,9 @@ const en = !lang.startsWith('zh')
 const locale = localeOf(lang)
 const configuredProfile = (collection?.profile === undefined ? (locale.profile ?? siteConfig.profile) : collection.profile) as ProfileOptions | false | undefined ?? {}
 const profileSocial = (collection?.social === false ? [] : collection?.social ?? socialLinksFor(lang)) as SocialLink[]
+const avatarSource = configuredProfile === false ? false : configuredProfile.avatar ?? configuredProfile.url ?? locale.logo ?? siteConfig.logo
 const profile = configuredProfile === false ? false : {
-  avatar: withBase(configuredProfile.avatar ?? configuredProfile.url ?? locale.logo ?? siteConfig.logo, import.meta.env.BASE_URL),
+  avatar: typeof avatarSource === 'string' ? withBase(avatarSource, import.meta.env.BASE_URL) : '',
   name: configuredProfile.name ?? locale.siteName,
   description: configuredProfile.description ?? locale.profileTagline,
   circle: Boolean(configuredProfile.circle),

@@ -21,21 +21,19 @@ export const siteConfig = defineSiteConfig({
   // GitHub Pages 和 GitLab Pages 的内置工作流会通过 BASE_PATH 自动覆盖此值。
   base: '/',
 
-  // 默认语言的首页链接。省略时使用该语言的 home；若希望根语言仍位于 /，但首页跳到 /blog/，可取消下一行注释。
+  // 默认语言的 Logo 首页链接。省略时使用该语言的路径；设为 false 可将 Logo 标题改为非链接。
+  // 若希望根语言仍位于 /，但 Logo 跳到 /blog/，可取消下一行注释。
   // home: '/blog/',
 
-  // 全站 Logo。支持站内路径或完整 URL，同时用作默认头像和部分 SEO 图片。
+  // 全站 Logo。支持站内路径或完整 URL，同时用作默认头像和部分 SEO 图片；设为 false 则不显示。
   logo: '/img/logo.svg',
 
-  // 深色模式 Logo。若深浅主题共用同一图片，可与 logo 相同；省略时自动回退到 logo。
+  // 深色模式 Logo。若深浅主题共用同一图片，可与 logo 相同；省略或设为 false 时回退到 logo。
   logoDark: '/img/logo.svg',
 
   // 外观模式：true 允许浅色/深色/跟随系统；false 固定浅色；
   // 'dark' 默认深色但允许切换；'force-dark' 固定深色并隐藏开关。
   appearance: true,
-
-  // 供自定义组件使用的版权年份；内置页脚文字由下方 footer.copyright 决定。
-  copyrightYear: new Date().getFullYear(),
 
   // 浏览器存储键和互动事件的命名空间。同一域名部署多个站点时必须保持唯一。
   namespace: 'ermaozi',
@@ -448,21 +446,38 @@ export const siteConfig = defineSiteConfig({
     // 图标提供商。iconify 使用集合名:图标名；也可配置 iconfont/fontawesome 及资源地址。
     icon: {
       provider: 'iconify',
+      // 可设置默认 size 和 color；单个图标上的参数优先。
+      // size: '1em',
+      // color: 'currentColor',
       // 设置 prefix 后，未写集合前缀的图标会自动使用该集合。
       // prefix: 'mdi',
+      // 预加载列表用于动态组件图标；Astro 仍会对未打包的 Iconify 图标按需加载。
+      // preload: ['mdi:home'],
       // IconFont 或 Font Awesome 可通过 assets 加载一个或多个 .css/.js URL。
       // assets: [],
     },
 
+    // 代码分组标题图标。false 全部隐藏；对象可分别限制命名图标和文件扩展名。
+    codeTabs: { icon: true },
+
     // 可运行代码块。Go、Kotlin、Rust 会请求远程执行服务；Python 在浏览器加载 Pyodide。
-    repl: { go: true, kotlin: true, rust: true, python: true },
+    // theme 可写单个 Shiki 主题，或分别指定浅色/深色编辑器主题。
+    repl: { theme: { light: 'github-light', dark: 'github-dark' }, go: true, kotlin: true, rust: true, python: true },
+
+    // 外部代码演示默认关闭；示例站显式开启四种 Plume 兼容语法。
+    codepen: true,
+    codeSandbox: true,
+    jsfiddle: true,
+    replit: true,
 
     // 增强表格复制与显示。
     table: true,
 
     // 按需启用的 Markdown Power 模块；示例站开启这些功能用于文档演示。
     demo: true,
+    // 也可写成 { password: '默认密码' }，供未单独声明 password 的 ::: encrypt 使用。
     encrypt: true,
+    // 代码树也可写成 { height: 320, icon: 'colored' }，作为每个代码树的默认值。
     codeTree: true,
     collapse: true,
     timeline: true,
@@ -508,9 +523,6 @@ export const siteConfig = defineSiteConfig({
       // 注解预设名称及其 Markdown 内容。
       annotations: { preset: 'This annotation is configured once in `site.config.mjs`.' },
     },
-
-    // ::: encrypt 未单独写密码时使用的默认密码；留空表示不提供默认值。
-    encryptPassword: '',
 
     // 文件树图标：colored 使用彩色文件类型图标；false 可关闭图标。
     fileTree: { icon: 'colored' },

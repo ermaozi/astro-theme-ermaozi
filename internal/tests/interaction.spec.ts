@@ -1393,6 +1393,15 @@ test('page layout renders only the frozen standalone content shell', async ({ pa
   await expect(page.locator('.vp-page h1')).toHaveText('Page layout example')
 })
 
+test('named page layouts render inside the Plume shell', async ({ page }) => {
+  await page.goto('/custom-layout/', { waitUntil: 'domcontentloaded' })
+  await expect(page.locator('html')).toHaveClass(/\blayout-Minimal\b/)
+  await expect(page.locator('.theme-plume.vp-layout > .global-protected > .vp-nav')).toBeVisible()
+  await expect(page.locator('#VPContent > .custom-layout-example')).toContainText('自定义布局示例')
+  await expect(page.locator('.vp-footer')).toBeVisible()
+  await expect(page.locator('.vp-doc-container, .vp-doc-title, .vp-doc-meta, .vp-breadcrumb')).toHaveCount(0)
+})
+
 test('comment adapters lazy-load every frozen provider and provider stylesheet', async ({ page }) => {
   const assets = readdirSync('dist/_astro')
   const commentsModule = assets.find(file => /^Comments\..+\.js$/.test(file))!
@@ -1858,6 +1867,9 @@ test('demo matrix supports files, resources, Vue SFCs, Markdown, and playground 
   await expect(vueDemos.nth(1)).toHaveAttribute('data-demo-ready', 'true')
   const inlineCounter = vueDemos.first().locator('#inline-vue-count')
   await expect(inlineCounter).toHaveText('内联计数 0')
+  await expect(inlineCounter).toHaveCSS('border-top-color', 'rgb(51, 111, 135)')
+  await expect(inlineCounter).toHaveCSS('border-top-width', '2px')
+  expect(await inlineCounter.evaluate(element => [...element.attributes].some(attribute => attribute.name.startsWith('data-v-')))).toBe(true)
   await inlineCounter.click()
   await expect(inlineCounter).toHaveText('内联计数 1')
   const embeddedCounter = vueDemos.nth(1).locator('#embedded-vue-count')
@@ -1994,9 +2006,12 @@ test('Go, Kotlin, Rust, and Python REPLs preserve Plume execution contracts', as
   const repls = page.locator('[data-code-repl]')
   await expect(repls).toHaveCount(4)
   expect(await repls.evaluateAll(elements => elements.map(element => element.getAttribute('data-repl-ready')))).toEqual(['true', 'true', 'true', 'true'])
+  expect(JSON.parse(await page.locator('html').getAttribute('data-repl-theme') || '{}')).toEqual({ light: 'github-light', dark: 'github-dark' })
 
   const go = repls.filter({ has: page.locator('[class*="language-go"]') })
   await go.locator('textarea').fill('package main\nfunc main() {}')
+  await expect.poll(() => go.locator('code').innerHTML(), { timeout: 15_000 }).toContain('--shiki-light')
+  await expect(go.locator('code')).toContainText('func main() {}')
   await go.locator('.icon-run').click()
   await expect(go.locator('.code-repl-output')).toBeVisible()
   await expect(go.locator('.output-content')).toContainText('Hello Go')

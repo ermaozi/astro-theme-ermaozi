@@ -6,7 +6,7 @@ const visibleText = html => html.replace(/<[^>]+>/g, '')
 const outsideFences = markdown => markdown.replace(/(^|\n)\s*(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\s*\2(?=\n|$)/gu, '\n')
 
 test('build contains generic blog, docs, enhanced Markdown, search, and crawler files', async () => {
-  const [home, englishHome, landing, hero, banner, singleHero, effects, pageLayout, customLayout, post, showcase, encryptedPage, rawShowcase, plumeShowcase, docsHome, docs, configuration, rawDocs, plumeDocs, categories, robots, sitemap, llms] = await Promise.all([
+  const [home, englishHome, landing, hero, banner, singleHero, effects, pageLayout, customLayout, post, showcase, encryptedPage, rawShowcase, plumeShowcase, docsHome, docs, configuration, rawDocs, plumeDocs, categories, robots, sitemap, llms, routeSource] = await Promise.all([
     readFile('dist/index.html', 'utf8'),
     readFile('dist/en/index.html', 'utf8'),
     readFile('dist/landing/index.html', 'utf8'),
@@ -30,6 +30,7 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
     readFile('dist/robots.txt', 'utf8'),
     readFile('dist/sitemap.xml', 'utf8'),
     readFile('dist/llms-full.txt', 'utf8'),
+    readFile('theme/pages/[...path].astro', 'utf8'),
   ])
 
   assert.match(home, /ermaozi/)
@@ -69,13 +70,18 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   assert.match(pageLayout, /<html class="layout-page"/)
   assert.match(pageLayout, /<main id="VPContent" class="vp-content"><div class="vp-page"><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><h1 id="专页布局示例"/)
   assert.doesNotMatch(pageLayout, /vp-doc-container|vp-doc-title|vp-doc-meta|vp-breadcrumb|vp-page-context-menu|data-comment-provider/)
+  assert.match(customLayout, /<html class="layout-Minimal"/)
+  assert.match(customLayout, /<div class="theme-plume vp-layout">/)
+  assert.match(customLayout, /<header class="vp-nav/)
   assert.match(customLayout, /<main id="VPContent" class="vp-content"><article class="custom-layout-example plume-content" lang="zh-CN"><h1 id="自定义布局示例"/)
   assert.match(customLayout, /<meta data-ermaozi-managed-head name="theme-layout" content="custom">/)
   assert.match(customLayout, /<meta name="description" content="此描述由 head 配置覆盖。">/)
   assert.match(customLayout, /<meta name="keywords" content="custom-layout,head">/)
   assert.match(customLayout, /<meta data-ermaozi-managed-head property="og:description" content="此描述由 head 配置覆盖。">/)
   assert.doesNotMatch(customLayout, /<meta name="description" content="验证 Plume 自定义布局组件名的迁移能力。">/)
-  assert.doesNotMatch(customLayout, /class="theme-plume vp-layout|<header class="vp-nav|<footer class="vp-footer/)
+  assert.match(customLayout, /<footer class="vp-footer/)
+  assert.doesNotMatch(customLayout, /vp-doc-container|vp-doc-title|vp-doc-meta|vp-breadcrumb|vp-page-context-menu|data-comment-provider/)
+  assert.match(routeSource, /userLayoutName \? \([\s\S]*class:list=\{\['vp-content', \{ 'has-sidebar': hasSidebar \}\]\}/)
   assert.match(post, /https:\/\/example\.com\/blog\/getting-started\//)
   assert.match(post, /<title>ermaozi 快速开始 \| 博客 \| ermaozi<\/title>/)
   assert.match(post, /property="article:published_time" content="2026-08-05T00:00:00.000Z"/)

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { siteConfig } from '../../site.config.mjs'
 import { withBase, withoutBase } from '../lib/client-utils.ts'
 import { postCollectionsFor } from '../lib/collections.ts'
-import { configuredLanguages, localeOf } from '../lib/locales.ts'
+import { configuredLanguages, localePath } from '../lib/locales.ts'
 import { sitemapOutputNames } from '../lib/sitemap-options.mjs'
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
@@ -37,9 +37,8 @@ const outputFiles = new Set(files.map(file => path.resolve(file)))
 const htmlFiles = files.filter(file => file.endsWith('.html'))
 const pages = new Map(await Promise.all(htmlFiles.map(async file => /** @type {[string, string]} */ ([routeOf(file), await readFile(file, 'utf8')]))))
 const requiredRoutes = [...new Set(configuredLanguages().flatMap(lang => {
-  const locale = localeOf(lang)
   return [
-    locale.home,
+    localePath(lang),
     ...postCollectionsFor(lang).flatMap(collection => [
       collection.postList === false ? '' : collection.link,
       collection.categories === false ? '' : collection.categoriesLink,

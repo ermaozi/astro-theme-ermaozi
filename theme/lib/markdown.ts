@@ -39,7 +39,7 @@ import path from 'node:path'
 import { createHighlighter } from 'shiki'
 import type { CompilerOptions } from 'typescript'
 import { siteConfig } from '../../site.config.mjs'
-import { defaultFile, defaultFolder, getFileIconName } from './file-icons.ts'
+import { defaultFile, defaultFolder, definitions, getFileIconName, getFileIconTypeFromExtension } from './file-icons.ts'
 import { iconifySvg } from './iconify.ts'
 import { encryptContent } from './encryption.ts'
 import { globalAdminCredentials } from './encrypt-policy.ts'
@@ -111,25 +111,41 @@ const copyCodeLocaleEntries = [
   [['nl', 'nl-NL'], ['Kopieer code', 'Gekopieerd']],
 ] as const
 const copyCodeLocales = Object.fromEntries(copyCodeLocaleEntries.flatMap(([languages, [copy, copied]]) => languages.map(language => [language, { copy, copied }]))) as Record<string, { copy: string, copied: string }>
-const copyCodeLocale = (sourcePath = '') => {
+const configuredLocale = <T>(locales: Record<string, T> | undefined, sourcePath = '') => {
   const route = routeFromSourcePath(sourcePath)
+  const path = Object.keys(locales ?? {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]
+  return locales?.[path]
+}
+const copyCodeLocale = (sourcePath = '') => {
   const language = languageFromSourcePath(sourcePath)
   const preset = copyCodeLocales[language] ?? copyCodeLocales[language.split('-')[0]] ?? copyCodeLocales.en
   if (typeof copyCodeOptions !== 'object') return preset
-  const localePath = Object.keys(copyCodeOptions.locales ?? {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]
-  return { ...preset, ...copyCodeOptions.locales?.[localePath] }
+  return { ...preset, ...configuredLocale(copyCodeOptions.locales, sourcePath) }
 }
 const markdownPowerEnabled = siteConfig.plugins.markdownPower !== false
-const obsidianOptions = (markdownPowerEnabled ? (siteConfig.markdown as { obsidian?: ObsidianOptions }).obsidian ?? true : false) as ObsidianOptions
+const configuredObsidianLocales = Object.fromEntries(Object.entries((siteConfig.markdown as { locales?: Record<string, { obsidian?: Record<string, string> }> }).locales ?? {})
+  .filter((entry): entry is [string, { obsidian: Record<string, string> }] => Boolean(entry[1].obsidian))
+  .map(([route, locale]) => [route, locale.obsidian]))
+const configuredObsidian = markdownPowerEnabled ? (siteConfig.markdown as { obsidian?: ObsidianOptions }).obsidian ?? true : false
+const obsidianOptions = (configuredObsidian && Object.keys(configuredObsidianLocales).length
+  ? { ...(typeof configuredObsidian === 'object' ? configuredObsidian : {}), locales: configuredObsidianLocales }
+  : configuredObsidian) as ObsidianOptions
 type PlotOptions = { trigger?: 'hover' | 'click', effect?: 'mask' | 'blur' }
 type CanIUseOptions = { mode?: 'embed' | 'baseline' | 'image' | string }
 type NpmToPackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun' | 'deno'
+type ReplOptions = { theme?: string | { light: string, dark: string }, go?: boolean, kotlin?: boolean, rust?: boolean, python?: boolean }
+type CodeTreeOptions = { icon?: 'simple' | 'colored', height?: string | number }
 type IncludeOptions = {
   resolvePath?: (reference: string, cwd: string | null) => string
   deep?: boolean
   useComment?: boolean
   resolveImagePath?: boolean
   resolveLinkPath?: boolean
+}
+type MarkdownPowerLocale = {
+  common?: { copy?: string, copied?: string }
+  encrypt?: Partial<{ hint: string, placeholder: string, incPwd: string, noContent: string, warningTitle: string, warningText: string }>
+  obsidian?: Record<string, string>
 }
 type MarkdownImageOptions = {
   figure?: boolean | MarkdownItFigureOptions
@@ -141,6 +157,8 @@ type MarkdownImageOptions = {
 }
 const legacyImageSize = (imageSizePlugins as unknown as { legacyImgSize: typeof imgSize }).legacyImgSize
 const markdownOptions = siteConfig.markdown as {
+  hint?: boolean | Record<string, unknown>
+  alert?: boolean | Record<string, unknown>
   abbr?: boolean | Record<string, string>
   annotation?: boolean | Record<string, string | string[]>
   plot?: boolean | PlotOptions
@@ -148,6 +166,11 @@ const markdownOptions = siteConfig.markdown as {
   qrcode?: boolean
   include?: boolean | IncludeOptions
   npmTo?: boolean | NpmToPackageManager[] | { tabs?: NpmToPackageManager[] }
+  codeTabs?: { icon?: boolean | { named?: false | string[], extensions?: false | string[] } }
+  codepen?: boolean
+  codeSandbox?: boolean
+  jsfiddle?: boolean
+  replit?: boolean
   chartjs?: boolean
   echarts?: boolean
   flowchart?: boolean
@@ -161,8 +184,8 @@ const markdownOptions = siteConfig.markdown as {
   audioReader?: boolean
   artPlayer?: boolean
   demo?: boolean
-  encrypt?: boolean | Record<string, unknown>
-  codeTree?: boolean | Record<string, unknown>
+  encrypt?: boolean | { password?: string }
+  codeTree?: boolean | CodeTreeOptions
   collapse?: boolean
   fileTree?: boolean | Record<string, unknown>
   timeline?: boolean
@@ -173,8 +196,10 @@ const markdownOptions = siteConfig.markdown as {
     abbreviations?: Record<string, string>
     annotations?: Record<string, string | string[]>
   }
+  locales?: Record<string, MarkdownPowerLocale>
 }
 const markdownPower = (markdownPowerEnabled ? markdownOptions : {}) as typeof markdownOptions
+const codeTreeOptions = typeof markdownPower.codeTree === 'object' ? markdownPower.codeTree : {}
 const markdownChart = markdownOptions
 const markdownImage = typeof (siteConfig.markdown as { image?: unknown }).image === 'object'
   ? (siteConfig.markdown as { image: MarkdownImageOptions }).image
@@ -190,6 +215,49 @@ const annotationPresets = {
 }
 const globalPlotOptions = typeof markdownPower.plot === 'object' ? markdownPower.plot : {}
 const canIUseOptions = () => markdownPower.caniuse === true ? {} : typeof markdownPower.caniuse === 'object' ? markdownPower.caniuse : false
+const encryptSnippetLocales = {
+  en: { hint: 'The content is encrypted, please unlock to view.', placeholder: 'Enter password', incPwd: 'Incorrect password', warningTitle: '🚨 Security Warning:', warningText: 'Your connection is not encrypted with HTTPS, posing a risk of content leakage and preventing access to encrypted content.' },
+  zh: { hint: '内容已加密，请解锁后查看。', placeholder: '输入密码', incPwd: '密码错误', warningTitle: '🚨 安全警告：', warningText: '您的连接未使用HTTPS加密，存在内容泄露风险，无法访问加密内容。' },
+  'zh-TW': { hint: '內容已加密，請解鎖後查看。', placeholder: '輸入密碼', incPwd: '密碼錯誤', warningTitle: '🚨 安全警告：', warningText: '您的連線未使用 HTTPS 加密，可能導致內容洩露風險，無法存取加密內容。' },
+  de: { hint: 'Der Inhalt ist verschlüsselt, bitte entsperren Sie ihn, um ihn anzuzeigen.', placeholder: 'Passwort eingeben', incPwd: 'Falsches Passwort', warningTitle: '🚨 Sicherheitswarnung:', warningText: 'Ihre Verbindung ist nicht mit HTTPS verschlüsselt, was ein Risiko für Inhaltslecks darstellt und den Zugriff auf verschlüsselte Inhalte verhindert.' },
+  fr: { hint: 'Le contenu est chiffré, veuillez déverrouiller pour afficher.', placeholder: 'Entrez le mot de passe', incPwd: 'Mot de passe incorrect', warningTitle: '🚨 Avertissement de sécurité :', warningText: "Votre connexion n'est pas chiffrée avec HTTPS, ce qui présente un risque de fuite de contenu et empêche l'accès au contenu chiffré." },
+  ru: { hint: 'Контент зашифрован, разблокируйте для просмотра.', placeholder: 'Введите пароль', incPwd: 'Неверный пароль', warningTitle: '🚨 Предупреждение безопасности:', warningText: 'Ваше соединение не защищено HTTPS, что создает риск утечки данных и блокирует доступ к зашифрованному контенту.' },
+  ja: { hint: 'コンテンツは暗号化されています。閲覧するにはロックを解除してください。', placeholder: 'パスワードを入力', incPwd: 'パスワードが間違っています', warningTitle: '🚨 セキュリティ警告:', warningText: '接続がHTTPSで暗号化されていないため、コンテンツの漏洩リスクがあり、暗号化されたコンテンツへのアクセスができません。' },
+  ko: { hint: '내용이 암호화되어 있습니다. 잠금 해제 후 확인하세요.', placeholder: '비밀번호 입력', incPwd: '잘못된 비밀번호', warningTitle: '🚨 보안 경고:', warningText: '연결이 HTTPS로 암호화되지 않아 내용 유출 위험이 있으며, 암호화된 콘텐츠에 접근할 수 없습니다.' },
+} as const
+const markdownPowerCommonLocales = {
+  en: { copy: 'Copy', copied: 'Copied' }, zh: { copy: '复制', copied: '已复制' }, 'zh-TW': { copy: '複製', copied: '已複製' },
+  de: { copy: 'Kopieren', copied: 'Kopiert' }, fr: { copy: 'Copier', copied: 'Copié' }, ru: { copy: 'Копировать', copied: 'Скопировано' },
+  ja: { copy: 'コピー', copied: 'コピー済み' }, ko: { copy: '복사', copied: '복사됨' },
+} as const
+const markdownPowerLocaleKey = (lang: string) => lang === 'zh-TW' || lang === 'zh-Hant' ? 'zh-TW' : lang.split('-')[0]
+const encryptSnippetLocale = (sourcePath = '') => {
+  const lang = languageFromSourcePath(sourcePath)
+  const key = markdownPowerLocaleKey(lang)
+  const preset = encryptSnippetLocales[key as keyof typeof encryptSnippetLocales] ?? encryptSnippetLocales.en
+  const custom = configuredLocale(markdownPower.locales, sourcePath)?.encrypt ?? markdownPower.locales?.[lang]?.encrypt
+  return { ...preset, ...custom }
+}
+const markdownPowerCommonLocale = (sourcePath = '') => {
+  const lang = languageFromSourcePath(sourcePath)
+  const preset = markdownPowerCommonLocales[markdownPowerLocaleKey(lang) as keyof typeof markdownPowerCommonLocales] ?? markdownPowerCommonLocales.en
+  const custom = configuredLocale(markdownPower.locales, sourcePath)?.common ?? markdownPower.locales?.[lang]?.common
+  return { ...preset, ...custom }
+}
+const codeTabIcon = (filename: string) => {
+  const option = markdownPower.codeTabs?.icon
+  if (option === false) return undefined
+  if (!option || option === true) return getFileIconName(filename)
+  const { named, extensions } = option
+  const extensionIcon = getFileIconTypeFromExtension(filename)
+  if (named === false && definitions.named[filename]) return undefined
+  if (extensions === false && extensionIcon) return undefined
+  const hasNamed = Array.isArray(named) && named.length > 0
+  const hasExtensions = Array.isArray(extensions) && extensions.length > 0
+  if (!hasNamed && !hasExtensions) return getFileIconName(filename)
+  if (hasNamed && named.includes(filename)) return definitions.named[filename]
+  if (hasExtensions && extensions.some(extension => filename.endsWith(extension))) return extensionIcon
+}
 const includeOptions = (): Required<IncludeOptions> | false => markdownOptions.include === false ? false : {
   resolvePath: reference => reference,
   deep: false,
@@ -728,15 +796,25 @@ const includeDirective = (line: string, options: Required<IncludeOptions>) => op
   ? line.match(/^( *)<!-{2,}\s*@include:\s*(.+?)\s*-{2,}>\s*$/)
   : line.match(/^( *)@include:\s*(.+?)\s*$/)
 
+const markdownBlockLine = (line: string) => {
+  const quote = line.match(/^((?:[ \t]*>[ \t]*)*)/)?.[1] ?? ''
+  const remainder = line.slice(quote.length)
+  const list = remainder.match(/^([ \t]*)((?:[-+*]|\d+[.)])([ \t]+))(.*)$/)
+  if (list) return { content: list[4], firstPrefix: `${quote}${list[1]}${list[2]}`, continuationPrefix: `${quote}${list[1]}${' '.repeat(list[2].length)}` }
+  const indent = remainder.match(/^[ \t]*/)?.[0] ?? ''
+  return { content: remainder.slice(indent.length), firstPrefix: `${quote}${indent}`, continuationPrefix: `${quote}${indent}` }
+}
+
 const expandFileDirectives = async (source: string, sourcePath?: string, stack: string[] = [], allowInclude = true): Promise<string> => {
   const lines = source.split('\n')
   const output: string[] = []
   let fence = ''
   for (const line of lines) {
-    const marker = line.match(/^\s*(`{3,}|~{3,})/)?.[1]
-    if (marker) {
-      if (!fence) fence = marker[0]
-      else if (fence === marker[0]) fence = ''
+    const block = markdownBlockLine(line)
+    const marker = block.content.match(/^(`{3,}|~{3,})/)?.[1]
+    if (marker && (!fence || block.content.slice(marker.length).trim() === '')) {
+      if (!fence) fence = marker
+      else if (fence[0] === marker[0] && marker.length >= fence.length) fence = ''
       output.push(line)
       continue
     }
@@ -744,7 +822,7 @@ const expandFileDirectives = async (source: string, sourcePath?: string, stack: 
       output.push(line)
       continue
     }
-    const codeTree = line.match(/^\s*@\[code-tree(?:\s+([^\]]+))?\]\(([^)]+)\)\s*$/)
+    const codeTree = block.content.match(/^@\[code-tree(?:\s+([^\]]+))?\]\(([^)]+)\)\s*$/)
     if (codeTree) {
       const info = codeTree[1]?.trim() ?? ''
       const root = codeTreeDirectory(codeTree[2].trim(), sourcePath)
@@ -758,7 +836,8 @@ const expandFileDirectives = async (source: string, sourcePath?: string, stack: 
         const marker = codeTreeFence(content)
         return `${marker}${extension || 'txt'} title=${quote}${title}${quote}\n${content}\n${marker}`
       }))
-      output.push(`::: code-tree${info ? ` ${info}` : ''}\n${blocks.filter(Boolean).join('\n\n')}\n:::`)
+      const expanded = `::: code-tree${info ? ` ${info}` : ''}\n${blocks.filter(Boolean).join('\n\n')}\n:::`
+      output.push(expanded.split('\n').map((value, index) => `${index ? block.continuationPrefix : block.firstPrefix}${value}`).join('\n'))
       continue
     }
     const settings = includeOptions()
@@ -1180,7 +1259,7 @@ const qrCodeContainers = (source: string, sourcePath = '') => {
 
 const renderEncryptedSnippet = async (raw: string, source: string, sourcePath?: string) => {
   const props = attributes(raw)
-  const password = props.password || props.pwd || siteConfig.markdown.encryptPassword
+  const password = props.password || props.pwd || (typeof markdownPower.encrypt === 'object' ? markdownPower.encrypt.password : '') || (siteConfig.markdown as { encryptPassword?: string }).encryptPassword
   if (!password) return renderPlain(source, false, sourcePath)
   const html = renderPlain(source, false, sourcePath)
   const scope = `snippet:${sourcePath ?? ''}:${createHash('sha256').update(source).digest('hex')}`
@@ -1188,8 +1267,10 @@ const renderEncryptedSnippet = async (raw: string, source: string, sourcePath?: 
     .filter((credential, index, list) => list.findIndex(item => item.password === credential.password && item.scope === credential.scope) === index)
   const payloads = await Promise.all(credentials.map(credential => encryptContent(html, credential.password, credential.scope)))
   const payload = payloads[0]
-  const hint = escapeHtml(props.hint || '内容已加密，请输入密码解锁。')
-  return `<div class="vp-encrypt-snippet" data-encrypt-snippet data-encrypt-ciphertext="${payload.ciphertext}" data-encrypt-iv="${payload.iv}" data-encrypt-salt="${payload.salt}" data-encrypt-payloads="${escapeHtml(JSON.stringify(payloads))}"><div class="snippet-hint"><span class="vpi-lock" aria-hidden="true"></span><span>${hint}</span></div><div class="snippet-warning" hidden><strong>🚨 Security Warning:</strong> Web Crypto requires HTTPS or localhost.</div><div class="snippet-form"><label><input name="password" type="password" autocomplete="off" placeholder="输入密码"></label><button type="button" disabled aria-label="解锁"><span class="vpi-unlock" aria-hidden="true"></span></button><p class="snippet-error" hidden>密码错误</p></div></div>`
+  const locale = encryptSnippetLocale(sourcePath)
+  const hint = escapeHtml(props.hint || locale.hint)
+  const button = localeOf(languageFromSourcePath(sourcePath)).encryptButtonText
+  return `<div class="vp-encrypt-snippet" data-encrypt-snippet data-encrypt-ciphertext="${payload.ciphertext}" data-encrypt-iv="${payload.iv}" data-encrypt-salt="${payload.salt}" data-encrypt-payloads="${escapeHtml(JSON.stringify(payloads))}"><div class="snippet-hint"><span class="vpi-lock" aria-hidden="true"></span><span>${hint}</span></div><div class="snippet-warning" hidden><strong>${escapeHtml(locale.warningTitle)}</strong> ${escapeHtml(locale.warningText)}</div><div class="snippet-form"><label><input name="password" type="password" autocomplete="off" placeholder="${escapeHtml(locale.placeholder)}"></label><button type="button" disabled aria-label="${escapeHtml(button)}"><span class="vpi-unlock" aria-hidden="true"></span></button><p class="snippet-error" hidden>${escapeHtml(locale.incPwd)}</p></div></div>`
 }
 
 const encryptContainers = async (source: string, sourcePath?: string) => {
@@ -1411,18 +1492,19 @@ const renderDemoSource = (source: string, language: string, codeSetting = '', so
   return renderPlain(`${fence}${language}${codeSetting ? ` ${codeSetting}` : ''}\n${source}\n${fence}`, false, sourcePath).trim()
 }
 
-const compileDemoStyle = async (source: string, language: string, filename: string, id: string, scoped = false) => {
-  if (!source) return ''
+const compileDemoStyle = async (source: string, language: string, filename: string, id: string, scoped = false, modules = false) => {
+  if (!source) return { code: '', modules: {} as Record<string, string> }
   const type = normalizeDemoLanguage(language) as NormalDemoSource['cssType']
   const result = await compileStyleAsync({
     source,
     filename,
     id,
     scoped,
+    modules,
     preprocessLang: type === 'css' ? undefined : type,
   })
   if (result.errors.length) throw new Error(`Demo style compilation failed in ${filename}: ${result.errors.map(String).join('\n')}`)
-  return result.code
+  return { code: result.code, modules: result.modules ?? {} }
 }
 
 const compileNormalScript = async (source: string, language: 'js' | 'ts', filename: string) => {
@@ -1439,17 +1521,20 @@ const compileNormalScript = async (source: string, language: 'js' | 'ts', filena
   return result.outputFiles[0]?.text ?? ''
 }
 
-const compileVueDemo = async (source: string, filename: string, language = path.extname(filename).slice(1)) => {
+const compileVueDemo = async (source: string, filename: string, language = path.extname(filename).slice(1), scopeFirstStyle = false) => {
   const styles: string[] = []
-  const compileSource = async (code: string, filepath: string) => {
+  const compileSource = async (code: string, filepath: string, scopeStyle = false) => {
+    const cssModules: Record<string, Record<string, string>> = {}
     const id = `data-v-${createHash('sha256').update(`${filepath}:${code}`).digest('hex').slice(0, 8)}`
     const { descriptor, errors } = parseSfc(code, { filename: filepath })
     if (errors.length) throw new Error(`Vue demo compilation failed in ${filepath}: ${errors.map(String).join('\n')}`)
-    const scoped = descriptor.styles.some(style => style.scoped)
-    for (const style of descriptor.styles) {
-      if (style.module) throw new Error(`Vue demo CSS modules are not supported in ${filepath}`)
-      styles.push(await compileDemoStyle(style.content, style.lang ?? 'css', filepath, id, style.scoped))
+    const scoped = descriptor.styles.some(style => style.scoped) || scopeStyle && descriptor.styles.length > 0
+    for (const [index, style] of descriptor.styles.entries()) {
+      const compiled = await compileDemoStyle(style.content, style.lang ?? 'css', filepath, id, style.scoped || scopeStyle && index === 0, style.module !== undefined)
+      styles.push(compiled.code)
+      if (style.module !== undefined) Object.assign(cssModules[typeof style.module === 'string' && style.module ? style.module : '$style'] ??= {}, compiled.modules)
     }
+    const cssModulesCode = Object.keys(cssModules).length ? `__demo_component__.__cssModules = ${JSON.stringify(cssModules)}\n` : ''
     if (descriptor.script || descriptor.scriptSetup) {
       const script = compileScript(descriptor, {
         id,
@@ -1458,7 +1543,7 @@ const compileVueDemo = async (source: string, filename: string, language = path.
         templateOptions: { compilerOptions: scoped ? { scopeId: id } : {} },
       })
       return {
-        code: `${script.content}\n${scoped ? `__demo_component__.__scopeId = ${JSON.stringify(id)}\n` : ''}export default __demo_component__`,
+        code: `${script.content}\n${scoped ? `__demo_component__.__scopeId = ${JSON.stringify(id)}\n` : ''}${cssModulesCode}export default __demo_component__`,
         loader: (script.lang === 'ts' || script.lang === 'tsx' ? script.lang : 'js') as 'js' | 'ts' | 'tsx',
       }
     }
@@ -1471,14 +1556,14 @@ const compileVueDemo = async (source: string, filename: string, language = path.
     })
     if (template.errors.length) throw new Error(`Vue demo template compilation failed in ${filepath}: ${template.errors.map(String).join('\n')}`)
     return {
-      code: `${template.code}\nconst __demo_component__ = { render }\n${scoped ? `__demo_component__.__scopeId = ${JSON.stringify(id)}\n` : ''}export default __demo_component__`,
+      code: `${template.code}\nconst __demo_component__ = { render }\n${scoped ? `__demo_component__.__scopeId = ${JSON.stringify(id)}\n` : ''}${cssModulesCode}export default __demo_component__`,
       loader: 'js' as const,
     }
   }
 
   const extension = normalizeDemoLanguage(language)
   let entry = { code: source, loader: (extension === 'ts' ? 'ts' : 'js') as 'js' | 'ts' | 'tsx' }
-  if (extension === 'vue') entry = await compileSource(source, filename)
+  if (extension === 'vue') entry = await compileSource(source, filename, scopeFirstStyle)
   const result = await buildScript({
     stdin: { contents: entry.code, loader: entry.loader, resolveDir: path.dirname(filename), sourcefile: filename },
     bundle: true,
@@ -1620,7 +1705,7 @@ const renderPlaygroundForms = (source: NormalDemoSource, meta: DemoMeta) => {
 
 const renderNormalDemo = async (source: NormalDemoSource, meta: DemoMeta, filename: string, sourcePath?: string) => {
   const script = await compileNormalScript(source.script, source.jsType, filename)
-  const style = await compileDemoStyle(source.style, source.cssType, filename, 'data-v-normal-demo')
+  const { code: style } = await compileDemoStyle(source.style, source.cssType, filename, 'data-v-normal-demo')
   const tabs = [
     source.html && `@tab HTML\n${demoCodeFence(source.html)}html${meta.codeSetting ? ` ${meta.codeSetting}` : ''}\n${source.html}\n${demoCodeFence(source.html)}`,
     source.script && `@tab ${source.jsType === 'ts' ? 'Typescript' : 'Javascript'}\n${demoCodeFence(source.script)}${source.jsType}${meta.codeSetting ? ` ${meta.codeSetting}` : ''}\n${source.script}\n${demoCodeFence(source.script)}`,
@@ -1632,8 +1717,8 @@ const renderNormalDemo = async (source: NormalDemoSource, meta: DemoMeta, filena
 
 const renderMarkdownDemo = (source: string, meta: DemoMeta, sourcePath?: string) => `<div class="vp-demo-wrapper markdown" data-basic-demo><div class="demo-draw">${renderPlain(source, false, sourcePath).trim()}</div>${renderDemoInfo(meta)}<div class="demo-ctrl">${renderDemoToggle(meta.expanded)}</div><div class="demo-code"${meta.expanded ? '' : ' hidden'}>${renderDemoSource(source, 'md', meta.codeSetting, sourcePath)}</div></div>`
 
-const renderVueDemo = async (source: string, language: string, meta: DemoMeta, filename: string, sourcePath?: string, displaySource = source, displayHtml = '') => {
-  const compiled = await compileVueDemo(source, filename, language)
+const renderVueDemo = async (source: string, language: string, meta: DemoMeta, filename: string, sourcePath?: string, displaySource = source, displayHtml = '', scopeFirstStyle = false) => {
+  const compiled = await compileVueDemo(source, filename, language, scopeFirstStyle)
   const style = compiled.style ? `<style>${compiled.style.replace(/<\/style/gi, '<\\/style')}</style>` : ''
   return `<div class="vp-demo-wrapper vue" data-vue-demo data-demo-vue-code="${encoded(compiled.script)}"><div class="demo-draw"><div class="demo-draw-vue" data-demo-vue-mount></div></div>${renderDemoInfo(meta)}<div class="demo-ctrl">${renderDemoToggle(meta.expanded)}</div><div class="demo-code"${meta.expanded ? '' : ' hidden'}>${displayHtml || renderDemoSource(displaySource, normalizeDemoLanguage(language) || 'vue', meta.codeSetting, sourcePath)}</div>${style}</div>`
 }
@@ -1705,9 +1790,9 @@ const demoContainers = async (source: string, sourcePath?: string) => {
         continue
       }
       const extraStyle = code.css || code.scss || code.less || code.stylus
-      const compiledStyle = extraStyle ? await compileDemoStyle(extraStyle, code.scss ? 'scss' : code.less ? 'less' : code.stylus ? 'stylus' : 'css', filename, 'data-v-vue-demo') : ''
+      const compiledStyle = extraStyle ? (await compileDemoStyle(extraStyle, code.scss ? 'scss' : code.less ? 'less' : code.stylus ? 'stylus' : 'css', filename, 'data-v-vue-demo')).code : ''
       const display = renderPlain(body.join('\n'), false, sourcePath).trim()
-      const rendered = await renderVueDemo(component, language, meta, filename, sourcePath, component, display)
+      const rendered = await renderVueDemo(component, language, meta, filename, sourcePath, component, display, true)
       output.push(compiledStyle ? rendered.replace('</div>', `</div><style>${compiledStyle.replace(/<\/style/gi, '<\\/style')}</style>`) : rendered)
       continue
     }
@@ -2034,6 +2119,28 @@ const artPlayerComponents = (source: string) => {
   return output.join('\n')
 }
 
+const renderEmbedDirective = (source: string, sourcePath: string | undefined, index: number) => {
+  const match = source.match(/^@\[([A-Za-z][\w-]*)((?:"[^"]*"|'[^']*'|[^\]])*)\]\((.*)\)\s*$/)
+  if (!match) return
+  const [, rawType, rawInfo, rawValue] = match
+  const type = rawType.toLowerCase()
+  const info = rawInfo.trim()
+  const value = rawValue.trim()
+  if (type === 'caniuse' && canIUseOptions()) return renderCanIUse(info, value, index, (canIUseOptions() || {}).mode)
+  if (['codepen', 'jsfiddle', 'codesandbox', 'replit'].includes(type)) {
+    const enabled = markdownPower[type === 'codesandbox' ? 'codeSandbox' : type as 'codepen' | 'jsfiddle' | 'replit']
+    return enabled ? renderCodeEmbed(type, info, value) : undefined
+  }
+  if (type === 'artplayer') return markdownPower.artPlayer ? renderArtPlayer(info, value) : undefined
+  if (['youtube', 'bilibili', 'acfun'].includes(type)) return markdownPower[type as 'youtube' | 'bilibili' | 'acfun']
+    ? renderVideoEmbed(type as 'youtube' | 'bilibili' | 'acfun', info, value)
+    : undefined
+  if (type === 'video' && /^(?:https?:\/\/|\/)/.test(value)) return `<video class="vp-media" src="${escapeHtml(value)}" controls preload="metadata"></video>`
+  if (type === 'audio' && /^(?:https?:\/\/|\/)/.test(value)) return `<audio class="vp-media" src="${escapeHtml(value)}" controls preload="metadata"></audio>`
+  if (type === 'pdf') return markdownPower.pdf ? renderPdfEmbed(info, value) : undefined
+  if (type === 'qrcode') return markdownPower.qrcode ? renderQrCode(info, rawValue, sourcePath) : undefined
+}
+
 const cleanSource = (source: string, removeTitle = true, plotOptions: PlotOptions = {}, sourcePath = ''): string => {
   let fence = ''
   let scriptSetup = false
@@ -2063,7 +2170,11 @@ const cleanSource = (source: string, removeTitle = true, plotOptions: PlotOption
       .replace(/^\s*<(?:VP)?Card(?:\s+([^>]*))?>\s*$/i, (_match, raw = '') => cardOpen(raw))
       .replace(/^\s*<\/(?:VP)?Card>\s*$/i, '</section></article>')
       .replace(canIUseOptions() ? /^@\[caniuse([^\]]*)\]\(([^)]*)\)\s*$/i : /(?!)/, (_match, raw: string, feature: string) => renderCanIUse(raw, feature, lineIndex, (canIUseOptions() || {}).mode))
-      .replace(/^@\[(codepen|jsfiddle|codesandbox|replit)([^\]]*)\]\(([^)]*)\)\s*$/i, (_match, type: string, raw: string, value: string) => renderCodeEmbed(type.toLowerCase(), raw.trim(), value.trim()))
+      .replace(/^@\[(codepen|jsfiddle|codesandbox|replit)([^\]]*)\]\(([^)]*)\)\s*$/i, (_match, type: string, raw: string, value: string) => {
+        const normalized = type.toLowerCase()
+        const enabled = markdownPower[normalized === 'codesandbox' ? 'codeSandbox' : normalized as 'codepen' | 'jsfiddle' | 'replit']
+        return enabled ? renderCodeEmbed(normalized, raw.trim(), value.trim()) : _match
+      })
       .replace(markdownPower.artPlayer ? /^@\[artPlayer((?:"[^"]*"|'[^']*'|[^\]])*)\]\(([^)]*)\)\s*$/i : /(?!)/, (_match, raw: string, src: string) => renderArtPlayer(raw.trim(), src.trim()))
       .replace(markdownPower.audioReader ? /@\[audioReader((?:"[^"]*"|'[^']*'|[^\]])*)\]\(([^)]*)\)/gi : /(?!)/, (_match, raw: string, src: string) => safeMediaSource(src) ? renderAudioReader(raw.trim(), src) : _match)
       .replace(markdownPower.audioReader ? /<AudioReader\b([^>]*)>(.*?)<\/AudioReader>/gi : /(?!)/, (_match, raw: string, content: string) => safeMediaSource(attributes(raw).src || '') ? renderAudioReader(raw, attributes(raw).src, content) : _match)
@@ -2382,9 +2493,9 @@ const fileTreePlugin = (md: MarkdownIt) => {
       const props = attributes(raw)
       const title = props.title ?? (raw.includes('=') ? '' : raw)
       const mode = (props.icon === 'simple' ? 'simple' : (siteConfig.markdown as { fileTree?: { icon?: FileTreeIconMode } }).fileTree?.icon ?? 'colored') as FileTreeIconMode
-      const en = !languageFromSourcePath(env.sourcePath).toLowerCase().startsWith('zh')
+      const locale = markdownPowerCommonLocale(env.sourcePath)
       parseFileTree(tokens, index, mode)
-      return `<div class="vp-file-tree">${title ? `<p class="vp-file-tree-title">${escapeHtml(title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree aria-label="${en ? 'Copy' : '复制'}" data-copied="${en ? 'Copied' : '已复制'}"></button>\n`
+      return `<div class="vp-file-tree">${title ? `<p class="vp-file-tree-title">${escapeHtml(title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree aria-label="${escapeHtml(locale.copy)}" data-copied="${escapeHtml(locale.copied)}"></button>\n`
     },
   })
   md.renderer.rules.file_tree_group_open = () => '<div class="group">'
@@ -2549,6 +2660,18 @@ const createMarkdown = () => {
     typographer: false,
   })
 
+  if (markdownPowerEnabled) md.block.ruler.before('paragraph', 'plume_embed', (state, startLine, _endLine, silent) => {
+    const start = state.bMarks[startLine] + state.tShift[startLine]
+    const rendered = renderEmbedDirective(state.src.slice(start, state.eMarks[startLine]), state.env.sourcePath, startLine)
+    if (rendered === undefined) return false
+    if (silent) return true
+    const token = state.push('html_block', '', 0)
+    token.content = `${rendered}\n`
+    token.map = [startLine, startLine + 1]
+    state.line = startLine + 1
+    return true
+  }, { alt: ['paragraph', 'reference', 'blockquote', 'list'] })
+
   const includeEnvironmentRule = (start: boolean) => (state: any, startLine: number, _endLine: number, silent: boolean) => {
     const line = state.src.slice(state.bMarks[startLine] + state.tShift[startLine], state.eMarks[startLine])
     const match = start ? line.match(/^<!-- #include-env-start: (.*?) -->$/) : line === '<!-- #include-env-end -->' ? [line] : null
@@ -2688,7 +2811,8 @@ const createMarkdown = () => {
     return hintLocales[language] ?? hintLocales[language.split('-')[0]] ?? hintLocales.en
   }
 
-  md.use(alertPlugin, {
+  const alertEnabled = obsidianOptions === false ? markdownOptions.alert !== false : typeof obsidianOptions === 'object' && obsidianOptions.callout === false
+  if (alertEnabled) md.use(alertPlugin, {
     alertNames: hintTypes,
     deep: true,
     openRender: (tokens: any[], index: number) => `<div class="hint-container ${tokens[index].markup}">\n`,
@@ -2699,7 +2823,7 @@ const createMarkdown = () => {
     closeRender: () => '</div>\n',
   })
 
-  for (const type of hintTypes) {
+  if (markdownOptions.hint !== false) for (const type of hintTypes) {
     md.use(container, type, {
       render(tokens: any[], index: number, _options: unknown, env: { sourcePath?: string }) {
         if (tokens[index].nesting === -1) return '</div>\n'
@@ -2709,7 +2833,7 @@ const createMarkdown = () => {
     })
   }
 
-  md.use(container, 'danger', {
+  if (markdownOptions.hint !== false) md.use(container, 'danger', {
     render(tokens: any[], index: number, _options: unknown, env: { sourcePath?: string }) {
       if (tokens[index].nesting === -1) return '</div>\n'
       const title = tokens[index].info.trim().slice('danger'.length).trim()
@@ -2717,7 +2841,7 @@ const createMarkdown = () => {
     },
   })
 
-  md.use(container, 'details', {
+  if (markdownOptions.hint !== false) md.use(container, 'details', {
     render(tokens: any[], index: number, _options: unknown, env: { sourcePath?: string }) {
       if (tokens[index].nesting === -1) return '</details>\n'
       const summary = tokens[index].info.trim().slice('details'.length).trim()
@@ -2791,8 +2915,8 @@ const createMarkdown = () => {
 
   if (markdownPower.collapse) md.use(collapsePlugin)
 
-  const repl = (siteConfig.markdown as { repl?: false | Record<string, boolean> }).repl
-  for (const lang of ['go', 'kotlin', 'rust', 'python']) {
+  const repl = (siteConfig.markdown as { repl?: false | ReplOptions }).repl
+  for (const lang of ['go', 'kotlin', 'rust', 'python'] as const) {
     if (!repl || !repl[lang]) continue
     md.use(container, `${lang}-repl`, {
       render(tokens: any[], index: number) {
@@ -2882,9 +3006,9 @@ const createMarkdown = () => {
         if (token.info.includes(':active')) activeFile = title
       }
       const entry = activeFile || props.entry || files[0] || ''
-      const height = cssSize(props.height, '320px')
+      const height = cssSize(props.height ?? String(codeTreeOptions.height ?? ''), '320px')
       const title = props.title ? `<div class="code-tree-title" title="${escapeHtml(props.title)}"><span>${escapeHtml(props.title)}</span></div>` : ''
-      const iconMode = props.icon === 'simple' ? 'simple' : 'colored'
+      const iconMode = props.icon === 'simple' || props.icon === 'colored' ? props.icon : codeTreeOptions.icon ?? 'colored'
       return `<div class="vp-code-tree" data-code-tree data-entry-file="${escapeHtml(entry)}"><div class="code-tree-panel" style="max-height:${height}">${title}<div class="vp-file-tree">${renderCodeTreeNodes(parseCodeTreeNodes(files), '', iconMode)}</div></div><div class="code-panel" style="height:${height}">\n`
     },
   })
@@ -2961,7 +3085,8 @@ const createMarkdown = () => {
       const buttons = tabs.map(tab => {
         const active = tab.index === activeIndex
         const title = md.renderInline(tab.label)
-        const icon = code ? `<span class="vp-icon is-svg" aria-hidden="true">${fileTreeIcon(tab.label, 'file', 'colored')}</span>` : ''
+        const iconName = code ? codeTabIcon(tab.label) : undefined
+        const icon = iconName ? `<span class="vp-icon is-svg" aria-hidden="true">${iconifySvg(iconName)}</span>` : ''
         return `<button id="vp-tab-${group}-${tab.index}" type="button" class="${buttonClass}${active ? ' active' : ''}" role="tab" aria-controls="${prefix}-${group}-${tab.index}" aria-selected="${active}" tabindex="${active ? 0 : -1}" data-tab-index="${tab.index}" data-tab-value="${escapeHtml(tab.value)}">${icon}${title}</button>`
       }).join('')
       const firstActive = activeIndex === 0
@@ -3020,9 +3145,9 @@ const createMarkdown = () => {
       const props = attributes(info.replace(/^(?:file-)?tree/, '').trim())
       const nodes = parseFileTreeFence(tokens[index].content)
       const mode = (props.icon === 'simple' ? 'simple' : (siteConfig.markdown as { fileTree?: { icon?: FileTreeIconMode } }).fileTree?.icon ?? 'colored') as FileTreeIconMode
-      const en = !languageFromSourcePath(env.sourcePath).toLowerCase().startsWith('zh')
+      const locale = markdownPowerCommonLocale(env.sourcePath)
       const copyText = Buffer.from(tokens[index].content.trim()).toString('base64')
-      return `<div class="vp-file-tree">${props.title ? `<p class="vp-file-tree-title">${escapeHtml(props.title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree data-copy-tree-text="${copyText}" aria-label="${en ? 'Copy' : '复制'}" data-copied="${en ? 'Copied' : '已复制'}"></button>${renderFileTreeNodes(nodes, mode, source => md.renderInline(source))}</div>\n`
+      return `<div class="vp-file-tree">${props.title ? `<p class="vp-file-tree-title">${escapeHtml(props.title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree data-copy-tree-text="${copyText}" aria-label="${escapeHtml(locale.copy)}" data-copied="${escapeHtml(locale.copied)}"></button>${renderFileTreeNodes(nodes, mode, source => md.renderInline(source))}</div>\n`
     }
     if (markdownChart.mermaid && info.split(/\s+/)[0] === 'mermaid') {
       const title = attributes(info.slice('mermaid'.length)).title ?? ''

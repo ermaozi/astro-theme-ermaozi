@@ -33,4 +33,6 @@ test('all documented frozen Plume layout slots have Astro or Vue component hooks
   const renderer = await readFile('theme/components/UserSlot.astro', 'utf8')
   assert.match(renderer, /const \{ name, \.\.\.props \} = Astro\.props/)
   assert.match(renderer, /<Component \{\.\.\.props\} \/>/)
+  const layoutRenderer = await readFile('theme/components/UserLayout.astro', 'utf8')
+  assert.match(layoutRenderer, /if \(name && !Component\) throw new Error\(`\[ermaozi\] pageLayout/)
 })

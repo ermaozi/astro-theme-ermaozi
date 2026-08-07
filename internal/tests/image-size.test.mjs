@@ -16,6 +16,20 @@ test('build image sizing preserves explicit dimensions and derives missing local
   assert.equal(output.match(/width="20" height="10"/gu)?.length, 2)
 })
 
+test('build image sizing rejects container formats with known parser infinite loops', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'ermaozi-image-size-'))
+  const cases = {
+    'malformed.icns': Buffer.from('icns0000ic070000'),
+    'malformed.jxl': Buffer.from('0000JXL 0000'),
+    'malformed.avif': Buffer.from('0000ftypavif'),
+  }
+  for (const [name, malformed] of Object.entries(cases)) {
+    await writeFile(join(root, name), malformed)
+    const html = `<img src="${name}">`
+    assert.equal(await injectImageSizes(html, { sourcePath: join(root, 'page.md'), mode: true, build: true }), html)
+  }
+})
+
 test('all image sizing reads remote headers and abandons slow responses after the frozen timeout', async () => {
   const pixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64')
   const server = createServer((request, response) => {

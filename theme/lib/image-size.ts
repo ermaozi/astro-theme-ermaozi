@@ -1,6 +1,17 @@
 import { readFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
-import { imageSize } from 'image-size'
+import { imageMetadata } from 'astro/assets/utils'
+
+const decoder = new TextDecoder()
+const unsafeBrands = new Set(['avif', 'avis', 'mif1', 'msf1', 'heic', 'heix', 'hevc', 'hevx'])
+
+async function imageSize(input: Uint8Array) {
+  const signature = (start: number, end: number) => decoder.decode(input.subarray(start, end))
+  if (signature(0, 4) === 'icns' || signature(4, 8) === 'JXL ' || (signature(4, 8) === 'ftyp' && unsafeBrands.has(signature(8, 12)))) {
+    throw new TypeError('Automatic sizing is disabled for this image format')
+  }
+  return imageMetadata(input)
+}
 
 const badges = ['https://img.shields.io', 'https://badge.fury.io', 'https://badgen.net', 'https://forthebadge.com', 'https://vercel.com/button']
 const cache = new Map<string, { width: number, height: number } | null>()
@@ -15,7 +26,7 @@ async function remoteSize(url: string) {
     for await (const chunk of response.body) {
       chunks.push(chunk)
       try {
-        const size = imageSize(Buffer.concat(chunks))
+        const size = await imageSize(Buffer.concat(chunks))
         if (size.width && size.height) return { width: size.width, height: size.height }
       } catch { /* keep reading until the header is complete */ }
     }
@@ -30,7 +41,7 @@ async function originalSize(src: string, sourcePath: string | undefined, publicD
   if (!key || src.startsWith('data:') || (remoteUrl && (!remote || badges.some(badge => src.startsWith(badge))))) return null
   if (cache.has(key)) return cache.get(key) ?? null
   try {
-    const size = remoteUrl ? await remoteSize(src) : imageSize(await readFile(key))
+    const size = remoteUrl ? await remoteSize(src) : await imageSize(await readFile(key))
     const value = size?.width && size?.height ? { width: size.width, height: size.height } : null
     cache.set(key, value)
     return value

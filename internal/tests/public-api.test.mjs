@@ -27,6 +27,7 @@ test('public Node helpers preserve identity and the client barrel covers the fro
   assert.equal(defineSiteConfig(site), site)
   assert.deepEqual(site.features, { engagement: false, popularPosts: false, comments: false })
   assert.deepEqual(site.social, [])
+  assert.equal(site.namespace, 'ermaozi')
   assert.deepEqual({
     appearance: site.appearance,
     navbarSocialInclude: site.navbarSocialInclude,
@@ -74,12 +75,34 @@ test('site config fails early with actionable boundary errors', () => {
   const customHome = defineSiteConfig({ ...valid(), home: '/blog/' })
   assert.equal(customHome.locales['zh-CN'].path, '/')
   assert.equal(customHome.locales['zh-CN'].home, '/blog/')
+  const disabledHome = defineSiteConfig({ origin: 'https://example.com', home: false, locales: { 'zh-CN': { siteName: 'Site' } } })
+  assert.equal(disabledHome.locales['zh-CN'].path, '/')
+  assert.equal(disabledHome.locales['zh-CN'].home, false)
   assert.throws(() => defineSiteConfig({ ...valid(), origin: 'example.com' }), /origin 必须是有效的 http\(s\) URL/)
+  const withoutLogo = defineSiteConfig({ origin: 'https://example.com', locales: { 'zh-CN': { siteName: 'Site', home: '/' } } })
+  assert.equal(withoutLogo.logo, false)
+  assert.equal(defineSiteConfig({ ...valid(), logo: false }).logo, false)
+  assert.throws(() => defineSiteConfig({ ...valid(), logo: 42 }), /logo 必须是非空字符串或 false/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', logo: 42 } } }), /locales\.zh-CN\.logo 必须是非空字符串或 false/)
+  assert.throws(() => defineSiteConfig({ ...valid(), namespace: '' }), /namespace 不能为空/)
   assert.throws(() => defineSiteConfig({ ...valid(), base: '/docs' }), /base 必须以 \/ 开头和结尾/)
+  assert.throws(() => defineSiteConfig({ ...valid(), home: 42 }), /home 必须是以 \/ 开头和结尾的站内路径或 false/)
+  assert.throws(() => defineSiteConfig({ ...valid(), features: false }), /features 必须是对象/)
+  assert.throws(() => defineSiteConfig({ ...valid(), markdown: false }), /markdown 必须是对象/)
+  assert.throws(() => defineSiteConfig({ ...valid(), markdown: { repl: { theme: 'missing-theme' } } }), /markdown\.repl\.theme 包含未知的 Shiki 主题/)
+  assert.throws(() => defineSiteConfig({ ...valid(), markdown: { repl: { go: 'yes' } } }), /markdown\.repl\.go 必须是布尔值/)
+  assert.throws(() => defineSiteConfig({ ...valid(), markdown: { codeTree: { icon: 'fancy' } } }), /markdown\.codeTree\.icon/)
+  assert.throws(() => defineSiteConfig({ ...valid(), markdown: { codeTree: { height: null } } }), /markdown\.codeTree\.height/)
+  assert.throws(() => defineSiteConfig({ ...valid(), markdown: { encrypt: { password: '' } } }), /markdown\.encrypt\.password 必须是非空字符串/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': null } }), /locales\.zh-CN 必须是对象/)
+  assert.throws(() => defineSiteConfig({ ...valid(), collections: [null] }), /collections\[0\]\.type/)
   assert.throws(() => defineSiteConfig({ ...valid(), pagination: 0 }), /pagination\.perPage 必须是正整数/)
   assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: 'blog', pagination: 0 }] } } }), /collections\[0\]\.pagination\.perPage 必须是正整数/)
   assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: '../blog' }] } } }), /collections\[0\]\.dir 必须是 content 内的相对目录/)
   assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: '/blog' }] } } }), /collections\[0\]\.dir 必须是 content 内的相对目录/)
+  assert.throws(() => defineSiteConfig({ ...valid(), collections: [{ type: 'post', dir: 'blog' }, { type: 'doc', dir: './blog/' }] }), /collections\[1\]\.dir 与同一语言的其他集合重复/)
+  const normalized = defineSiteConfig({ ...valid(), collections: [{ type: 'post', dir: './blog//./guides/' }, { type: 'doc', dir: './' }] })
+  assert.deepEqual(normalized.collections?.map(collection => collection.dir), ['blog/guides', '/'])
   assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', collections: [{ type: 'post', dir: 'blog', categoriesExpand: -1 }] } } }), /categoriesExpand 必须是非负整数/)
   assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', path: '/zh/' } } }), /必须有一种语言使用根路径/)
   assert.throws(() => defineSiteConfig({ ...valid(), features: { engagement: true, popularPosts: false, comments: false } }), /services\.statsBase/)
@@ -89,6 +112,8 @@ test('legacy blog pageLayout remains a built-in posts alias', async () => {
   const route = await readFile('theme/pages/[...path].astro', 'utf8')
   assert.match(route, /standardLayouts = new Set\(\['home', 'posts', 'blog', 'doc', 'page', 'friends'\]\)/)
   assert.match(route, /pageLayout === 'posts' \|\| entry\?\.data\.pageLayout === 'blog'/)
+  assert.ok(route.indexOf('postsLayout ? layoutPostCollection ?? postCollectionsFor(lang)[0]') < route.indexOf("entryCollection?.type === 'post' ? entryCollection"))
+  assert.match(route, /pageLayout: posts 找不到 Post 集合/)
 })
 
 test('top-level Plume locale text remains a global fallback', async () => {
@@ -102,6 +127,11 @@ test('top-level Plume locale text remains a global fallback', async () => {
     if (previous === undefined) delete siteConfig.openNewWindowText
     else siteConfig.openNewWindowText = previous
   }
+})
+
+test('missing post translations fall back to the matching target collection before the first blog', async () => {
+  const route = await readFile('theme/pages/[...path].astro', 'utf8')
+  assert.match(route, /targetPostCollections\.find\(collection => collection\.dir === entryCollection\?\.dir\)\?\.link \?\? targetPostCollections\[0\]\?\.link/)
 })
 
 test('legacy Plume plugin options fall back to the canonical flat configuration', () => {
@@ -134,6 +164,15 @@ test('legacy Plume plugin options fall back to the canonical flat configuration'
   assert.equal(configured.markdown.echarts, true)
   assert.equal(configured.markdown.imageSize, 'all')
   assert.equal(configured.llmstxt, true)
+
+  const legacyIcons = { provider: 'iconfont', prefix: 'legacy-' }
+  const withLegacyIcons = defineSiteConfig({
+    origin: 'https://example.com',
+    logo: '/logo.svg',
+    locales: { 'zh-CN': { siteName: 'Site', home: '/' } },
+    markdown: { icons: legacyIcons },
+  })
+  assert.equal(withLegacyIcons.markdown.icon, legacyIcons)
 })
 
 test('deprecated Plume avatar settings fall back to profile globally and per locale', () => {
@@ -232,7 +271,9 @@ test('public page data excludes unlock credentials and custom CSS loads last', a
   assert.match(clientConfig, /export \{\}/)
   assert.match(layout, /import '\.\.\/styles\/custom\.css'/)
   assert.ok(layout.indexOf("import '../styles/custom.css'") > layout.indexOf("import 'swiper/css/bundle'"))
-  assert.match(layout, /rel="icon" href=\{withBase\(siteConfig\.logo, import\.meta\.env\.BASE_URL\)\}/)
+  assert.match(layout, /const favicon = typeof siteConfig\.logo === 'string' \? withBase\(siteConfig\.logo, import\.meta\.env\.BASE_URL\) : ''/)
+  assert.match(layout, /!hasCustomIcon && favicon && <link rel="icon" href=\{favicon\}/)
+  assert.match(layout, /'og:image:alt': image \? title : undefined/)
   assert.doesNotMatch(layout, /rel="icon" href=\{withBase\('\/img\/logo\.svg'/)
   const payload = encrypted.match(/<script id="ermaozi-page-data" type="application\/json">([^<]*)<\/script>/)?.[1]
   assert.ok(payload)
@@ -269,6 +310,12 @@ test('custom home normalization preserves explicit, legacy banner, and default H
     type: 'banner', banner: '/banner.png', bannerMask: { light: 0.1, dark: 0.3 }, hero: { name: 'Legacy' },
   }])
   assert.deepEqual(homeConfigOf({ config: [], hero: { name: 'Default' } }), [{ type: 'hero', full: true, background: 'tint-plate', hero: { name: 'Default' } }])
+})
+
+test('unknown custom home sections fail with an actionable component path', async () => {
+  const home = await readFile('theme/components/CustomHome.astro', 'utf8')
+  assert.match(home, /首页区块 type .*未找到对应组件；请添加 theme\/components\/home\//)
+  assert.match(home, /首页 .* 区块找不到 Post 集合/)
 })
 
 test('hero background iOS detection follows the frozen platform contract', () => {

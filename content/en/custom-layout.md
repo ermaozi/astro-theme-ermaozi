@@ -9,4 +9,4 @@ createTime: 2026/08/07 21:36:50
 
 # Custom layout example
 
-This content is wrapped by `theme/components/layouts/Minimal.astro` without the theme navigation, sidebar, or footer.
+This content is wrapped by `theme/components/layouts/Minimal.astro` and, like Plume's named global-component layout, retains the theme navigation and footer; pages inside a documentation collection also keep that collection's sidebar.

@@ -14,6 +14,7 @@ export type ObsidianOptions = false | true | {
     titleRender?: (...args: any[]) => string
   }
   comment?: boolean
+  locales?: Record<string, Record<string, string>>
 }
 
 type Page = { file: string, relative: string, route: string, title: string, source: string }
@@ -454,7 +455,8 @@ export const installObsidian = (
         const language = languageFromPath(route)
         const locale = calloutLocales[calloutLocaleAliases[language] ?? calloutLocaleAliases[language.split('-')[0]] ?? 'en']
         const localePath = Object.keys(callout.locales ?? {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]
-        const title = custom ? md.renderInline(custom) : callout.locales?.[localePath]?.[type] || locale[type as keyof typeof locale] || type[0].toUpperCase() + type.slice(1)
+        const pluginLocalePath = Object.keys(normalized && normalized.locales || {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]
+        const title = custom ? md.renderInline(custom) : callout.locales?.[localePath]?.[type] || normalized && normalized.locales?.[pluginLocalePath]?.[type] || locale[type as keyof typeof locale] || type[0].toUpperCase() + type.slice(1)
         const classes = [...new Set([actual, type])].join(' ')
         tokens[index].markup = type
         tokens[index].meta = { type, typeName: type, content: custom }

@@ -32,6 +32,15 @@ test('directory code trees resolve relative paths and omit binary source panels'
   assert.doesNotMatch(html, /data-title="logo\.png"|binary fixture/)
 })
 
+test('directory code trees render in block containers but stay literal in fenced code', async () => {
+  const sourcePath = path.resolve('internal/tests/fixtures/page.md')
+  const html = await renderMarkdown('> @[code-tree](./code-tree)\n\n- @[code-tree](./code-tree)\n\n> ```md\n> @[code-tree](./code-tree)\n> ```', { sourcePath })
+  assert.equal(html.match(/class="vp-code-tree"/g)?.length, 2)
+  assert.match(html, /<blockquote>[\s\S]*class="vp-code-tree"/)
+  assert.match(html, /<ul>[\s\S]*class="vp-code-tree"/)
+  assert.match(html, /class="language-md" data-highlighter="shiki"/)
+})
+
 test('directory code trees reject paths outside the project', async () => {
   await assert.rejects(
     renderMarkdown('@[code-tree](../../../../)', { sourcePath: path.resolve('internal/tests/fixtures/page.md') }),

@@ -1,4 +1,6 @@
 import type { Collection, PostCollection, PostCoverOptions, SidebarBadge, SidebarItem } from './lib/collections.ts'
+import type { RenderRule } from 'markdown-it/lib/renderer.mjs'
+import type { BundledTheme } from 'shiki'
 
 export type ThemeIcon = string | { svg: string, name?: string }
 export type SocialLink = { icon: ThemeIcon, link: string, ariaLabel?: string }
@@ -117,6 +119,38 @@ export type MarkdownMathOptions = Record<string, unknown> & {
   chtml?: Record<string, unknown>
   svg?: Record<string, unknown>
 }
+export type MarkdownIconOptions = {
+  provider?: 'iconify' | 'iconfont' | 'fontawesome'
+  prefix?: string
+  size?: string | number
+  color?: string
+  assets?: string | string[]
+  preload?: string[] | Record<string, string[]>
+}
+export type MarkdownReplTheme = BundledTheme | { light: BundledTheme, dark: BundledTheme }
+export type MarkdownReplOptions = {
+  theme?: MarkdownReplTheme
+  go?: boolean
+  kotlin?: boolean
+  rust?: boolean
+  python?: boolean
+}
+export type MarkdownCodeTreeOptions = {
+  icon?: 'simple' | 'colored'
+  height?: string | number
+}
+export type MarkdownObsidianCalloutOptions = {
+  locales?: Record<string, Record<string, string>>
+  openRender?: RenderRule
+  closeRender?: RenderRule
+  titleRender?: RenderRule
+}
+export type MarkdownObsidianOptions = {
+  wikiLink?: boolean
+  embedLink?: boolean
+  callout?: boolean | MarkdownObsidianCalloutOptions
+  comment?: boolean
+}
 export type MarkdownOptions = {
   alert?: boolean | Record<string, unknown>
   hint?: boolean | Record<string, unknown>
@@ -125,17 +159,25 @@ export type MarkdownOptions = {
   include?: false | true | MarkdownIncludeOptions
   math?: false | MarkdownMathOptions
   mark?: 'eager' | 'lazy'
-  icon?: { provider?: 'iconify' | 'iconfont' | 'fontawesome', prefix?: string, assets?: string | string[] }
-  repl?: false | Partial<Record<'go' | 'kotlin' | 'rust' | 'python', boolean>>
+  icon?: boolean | MarkdownIconOptions
+  /** @deprecated Use icon. */
+  icons?: boolean | MarkdownIconOptions
+  codeTabs?: { icon?: boolean | { named?: false | string[], extensions?: false | string[] } }
+  repl?: false | MarkdownReplOptions
+  codepen?: boolean
+  codeSandbox?: boolean
+  jsfiddle?: boolean
+  /** @deprecated Replit no longer supports embeds reliably. */
+  replit?: boolean
   table?: boolean | { align?: 'left' | 'center' | 'right', copy?: boolean | 'all' | 'html' | 'md', maxContent?: boolean, fullWidth?: boolean }
   demo?: boolean | Record<string, unknown>
-  encrypt?: boolean | Record<string, unknown>
-  codeTree?: boolean | Record<string, unknown>
+  encrypt?: boolean | { password?: string }
+  codeTree?: boolean | MarkdownCodeTreeOptions
   collapse?: boolean
   timeline?: boolean
   chat?: boolean
   field?: boolean
-  obsidian?: boolean | { wikiLink?: boolean, embedLink?: boolean, callout?: boolean, comment?: boolean, [key: string]: unknown }
+  obsidian?: boolean | MarkdownObsidianOptions
   abbr?: boolean | Record<string, string>
   annotation?: boolean | Record<string, string | string[]>
   plot?: boolean | { trigger?: 'hover' | 'click', effect?: 'mask' | 'blur' }
@@ -159,6 +201,12 @@ export type MarkdownOptions = {
     abbreviations?: Record<string, string>
     annotations?: Record<string, string | string[]>
   }
+  locales?: Record<string, {
+    common?: { copy?: string, copied?: string }
+    encrypt?: Partial<{ hint: string, placeholder: string, incPwd: string, noContent: string, warningTitle: string, warningText: string }>
+    obsidian?: Record<string, string>
+  }>
+  /** @deprecated Use encrypt.password. */
   encryptPassword?: string
   fileTree?: boolean | { icon?: false | 'simple' | 'colored', [key: string]: unknown }
   DANGEROUS_ALLOW_SCRIPT_EXECUTION?: boolean
@@ -288,11 +336,11 @@ export type NavigationItem = string | {
 
 export interface LocaleConfig extends LocaleTextOptions {
   siteName: string
-  /** Locale route prefix. Defaults to home for backward compatibility. */
+  /** Locale route prefix. Defaults to a string home for backward compatibility. */
   path?: string
-  home: string
-  logo?: string
-  logoDark?: string
+  home?: false | string
+  logo?: false | string
+  logoDark?: false | string
   description?: string
   authorName?: string
   authorDescription?: string
@@ -336,9 +384,9 @@ export interface SiteConfig extends LocaleTextOptions {
   hostname?: string
   base?: string
   /** Default-locale home link, matching Plume's top-level home option. */
-  home?: string
-  logo: string
-  logoDark?: string
+  home?: false | string
+  logo?: false | string
+  logoDark?: false | string
   multilingual?: boolean
   locales: Record<string, LocaleConfig>
   /** @deprecated Use collections. Converted at startup for Plume migrations. */
@@ -411,8 +459,10 @@ export interface SiteConfigDefaults {
   origin: string
   hostname: string
   base: string
+  logo: false | string
   multilingual: boolean
   appearance: boolean | 'dark' | 'force-dark'
+  namespace: string
   social: SocialLink[]
   navbarSocialInclude: string[]
   aside: boolean | 'left'

@@ -97,18 +97,22 @@ function sidebarLinks(sidebar, collectionDir) {
 /** @param {{ root?: string, config: AutoFrontmatterConfig }} options */
 export async function generateAutoFrontmatter({ root = resolve('content'), config }) {
   const globalOption = normalizeOption(config.autoFrontmatter ?? true)
-  const localeEntries = Object.entries(config.locales ?? {})
-  const rootLang = localeEntries.find(([, locale]) => (locale.path ?? locale.home) === '/')?.[0] ?? localeEntries[0]?.[0]
+  const localeEntries = Object.entries(config.locales ?? {}).map(([lang, locale], index) => ({
+    lang,
+    locale,
+    path: locale.path ?? (typeof locale.home === 'string' ? locale.home : index === 0 ? '/' : `/${lang.split('-')[0]}/`),
+  }))
+  const rootLang = localeEntries.find(item => item.path === '/')?.lang ?? localeEntries[0]?.lang
   const changed = []
 
   for (const filepath of await markdownFiles(root)) {
     const relativePath = slash(relative(root, filepath))
     const localeMatch = localeEntries
-      .filter(([, item]) => (item.path ?? item.home) !== '/')
-      .sort(([, left], [, right]) => (right.path ?? right.home).length - (left.path ?? left.home).length)
-      .find(([, item]) => relativePath.startsWith(`${(item.path ?? item.home).replace(/^\//u, '').replace(/\/$/u, '')}/`))
-    const locale = localeMatch?.[1] ?? (rootLang ? config.locales[rootLang] : undefined) ?? /** @type {AutoLocale} */ ({})
-    const localeRoot = locale.path ?? locale.home ?? '/'
+      .filter(item => item.path !== '/')
+      .sort((left, right) => right.path.length - left.path.length)
+      .find(item => relativePath.startsWith(`${item.path.replace(/^\//u, '').replace(/\/$/u, '')}/`))
+    const locale = localeMatch?.locale ?? (rootLang ? config.locales[rootLang] : undefined) ?? /** @type {AutoLocale} */ ({})
+    const localeRoot = localeMatch?.path ?? localeEntries.find(item => item.lang === rootLang)?.path ?? '/'
     const localeDirectory = localeRoot.replace(/^\//u, '').replace(/\/$/u, '')
     const localPath = localeDirectory && relativePath.startsWith(`${localeDirectory}/`) ? relativePath.slice(localeDirectory.length + 1) : relativePath
     const collections = locale.collections ?? config.collections ?? []

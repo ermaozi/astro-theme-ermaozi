@@ -77,7 +77,7 @@ navbar: [
 
 ## 页面与正文选项
 
-`pageLayout` 支持 `home`、`posts`、`doc`、`page`、`friends`、`custom`、`false` 和自定义组件名，并兼容 Plume 旧名 `blog`（等同于 `posts`）。`posts` 可配合 `collection` 指定 Post 集合；`page` 只保留专页正文；`custom`/`false` 只输出 Markdown 正文；自定义组件放在 `theme/components/layouts/`，文件名就是布局名。
+`pageLayout` 支持 `home`、`posts`、`doc`、`page`、`friends`、`custom`、`false` 和自定义组件名，并兼容 Plume 旧名 `blog`（等同于 `posts`）。`posts` 可配合 `collection` 指定 Post 集合；`page` 保留导航栏与专页正文；`custom`/`false` 只输出 Markdown 正文；命名组件布局替换主内容区域，但保留主题导航、页脚以及适用的集合侧栏。自定义组件放在 `theme/components/layouts/`，文件名就是布局名。
 
 正文目录可通过全局、locale 或单页的 `outline` 与 `aside` 配置。`externalLinkIcon` 默认开启，单页也可关闭；旧字段 `externalLink` 仍兼容。`createTime: 'only-posts'` 只在博客文章和文章列表显示创建时间，`false` 则全站隐藏。`plugins.nprogress: false` 可关闭站内页面切换时的顶部进度条。
 
@@ -187,7 +187,7 @@ markdown: {
 
 将 `provider` 改为 `iconfont` 或 `fontawesome` 时，可用 `assets` 配置一个或多个 `.css` / `.js` 地址。Font Awesome 支持内置值 `fontawesome` 和 `fontawesome-with-brands`，以及 `::fontawesome fas:house 2xl::` 这种按图标覆盖提供方的写法。
 
-`markdown.repl` 可分别开启 `go`、`kotlin`、`rust`、`python`。前三者会把代码发往 Plume 所用的公开运行服务，Python 会按需加载 Pyodide 在浏览器本地执行；只应运行可信、轻量的示例代码。
+`markdown.repl` 可分别开启 `go`、`kotlin`、`rust`、`python`，并通过 `theme` 指定单个 Shiki 主题或 `{ light, dark }` 主题。可编辑 REPL 会按需加载高亮器并在输入时更新语法高亮。前三者会把代码发往 Plume 所用的公开运行服务，Python 会按需加载 Pyodide 在浏览器本地执行；只应运行可信、轻量的示例代码。`markdown.codeTree` 可写成 `{ height, icon }`，为代码树设置默认高度和文件图标风格，容器自身的同名属性优先。
 
 ## 社交链接与页脚
 
@@ -271,7 +271,7 @@ markdown: {
 },
 ```
 
-已有宽高会保留，只缺一项时按原始比例推算。该处理只改变构建产物，不写回 Markdown；远程模式会增加网络请求，并对无法读取的单个地址最多等待 3 秒，因此除非确实需要，优先使用本地模式。
+已有宽高会保留，只缺一项时按原始比例推算。该处理只改变构建产物，不写回 Markdown；远程模式会增加网络请求，并对无法读取的单个地址最多等待 3 秒，因此除非确实需要，优先使用本地模式。出于解析安全考虑，AVIF、HEIF、HEIC、JXL 与 ICNS 暂不自动探测尺寸；图片本身仍可正常使用。
 
 ## 内容加密
 
@@ -289,7 +289,7 @@ encrypt: {
 },
 ```
 
-单页仍可在 frontmatter 使用 `password`、`passwordHint`；`::: encrypt` 局部容器可使用自身密码或管理员密码。页面正文和局部内容在构建时使用 PBKDF2 与 AES-GCM 加密，但静态站点门禁不应替代真正的服务端访问控制，敏感数据请勿随公开构建产物发布。示例配置中的密码仅用于演示，实际站点必须替换或删除。
+单页仍可在 frontmatter 使用 `password`、`passwordHint`；`::: encrypt` 局部容器可使用自身密码或管理员密码，也可由 `markdown.encrypt: { password: '默认密码' }` 提供默认密码。页面正文和局部内容在构建时使用 PBKDF2 与 AES-GCM 加密，但静态站点门禁不应替代真正的服务端访问控制，敏感数据请勿随公开构建产物发布。示例配置中的密码仅用于演示，实际站点必须替换或删除。
 
 ## Git 贡献者与变更记录
 

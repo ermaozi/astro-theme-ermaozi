@@ -244,8 +244,12 @@ const count = ref(0)
 </script>
 
 <template>
-  <button id="inline-vue-count" type="button" @click="count += 1">Inline count {{ count }}</button>
+  <button id="inline-vue-count" :class="$style.counter" type="button" @click="count += 1">Inline count {{ count }}</button>
 </template>
+
+<style module>
+.counter { border: 2px solid #336f87; }
+</style>
 ```
 :::
 

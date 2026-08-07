@@ -85,7 +85,7 @@ config:
     description: 在 site.config.mjs 中替换通用资料。
     avatar: /img/logo.svg
     circle: true
-  - type: announcement
+  - type: Announcement
     title: 可扩展首页区域
     description: theme/components/home 中的 Astro 或 Vue 组件会按文件名自动注册。
   - type: posts

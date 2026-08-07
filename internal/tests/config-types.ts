@@ -35,5 +35,11 @@ defineSiteConfig({
       collections: [{ type: 'post', dir: 'blog', categoriesTransform: categories => categories.filter(item => item.name !== 'Private') }],
     },
   },
-  markdown: { include: { resolvePath: (reference, cwd) => `${cwd ?? ''}/${reference}` } },
+  markdown: {
+    include: { resolvePath: (reference, cwd) => `${cwd ?? ''}/${reference}` },
+    repl: { theme: { light: 'github-light', dark: 'github-dark' }, go: true },
+    codeTree: { height: 360, icon: 'simple' },
+    encrypt: { password: 'default-password' },
+    obsidian: { callout: { locales: { '/': { tip: 'Tip' } }, openRender: (tokens, index) => `<aside data-index="${index}">${tokens.length}` } },
+  },
 })
