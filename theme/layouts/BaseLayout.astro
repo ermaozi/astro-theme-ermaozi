@@ -2147,7 +2147,7 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
           if (frame.dataset.codeEmbed === 'codepen') url.searchParams.set('theme-id', theme)
           else if (frame.dataset.codeEmbed === 'replit') url.searchParams.set('theme', theme)
           else if (frame.dataset.codeEmbed === 'jsfiddle') {
-            url.pathname = `/${frame.dataset.codeSource}/embedded/${frame.dataset.codeTab}${theme === 'dark' ? '/dark/' : ''}`
+            url.pathname = `/${frame.dataset.codeSource}/embedded/${frame.dataset.codeTab}/${theme === 'dark' ? 'dark/' : ''}`
           }
           if (frame.src !== url.href) frame.src = url.href
         })

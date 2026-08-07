@@ -153,17 +153,17 @@ test('expands a leading home-directory shortcut instead of creating a literal ti
   assert.match(output, /cd ~\/tilde-site/)
 })
 
-test('reuses the invoking package manager without leaking a Yarn dlx PnP loader', () => {
+test('reuses Yarn without leaking its dlx loader or blocking the first CI install', () => {
   const cwd = mkdtempSync(path.join(tmpdir(), 'ermaozi-create-manager-'))
   const installer = path.join(cwd, 'installer.mjs')
   const launcher = path.join(cwd, 'launcher.mjs')
   const target = path.join(cwd, 'yarn-site')
   writeFileSync(installer, `#!/usr/bin/env node\nimport { writeFileSync } from 'node:fs'; writeFileSync('installer.json', JSON.stringify({ args: process.argv.slice(2), nodeOptions: process.env.NODE_OPTIONS ?? null }))`)
   chmodSync(installer, 0o755)
-  writeFileSync(launcher, `process.env.npm_config_user_agent = 'yarn/4.9.2 npm/? node/v22'; process.env.npm_execpath = ${JSON.stringify(installer)}; process.env.NODE_OPTIONS = '--require /tmp/dlx/.pnp.cjs'; process.argv = [process.execPath, 'create', ${JSON.stringify(target)}]; await import(${JSON.stringify(pathToFileURL(path.join(packageRoot, 'bin/create.mjs')).href)})`)
+  writeFileSync(launcher, `process.env.CI = '1'; process.env.npm_config_user_agent = 'yarn/4.9.2 npm/? node/v22'; process.env.npm_execpath = ${JSON.stringify(installer)}; process.env.NODE_OPTIONS = '--require /tmp/dlx/.pnp.cjs'; process.argv = [process.execPath, 'create', ${JSON.stringify(target)}]; await import(${JSON.stringify(pathToFileURL(path.join(packageRoot, 'bin/create.mjs')).href)})`)
   execFileSync(process.execPath, [launcher], { cwd })
   const result = JSON.parse(readFileSync(path.join(target, 'installer.json'), 'utf8'))
-  assert.deepEqual(result, { args: ['install'], nodeOptions: null })
+  assert.deepEqual(result, { args: ['install', '--no-immutable'], nodeOptions: null })
   assert.equal(JSON.parse(readFileSync(path.join(target, 'package.json'), 'utf8')).packageManager, 'yarn@4.9.2')
   assert.equal(readFileSync(path.join(target, 'yarn.lock'), 'utf8'), '')
   assert.equal(readFileSync(path.join(target, '.yarnrc.yml'), 'utf8'), 'nodeLinker: node-modules\n')

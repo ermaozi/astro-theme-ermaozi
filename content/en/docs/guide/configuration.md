@@ -313,11 +313,14 @@ Waline uses `serverURL`, Twikoo uses `envId`, and Artalk uses `server`. Set `com
   - en
 - public
   - img
-- src
+- theme # Theme internals; usually leave unchanged
   - components
   - lib
   - pages
+  - styles
+- astro.config.mjs
 - site.config.mjs
+- package.json
 :::
 
 Use `icon="simple"` on a file-tree container or fence for generic file/folder icons. The default `colored` mode selects local VS Code icons by folder name and file type; set the global default with `markdown.fileTree.icon`.

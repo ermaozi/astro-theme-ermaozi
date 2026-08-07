@@ -316,13 +316,14 @@ Waline 使用 `serverURL`，Twikoo 使用 `envId`，Artalk 使用 `server`。页
   - en
 - public # **静态资源**
   - **img**
-- cache/
-- src
-  - ++ components
+- theme # **主题实现，通常无需修改**
+  - components
   - lib
-  - -- legacy
-  - pages/
+  - pages
+  - styles
+- astro.config.mjs
 - site.config.mjs
+- package.json
 :::
 
 也可以直接粘贴 `tree` 命令的输出：
@@ -333,6 +334,10 @@ Waline 使用 `serverURL`，Twikoo 使用 `envId`，Artalk 使用 `server`。页
 │   └── index.md
 ├── public
 │   └── logo.svg
+├── theme
+│   └── ...
+├── astro.config.mjs
+├── site.config.mjs
 └── package.json
 ```
 

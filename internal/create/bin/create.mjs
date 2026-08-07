@@ -212,7 +212,8 @@ if (initializeGit) await run('git', ['init', '-b', 'main'], 'ignore')
 if (install) {
   if (interactive) log.step(messages.installing(packageManager))
   else console.log(`\n正在使用 ${packageManager} 安装依赖…`)
-  await run(process.env.npm_execpath || packageManager, ['install'])
+  const yarnMajor = Number(packageManagerVersion?.split('.')[0])
+  await run(process.env.npm_execpath || packageManager, packageManager === 'yarn' && yarnMajor >= 2 ? ['install', '--no-immutable'] : ['install'])
 }
 
 const relativeTarget = path.relative(process.cwd(), target) || '.'

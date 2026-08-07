@@ -69,7 +69,6 @@ export const definitions: Definitions = {
     'docker': 'vscode-icons:file-type-docker',
     'Docker': 'vscode-icons:file-type-docker',
 
-    // TODO: code group title icons
     // programming languages
     'html': 'vscode-icons:file-type-html',
     'Html': 'vscode-icons:file-type-html',

@@ -44,6 +44,13 @@ test('file trees use the complete frozen Plume filename mapping', () => {
   assert.equal(iconifySvg(getFileIconName('application.asax')), '')
 })
 
+test('file tree modifiers render independently from the documented project layout', async () => {
+  const html = await renderMarkdown('::: file-tree\n- ++ added.ts\n- -- removed.ts\n- generated/\n:::')
+  assert.match(html, /class="vp-file-tree-info file add diff"/)
+  assert.match(html, /class="vp-file-tree-info file remove diff"/)
+  assert.match(html, /class="vp-file-tree-node generated"/)
+})
+
 test('npm badge groups inherit parent props without transforming fenced examples', async () => {
   const html = await renderMarkdown(`<NpmBadgeGroup name="astro" repo="withastro/astro" theme="flat-square">
   <NpmBadge type="version" label="Astro" />

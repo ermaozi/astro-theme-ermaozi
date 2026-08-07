@@ -106,7 +106,7 @@ test('mobile navigation and local document navigation keep the frozen matrix', a
       await page.setViewportSize({ width, height: 900 })
       await page.goto('/docs/guide/content/', { waitUntil: 'domcontentloaded' })
       await page.evaluate(value => localStorage.setItem('vuepress-theme-appearance', value), theme)
-      await page.reload({ waitUntil: 'load' })
+      await page.reload({ waitUntil: 'domcontentloaded' })
       await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }))
 
       const hamburger = page.locator('.vp-navbar-hamburger')
@@ -209,9 +209,8 @@ test('appearance switch keeps the frozen responsive light and dark matrix', asyn
       await expect(check.locator('.moon')).toHaveCSS('opacity', theme === 'dark' ? '1' : '0')
       await expect(check.locator('.sun')).toHaveCSS('transition-property', theme === 'dark' ? 'opacity' : 'all')
       if (theme === 'light' && width === 1440) {
-        await switcher.focus()
-        await page.keyboard.press('Shift+Tab')
-        await page.keyboard.press('Tab')
+        for (let step = 0; step < 20 && !await switcher.evaluate(element => element === document.activeElement); step += 1) await page.keyboard.press('Tab')
+        await expect(switcher).toBeFocused()
         expect(await switcher.evaluate(element => element.matches(':focus-visible'))).toBe(true)
         await expect(switcher).toHaveCSS('outline-offset', '4px')
       }

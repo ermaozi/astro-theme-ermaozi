@@ -1838,10 +1838,12 @@ const renderCodeEmbed = (type: string, raw: string, source: string) => {
     return `<iframe src="${escapeHtml(src)}" class="code-pen-iframe" title="${escapeHtml(props.title || 'Code Pen')}" style="width:${width};height:${cssSize(props.height, '400px')}" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true" data-code-embed="codepen"${themeLocked ? ' data-theme-locked' : ''}></iframe>`
   }
   if (type === 'jsfiddle') {
-    const tab = (props.tab || 'js,css,html,result').replace(/\s+/g, '')
+    const allowedTabs = ['js', 'css', 'html', 'result']
+    const requestedTabs = (props.tab || '').split(',').map(item => item.trim()).filter(item => allowedTabs.includes(item))
+    const tab = (requestedTabs.length ? requestedTabs : allowedTabs).join(',')
     const encodedSource = source.split('/').map(encodeURIComponent).join('/')
-    const src = `https://jsfiddle.net/${encodedSource}/embedded/${encodeURIComponent(tab)}${dark ? '/dark/' : ''}`
-    return `<iframe class="js-fiddle-iframe" src="${escapeHtml(src)}" title="${escapeHtml(props.title || 'JS Fiddle')}" style="width:${width};height:${cssSize(props.height, '400px')}" frameborder="0" allowfullscreen="true" allowpaymentrequest="true" data-code-embed="jsfiddle" data-code-source="${escapeHtml(encodedSource)}" data-code-tab="${escapeHtml(encodeURIComponent(tab))}"${themeLocked ? ' data-theme-locked' : ''}></iframe>`
+    const src = `https://jsfiddle.net/${encodedSource}/embedded/${tab}/${dark ? 'dark/' : ''}`
+    return `<iframe class="js-fiddle-iframe" src="${escapeHtml(src)}" title="${escapeHtml(props.title || 'JS Fiddle')}" style="width:${width};height:${cssSize(props.height, '400px')}" frameborder="0" allowfullscreen="true" allowpaymentrequest="true" data-code-embed="jsfiddle" data-code-source="${escapeHtml(encodedSource)}" data-code-tab="${tab}"${themeLocked ? ' data-theme-locked' : ''}></iframe>`
   }
   if (type === 'codesandbox') {
     const [profile, filepath = ''] = source.split('#')

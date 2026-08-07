@@ -280,7 +280,7 @@ const greeting = { text: 'hello' } as const
 
 @[codepen tab="html,result" height="180px"](leimapapa/RwOZQOW)
 
-@[jsfiddle tab="result,js" height="180px"](pengzhanbo/1xbwz2p9)
+@[jsfiddle tab="result,js" height="180px"](zalun/NmudS)
 
 @[codesandbox title="CodeSandbox demo" layout="Editor+Preview" navbar="false" height="180px"](5wyzu#src/index.js)
 
