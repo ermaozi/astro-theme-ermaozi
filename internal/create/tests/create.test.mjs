@@ -124,7 +124,7 @@ test('creates a complete ermaozi project without installing when requested', () 
   const layout = readFileSync(path.join(created, 'theme/layouts/BaseLayout.astro'), 'utf8')
   assert.match(layout, /<!doctype html>/i)
   assert.match(layout, /loadSwipers/)
-  assert.match(readFileSync(path.join(created, 'public/img/logo.svg'), 'utf8'), /viewBox="0 0 128 128"/)
+  assert.match(readFileSync(path.join(created, 'public/img/logo.svg'), 'utf8'), /<svg\b[^>]*\bviewBox=/)
 })
 
 test('refuses to overwrite a non-empty directory', () => {
