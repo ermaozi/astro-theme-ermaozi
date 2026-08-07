@@ -21,6 +21,9 @@ export const siteConfig = defineSiteConfig({
   // GitHub Pages 和 GitLab Pages 的内置工作流会通过 BASE_PATH 自动覆盖此值。
   base: '/',
 
+  // 默认语言的首页链接。省略时使用该语言的 home；若希望根语言仍位于 /，但首页跳到 /blog/，可取消下一行注释。
+  // home: '/blog/',
+
   // 全站 Logo。支持站内路径或完整 URL，同时用作默认头像和部分 SEO 图片。
   logo: '/img/logo.svg',
 
@@ -198,7 +201,8 @@ export const siteConfig = defineSiteConfig({
       profileTagline: '记录、整理与分享',
       keywords: 'Astro,静态博客,Markdown,博客主题',
 
-      // 当前语言的首页路径。根语言必须使用 '/'。
+      // 当前语言的首页链接。默认也作为语言路径；根语言通常使用 '/'。
+      // 若首页不是语言路径根目录，可另设 path，例如 path: '/', home: '/blog/'。
       home: '/',
 
       // 界面文案。未填写的字段会使用主题内置的简体中文预设。
@@ -215,6 +219,7 @@ export const siteConfig = defineSiteConfig({
       askAIText: '在 {name} 中打开',
       askAITagline: '向 {name} 提问有关此页面',
       askAIMessage: '阅读 {link} 并回答内容相关的问题。',
+      notFound: { linkLabel: '返回站点首页' },
 
       // 内容集合决定哪些目录是博客或文档，以及它们如何生成列表、侧边栏和前后页。
       // 迁移旧 Plume 配置时，blog/article/notes 会自动转换；新项目请直接使用 collections。
@@ -299,6 +304,7 @@ export const siteConfig = defineSiteConfig({
       authorDescription: 'Publish articles, documentation, and project notes with ermaozi.',
       profileTagline: 'Write, organize, and share',
       keywords: 'Astro,static blog,Markdown,bilingual site,theme',
+      // 如需将英文首页改到 /en/blog/，应同时保留 path: '/en/' 作为语言路径前缀。
       home: '/en/',
       homeText: 'Home',
       postsText: 'Blog',
@@ -311,6 +317,7 @@ export const siteConfig = defineSiteConfig({
       askAIText: 'Open in {name}',
       askAITagline: 'Ask {name} about this page',
       askAIMessage: 'Read {link} and answer content-related questions.',
+      notFound: { linkLabel: 'Go to site home' },
       collections: [
         { type: 'post', dir: 'blog', title: 'Blog' },
         {

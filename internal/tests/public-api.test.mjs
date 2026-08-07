@@ -10,6 +10,7 @@ import { tintPlateColors } from '../../theme/lib/tint-plate.ts'
 import { homeConfigOf } from '../../theme/lib/home.ts'
 import { seoEnabled } from '../../theme/lib/seo-options.mjs'
 import { collectionForEntry, collectionsFor } from '../../theme/lib/collections.ts'
+import { siteConfig } from '../../site.config.mjs'
 
 test('public Node helpers preserve identity and the client barrel covers the frozen documented API', async () => {
   const values = [
@@ -26,6 +27,30 @@ test('public Node helpers preserve identity and the client barrel covers the fro
   assert.equal(defineSiteConfig(site), site)
   assert.deepEqual(site.features, { engagement: false, popularPosts: false, comments: false })
   assert.deepEqual(site.social, [])
+  assert.deepEqual({
+    appearance: site.appearance,
+    navbarSocialInclude: site.navbarSocialInclude,
+    aside: site.aside,
+    outline: site.outline,
+    externalLinkIcon: site.externalLinkIcon,
+    editLink: site.editLink,
+    contributors: site.contributors,
+    changelog: site.changelog,
+    prevPage: site.prevPage,
+    nextPage: site.nextPage,
+  }, {
+    appearance: true,
+    navbarSocialInclude: ['github', 'twitter', 'discord', 'facebook'],
+    aside: true,
+    outline: [2, 3],
+    externalLinkIcon: true,
+    editLink: true,
+    contributors: true,
+    changelog: false,
+    prevPage: true,
+    nextPage: true,
+  })
+  assert.match(site.footer.message, /Astro.*ermaozi/)
   assert.equal(plumeTheme(values[3]), values[3])
   const [client, node] = await Promise.all([readFile('theme/client.ts', 'utf8'), readFile('theme/node.ts', 'utf8')])
   const frozenNodeHelpers = ['defineSiteConfig', 'defineThemeConfig', 'defineNavbarConfig', 'defineNotesConfig', 'defineNoteConfig', 'defineCollections', 'defineCollection']
@@ -46,10 +71,27 @@ test('site config fails early with actionable boundary errors', () => {
   const plume = defineSiteConfig({ hostname: 'https://example.com', logo: '/logo.svg', docsRepo: 'owner/repo', docsBranch: 'dev', docsDir: 'docs', locales: { 'zh-CN': { siteName: 'Site', home: '/' } } })
   assert.equal(plume.origin, 'https://example.com')
   assert.deepEqual(plume.repository, { url: 'owner/repo', branch: 'dev', contentDir: 'docs' })
+  const customHome = defineSiteConfig({ ...valid(), home: '/blog/' })
+  assert.equal(customHome.locales['zh-CN'].path, '/')
+  assert.equal(customHome.locales['zh-CN'].home, '/blog/')
   assert.throws(() => defineSiteConfig({ ...valid(), origin: 'example.com' }), /origin 必须是有效的 http\(s\) URL/)
   assert.throws(() => defineSiteConfig({ ...valid(), base: '/docs' }), /base 必须以 \/ 开头和结尾/)
   assert.throws(() => defineSiteConfig({ ...valid(), pagination: 0 }), /pagination\.perPage 必须是正整数/)
+  assert.throws(() => defineSiteConfig({ ...valid(), locales: { 'zh-CN': { siteName: 'Site', home: '/', path: '/zh/' } } }), /必须有一种语言使用根路径/)
   assert.throws(() => defineSiteConfig({ ...valid(), features: { engagement: true, popularPosts: false, comments: false } }), /services\.statsBase/)
+})
+
+test('top-level Plume locale text remains a global fallback', async () => {
+  const { localeOf } = await import('../../theme/lib/locales.ts')
+  const previous = siteConfig.openNewWindowText
+  try {
+    siteConfig.openNewWindowText = 'Open elsewhere'
+    assert.equal(localeOf('zh-CN').openNewWindowText, 'Open elsewhere')
+  }
+  finally {
+    if (previous === undefined) delete siteConfig.openNewWindowText
+    else siteConfig.openNewWindowText = previous
+  }
 })
 
 test('legacy Plume plugin options fall back to the canonical flat configuration', () => {

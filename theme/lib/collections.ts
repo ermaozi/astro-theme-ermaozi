@@ -1,7 +1,7 @@
 import { matchesGlob } from 'node:path'
 import { siteConfig } from '../../site.config.mjs'
 import type { AutoFrontmatterOptions, ProfileOptions, SocialLink } from '../config-types.ts'
-import { localeOf, localePrefix, type Lang } from './locales.ts'
+import { localePrefix, type Lang } from './locales.ts'
 
 export type SidebarBadge = string | { text?: string, type?: string, color?: string, bgColor?: string, borderColor?: string }
 export type PostCoverLayout = 'left' | 'right' | 'odd-left' | 'odd-right' | 'top'
@@ -76,20 +76,16 @@ export type ResolvedCollection = ResolvedPostCollection | ResolvedDocCollection
 
 const clean = (value = '') => value.replaceAll('\\', '/').replace(/^\.\//u, '').replace(/^\/+|\/+$/gu, '')
 const route = (value = '') => `/${clean(value)}/`.replace(/\/{2,}/gu, '/')
-const withLocale = (lang: Lang, value: string) => route(`${clean(localePrefix(lang))}/${clean(value)}`)
-
-const fallbackCollections = (lang: Lang): Collection[] => {
-  const locale = localeOf(lang)
-  return [
-    { type: 'post', dir: 'blog', title: locale.blogName },
-    { type: 'doc', dir: 'docs', title: locale.docsName, sidebar: 'auto' },
-  ]
+const withLocale = (lang: Lang, value: string) => {
+  const prefix = clean(localePrefix(lang))
+  const path = clean(value)
+  return route(prefix && path !== prefix && !path.startsWith(`${prefix}/`) ? `${prefix}/${path}` : path)
 }
 
 export function collectionsFor(lang: Lang, config: any = siteConfig): ResolvedCollection[] {
   const localeConfig = config.locales?.[lang] ?? {}
   const configured = localeConfig.collections ?? config.collections
-  return ((configured?.length ? configured : fallbackCollections(lang)) as Collection[]).map(collection => {
+  return ((configured ?? []) as Collection[]).map(collection => {
     const dir = clean(collection.dir)
     const title = collection.title || dir.split('/').at(-1) || collection.type
     const key = `${lang}:${dir}`
@@ -126,8 +122,12 @@ export const relativeContentId = (id: string, lang: Lang) => {
 
 const included = (relative: string, collection: Collection) => {
   const file = relative.slice(clean(collection.dir).length).replace(/^\//u, '') + '.md'
-  if (collection.type === 'post' && collection.include?.length && !collection.include.some(pattern => matchesGlob(file, pattern))) return false
-  return collection.type !== 'post' || !collection.exclude?.some(pattern => matchesGlob(file, pattern))
+  if (collection.type !== 'post') return true
+  const includes = collection.include ?? []
+  const patterns = includes.filter(pattern => !pattern.startsWith('!'))
+  if (includes.length && !patterns.some(pattern => matchesGlob(file, pattern))) return false
+  const ignores = [...includes.filter(pattern => pattern.startsWith('!')).map(pattern => pattern.slice(1)), ...(collection.exclude ?? [])]
+  return !ignores.some(pattern => matchesGlob(file, pattern))
 }
 
 export function collectionForPath(id: string, lang: Lang, config: any = siteConfig): ResolvedCollection | undefined {

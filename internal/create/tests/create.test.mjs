@@ -121,6 +121,16 @@ test('creates a complete ermaozi project without installing when requested', () 
     'content/docs/guide/api.md',
     'content/en/docs/guide/api.md',
   ]) assert.doesNotThrow(() => readFileSync(path.join(created, file)))
+  for (const file of [
+    'theme/config.mjs',
+    'theme/config-types.ts',
+    'theme/lib/locales.ts',
+    'theme/lib/auto-frontmatter.mjs',
+    'theme/lib/collections.ts',
+    'theme/lib/sidebar.ts',
+    'theme/components/Header.astro',
+    'theme/components/NotFound.astro',
+  ]) assert.equal(readFileSync(path.join(created, file), 'utf8'), readFileSync(path.resolve(packageRoot, '../..', file), 'utf8'), file)
   const layout = readFileSync(path.join(created, 'theme/layouts/BaseLayout.astro'), 'utf8')
   assert.match(layout, /<!doctype html>/i)
   assert.match(layout, /loadSwipers/)

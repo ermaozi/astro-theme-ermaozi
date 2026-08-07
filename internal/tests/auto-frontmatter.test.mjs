@@ -13,7 +13,7 @@ test('auto frontmatter fills only missing fields and honors collection transform
   await writeFile(file, '---\ntitle: Kept title\n---\nBody\n')
   const config = {
     autoFrontmatter: { permalink: 'filepath', transform: data => ({ ...data, custom: true }) },
-    locales: { 'zh-CN': { home: '/' }, 'en-US': { home: '/en/' } },
+    locales: { 'zh-CN': { home: '/' }, 'en-US': { path: '/en/', home: '/en/start/' } },
   }
   assert.deepEqual(await generateAutoFrontmatter({ root, config }), ['en/blog/02.Hello World.md'])
   const source = await readFile(file, 'utf8')

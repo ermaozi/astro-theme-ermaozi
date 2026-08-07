@@ -1,7 +1,7 @@
 import type { ContentEntry } from './content.ts'
 import { langOf, routeOf } from './content.ts'
 import { relativeContentId, type ResolvedDocCollection, type SidebarBadge, type SidebarItem } from './collections.ts'
-import { localeOf, localePrefix, type Lang } from './locales.ts'
+import { localeOf, localePath, localePrefix, type Lang } from './locales.ts'
 import { siteConfig } from '../../site.config.mjs'
 
 export type ResolvedSidebarItem = {
@@ -32,9 +32,9 @@ function autoItems(entries: ContentEntry[], lang: Lang, collection: ResolvedDocC
   const directories = new Map<string, ContentEntry[]>()
   for (const entry of entries) {
     const relative = relativeToCollection(entry, lang, collection)
-    if (!relative || /^(?:index|readme)$/iu.test(relative)) continue
+    if (!relative) continue
     const scoped = prefix ? relative.startsWith(`${clean(prefix)}/`) ? relative.slice(clean(prefix).length + 1) : '' : relative
-    if (!scoped) continue
+    if (!scoped || /^(?:index|readme)$/iu.test(scoped)) continue
     const [head, ...tail] = scoped.split('/')
     if (tail.length) directories.set(head, [...(directories.get(head) ?? []), entry])
     else direct.push({
@@ -46,12 +46,18 @@ function autoItems(entries: ContentEntry[], lang: Lang, collection: ResolvedDocC
       sort: Number(entry.data.order ?? order(head)),
     })
   }
-  const groups = [...directories].map(([directory, children]) => ({
-    text: children.find(entry => entry.data.group)?.data.group ?? label(directory),
-    items: autoItems(entries, lang, collection, [prefix, directory].filter(Boolean).join('/')),
-    collapsed: collection.sidebarCollapsed ?? false,
-    sort: order(directory),
-  }))
+  const groups = [...directories].map(([directory, children]) => {
+    const childPrefix = [prefix, directory].filter(Boolean).join('/')
+    const home = findEntry(entries, lang, collection, childPrefix)
+    return {
+      text: children.find(entry => entry.data.group)?.data.group ?? label(directory),
+      link: home ? routeOf(home) : undefined,
+      entryId: home?.id,
+      items: autoItems(entries, lang, collection, childPrefix),
+      collapsed: collection.sidebarCollapsed ?? false,
+      sort: order(directory),
+    }
+  })
   return sorted([...direct, ...groups])
 }
 
@@ -71,23 +77,24 @@ function manualItems(items: SidebarItem[], entries: ContentEntry[], lang: Lang, 
   return items.flatMap<ResolvedSidebarItem>(item => {
     const option = typeof item === 'string' ? { link: item } : item
     const prefix = option.prefix === undefined && option.dir === undefined ? parentPrefix : join(parentPrefix, option.prefix ?? option.dir ?? '')
-    const link = option.link ? join(prefix, option.link) : ''
+    const link = option.link ? join(parentPrefix, option.link) : ''
     if (/^-{3,}$/u.test(option.link ?? '')) return [{ text: option.text ?? '', link: option.link, separator: true, icon: option.icon }]
     const entry = link ? findEntry(entries, lang, collection, link) : undefined
+    const autoHome = !link && option.items === 'auto' ? findEntry(entries, lang, collection, prefix) : undefined
     const children = option.items === 'auto'
       ? autoItems(entries, lang, collection, prefix)
       : option.items?.length ? manualItems(option.items, entries, lang, collection, prefix) : undefined
     if (!entry && !children?.length && !option.text) return []
     return [{
       text: option.text ?? entry?.data.title ?? label(link.split('/').at(-1) ?? ''),
-      link: entry ? routeOf(entry) : option.link && !children?.length ? protocolLink(link) ? link : `/${link}/`.replace(/\/{2,}/gu, '/') : undefined,
-      icon: option.icon ?? entry?.data.icon,
-      badge: option.badge ?? entry?.data.badge,
+      link: entry ? routeOf(entry) : autoHome ? routeOf(autoHome) : option.link ? protocolLink(link) ? link : `/${link}/`.replace(/\/{2,}/gu, '/') : undefined,
+      icon: entry?.data.icon ?? autoHome?.data.icon ?? option.icon,
+      badge: entry?.data.badge ?? autoHome?.data.badge ?? option.badge,
       items: children,
       collapsed: option.collapsed ?? (children?.length ? collection.sidebarCollapsed ?? false : undefined),
       rel: option.rel,
       target: option.target,
-      entryId: entry?.id,
+      entryId: entry?.id ?? autoHome?.id,
     }]
   })
 }
@@ -117,7 +124,7 @@ export function configuredSidebarFor(entries: ContentEntry[], lang: Lang, select
   const configured = (localeConfig.sidebar ?? config.sidebar) as SidebarConfig | undefined
   if (!configured) return undefined
 
-  let key = (localeConfig.home ?? localeOf(lang).home) as string
+  let key = (localeConfig.path ?? localePath(lang)) as string
   let value: SidebarValue
   if (typeof configured === 'object' && !Array.isArray(configured)) {
     const path = localizedPath(lang, selector)

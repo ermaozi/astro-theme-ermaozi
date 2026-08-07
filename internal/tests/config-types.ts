@@ -3,6 +3,7 @@ import { defineSiteConfig } from '../../theme/config.mjs'
 const minimal = defineSiteConfig({
   origin: 'https://example.com',
   logo: '/logo.svg',
+  home: '/blog/',
   locales: { 'zh-CN': { siteName: 'Site', home: '/' } },
 })
 
@@ -14,10 +15,13 @@ minimal.search === false
 defineSiteConfig({
   origin: 'https://example.com',
   logo: '/logo.svg',
+  homeText: 'Start',
+  notFound: { title: 'Missing', linkText: 'Home' },
   autoFrontmatter: { transform: (data, context, locale) => ({ ...data, source: `${context.relativePath}:${locale}` }) },
   locales: {
     'zh-CN': {
       siteName: 'Site',
+      path: '/',
       home: '/',
       collections: [{ type: 'post', dir: 'blog', categoriesTransform: categories => categories.filter(item => item.type === 'category') }],
     },

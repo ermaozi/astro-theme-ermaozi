@@ -5,7 +5,7 @@
 > The ermaozi Astro theme with full-text search, dark mode, taxonomies, SEO, and enhanced Markdown.
 
 > [!WARNING]
-> 当前为 `0.2.0-beta.5` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
+> 当前为 `0.2.0-beta.6` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
 
 在线演示：<https://astro.ermao.net>
 

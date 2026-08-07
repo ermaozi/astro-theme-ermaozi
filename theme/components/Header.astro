@@ -25,7 +25,7 @@ interface Props {
 const { lang, translationRoute, languageLinks = [], home: isHome = false, hasSidebar = false, fixed = false } = Astro.props
 const en = !lang.toLowerCase().startsWith('zh')
 const locale = localeOf(lang)
-const home = pathForLocale(lang)
+const home = locale.home ?? pathForLocale(lang)
 const languages = languageLinks.length
   ? languageLinks
   : translationRoute ? [{ lang, href: Astro.url.pathname }, { lang: en ? 'zh-CN' : 'en-US', href: translationRoute }] : []

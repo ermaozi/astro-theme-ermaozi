@@ -98,17 +98,17 @@ function sidebarLinks(sidebar, collectionDir) {
 export async function generateAutoFrontmatter({ root = resolve('content'), config }) {
   const globalOption = normalizeOption(config.autoFrontmatter ?? true)
   const localeEntries = Object.entries(config.locales ?? {})
-  const rootLang = localeEntries.find(([, locale]) => locale.home === '/')?.[0] ?? localeEntries[0]?.[0]
+  const rootLang = localeEntries.find(([, locale]) => (locale.path ?? locale.home) === '/')?.[0] ?? localeEntries[0]?.[0]
   const changed = []
 
   for (const filepath of await markdownFiles(root)) {
     const relativePath = slash(relative(root, filepath))
     const localeMatch = localeEntries
-      .filter(([, item]) => item.home !== '/')
-      .sort(([, left], [, right]) => right.home.length - left.home.length)
-      .find(([, item]) => relativePath.startsWith(`${item.home.replace(/^\//u, '').replace(/\/$/u, '')}/`))
+      .filter(([, item]) => (item.path ?? item.home) !== '/')
+      .sort(([, left], [, right]) => (right.path ?? right.home).length - (left.path ?? left.home).length)
+      .find(([, item]) => relativePath.startsWith(`${(item.path ?? item.home).replace(/^\//u, '').replace(/\/$/u, '')}/`))
     const locale = localeMatch?.[1] ?? (rootLang ? config.locales[rootLang] : undefined) ?? /** @type {AutoLocale} */ ({})
-    const localeRoot = locale.home ?? '/'
+    const localeRoot = locale.path ?? locale.home ?? '/'
     const localeDirectory = localeRoot.replace(/^\//u, '').replace(/\/$/u, '')
     const localPath = localeDirectory && relativePath.startsWith(`${localeDirectory}/`) ? relativePath.slice(localeDirectory.length + 1) : relativePath
     const collections = locale.collections ?? config.collections ?? []

@@ -84,7 +84,7 @@ const licensePresets: Record<keyof typeof presets, readonly string[]> = {
 
 export type Lang = string
 export const configuredLanguages = () => Object.keys(localeConfigs) as Lang[]
-export const localePath = (lang: Lang) => localeConfigs[lang]?.home ?? (lang === configuredLanguages()[0] ? '/' : `/${lang.split('-')[0]}/`)
+export const localePath = (lang: Lang) => localeConfigs[lang]?.path ?? localeConfigs[lang]?.home ?? (lang === configuredLanguages()[0] ? '/' : `/${lang.split('-')[0]}/`)
 export const localePrefix = (lang: Lang) => localePath(lang).replace(/\/$/u, '')
 export const rootLanguage = () => configuredLanguages().find(lang => localePath(lang) === '/') ?? configuredLanguages()[0] ?? 'en-US'
 export const languageFromPath = (pathname: string): Lang => configuredLanguages()

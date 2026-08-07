@@ -288,6 +288,8 @@ export type NavigationItem = string | {
 
 export interface LocaleConfig extends LocaleTextOptions {
   siteName: string
+  /** Locale route prefix. Defaults to home for backward compatibility. */
+  path?: string
   home: string
   logo?: string
   logoDark?: string
@@ -329,10 +331,12 @@ export interface LocaleConfig extends LocaleTextOptions {
   [key: string]: unknown
 }
 
-export interface SiteConfig {
+export interface SiteConfig extends LocaleTextOptions {
   origin?: string
   hostname?: string
   base?: string
+  /** Default-locale home link, matching Plume's top-level home option. */
+  home?: string
   logo: string
   logoDark?: string
   multilingual?: boolean
@@ -408,8 +412,18 @@ export interface SiteConfigDefaults {
   hostname: string
   base: string
   multilingual: boolean
+  appearance: boolean | 'dark' | 'force-dark'
   social: SocialLink[]
   navbarSocialInclude: string[]
+  aside: boolean | 'left'
+  outline: false | number | [number, number] | 'deep'
+  externalLinkIcon: boolean
+  editLink: boolean
+  contributors: boolean | ContributorsOptions
+  changelog: boolean | ChangelogOptions
+  prevPage: boolean
+  nextPage: boolean
+  footer: false | FooterOptions
   features: { engagement: boolean, popularPosts: boolean, comments: boolean }
   repository: { url?: string, branch?: string, contentDir?: string, editLinkPattern?: string }
   encrypt: false | Record<string, unknown>

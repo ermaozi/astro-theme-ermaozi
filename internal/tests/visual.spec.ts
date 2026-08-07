@@ -296,6 +296,7 @@ test('not-found content keeps the frozen Plume structure', async ({ page }) => {
   await expect(page.locator('.vp-not-found .divider')).toHaveCSS('transition-property', 'background-color')
   await expect(page.locator('.vp-not-found .quote')).toHaveCSS('transition-property', 'color')
   await expect(page.locator('.vp-not-found .link')).toHaveCSS('transition-property', 'color, border-color')
+  await expect(page.locator('.vp-not-found .link')).toHaveAttribute('aria-label', '返回站点首页')
 })
 
 test('local search keeps the frozen desktop, tablet, and mobile light/dark matrix', async ({ page }) => {

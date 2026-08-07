@@ -12,8 +12,18 @@ export const defineSiteConfig = config => {
   resolved.hostname ??= resolved.origin
   resolved.base ??= '/'
   resolved.multilingual ??= false
+  resolved.appearance ??= true
   resolved.social ??= []
-  resolved.navbarSocialInclude ??= []
+  resolved.navbarSocialInclude ??= ['github', 'twitter', 'discord', 'facebook']
+  resolved.aside ??= true
+  resolved.outline ??= [2, 3]
+  resolved.externalLinkIcon ??= true
+  resolved.editLink ??= true
+  resolved.contributors ??= true
+  resolved.changelog ??= false
+  resolved.prevPage ??= true
+  resolved.nextPage ??= true
+  resolved.footer ??= { message: 'Powered by <a target="_blank" rel="noopener" href="https://astro.build/">Astro</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/ermaozi/astro-theme-ermaozi">ermaozi</a>' }
   resolved.profile ??= /** @type {{ avatar?: import('./config-types.ts').ProfileOptions | false }} */ (resolved).avatar
   /** @param {import('./config-types.ts').ProfileOptions | false | undefined} profile */
   const normalizeProfile = (profile) => { if (profile) profile.avatar ??= /** @type {{ url?: string }} */ (profile).url }
@@ -49,11 +59,14 @@ export const defineSiteConfig = config => {
   }
   convertLegacyCollections(resolved)
   for (const locale of Object.values(resolved.locales ?? {})) {
+    locale.path ??= locale.home
     locale.profile ??= /** @type {{ avatar?: import('./config-types.ts').ProfileOptions | false }} */ (locale).avatar
     normalizeProfile(locale.profile)
     convertLegacyCollections(locale)
     delete /** @type {{ notes?: import('./config-types.ts').LegacyNotesOptions }} */ (locale).notes
   }
+  const rootLocale = Object.values(resolved.locales ?? {}).find(locale => locale.path === '/')
+  if (resolved.home !== undefined && rootLocale) rootLocale.home = resolved.home
   for (const collection of [resolved.collections ?? [], ...Object.values(resolved.locales ?? {}).map(locale => locale.collections ?? [])].flat()) {
     if (collection.type === 'post') normalizeProfile(collection.profile)
   }
@@ -118,11 +131,12 @@ export const defineSiteConfig = config => {
   const homes = new Set()
   for (const [lang, locale] of locales) {
     if (!locale?.siteName?.trim()) invalid(`locales.${lang}.siteName 不能为空`)
+    if (!/^\/(?:[^/?#\\]+\/)*$/u.test(locale.path ?? '')) invalid(`locales.${lang}.path 必须是以 / 开头和结尾的语言路径`)
     if (!/^\/(?:[^/?#\\]+\/)*$/u.test(locale.home)) invalid(`locales.${lang}.home 必须是以 / 开头和结尾的站内路径`)
-    if (homes.has(locale.home)) invalid(`locales.${lang}.home 与其他语言重复：${locale.home}`)
-    homes.add(locale.home)
+    if (homes.has(locale.path)) invalid(`locales.${lang}.path 与其他语言重复：${locale.path}`)
+    homes.add(locale.path)
   }
-  if (!homes.has('/')) invalid("locales 中必须有一种语言使用根路径 '/'")
+  if (!homes.has('/')) invalid("locales 中必须有一种语言使用根路径 path: '/'")
 
   const pagination = typeof resolved.pagination === 'number'
     ? resolved.pagination

@@ -7,8 +7,8 @@ import { withBase } from '../lib/client-utils'
 
 const { lang = rootLanguage(), route = '/404.html' } = Astro.props
 const locale = localeOf(lang)
-const localeRecords = configuredLanguages().map(lang => ({ lang, root: localePath(lang) === '/', home: withBase(localePath(lang), import.meta.env.BASE_URL), ...localeOf(lang).notFound }))
-const home = withBase(locale.home, import.meta.env.BASE_URL)
+const localeRecords = configuredLanguages().map(lang => ({ lang, root: localePath(lang) === '/', home: withBase(localeOf(lang).home ?? localePath(lang), import.meta.env.BASE_URL), ...localeOf(lang).notFound }))
+const home = withBase(locale.home ?? localePath(lang), import.meta.env.BASE_URL)
 const customNotFound = hasUserSlot('not-found')
 ---
 
@@ -19,7 +19,7 @@ const customNotFound = hasUserSlot('not-found')
       <h1 class="title">{locale.notFound.title}</h1>
       <div class="divider"></div>
       <blockquote class="quote">{locale.notFound.quote}</blockquote>
-      <div class="action"><a class="link" href={home} aria-label={locale.notFound.linkText}>{locale.notFound.linkText}</a></div>
+      <div class="action"><a class="link" href={home} aria-label={locale.notFound.linkLabel ?? locale.notFound.linkText}>{locale.notFound.linkText}</a></div>
     </div>}
   </div>
   {!customNotFound && <script is:inline define:vars={{ localeRecords }}>
@@ -34,7 +34,7 @@ const customNotFound = hasUserSlot('not-found')
       const link = document.querySelector('.vp-not-found .link')
       link.href = record.home
       link.textContent = record.linkText
-      link.setAttribute('aria-label', record.linkText)
+      link.setAttribute('aria-label', record.linkLabel ?? record.linkText)
     }
   </script>}
 </BaseLayout>

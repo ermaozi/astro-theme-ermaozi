@@ -72,6 +72,7 @@ if (mathConfiguration && mathConfiguration.type === 'mathjax') {
   const { type: _type, copy: _copy, mhchem: _mhchem, ...options } = mathConfiguration
   mathjaxPlugin = mathjax.mathjax
   mathjaxInstance = mathjax.createMathjaxInstance(options)
+  if (mathjaxInstance) delete (mathjaxInstance.documentOptions as { enableAssistiveMml?: boolean }).enableAssistiveMml
 }
 
 const highlighter = siteConfig.codeHighlighter === false ? null : await createHighlighter({
