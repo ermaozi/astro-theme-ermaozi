@@ -20,8 +20,10 @@ test('public Node helpers preserve identity and the client barrel covers the fro
   assert.equal(defineCollections(values[1]), values[1])
   assert.equal(defineCollection(values[2]), values[2])
   assert.equal(defineThemeConfig(values[3]), values[3])
-  const site = { origin: 'https://example.com', logo: '/logo.svg', locales: {} }
+  const site = { origin: 'https://example.com', logo: '/logo.svg', locales: { 'zh-CN': { siteName: 'Site', home: '/' } } }
   assert.equal(defineSiteConfig(site), site)
+  assert.deepEqual(site.features, { engagement: false, popularPosts: false, comments: false })
+  assert.deepEqual(site.social, [])
   assert.equal(plumeTheme(values[3]), values[3])
   const [client, node] = await Promise.all([readFile('theme/client.ts', 'utf8'), readFile('theme/node.ts', 'utf8')])
   const frozenNodeHelpers = ['defineSiteConfig', 'defineThemeConfig', 'defineNavbarConfig', 'defineNotesConfig', 'defineNoteConfig', 'defineCollections', 'defineCollection']
@@ -35,6 +37,14 @@ test('public Node helpers preserve identity and the client barrel covers the fro
   assert.match(client, /export const plumeClientConfig = Object\.freeze\(\{ layouts:/)
   assert.match(client, /echarts-config/)
   assert.doesNotMatch(client, /node:/)
+})
+
+test('site config fails early with actionable boundary errors', () => {
+  const valid = () => ({ origin: 'https://example.com', logo: '/logo.svg', locales: { 'zh-CN': { siteName: 'Site', home: '/' } } })
+  assert.throws(() => defineSiteConfig({ ...valid(), origin: 'example.com' }), /origin 必须是有效的 http\(s\) URL/)
+  assert.throws(() => defineSiteConfig({ ...valid(), base: '/docs' }), /base 必须以 \/ 开头和结尾/)
+  assert.throws(() => defineSiteConfig({ ...valid(), pagination: 0 }), /pagination\.perPage 必须是正整数/)
+  assert.throws(() => defineSiteConfig({ ...valid(), features: { engagement: true, popularPosts: false, comments: false } }), /services\.statsBase/)
 })
 
 test('ECharts public config preserves the frozen singleton contract', () => {

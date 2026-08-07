@@ -90,3 +90,20 @@ export interface SiteConfig {
   verification?: Record<string, string>
   [key: string]: unknown
 }
+
+export interface SiteConfigDefaults {
+  base: string
+  multilingual: boolean
+  social: SocialLink[]
+  navbarSocialInclude: string[]
+  features: { engagement: boolean, popularPosts: boolean, comments: boolean }
+  repository: { url?: string, branch?: string, contentDir?: string, editLinkPattern?: string }
+  encrypt: false | Record<string, unknown>
+  markdown: Record<string, unknown> & { math: false | Record<string, unknown> }
+  codeHighlighter: Record<string, unknown>
+  plugins: Record<string, unknown>
+  services: Record<string, unknown> & { statsBase: string, statsVisitorHeader: string }
+  comment: false | (Record<string, unknown> & { provider: string })
+  verification: Record<string, string>
+  [key: string]: unknown
+}

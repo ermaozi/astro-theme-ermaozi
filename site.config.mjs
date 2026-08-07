@@ -7,7 +7,7 @@ import { defineSiteConfig } from './theme/config.mjs'
  * 修改原则：
  * - 字符串留空通常表示不启用对应外部服务；
  * - 支持 `false` 的功能可直接设为 `false` 关闭；
- * - `defineSiteConfig()` 只提供类型检查和编辑器提示，不会改写配置；
+ * - `defineSiteConfig()` 提供编辑器提示、常用默认值和启动时配置校验；
  * - 修改后运行 `pnpm build`，可同时检查配置、内容和静态页面生成。
  */
 export const siteConfig = defineSiteConfig({

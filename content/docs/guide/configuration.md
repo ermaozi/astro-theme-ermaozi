@@ -11,7 +11,7 @@ tags: [配置, Astro]
 
 # 站点配置
 
-公共配置位于 `site.config.mjs`。修改站名、域名和导航后，Astro 开发服务器会自动刷新。最外层的 `defineSiteConfig()` 不改变任何运行结果，只为常用字段提供自动补全和错误提示。
+公共配置位于 `site.config.mjs`。修改站名、域名和导航后，Astro 开发服务器会自动刷新。最外层的 `defineSiteConfig()` 提供自动补全，为省略的可选区块补充安全默认值，并在启动时报告无效域名、路径和分页等配置。
 
 ## 公告板
 
@@ -123,7 +123,7 @@ Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`
 
 Doc 集合支持 `sidebar: 'auto'`，会按目录层级和数字前缀递归生成导航；`sidebarCollapsed` 控制自动分组初始折叠，`sidebarScrollbar` 控制滚动条。也可传入字符串或 `{ text, link, prefix, icon, badge, collapsed, items }` 数组手动编排，`items: 'auto'` 只自动读取当前分组，`link: '---'` 生成分隔符。
 
-`site.config.mjs` 已从 `./theme/config.mjs` 导入 `defineSiteConfig`。开发主题集成时还可从 `theme/node.ts` 使用 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`；这些帮助函数只保留原对象，不改变运行结果。
+`site.config.mjs` 已从 `./theme/config.mjs` 导入 `defineSiteConfig`。它保留传入的对象引用，并为主题运行必需的可选区块补充默认值。开发主题集成时还可从 `theme/node.ts` 使用 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`；其余帮助函数仍原样返回传入值。
 
 ## 可信图表脚本
 

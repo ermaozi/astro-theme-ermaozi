@@ -12,7 +12,7 @@ tags: [Configuration, Astro]
 
 # Site configuration
 
-Public configuration lives in `site.config.mjs`. Astro refreshes the development site after changes to names, origins, or navigation. The outer `defineSiteConfig()` call does not change runtime behavior; it only adds completion and error hints for common fields.
+Public configuration lives in `site.config.mjs`. Astro refreshes the development site after changes to names, origins, or navigation. The outer `defineSiteConfig()` call adds completion, fills safe defaults for omitted optional sections, and reports invalid origins, paths, and pagination values at startup.
 
 ## Post covers
 
@@ -120,7 +120,7 @@ Post collections support `include`, `exclude`, `pagination`, `postList`, `link`,
 
 Doc collections support recursive directory and numeric-prefix navigation through `sidebar: 'auto'`; `sidebarCollapsed` controls initial group state and `sidebarScrollbar` controls the scrollbar. A manual array accepts strings or `{ text, link, prefix, icon, badge, collapsed, items }`, including scoped `items: 'auto'` and `link: '---'` separators.
 
-`site.config.mjs` already imports `defineSiteConfig` from `./theme/config.mjs`. Theme integrations may also use `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` from `theme/node.ts`. These helpers preserve the supplied object unchanged.
+`site.config.mjs` already imports `defineSiteConfig` from `./theme/config.mjs`. It preserves the supplied object reference while filling defaults required by the theme runtime. Theme integrations may also use `defineThemeConfig`, `defineNavbarConfig`, `defineCollections`, and `defineCollection` from `theme/node.ts`; the other helpers still return their input unchanged.
 
 ## Trusted chart scripts
 
