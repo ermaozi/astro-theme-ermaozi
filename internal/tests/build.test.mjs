@@ -69,8 +69,14 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   assert.match(pageLayout, /<main id="VPContent" class="vp-content"><div class="vp-page"><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><h1 id="专页布局示例"/)
   assert.doesNotMatch(pageLayout, /vp-doc-container|vp-doc-title|vp-doc-meta|vp-breadcrumb|vp-page-context-menu|data-comment-provider/)
   assert.match(customLayout, /<main id="VPContent" class="vp-content"><article class="custom-layout-example plume-content" lang="zh-CN"><h1 id="自定义布局示例"/)
+  assert.match(customLayout, /<meta data-ermaozi-managed-head name="theme-layout" content="custom">/)
+  assert.match(customLayout, /<meta name="description" content="此描述由 head 配置覆盖。">/)
+  assert.match(customLayout, /<meta name="keywords" content="custom-layout,head">/)
+  assert.match(customLayout, /<meta data-ermaozi-managed-head property="og:description" content="此描述由 head 配置覆盖。">/)
+  assert.doesNotMatch(customLayout, /<meta name="description" content="验证 Plume 自定义布局组件名的迁移能力。">/)
   assert.doesNotMatch(customLayout, /class="theme-plume vp-layout|<header class="vp-nav|<footer class="vp-footer/)
   assert.match(post, /https:\/\/example\.com\/blog\/getting-started\//)
+  assert.match(post, /<title>ermaozi 快速开始 \| 博客 \| ermaozi<\/title>/)
   assert.doesNotMatch(post, /data-comment-provider/)
   assert.doesNotMatch(post, /hreflang=/i)
   assert.doesNotMatch(post, /vp-navbar-translations/)
@@ -126,7 +132,8 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   await assert.rejects(access('dist/raw/blog/encrypted-example.md'))
   await assert.rejects(access('dist/blog/encrypted-example/index.md'))
   assert.match(docs, /vp-sidebar/)
-  assert.match(docs, /<meta property="og:type" content="article">/)
+  assert.match(docs, /<title>内容能力 \| 文档中心 \| ermaozi<\/title>/)
+  assert.match(docs, /<meta data-ermaozi-managed-head property="og:type" content="article">/)
   assert.match(docs, /"articleSection":"文档中心"/)
   assert.match(docs, /code-block-title/)
   assert.match(docs, /line-numbers-mode/)
@@ -280,6 +287,18 @@ test('profile-disabled blogs retain Plume local taxonomy navigation', async () =
   assert.match(styles, /@media \(min-width: 768px\) \{ \.vp-posts-nav\.local \{ display: flex !important; \} \}/)
 })
 
+test('global post metadata and cover disable switches reach initial and paginated lists', async () => {
+  const [content, list, endpoint] = await Promise.all([
+    readFile('theme/lib/content.ts', 'utf8'),
+    readFile('theme/components/PostList.astro', 'utf8'),
+    readFile('theme/pages/posts.json.ts', 'utf8'),
+  ])
+  assert.match(content, /global === false \? hiddenPostMeta : global \?\? \{\}/)
+  assert.match(list, /configuredPostCover !== false && post\.data\.cover/)
+  assert.match(list, /post\.cover && postCover !== false/)
+  assert.match(endpoint, /postMetaConfigOf\(siteConfig\.meta/)
+})
+
 test('page navigation uses one shared Plume-compatible partial navigation module without an SPA router', async () => {
   const [layout, sidebar, profile, navigation, header, styles] = await Promise.all([
     readFile('theme/layouts/BaseLayout.astro', 'utf8'),
@@ -307,6 +326,15 @@ test('page navigation uses one shared Plume-compatible partial navigation module
   assert.match(navigation, /\{ ermaoziPosts: true \}/)
   assert.match(navigation, /nextAside\.replaceWith\(persistedAside\)/)
   assert.match(navigation, /CustomEvent\('plume-content-updated'\)/)
+  assert.match(layout, /data-page-shell=\{pageShellSignature\}/)
+  assert.match(sidebar, /data-sidebar-signature=\{signature\}/)
+  assert.match(navigation, /nextDocument\.body\.dataset\.pageShell !== document\.body\.dataset\.pageShell/)
+  assert.match(navigation, /nextSidebar\?\.dataset\.sidebarSignature !== currentSidebar\?\.dataset\.sidebarSignature/)
+  assert.match(layout, /data-ermaozi-managed-head/)
+  assert.match(navigation, /const selector = headSelectors\.join\(','\)/)
+  assert.match(navigation, /clone instanceof HTMLScriptElement\) executeScript\(clone\)/)
+  assert.match(layout, /<title>\{fullTitle\}<\/title>/)
+  assert.doesNotMatch(layout, /<title set:html=/)
 })
 
 test('appearance keeps every frozen mode, configuration state, and print fallback', async () => {

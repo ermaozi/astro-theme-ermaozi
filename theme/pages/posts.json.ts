@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content'
 import type { APIRoute } from 'astro'
-import { categoryListOf, createTimeTextOf, postsFor, routeOf, tagClassOf, wordCountOf, type ContentEntry, type Lang, type PostMetaConfig } from '../lib/content'
+import { categoryListOf, createTimeTextOf, postMetaConfigOf, postsFor, routeOf, tagClassOf, wordCountOf, type ContentEntry, type Lang, type PostMetaConfig } from '../lib/content'
 import { encryptionPolicy } from '../lib/encrypt-policy'
 import { postExcerptOf } from '../lib/post-excerpt'
 import { siteConfig } from '../../site.config.mjs'
@@ -10,7 +10,7 @@ import { withBaseInHtml } from '../lib/client-utils'
 
 const records = (entries: ContentEntry[], lang: Lang, collection: ResolvedPostCollection, includeDrafts = false) => Promise.all(postsFor(entries, lang, collection, includeDrafts).map(async post => {
   const tagsTheme = (collection.tagsTheme ?? siteConfig.tagsTheme ?? 'colored') as 'colored' | 'gray' | 'brand'
-  const metaConfig = { ...(siteConfig.meta ?? {}), ...(collection.meta ?? {}) } as PostMetaConfig
+  const metaConfig = postMetaConfigOf(siteConfig.meta as PostMetaConfig | false | undefined, collection.meta)
   const words = wordCountOf(post)
   const encrypted = encryptionPolicy(post).pageEncrypted
   return {

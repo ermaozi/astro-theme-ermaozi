@@ -1,6 +1,8 @@
 ---
+import { createHash } from 'node:crypto'
 import type { ContentEntry, Lang } from '../lib/content'
 import { authorsOf, imagesOf, iso, modifiedTimeOf, siteLocale, structuredPageData } from '../lib/seo'
+import { hasRobotsDirective, headMetaContent, serializeHeadItems, type HeadItem } from '../lib/head'
 import { seoEnabled as automaticSeoEnabled } from '../lib/seo-options.mjs'
 import Footer from '../components/Footer.astro'
 import Header from '../components/Header.astro'
@@ -25,13 +27,14 @@ import { iconAssetUrls } from '../lib/iconify'
 import { homeConfigOf } from '../lib/home'
 import { socialLinksFor, twitterHandleOf } from '../lib/social'
 import { withBase } from '../lib/client-utils'
-import type { PhotoSwipeOptions, SeoHeadItem, SeoOptions, SeoPage } from '../config-types'
+import type { BulletinOptions, PhotoSwipeOptions, SeoHeadItem, SeoOptions, SeoPage } from '../config-types'
 import { photoSwipeLocaleOf } from '../lib/photo-swipe'
 import { isPageSearchable } from '../lib/search-options'
 
 interface Props {
   entry?: ContentEntry
   title: string
+  collectionTitle?: string
   description: string
   lang: Lang
   route: string
@@ -46,7 +49,7 @@ interface Props {
   bare?: boolean
 }
 
-const { entry, title, description, lang, route, translationRoute, languageLinks = [], pageClass = '', noindex = false, minimal404 = false, layout = 'doc', hasSidebar = false, bare = false } = Astro.props
+const { entry, title, collectionTitle, description, lang, route, translationRoute, languageLinks = [], pageClass = '', noindex = false, minimal404 = false, layout = 'doc', hasSidebar = false, bare = false } = Astro.props
 const isHome = layout === 'home' || entry?.data.home === true || entry?.data.pageLayout === 'home'
 const site = siteLocale(lang)
 const seoOptions = ((siteConfig.plugins as { seo?: false | SeoOptions })?.seo || {}) as SeoOptions
@@ -64,10 +67,16 @@ const automaticDescription = (source = '') => source
   .replace(/\s+/gu, ' ')
   .trim()
   .slice(0, 180)
-const seoDescription = description || (seoOptions.autoDescription === false ? '' : automaticDescription(entry?.body))
-const fullTitle = minimal404 ? site.siteName : `${title} | ${site.siteName}`
+const fullTitle = minimal404 ? site.siteName : [title, collectionTitle, site.siteName].filter(Boolean).join(' | ')
+const headItems = (entry?.data.head ?? []).filter(Array.isArray) as HeadItem[]
+const customDescription = headMetaContent(headItems, 'description')
+const customKeywords = headMetaContent(headItems, 'keywords')
+const customRobots = headMetaContent(headItems, 'robots')
+const pageNoindex = noindex || hasRobotsDirective(headItems, 'noindex')
+const seoDescription = customDescription || description || (seoOptions.autoDescription === false ? '' : automaticDescription(entry?.body))
+const customCanonical = String(headItems.find(([tag, attrs]) => tag.toLowerCase() === 'link' && String(attrs?.rel ?? '').toLowerCase() === 'canonical')?.[1]?.href ?? '')
 const canonicalOption = typeof seoOptions.canonical === 'function' ? seoOptions.canonical(pluginPage) : seoOptions.canonical
-const canonical = canonicalOption === null ? null : typeof canonicalOption === 'string' ? `${canonicalOption.replace(/\/$/u, '')}${route}` : seoUrl(route)
+const canonical = customCanonical || (canonicalOption === null ? null : typeof canonicalOption === 'string' ? `${canonicalOption.replace(/\/$/u, '')}${route}` : seoUrl(route))
 const multilingual = siteConfig.multilingual !== false
 const fallbackLanguage = translationRoute ? languageFromPath(translationRoute) : undefined
 const alternates = !multilingual ? [] : languageLinks.length ? languageLinks.filter(item => !item.fallback) : [{ lang, href: route }, ...(translationRoute && fallbackLanguage ? [{ lang: fallbackLanguage, href: translationRoute }] : [])]
@@ -122,17 +131,9 @@ const managedHead: SeoHeadItem[] = [
   ...jsonLd.map(data => ['script', { type: 'application/ld+json' }, JSON.stringify(data).replaceAll('<', '\\u003c')] as SeoHeadItem),
 ]
 seoOptions.customHead?.(managedHead, pluginPage, pluginApp)
-const escapeAttribute = (value: string) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;')
-const managedHeadHtml = managedHead.map(([tag, attrs, content = '']) => {
-  if (!/^[a-z][\w-]*$/u.test(tag) || Object.keys(attrs).some(name => !/^[\w:-]+$/u.test(name))) return ''
-  const attributes = Object.entries(attrs).map(([name, value]) => ` ${name}="${escapeAttribute(String(value))}"`).join('')
-  return ['meta', 'link', 'base'].includes(tag) ? `<${tag}${attributes}>` : `<${tag}${attributes}>${tag === 'script' || tag === 'style' ? content : escapeAttribute(content)}</${tag}>`
-}).join('')
+const managedHeadHtml = serializeHeadItems(managedHead as HeadItem[])
 const pageSearchable = isPageSearchable(siteConfig.search, pluginPage, entry?.data.search !== false)
 const defaultKeywords = site.keywords
-const head = entry?.data.head ?? []
-const headItems = head.filter(Array.isArray) as unknown as Array<[string, Record<string, string>, string?]>
-const customKeywords = headItems.find(([tag, attrs]) => tag === 'meta' && attrs.name === 'keywords')?.[1].content
 type WatermarkPage = { path: string, title: string, lang: Lang, filePathRelative?: string, frontmatter: Record<string, unknown> }
 type WatermarkConfig = boolean | {
   enabled?: boolean | ((page: WatermarkPage) => boolean)
@@ -154,10 +155,11 @@ const watermarkOptions = !watermarkSetting
       fullPage: typeof watermarkConfig === 'object' ? watermarkConfig.fullPage : true,
       ...(typeof watermarkSetting === 'object' ? watermarkSetting : {}),
     }
-const keywords = customKeywords ?? defaultKeywords
-const metaHead = headItems.filter(([tag, attrs]) => tag === 'meta' && !['description', 'keywords', 'robots'].includes(attrs.name ?? ''))
-const linkHead = headItems.filter(([tag, attrs]) => tag === 'link' && !['canonical', 'alternate', 'icon', 'preconnect', 'dns-prefetch'].includes(attrs.rel ?? ''))
-const scriptHead = headItems.filter(([tag]) => tag === 'script')
+const keywords = customKeywords || defaultKeywords
+const hasCustomIcon = headItems.some(([tag, attrs]) => tag.toLowerCase() === 'link' && String(attrs?.rel ?? '').toLowerCase() === 'icon')
+const userHeadHtml = serializeHeadItems(headItems.filter(([tag, attrs]) => tag.toLowerCase() !== 'title'
+  && !(tag.toLowerCase() === 'meta' && ['description', 'keywords', 'robots'].includes(String(attrs?.name ?? '').toLowerCase()))
+  && !(tag.toLowerCase() === 'link' && ['canonical', 'alternate'].includes(String(attrs?.rel ?? '').toLowerCase()))))
 const homeConfig = isHome && entry ? homeConfigOf(entry.data) : []
 const showSignDown = Boolean(entry && isHome
   && entry.data.signDown === true
@@ -195,6 +197,31 @@ const globalEncryption = globalCredentials.length
 const customContent = hasUserSlot('custom-content')
 const { password: _password, passwordHint: _passwordHint, ...publicFrontmatter } = entry?.data ?? {}
 const clientPageData = JSON.stringify({ page: { path: route, title, description }, frontmatter: publicFrontmatter }).replaceAll('<', '\\u003c')
+const navbarEnabled = entry?.data.navbar !== false
+const footerEnabled = entry?.data.footer !== false
+const backToTopEnabled = entry?.data.backToTop !== false && !shortHomeConfig
+const configuredBulletin = locale.bulletin === true ? {} : locale.bulletin as BulletinOptions | false | undefined
+const bulletinEnabled = Boolean(configuredBulletin
+  && configuredBulletin.enabled !== false
+  && entry?.data.bulletin !== false
+  && (typeof configuredBulletin.enablePage === 'function' ? configuredBulletin.enablePage({ path: route }) : configuredBulletin.enablePage ?? true))
+const routeBoundLayoutSlot = hasUserSlot('layout-top') || hasUserSlot('layout-bottom')
+const pageShellSignature = createHash('sha256').update(JSON.stringify({
+  layout,
+  bare,
+  pageClass,
+  navbarEnabled,
+  hasSidebar,
+  footerEnabled,
+  backToTopEnabled,
+  showSignDown,
+  watermarkOptions,
+  bulletinRoute: bulletinEnabled ? route : '',
+  headItems,
+  photoSwipeSelector,
+  photoSwipeConfig,
+  routeBoundLayoutSlot: routeBoundLayoutSlot ? route : '',
+})).digest('base64url').slice(0, 16)
 ---
 
 <!doctype html>
@@ -215,11 +242,12 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
       })()
     </script>
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title set:html={fullTitle}></title>
+    <title>{fullTitle}</title>
     <meta name="description" content={seoDescription} />
-    {noindex && <meta name="robots" content="noindex,follow" />}
+    {(customRobots || pageNoindex) && <meta data-ermaozi-managed-head name="robots" content={String(customRobots || 'noindex,follow')} />}
     <Fragment set:html={managedHeadHtml} />
-    <link rel="icon" href={withBase(siteConfig.logo, import.meta.env.BASE_URL)} />
+    <Fragment set:html={userHeadHtml} />
+    {!hasCustomIcon && <link rel="icon" href={withBase(siteConfig.logo, import.meta.env.BASE_URL)} />}
     {preconnectMedia && <link rel="preconnect" href={siteConfig.mediaOrigin} />}
     {iconAssets.filter(asset => asset.endsWith('.css')).map(asset => <link rel="stylesheet" href={asset} />)}
     {iconAssets.filter(asset => asset.endsWith('.js')).map(asset => <script is:inline src={asset} data-auto-replace-svg={markdownIcon.provider === 'fontawesome' ? 'nest' : undefined}></script>)}
@@ -227,11 +255,8 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
     <meta name="keywords" content={keywords} />
     {siteConfig.verification.yandex && <meta name="yandex-verification" content={siteConfig.verification.yandex} />}
     {siteConfig.verification.baidu && <meta name="baidu-site-verification" content={siteConfig.verification.baidu} />}
-    {metaHead.map(([, attrs]) => <meta {...attrs} />)}
-    {linkHead.map(([, attrs]) => <link {...attrs} />)}
-    {scriptHead.map(([, attrs, content]) => <script is:inline {...attrs} set:html={content ?? ''}></script>)}
   </head>
-  <body data-pagefind-ignore={noindex || !pageSearchable ? 'all' : undefined} data-pagefind-ready={String(import.meta.env.PROD)}>
+  <body data-page-shell={pageShellSignature} data-pagefind-ignore={pageNoindex || !pageSearchable ? 'all' : undefined} data-pagefind-ready={String(import.meta.env.PROD)}>
     {nprogressEnabled && <div id="nprogress" aria-hidden="true" hidden><div class="bar"></div></div>}
     <script is:inline id="ermaozi-page-data" type="application/json" set:html={clientPageData}></script>
     <div id="app">
@@ -242,13 +267,13 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
         {globalEncryption && <GlobalEncrypt payloads={globalEncryption} {lang} />}
         <div class="global-protected" data-global-protected hidden={Boolean(globalEncryption)}>
           <UserSlot name="layout-top" {entry} {lang} {route} {layout} />
-          {entry?.data.navbar !== false && <Header {lang} {translationRoute} {languageLinks} home={isHome} {hasSidebar} fixed={layout === 'posts'} />}
+          {navbarEnabled && <Header {lang} {translationRoute} {languageLinks} home={isHome} {hasSidebar} fixed={layout === 'posts'} />}
           <Watermark options={watermarkOptions} title={site.siteName} />
           {customContent ? <UserSlot name="custom-content" {entry} {lang} {route} {layout} /> : <slot />}
           {showSignDown && <SignDown {lang} />}
-          <Footer {lang} {hasSidebar} enabled={entry?.data.footer !== false} />
+          <Footer {lang} {hasSidebar} enabled={footerEnabled} />
           <UserSlot name="layout-bottom" {entry} {lang} {route} {layout} />
-          <BackToTop {lang} enabled={entry?.data.backToTop !== false && !shortHomeConfig} />
+          <BackToTop {lang} enabled={backToTopEnabled} />
           <Bulletin pageEnabled={entry?.data.bulletin !== false} {lang} {route} />
         </div>
       </div>}

@@ -1,4 +1,5 @@
 ---
+import { createHash } from 'node:crypto'
 import type { ContentEntry, Lang } from '../lib/content'
 import UserSlot from './UserSlot.astro'
 import SidebarItems from './SidebarItems.astro'
@@ -13,12 +14,13 @@ const en = !lang.startsWith('zh')
 const collection = configuredCollection ?? collectionForEntry(current.id, lang) as ResolvedDocCollection
 const items = sidebarGroups(sidebarItems ?? resolveSidebar(docs, lang, collection))
 const hideScrollbar = collection.sidebarScrollbar ?? localeOf(lang).sidebarScrollbar
+const signature = createHash('sha256').update(JSON.stringify(items)).digest('base64url').slice(0, 16)
 ---
 
 <LocalNav {lang} {toc} {locked} hasSidebar />
 
 <div class="vp-backdrop" hidden></div>
-<aside class:list={['vp-sidebar', { 'hide-scrollbar': hideScrollbar === false }]}>
+<aside class:list={['vp-sidebar', { 'hide-scrollbar': hideScrollbar === false }]} data-sidebar-signature={signature}>
   <div class="curtain"></div>
   <nav id="SidebarNav" class="nav" aria-labelledby="sidebar-aria-label" tabindex="-1">
     <span id="sidebar-aria-label" class="visually-hidden">{en ? 'Sidebar Navigation' : '侧边栏导航'}</span>

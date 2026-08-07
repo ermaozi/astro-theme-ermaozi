@@ -5,6 +5,10 @@ permalink: /custom-layout/
 pageLayout: Minimal
 translationOf: /custom-layout/
 createTime: 2026/08/07 21:36:50
+head:
+  - [meta, { name: theme-layout, content: custom }]
+  - [meta, { name: description, content: 此描述由 head 配置覆盖。 }]
+  - [meta, { name: keywords, content: 'custom-layout,head' }]
 ---
 
 # 自定义布局示例

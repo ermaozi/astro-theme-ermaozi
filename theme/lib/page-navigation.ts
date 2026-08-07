@@ -1,4 +1,5 @@
 const headSelectors = [
+  '[data-ermaozi-managed-head]',
   'link[rel="canonical"]',
   'link[rel="alternate"]',
   'meta[name="description"]',
@@ -10,10 +11,13 @@ const headSelectors = [
 
 const syncHead = (nextDocument: Document) => {
   document.title = nextDocument.title
-  for (const selector of headSelectors) {
-    document.head.querySelectorAll(selector).forEach(item => item.remove())
-    nextDocument.head.querySelectorAll(selector).forEach(item => document.head.append(item.cloneNode(true)))
-  }
+  const selector = headSelectors.join(',')
+  document.head.querySelectorAll(selector).forEach(item => item.remove())
+  nextDocument.head.querySelectorAll(selector).forEach(item => {
+    const clone = item.cloneNode(true)
+    document.head.append(clone)
+    if (clone instanceof HTMLScriptElement) executeScript(clone)
+  })
   const pageData = nextDocument.querySelector('#ermaozi-page-data')
   const currentPageData = document.querySelector('#ermaozi-page-data')
   if (pageData && currentPageData) currentPageData.textContent = pageData.textContent
@@ -28,12 +32,14 @@ const syncHead = (nextDocument: Document) => {
   })
 }
 
-const executeScripts = (root: ParentNode) => root.querySelectorAll('script').forEach(script => {
+const executeScript = (script: HTMLScriptElement) => {
   const replacement = document.createElement('script')
   for (const attribute of script.attributes) replacement.setAttribute(attribute.name, attribute.value)
   replacement.textContent = script.textContent
   script.replaceWith(replacement)
-})
+}
+
+const executeScripts = (root: ParentNode) => root.querySelectorAll('script').forEach(executeScript)
 
 const postsRoutes = () => {
   const posts = document.querySelector<HTMLElement>('[vp-posts]')
@@ -88,6 +94,10 @@ export function initPageNavigation() {
       const nextDocument = new DOMParser().parseFromString(await response.text(), 'text/html')
       const nextContent = nextDocument.querySelector<HTMLElement>('#VPContent')
       if (!nextContent || mode === 'docs' && !nextDocument.querySelector('.vp-sidebar') || mode === 'posts' && !nextContent.querySelector('[vp-posts]')) throw new Error(`Not a ${mode} page`)
+      const currentSidebar = document.querySelector<HTMLElement>('.vp-sidebar')
+      const nextSidebar = nextDocument.querySelector<HTMLElement>('.vp-sidebar')
+      if (nextDocument.body.dataset.pageShell !== document.body.dataset.pageShell
+        || mode === 'docs' && nextSidebar?.dataset.sidebarSignature !== currentSidebar?.dataset.sidebarSignature) return location.assign(url.href)
       const imported = document.importNode(nextContent, true)
       const persistedAside = mode === 'posts' ? currentContent.querySelector('.vp-posts-aside') : null
       const nextAside = mode === 'posts' ? imported.querySelector('.vp-posts-aside') : null

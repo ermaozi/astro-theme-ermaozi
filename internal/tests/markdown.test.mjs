@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict'
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 import { renderMarkdown } from '../../theme/lib/markdown.ts'
@@ -706,6 +708,23 @@ test('Obsidian links, embeds, callouts, and comments match the frozen syntax', a
   assert.match(html, /注释前  注释后/)
   assert.doesNotMatch(html, /块注释不会显示/)
   assert.match(html, /class="language-md"[\s\S]*保留在代码块[\s\S]*不转换[\s\S]*不移除/)
+})
+
+test('Obsidian images resolve from the vault root before the current directory', async () => {
+  const original = process.cwd()
+  const fixture = mkdtempSync(path.join(tmpdir(), 'ermaozi-obsidian-'))
+  const sourcePath = path.join(fixture, 'content/docs/page.md')
+  try {
+    mkdirSync(path.join(fixture, 'content/images'), { recursive: true })
+    mkdirSync(path.dirname(sourcePath), { recursive: true })
+    writeFileSync(path.join(fixture, 'content/images/root.png'), '')
+    writeFileSync(sourcePath, '# Page')
+    process.chdir(fixture)
+    assert.match(await renderMarkdown('![[images/root.png]]', { sourcePath }), /src="\.\.\/images\/root\.png"/)
+  } finally {
+    process.chdir(original)
+    rmSync(fixture, { recursive: true, force: true })
+  }
 })
 
 test('Obsidian callouts keep the frozen alias, locale, and custom renderer matrices', async () => {

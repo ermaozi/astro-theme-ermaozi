@@ -106,7 +106,7 @@ navbar: [
 
 `siteConfig.categoriesExpand` 控制分类树默认展开深度，接受数字或 `'deep'`。分类目录可使用 `01.名称` 形式控制顺序；数字前缀不会显示，并且任意层级都会保留在分类页和文章面包屑中。
 
-`siteConfig.tagsTheme` 可设为 `'colored'`、`'gray'` 或 `'brand'`；彩色模式使用 Plume 的完整 18 色预设。`siteConfig.meta` 可分别开关 `tags`、`readingTime`、`wordCount`、`createTime`，其中创建时间支持 `'short'` 和 `'long'`。单页可用 `readingTime: false` 隐藏阅读统计。
+`siteConfig.tagsTheme` 可设为 `'colored'`、`'gray'` 或 `'brand'`；彩色模式使用 Plume 的完整 18 色预设。`siteConfig.meta` 可分别开关 `tags`、`readingTime`、`wordCount`、`createTime`，其中创建时间支持 `'short'` 和 `'long'`；设为 `false` 会全部隐藏，集合仍可单独重新开启字段。`postCover: false` 会关闭列表封面。单页可用 `readingTime: false` 隐藏阅读统计。
 
 `siteConfig.readingTime` 与 Plume 的阅读统计插件一致，支持 `false`、`wordPerMinute`，以及按 locale 路径配置的 `locales`。每个 locale 可覆盖包含 `$word` 的 `word`、包含 `$time` 的 `time` 和 `less1Minute`；未配置时使用 Plume 内置的中、英、繁中、德、法、俄、日、韩文案。
 
@@ -140,6 +140,8 @@ Doc 集合支持 `sidebar: 'auto'`，会按目录层级和数字前缀递归生�
 Plume 旧式 `plugins.copyCode`、`plugins.shiki`、`plugins.readingTime`、`plugins.comment`、`plugins.watermark`、`plugins.replaceAssets`、`plugins.llmstxt`、`plugins.markdownPower`、`plugins.markdownChart`、`plugins.markdownImage`、`plugins.markdownInclude`、`plugins.markdownMath`、`plugins.search` 和 `plugins.docsearch` 均会回退到对应的新式扁平配置；新旧同时存在时以顶层或 `markdown` 配置为准。`markdown.image` 完整支持 Plume 的 `figure`、`lazyload`、`mark`、`size`、`legacySize` 和 `obsidianSize` 选项；`codeHighlighter: false` 会回退到普通代码块。`plugins.markdownPower: false` 只关闭该增强组，图片、数学、包含、提示与图表仍由各自开关控制。
 
 `plugins.seo` 对象支持 Plume 的 `hostname`、`author`、`restrictions`、`autoDescription`、`fallBackImage`、`twitterID`、`isArticle`、`ogp`、`jsonLd`、`customHead` 和 `canonical`；设为 `false` 会关闭自动 Open Graph、Twitter Card 与 JSON-LD。Twitter/X 账号优先从 `social` 链接识别，`twitterID` 只作为兼容回退。`plugins.sitemap` 支持 `hostname`、`extraUrls`、`excludePaths`、`sitemapFilename`、`sitemapXSLFilename`、`sitemapXSLTemplate`、`changefreq`、`modifyTimeGetter`、`devServer`、`devHostname` 和 `xmlNameSpace`；设为 `false` 会删除 sitemap 输出及 robots.txt 中的地址。
+
+页面 frontmatter 的 `head` 接受 Plume/VuePress 风格的 `[tag, attributes, content?]` 数组，可添加 `meta`、`link`、`style`、`script` 或其他合法 head 标签。`description`、`keywords`、`robots` 和 `canonical` 会覆盖主题生成值；自定义 `robots: noindex` 也会同时排除 Pagefind 与 sitemap。无刷新导航会同步 JSON-LD 和主题管理的 head 节点；目标页改变外壳、侧栏或自定义 head 时自动回退为完整导航，避免沿用上一页状态。`script` 与 `style` 内容按原文输出，只能填写完全可信的内容。
 
 本地搜索使用 Pagefind；`plugins.search.isSearchable(page)` 会控制页面是否进入索引，`disableQueryPersistence` 和 `locales` 也会生效。Plume 原插件的 `miniSearch` 分词器选项没有 Pagefind 等价能力，因此只为配置迁移保留类型，不会改变 Pagefind 的分词算法。Plume 顶层的 `cache` 和 `configFile` 分别控制 VuePress 编译缓存与配置文件加载；Astro 没有对应运行阶段，这两个字段同样只保留迁移类型，配置后不会改变构建行为，迁移时应删除。
 

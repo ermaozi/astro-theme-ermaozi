@@ -13,6 +13,12 @@ export interface PostMetaConfig {
   createTime?: 'short' | 'long' | boolean
 }
 
+const hiddenPostMeta = { tags: false, readingTime: false, wordCount: false, createTime: false } satisfies PostMetaConfig
+export const postMetaConfigOf = (global: PostMetaConfig | false | undefined, collection?: PostMetaConfig): PostMetaConfig => ({
+  ...(global === false ? hiddenPostMeta : global ?? {}),
+  ...(collection ?? {}),
+})
+
 export const routeOf = (entry: ContentEntry) => {
   if (entry.data.permalink) return entry.data.permalink
   const path = entry.id.replace(/(^|\/)\d+\./g, '$1')

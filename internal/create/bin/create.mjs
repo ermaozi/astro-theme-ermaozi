@@ -37,7 +37,7 @@ const rewriteMarkdownRoutes = async (root, language) => {
             .replace(/^(\s*translationOf:\s*)\/en\//m, '$1/'))
             .replace(/\]\(\/(?!zh\/|img\/|media\/|files\/|snippets\/)/g, '](/zh/')
             .replace(/(\bhref=)(['"])\/(?!zh\/|img\/|media\/|files\/|snippets\/)/g, '$1$2/zh/')
-            .replace(/(!?\[\[)(?!\/|TOC\]\]|zh\/)/g, '$1zh/')
+            .replace(/(!?\[\[)(?![/#^]|TOC\]\]|zh\/)/g, '$1zh/')
       if (rewritten !== source) await writeFile(filepath, rewritten)
     }
   }
@@ -109,6 +109,7 @@ let siteDescription = '一个支持全文搜索、深色模式和增强 Markdown
 let multilingual = args.includes('--multilingual')
 const requestedLanguage = args.find(arg => arg.startsWith('--lang='))?.slice('--lang='.length) || 'zh-CN'
 if (requestedLanguage !== 'zh-CN' && requestedLanguage !== 'en-US') throw new Error(`不支持的默认语言：${requestedLanguage}`)
+if (requestedLanguage === 'en-US') siteDescription = 'An Astro static blog theme with bilingual content, full-text search, dark mode, and enhanced Markdown.'
 let defaultLanguage = /** @type {'zh-CN' | 'en-US'} */ (requestedLanguage)
 let deployment = 'custom'
 let firebaseProject = ''

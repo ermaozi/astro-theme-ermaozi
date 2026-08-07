@@ -7,6 +7,7 @@ import { postCollectionsFor } from '../lib/collections'
 import { siteConfig } from '../../site.config.mjs'
 import { withBase } from '../lib/client-utils'
 import { sitemapOptions, sitemapOutputNames } from '../lib/sitemap-options.mjs'
+import { hasRobotsDirective, type HeadItem } from '../lib/head'
 import type { SitemapOptions, SitemapPage } from '../config-types'
 
 const xml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
@@ -33,7 +34,7 @@ export const GET: APIRoute = async () => {
   const excludePaths = options.excludePaths ?? ['/404.html']
   const changefreq = options.changefreq ?? 'daily'
   const entries = (await getCollection('content')).filter(entry => {
-    const noindex = (entry.data.head ?? []).some((item: any) => Array.isArray(item) && item[0] === 'meta' && item[1]?.name === 'robots' && String(item[1]?.content ?? '').split(',').some(part => part.trim() === 'noindex'))
+    const noindex = hasRobotsDirective((entry.data.head ?? []).filter(Array.isArray) as HeadItem[], 'noindex')
     return entry.data.sitemap !== false && !entry.data.draft && !noindex && !excludePaths.includes(routeOf(entry))
   })
   const urls = entries.map(entry => {

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { docsFor, postsFor, routeOf, showsStickyBadge } from '../../theme/lib/content.ts'
+import { docsFor, postMetaConfigOf, postsFor, routeOf, showsStickyBadge } from '../../theme/lib/content.ts'
 import { postExcerptOf } from '../../theme/lib/post-excerpt.ts'
 import { flatSidebarLinks } from '../../theme/lib/sidebar.ts'
 import { resolvePageNav } from '../../theme/lib/page-nav.ts'
@@ -9,6 +9,12 @@ const entry = (id, draft = false, createTime = '2026-08-05', data = {}) => ({
   id,
   body: '',
   data: { title: id, description: '', tags: [], draft, createTime, ...data },
+})
+
+test('global meta false hides every item while a collection can re-enable one field', () => {
+  assert.deepEqual(postMetaConfigOf(false), { tags: false, readingTime: false, wordCount: false, createTime: false })
+  assert.deepEqual(postMetaConfigOf(false, { tags: true }), { tags: true, readingTime: false, wordCount: false, createTime: false })
+  assert.deepEqual(postMetaConfigOf({ createTime: 'long' }, { wordCount: false }), { createTime: 'long', wordCount: false })
 })
 
 test('drafts stay out of production collections and remain available in development', () => {

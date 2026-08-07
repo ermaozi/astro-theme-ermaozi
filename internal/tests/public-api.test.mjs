@@ -248,7 +248,8 @@ test('home background components preserve Plume mask, gradient, attachment, and 
   assert.match(layout, /singleHomeSection = isHome && homeConfig\.length === 1/)
   assert.match(layout, /\(entry\.data\.config\?\.length \?\? 0\) > 1/)
   assert.match(layout, /'footer-no-border': singleHomeSection/)
-  assert.match(layout, /enabled=\{entry\?\.data\.backToTop !== false && !shortHomeConfig\}/)
+  assert.match(layout, /const backToTopEnabled = entry\?\.data\.backToTop !== false && !shortHomeConfig/)
+  assert.match(layout, /<BackToTop \{lang\} enabled=\{backToTopEnabled\} \/>/)
 })
 
 test('custom home normalization preserves explicit, legacy banner, and default Hero branches', () => {

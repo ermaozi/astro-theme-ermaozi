@@ -20,7 +20,7 @@ import Comments from '../components/vue/Comments.vue'
 import UserSlot from '../components/UserSlot.astro'
 import UserLayout from '../components/UserLayout.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { categoryListOf, createTimeTextOf, docsFor, findTranslation, isDoc, isPost, langOf, postsFor, publishedDateOf, routeOf, tagClassOf, updatedDateOf, wordCountOf, type Lang, type PostMetaConfig } from '../lib/content'
+import { categoryListOf, createTimeTextOf, docsFor, findTranslation, isDoc, isPost, langOf, postMetaConfigOf, postsFor, publishedDateOf, routeOf, tagClassOf, updatedDateOf, wordCountOf, type Lang, type PostMetaConfig } from '../lib/content'
 import { renderMarkdown } from '../lib/markdown'
 import { encryptContent } from '../lib/encryption'
 import { encryptionPolicy } from '../lib/encrypt-policy'
@@ -136,7 +136,7 @@ const asideEnabled = Boolean(entry && !pageEncryption && asideSetting !== false 
 const leftAside = asideEnabled && asideSetting === 'left'
 const articleWords = entry ? wordCountOf(entry) : 0
 const readingTime = readingTimeOf(lang, articleWords)
-const metaConfig = { ...(siteConfig.meta ?? {}), ...(postCollection?.meta ?? docCollection?.meta ?? {}) } as PostMetaConfig
+const metaConfig = postMetaConfigOf(siteConfig.meta as PostMetaConfig | false | undefined, postCollection?.meta ?? docCollection?.meta)
 const tagsTheme = (postCollection?.tagsTheme ?? docCollection?.tagsTheme ?? siteConfig.tagsTheme ?? 'colored') as 'colored' | 'gray' | 'brand'
 const showReadingMeta = Boolean(entry && readingTime && entry.data.readingTime !== false && (metaConfig.readingTime !== false || metaConfig.wordCount !== false))
 const pageTags = entry && metaConfig.tags !== false ? entry.data.tags.slice(0, 4) : []
@@ -272,6 +272,7 @@ const showDocFooter = Boolean(previous || next || editUrl || footerUpdated || (c
 <BaseLayout
   {entry}
   {title}
+  collectionTitle={entryCollection?.title}
   {description}
   {lang}
   {route}

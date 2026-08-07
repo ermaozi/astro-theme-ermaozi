@@ -1,6 +1,6 @@
 ---
 import type { ContentEntry, Lang, PostMetaConfig } from '../lib/content'
-import { categoryListOf, createTimeTextOf, routeOf, showsStickyBadge, tagClassOf, wordCountOf } from '../lib/content'
+import { categoryListOf, createTimeTextOf, postMetaConfigOf, routeOf, showsStickyBadge, tagClassOf, wordCountOf } from '../lib/content'
 import { encryptionPolicy } from '../lib/encrypt-policy'
 import { postExcerptOf } from '../lib/post-excerpt'
 import ArticleLikeButton from './vue/stats/ArticleLikeButton.vue'
@@ -29,7 +29,7 @@ const limit = requestedLimit ?? (pagination === false
     : pagination?.perPage ?? 15)
 const en = !lang.startsWith('zh')
 const tagsTheme = (collection?.tagsTheme ?? siteConfig.tagsTheme ?? 'colored') as 'colored' | 'gray' | 'brand'
-const metaConfig = { ...(siteConfig.meta ?? {}), ...(collection?.meta ?? {}) } as PostMetaConfig
+const metaConfig = postMetaConfigOf(siteConfig.meta as PostMetaConfig | false | undefined, collection?.meta)
 const createTimeEnabled = localeOf(lang).createTime !== false
 const configuredPostCover = collection?.postCover ?? siteConfig.postCover
 const pages = Math.ceil(posts.length / limit)
@@ -38,7 +38,7 @@ const visiblePostData = await Promise.all(visiblePosts.map(async (post, index) =
   const encrypted = encryptionPolicy(post).pageEncrypted
   const excerpt = encrypted ? '' : withBaseInHtml(await postExcerptOf(post), import.meta.env.BASE_URL)
   const globalCover = typeof configuredPostCover === 'string' ? { layout: configuredPostCover } : configuredPostCover || {}
-  const cover = post.data.cover ? { ...globalCover, ...post.data.coverStyle } : undefined
+  const cover = configuredPostCover !== false && post.data.cover ? { ...globalCover, ...post.data.coverStyle } : undefined
   const baseLayout = cover?.layout ?? 'right'
   const odd = (index + 1) % 2 === 1
   const layout = baseLayout === 'odd-left' ? (odd ? 'left' : 'right') : baseLayout === 'odd-right' ? (odd ? 'right' : 'left') : baseLayout
@@ -191,7 +191,7 @@ const postsEndpoint = withBase('/posts.json', base)
     const createPost = (post, index) => {
       const item = createElement('div', `vp-post-item${post.draft ? ' draft' : ''}${postListTransition ? '' : ' no-post-transition'}`)
       item.style.setProperty('--vp-post-delay', `${index * .025}s`)
-      if (post.cover) {
+      if (post.cover && postCover !== false) {
         const globalCover = typeof postCover === 'string' ? { layout: postCover } : postCover
         const options = { layout: 'right', ratio: '4/3', ...globalCover, ...post.coverStyle }
         const odd = (index + 1) % 2 === 1

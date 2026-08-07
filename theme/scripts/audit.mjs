@@ -57,7 +57,8 @@ const markerHits = []
 for (const [route, html] of pages) {
   if (!/<title>[^<]+<\/title>/i.test(html)) seoErrors.push({ route, field: 'title' })
   if (!/<meta\s+name="description"\s+content="[^"]+"/i.test(html)) seoErrors.push({ route, field: 'description' })
-  const canonical = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i)?.[1]
+  const canonicalTag = [...html.matchAll(/<link\b[^>]*>/gi)].find(([tag]) => /\brel="canonical"/i.test(tag))?.[0]
+  const canonical = canonicalTag?.match(/\bhref="([^"]+)"/i)?.[1]
   if (canonical !== new URL(withBase(route, base), siteOrigin).toString()) seoErrors.push({ route, field: 'canonical' })
   const rendered = html.replace(/<(pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi, '')
   for (const marker of rawMarkers) if (rendered.includes(marker)) markerHits.push({ route, marker })

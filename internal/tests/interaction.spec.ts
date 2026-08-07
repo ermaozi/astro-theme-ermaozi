@@ -236,6 +236,7 @@ test('page transitions keep Plume timing without whole-page snapshots', async ({
 
 test('document sidebar navigation keeps the shell mounted', async ({ page }) => {
   await page.goto('/docs/guide/configuration/', { waitUntil: 'domcontentloaded' })
+  await expect(page).toHaveTitle('站点配置 | 文档中心 | ermaozi')
   const documentRequests: string[] = []
   let resumeRequest: (() => void) | undefined
   await page.route('**/docs/guide/api/', async route => {
@@ -262,6 +263,11 @@ test('document sidebar navigation keeps the shell mounted', async ({ page }) => 
   await expect(page).toHaveURL(/\/docs\/guide\/api\/$/)
   await expect(progress).toHaveAttribute('hidden', '')
   await expect(page.locator('h1.page-title')).toHaveText('公共 API 与样式定制')
+  await expect(page).toHaveTitle('公共 API 与样式定制 | 文档中心 | ermaozi')
+  const articleJsonLd = page.locator('head script[type="application/ld+json"]').first()
+  const jsonLd = await articleJsonLd.textContent()
+  expect(jsonLd).toContain('公共 API 与样式定制')
+  expect(jsonLd).not.toContain('站点配置')
   await expect(page.locator('.vp-sidebar a[href="/docs/guide/api/"]')).toHaveAttribute('aria-current', 'page')
   expect(await page.evaluate(() => (window as any).__ERMAOZI_HEADER__ === document.querySelector('.vp-navbar'))).toBe(true)
   expect(await page.evaluate(() => (window as any).__ERMAOZI_SIDEBAR__ === document.querySelector('.vp-sidebar'))).toBe(true)
@@ -276,6 +282,7 @@ test('document sidebar navigation keeps the shell mounted', async ({ page }) => 
   await page.locator('.vp-sidebar a[href="/docs/guide/content/"]').click()
   await expect(page).toHaveURL(/\/docs\/guide\/content\/$/)
   await expect(page.locator('h1.page-title')).toHaveText('内容能力')
+  await expect(page).toHaveTitle('内容能力 | 文档中心 | ermaozi')
   const collapsedCode = page.locator('.has-collapsed-lines').first()
   await collapsedCode.locator('.collapsed-lines').click()
   await expect(collapsedCode).not.toHaveClass(/(?:^|\s)collapsed(?:\s|$)/)
@@ -284,7 +291,27 @@ test('document sidebar navigation keeps the shell mounted', async ({ page }) => 
   await page.goBack()
   await expect(page).toHaveURL(/\/docs\/guide\/api\/$/)
   await expect(page.locator('h1.page-title')).toHaveText('公共 API 与样式定制')
+  await expect(page).toHaveTitle('公共 API 与样式定制 | 文档中心 | ermaozi')
   expect(await page.evaluate(() => (window as any).__ERMAOZI_SIDEBAR__ === document.querySelector('.vp-sidebar'))).toBe(true)
+})
+
+test('partial navigation falls back to a full document when the target shell changes', async ({ page }) => {
+  await page.goto('/docs/guide/configuration/', { waitUntil: 'domcontentloaded' })
+  let documentRequests = 0
+  await page.route('**/docs/guide/api/', async route => {
+    if (route.request().resourceType() === 'fetch') {
+      const response = await route.fetch()
+      const body = (await response.text()).replace(/data-page-shell="[^"]+"/, 'data-page-shell="different-shell"')
+      await route.fulfill({ response, body })
+      return
+    }
+    if (route.request().resourceType() === 'document') documentRequests += 1
+    await route.continue()
+  })
+  await page.locator('.vp-sidebar a[href="/docs/guide/api/"]').click()
+  await expect(page).toHaveURL(/\/docs\/guide\/api\/$/)
+  await expect(page).toHaveTitle('公共 API 与样式定制 | 文档中心 | ermaozi')
+  expect(documentRequests).toBe(1)
 })
 
 test('all Plume hero effect canvases mount and survive theme changes', async ({ page }) => {

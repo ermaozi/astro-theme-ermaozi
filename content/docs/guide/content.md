@@ -116,6 +116,8 @@ Markdown 文件链接会自动解析到最终永久链接，例如[站点配置]
 
 Wiki 链接、内容嵌入、Callout 与 `%%` 注释默认开启，并可在 `site.config.mjs` 的 `markdown.obsidian` 中分别关闭。[[docs/guide/configuration|查看站点配置]]。
 
+当前页标题也可以直接链接：[[#Obsidian 兼容]]。
+
 > [!bug] **自定义 Callout 标题**
 > Obsidian 类型和别名会映射到同一套 Plume 提示样式。
 

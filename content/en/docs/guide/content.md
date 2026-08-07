@@ -117,6 +117,8 @@ This content can be expanded.
 
 Wiki links, embeds, callouts, and `%%` comments are enabled by default and can be toggled separately through `markdown.obsidian` in `site.config.mjs`. [[en/docs/guide/configuration|View site configuration]].
 
+Headings on the current page can be linked directly: [[#Obsidian compatibility]].
+
 > [!bug] **Custom callout title**
 > Obsidian types and aliases map to the same Plume hint styles.
 

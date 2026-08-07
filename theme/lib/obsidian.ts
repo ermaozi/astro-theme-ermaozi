@@ -157,8 +157,12 @@ const linkText = (page: Page | undefined, filename: string, headings: string[], 
 const resolveAsset = (filename: string, sourcePath = '') => {
   if (/^(?:https?:)?\/\//i.test(filename) || filename.startsWith('/') || filename.startsWith('.')) return filename
   if (sourcePath) {
-    const local = path.resolve(path.dirname(sourcePath), filename)
-    if (existsSync(local)) return `./${path.relative(path.dirname(sourcePath), local).replaceAll(path.sep, '/')}`
+    const directory = path.dirname(sourcePath)
+    const actual = [path.resolve(process.cwd(), 'content', filename), path.resolve(directory, filename)].find(existsSync)
+    if (actual) {
+      const relative = path.relative(directory, actual).replaceAll(path.sep, '/')
+      return relative.startsWith('.') ? relative : `./${relative}`
+    }
   }
   return `/${filename}`
 }
