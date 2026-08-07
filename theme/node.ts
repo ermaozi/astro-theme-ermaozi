@@ -11,12 +11,15 @@ export {
 export { defineSiteConfig } from './config.mjs'
 export type {
   BaseCollection,
+  CategoryTreeItem,
   Collection,
   DocCollection,
+  PostCoverLayout,
+  PostCoverOptions,
   PostCollection,
   SidebarItem,
 } from './lib/collections.ts'
-export type { LocaleConfig, NavigationItem, SiteConfig, SocialLink, ThemeIcon } from './config-types.ts'
+export type { AppearanceTransition, AutoFrontmatterContext, AutoFrontmatterData, AutoFrontmatterOptions, BulletinOptions, ChangelogOptions, CodeHighlighterOptions, Contributor, ContributorsOptions, LastUpdatedOptions, LegacyBlogOptions, LegacyNotesOptions, LocaleConfig, LocaleTextOptions, MarkdownImageOptions, MarkdownIncludeOptions, MarkdownMathOptions, MarkdownOptions, NavigationItem, ProfileOptions, SiteConfig, SocialLink, ThemeIcon, TransitionOptions } from './config-types.ts'
 
 export const plumeTheme = (config: Parameters<typeof defineThemeConfig>[0] = { locales: {} }) => defineThemeConfig(config)
 export default plumeTheme

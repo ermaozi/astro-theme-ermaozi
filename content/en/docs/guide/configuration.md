@@ -126,6 +126,8 @@ locales: {
 
 Post collections support `include`, `exclude`, `pagination`, `postList`, `link`, `linkPrefix`, independent tag/category/archive switches, paths and labels, plus collection-level `tagsTheme`, `meta`, `postCover`, `profile`, `social`, `categoriesExpand`, and `categoriesTransform`. Generated pages, breadcrumbs, pagination JSON, sitemap entries, and language switching use the resolved collection routes.
 
+When migrating an older Plume site, deprecated top-level `blog`, `article`, and `notes` settings plus locale-level `notes` are converted into collections at startup; a non-empty `collections` array at the target level takes precedence. Legacy `profile.url` is also normalized to `profile.avatar` globally, per locale, and in Post collections. These aliases are migration aids only; new configuration should use `collections` and `profile.avatar` directly.
+
 Doc collections support recursive directory and numeric-prefix navigation through `sidebar: 'auto'`; `sidebarCollapsed` controls initial group state and `sidebarScrollbar` controls the scrollbar. A manual array accepts strings or `{ text, link, prefix, icon, badge, collapsed, items }`, including scoped `items: 'auto'` and `link: '---'` separators.
 
 Plume's global multi-sidebar form is also supported: `sidebar: { '/docs/': 'auto', '/guide/': [...] }`, with longest-prefix matching. A value may also use `{ items, prefix }`; page frontmatter can force a configured sidebar with `sidebar: '/guide/'` or disable it with `sidebar: false`. Sidebar items retain the legacy `dir` alias plus `target` and `rel`.

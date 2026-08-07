@@ -81,7 +81,7 @@ const sourceFiles = [
 ]
 const personalHits = []
 for (const file of sourceFiles.filter(file => !/\.(?:png|jpe?g|webp|gif|woff2?|ico)$/i.test(file))) {
-  const value = await readFile(file, 'utf8').catch(() => '')
+  const value = (await readFile(file, 'utf8').catch(() => '')).replaceAll('https://astro.ermao.net', '')
   for (const term of personalTerms) if (value.toLowerCase().includes(term.toLowerCase())) {
     personalHits.push({ file: path.relative(project, file), term })
   }

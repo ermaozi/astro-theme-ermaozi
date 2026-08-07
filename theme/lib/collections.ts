@@ -1,8 +1,12 @@
 import { matchesGlob } from 'node:path'
 import { siteConfig } from '../../site.config.mjs'
+import type { AutoFrontmatterOptions, ProfileOptions, SocialLink } from '../config-types.ts'
 import { localeOf, localePrefix, type Lang } from './locales.ts'
 
 export type SidebarBadge = string | { text?: string, type?: string, color?: string, bgColor?: string, borderColor?: string }
+export type PostCoverLayout = 'left' | 'right' | 'odd-left' | 'odd-right' | 'top'
+export type PostCoverOptions = PostCoverLayout | { layout?: PostCoverLayout, ratio?: number | `${number}:${number}` | `${number}/${number}`, width?: number, compact?: boolean }
+export type CategoryTreeItem = { type: 'post', title: string, path: string } | { type: 'category', title: string, id: string, sort: number, items: CategoryTreeItem[] }
 
 export type SidebarItem = string | {
   text?: string
@@ -23,8 +27,8 @@ export type BaseCollection = {
   title?: string
   linkPrefix?: string
   tagsTheme?: 'colored' | 'gray' | 'brand'
-  autoFrontmatter?: unknown
-  meta?: Record<string, unknown>
+  autoFrontmatter?: false | AutoFrontmatterOptions
+  meta?: { tags?: boolean, readingTime?: boolean, wordCount?: boolean, createTime?: boolean | 'short' | 'long' }
 }
 
 export type PostCollection = BaseCollection & {
@@ -44,10 +48,10 @@ export type PostCollection = BaseCollection & {
   categoriesLink?: string
   categoriesText?: string
   categoriesExpand?: number | 'deep'
-  categoriesTransform?: (categories: any[]) => any[]
-  postCover?: unknown
-  profile?: unknown
-  social?: unknown
+  categoriesTransform?: (categories: CategoryTreeItem[]) => CategoryTreeItem[]
+  postCover?: PostCoverOptions
+  profile?: ProfileOptions | false
+  social?: SocialLink[] | false
 }
 
 export type DocCollection = BaseCollection & {
@@ -129,7 +133,7 @@ const included = (relative: string, collection: Collection) => {
 export function collectionForPath(id: string, lang: Lang, config: any = siteConfig): ResolvedCollection | undefined {
   const relative = relativeContentId(id, lang)
   return collectionsFor(lang, config)
-    .filter(collection => relative === collection.dir || relative.startsWith(`${collection.dir}/`))
+    .filter(collection => !collection.dir || relative === collection.dir || relative.startsWith(`${collection.dir}/`))
     .sort((left, right) => right.dir.length - left.dir.length)[0]
 }
 

@@ -4,7 +4,7 @@
  * Adds editor completion, safe defaults, and early validation.
  * @template {import('./config-types.ts').SiteConfig} T
  * @param {T} config
- * @returns {T & import('./config-types.ts').SiteConfigDefaults}
+ * @returns {T & import('./config-types.ts').SiteConfig & import('./config-types.ts').SiteConfigDefaults}
  */
 export const defineSiteConfig = config => {
   const resolved = /** @type {import('./config-types.ts').SiteConfig} */ (config)
@@ -15,6 +15,50 @@ export const defineSiteConfig = config => {
   resolved.social ??= []
   resolved.navbarSocialInclude ??= []
   resolved.profile ??= /** @type {{ avatar?: import('./config-types.ts').ProfileOptions | false }} */ (resolved).avatar
+  /** @param {import('./config-types.ts').ProfileOptions | false | undefined} profile */
+  const normalizeProfile = (profile) => { if (profile) profile.avatar ??= /** @type {{ url?: string }} */ (profile).url }
+  normalizeProfile(resolved.profile)
+  const legacy = /** @type {{ blog?: import('./config-types.ts').LegacyBlogOptions, notes?: import('./config-types.ts').LegacyNotesOptions, article?: string }} */ (resolved)
+  /** @param {...string} parts */
+  const legacyPath = (...parts) => parts.join('/').replaceAll('\\', '/').replace(/\/+/gu, '/').replace(/^\/|\/$/gu, '')
+  /** @param {import('./config-types.ts').SiteConfig | import('./config-types.ts').LocaleConfig} target */
+  const convertLegacyCollections = (target) => {
+    const targetLegacy = /** @type {{ notes?: import('./config-types.ts').LegacyNotesOptions }} */ (target)
+    const notes = targetLegacy.notes ?? legacy.notes
+    if (!legacy.blog && !notes) return
+    if (target.collections?.length) return
+    const collections = (target.collections ??= [])
+    const notesDir = notes?.dir ?? ''
+    if (legacy.blog) collections.push({
+      type: 'post',
+      dir: '/',
+      linkPrefix: legacy.article,
+      ...legacy.blog,
+      exclude: [
+        ...Array.isArray(legacy.blog.exclude) ? legacy.blog.exclude : legacy.blog.exclude ? [legacy.blog.exclude] : [],
+        ...(notes?.notes ?? []).map(note => legacyPath(notesDir, note.dir)),
+      ],
+    })
+    if (notes) for (const note of notes.notes) collections.push({
+      type: 'doc',
+      dir: legacyPath(notes.dir, note.dir),
+      linkPrefix: `/${legacyPath(notes.link, note.link)}/`,
+      sidebar: note.sidebar,
+      sidebarScrollbar: target.sidebarScrollbar ?? resolved.sidebarScrollbar,
+    })
+  }
+  convertLegacyCollections(resolved)
+  for (const locale of Object.values(resolved.locales ?? {})) {
+    locale.profile ??= /** @type {{ avatar?: import('./config-types.ts').ProfileOptions | false }} */ (locale).avatar
+    normalizeProfile(locale.profile)
+    convertLegacyCollections(locale)
+    delete /** @type {{ notes?: import('./config-types.ts').LegacyNotesOptions }} */ (locale).notes
+  }
+  for (const collection of [resolved.collections ?? [], ...Object.values(resolved.locales ?? {}).map(locale => locale.collections ?? [])].flat()) {
+    if (collection.type === 'post') normalizeProfile(collection.profile)
+  }
+  delete legacy.blog
+  delete legacy.notes
   resolved.plugins ??= {}
   const plugins = resolved.plugins
   resolved.copyCode ??= plugins.copyCode
@@ -73,7 +117,6 @@ export const defineSiteConfig = config => {
   if (!locales.length) invalid('locales 至少需要一种语言')
   const homes = new Set()
   for (const [lang, locale] of locales) {
-    locale.profile ??= /** @type {{ avatar?: import('./config-types.ts').ProfileOptions | false }} */ (locale).avatar
     if (!locale?.siteName?.trim()) invalid(`locales.${lang}.siteName 不能为空`)
     if (!/^\/(?:[^/?#\\]+\/)*$/u.test(locale.home)) invalid(`locales.${lang}.home 必须是以 / 开头和结尾的站内路径`)
     if (homes.has(locale.home)) invalid(`locales.${lang}.home 与其他语言重复：${locale.home}`)
@@ -91,5 +134,5 @@ export const defineSiteConfig = config => {
   if (wordPerMinute !== undefined && (!Number.isFinite(wordPerMinute) || wordPerMinute <= 0)) invalid('readingTime.wordPerMinute 必须大于 0')
   if ((resolved.features.engagement || resolved.features.popularPosts) && !String(resolved.services?.statsBase ?? '').trim()) invalid('启用互动统计或热门文章时必须配置 services.statsBase')
 
-  return /** @type {T & import('./config-types.ts').SiteConfigDefaults} */ (resolved)
+  return /** @type {T & import('./config-types.ts').SiteConfig & import('./config-types.ts').SiteConfigDefaults} */ (resolved)
 }

@@ -69,7 +69,7 @@ export const editLinkPatterns = {
   Bitbucket: ':repo/src/:branch/:path?mode=edit&spa=0&at=:branch&fileviewer=file-view-default',
 } as const
 
-export function resolveEditLink({ docsRepo, docsBranch, docsDir, filePathRelative, editLinkPattern }: { docsRepo: string, docsBranch: string, docsDir: string, filePathRelative: string | null, editLinkPattern?: string }) {
+export function resolveEditLink({ docsRepo, docsBranch = 'main', docsDir = '', filePathRelative, editLinkPattern }: { docsRepo: string, docsBranch?: string, docsDir?: string, filePathRelative: string | null, editLinkPattern?: string }) {
   if (!filePathRelative) return null
   const type = resolveRepoType(docsRepo)
   const pattern = editLinkPattern ?? (type ? editLinkPatterns[type] : undefined)

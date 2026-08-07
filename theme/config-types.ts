@@ -1,9 +1,10 @@
-import type { Collection, SidebarBadge, SidebarItem } from './lib/collections.ts'
+import type { Collection, PostCollection, PostCoverOptions, SidebarBadge, SidebarItem } from './lib/collections.ts'
 
 export type ThemeIcon = string | { svg: string, name?: string }
 export type SocialLink = { icon: ThemeIcon, link: string, ariaLabel?: string }
 export type ProfileOptions = {
   avatar?: string
+  /** @deprecated Use avatar. */
   url?: string
   name?: string
   description?: string
@@ -13,6 +14,83 @@ export type ProfileOptions = {
   layout?: 'left' | 'right'
 }
 export type FooterOptions = { message?: string, copyright?: string }
+export type AppearanceTransition = boolean | 'fade' | 'circle-clip' | 'horizontal-clip' | 'vertical-clip' | 'skew-clip' | 'blinds-vertical' | 'blinds-horizontal' | 'soft-blur-fade' | 'diamond-reveal'
+export type TransitionOptions = { appearance?: AppearanceTransition, page?: boolean, postList?: boolean }
+export type Contributor = { name: string, username: string, email: string, commits: number, avatar?: string, url?: string }
+export type ContributorsOptions = {
+  mode?: 'inline' | 'block'
+  info?: Array<{ username: string, name?: string, alias?: string | string[], email?: string, emailAlias?: string | string[], avatar?: string, url?: string }>
+  avatar?: boolean
+  avatarPattern?: string
+  transform?: (contributors: Contributor[]) => Contributor[]
+}
+export type ChangelogOptions = { maxCount?: number, repoUrl?: string, commitUrlPattern?: string, issueUrlPattern?: string, tagUrlPattern?: string }
+export type LastUpdatedOptions = { formatOptions?: Intl.DateTimeFormatOptions & { forceLocale?: boolean } }
+export type BulletinOptions = {
+  enabled?: boolean
+  id?: string
+  layout?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center'
+  border?: boolean
+  enablePage?: boolean | ((page: { path: string }) => boolean)
+  lifetime?: 'always' | 'session' | 'once'
+  title?: string
+  contentType?: 'text' | 'html' | 'markdown'
+  content?: string
+  contentFile?: string
+  [key: string]: unknown
+}
+export type LocaleTextOptions = {
+  appearanceText?: string
+  lightModeSwitchTitle?: string
+  darkModeSwitchTitle?: string
+  copyrightText?: string
+  copyrightAuthorText?: string
+  copyrightCreationOriginalText?: string
+  copyrightCreationTranslateText?: string
+  copyrightCreationReprintText?: string
+  copyrightLicenseText?: string
+  selectLanguageText?: string
+  selectLanguageAriaLabel?: string
+  selectLanguageName?: string
+  editLinkText?: string
+  lastUpdatedText?: string
+  contributorsText?: string
+  changelogText?: string
+  changelogOnText?: string
+  changelogButtonText?: string
+  sidebarMenuLabel?: string
+  returnToTopLabel?: string
+  outlineLabel?: string
+  prevPageLabel?: string
+  nextPageLabel?: string
+  openNewWindowText?: string
+  notFound?: { code?: string | number, title?: string, quote?: string, linkLabel?: string, linkText?: string }
+  homeText?: string
+  postsText?: string
+  tagText?: string
+  archiveText?: string
+  categoryText?: string
+  archiveTotalText?: string
+  encryptGlobalText?: string
+  encryptPageText?: string
+  encryptButtonText?: string
+  encryptPlaceholder?: string
+  copyPageText?: string
+  copiedPageText?: string
+  copingPageText?: string
+  copyTagline?: string
+  viewMarkdown?: string
+  viewMarkdownTagline?: string
+  askAIText?: string
+  askAITagline?: string
+  askAIMessage?: string
+}
+export type LegacyBlogOptions = Omit<Partial<PostCollection>, 'type' | 'exclude'> & { exclude?: string | string[] }
+export type LegacyNotesOptions = {
+  dir: string
+  link: string
+  notes: Array<{ dir: string, link: string, text?: string, sidebar?: 'auto' | SidebarItem[] }>
+}
 export type SidebarOptions = false | 'auto' | SidebarItem[] | Record<string, 'auto' | SidebarItem[] | { items: 'auto' | SidebarItem[], prefix?: string }>
 export type MarkdownImageOptions = {
   figure?: boolean | { focusable?: boolean, linkImage?: boolean }
@@ -21,6 +99,88 @@ export type MarkdownImageOptions = {
   size?: boolean
   legacySize?: boolean
   obsidianSize?: boolean
+}
+export type MarkdownIncludeOptions = {
+  resolvePath?: (reference: string, cwd: string | null) => string
+  deep?: boolean
+  useComment?: boolean
+  resolveImagePath?: boolean
+  resolveLinkPath?: boolean
+}
+export type MarkdownMathOptions = Record<string, unknown> & {
+  type?: 'katex' | 'mathjax'
+  delimiters?: 'all' | 'brackets' | 'dollars'
+  copy?: boolean
+  mhchem?: boolean
+  output?: 'chtml' | 'svg'
+  tex?: Record<string, unknown>
+  chtml?: Record<string, unknown>
+  svg?: Record<string, unknown>
+}
+export type MarkdownOptions = {
+  alert?: boolean | Record<string, unknown>
+  hint?: boolean | Record<string, unknown>
+  image?: false | MarkdownImageOptions
+  imageSize?: false | true | 'local' | 'all'
+  include?: false | true | MarkdownIncludeOptions
+  math?: false | MarkdownMathOptions
+  mark?: 'eager' | 'lazy'
+  icon?: { provider?: 'iconify' | 'iconfont' | 'fontawesome', prefix?: string, assets?: string | string[] }
+  repl?: false | Partial<Record<'go' | 'kotlin' | 'rust' | 'python', boolean>>
+  table?: boolean | { align?: 'left' | 'center' | 'right', copy?: boolean | 'all' | 'html' | 'md', maxContent?: boolean, fullWidth?: boolean }
+  demo?: boolean | Record<string, unknown>
+  encrypt?: boolean | Record<string, unknown>
+  codeTree?: boolean | Record<string, unknown>
+  collapse?: boolean
+  timeline?: boolean
+  chat?: boolean
+  field?: boolean
+  obsidian?: boolean | { wikiLink?: boolean, embedLink?: boolean, callout?: boolean, comment?: boolean, [key: string]: unknown }
+  abbr?: boolean | Record<string, string>
+  annotation?: boolean | Record<string, string | string[]>
+  plot?: boolean | { trigger?: 'hover' | 'click', effect?: 'mask' | 'blur' }
+  qrcode?: boolean
+  caniuse?: boolean | { mode?: 'embed' | 'baseline' | 'image' | string }
+  chartjs?: boolean
+  echarts?: boolean
+  flowchart?: boolean
+  markmap?: boolean
+  plantuml?: boolean | Array<Record<string, unknown>>
+  mermaid?: boolean
+  acfun?: boolean
+  bilibili?: boolean
+  youtube?: boolean
+  pdf?: boolean | { pdfjsUrl?: string }
+  audioReader?: boolean
+  artPlayer?: boolean
+  npmTo?: boolean | Array<'npm' | 'pnpm' | 'yarn' | 'bun' | 'deno'> | { tabs?: Array<'npm' | 'pnpm' | 'yarn' | 'bun' | 'deno'> }
+  env?: {
+    references?: Record<string, string | { href: string, title?: string }>
+    abbreviations?: Record<string, string>
+    annotations?: Record<string, string | string[]>
+  }
+  encryptPassword?: string
+  fileTree?: boolean | { icon?: false | 'simple' | 'colored', [key: string]: unknown }
+  DANGEROUS_ALLOW_SCRIPT_EXECUTION?: boolean
+  DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST?: '*' | string[]
+  /** @deprecated Use demo. */
+  oldDemo?: never
+  [key: string]: unknown
+}
+export type CodeHighlighterOptions = Record<string, unknown> & {
+  twoslash?: boolean | Record<string, unknown>
+  whitespace?: boolean | 'all' | 'boundary' | 'leading' | 'trailing'
+  renderIndentGuides?: boolean | { indent?: number | false }
+  colorizedBrackets?: boolean | Record<string, unknown>
+  lineNumbers?: boolean | number | 'disable'
+}
+export type AutoFrontmatterData = Record<string, unknown> & { title?: string, createTime?: string | false, permalink?: string }
+export type AutoFrontmatterContext = { filepath: string, relativePath: string, content: string }
+export type AutoFrontmatterOptions = {
+  permalink?: boolean | 'filepath'
+  createTime?: boolean
+  title?: boolean
+  transform?: (data: AutoFrontmatterData, context: AutoFrontmatterContext, locale: string) => AutoFrontmatterData | Promise<AutoFrontmatterData>
 }
 export type LlmsPage = { path: string, title: string, lang: string, filePathRelative?: string, frontmatter: Record<string, unknown>, markdown?: string, excerpt?: string }
 export type LlmsOptions = {
@@ -94,11 +254,12 @@ export type BuiltinPluginOptions = {
   git?: boolean
   nprogress?: boolean
   photoSwipe?: false | PhotoSwipeOptions
-  markdownPower?: false | Record<string, unknown>
+  markdownEnhance?: never
+  markdownPower?: false | MarkdownOptions
   markdownImage?: false | MarkdownImageOptions
-  markdownMath?: false | Record<string, unknown>
-  markdownInclude?: boolean | Record<string, unknown>
-  markdownChart?: false | Record<string, unknown>
+  markdownMath?: false | MarkdownMathOptions
+  markdownInclude?: boolean | MarkdownIncludeOptions
+  markdownChart?: false | MarkdownOptions
   comment?: false | Record<string, unknown>
   sitemap?: false | SitemapOptions
   seo?: false | SeoOptions
@@ -125,7 +286,7 @@ export type NavigationItem = string | {
   noIcon?: boolean
 }
 
-export interface LocaleConfig {
+export interface LocaleConfig extends LocaleTextOptions {
   siteName: string
   home: string
   logo?: string
@@ -140,6 +301,8 @@ export interface LocaleConfig {
   navigation?: false | NavigationItem[]
   navbar?: false | NavigationItem[]
   collections?: Collection[]
+  /** @deprecated Use collections. Converted at startup for Plume migrations. */
+  notes?: LegacyNotesOptions
   sidebar?: SidebarOptions
   sidebarScrollbar?: boolean
   outline?: false | number | [number, number] | 'deep'
@@ -150,15 +313,16 @@ export interface LocaleConfig {
   avatar?: false | ProfileOptions
   social?: false | SocialLink[]
   navbarSocialInclude?: string[]
+  bulletin?: true | BulletinOptions
   footer?: false | FooterOptions
   externalLinkIcon?: boolean
   prevPage?: boolean
   nextPage?: boolean
   createTime?: boolean | 'only-posts'
-  transition?: boolean | { appearance?: false | string, page?: boolean, postList?: boolean }
-  contributors?: boolean | Record<string, unknown>
-  changelog?: boolean | Record<string, unknown>
-  lastUpdated?: false | Record<string, unknown>
+  transition?: boolean | TransitionOptions
+  contributors?: boolean | ContributorsOptions
+  changelog?: boolean | ChangelogOptions
+  lastUpdated?: false | LastUpdatedOptions
   editLink?: boolean
   editLinkPattern?: string
   copyright?: boolean | string | Record<string, unknown>
@@ -173,11 +337,18 @@ export interface SiteConfig {
   logoDark?: string
   multilingual?: boolean
   locales: Record<string, LocaleConfig>
+  /** @deprecated Use collections. Converted at startup for Plume migrations. */
+  blog?: LegacyBlogOptions
+  /** @deprecated Use collections. Converted at startup for Plume migrations. */
+  notes?: LegacyNotesOptions
+  /** @deprecated Legacy post link prefix used by blog. */
+  article?: string
+  collections?: Collection[]
   appearance?: boolean | 'dark' | 'force-dark'
   namespace?: string
   mediaOrigin?: string
   replaceAssets?: boolean | Record<string, unknown>
-  autoFrontmatter?: boolean | Record<string, unknown>
+  autoFrontmatter?: boolean | AutoFrontmatterOptions
   social?: SocialLink[]
   navbarSocialInclude?: string[]
   navigation?: false | NavigationItem[]
@@ -203,10 +374,10 @@ export interface SiteConfig {
   tagsTheme?: 'colored' | 'gray' | 'brand'
   meta?: false | { tags?: boolean, readingTime?: boolean, wordCount?: boolean, createTime?: boolean | 'short' | 'long' }
   readingTime?: false | { wordPerMinute?: number, locales?: Record<string, unknown> }
-  postCover?: false | 'left' | 'right' | 'odd-left' | 'odd-right' | 'top' | Record<string, unknown>
+  postCover?: false | PostCoverOptions
   pagination?: false | number | { perPage?: number }
   categoriesExpand?: number | 'deep'
-  transition?: boolean | { appearance?: false | string, page?: boolean, postList?: boolean }
+  transition?: boolean | TransitionOptions
   search?: boolean | SearchOptions
   features?: { engagement?: boolean, popularPosts?: boolean, comments?: boolean }
   repository?: { url?: string, branch?: string, contentDir?: string, editLinkPattern?: string }
@@ -214,28 +385,18 @@ export interface SiteConfig {
   docsBranch?: string
   docsDir?: string
   copyright?: boolean | string | Record<string, unknown>
-  lastUpdated?: false | Record<string, unknown>
-  contributors?: boolean | Record<string, unknown>
-  changelog?: boolean | Record<string, unknown>
+  lastUpdated?: false | LastUpdatedOptions
+  contributors?: boolean | ContributorsOptions
+  changelog?: boolean | ChangelogOptions
   encrypt?: false | Record<string, unknown>
-  markdown?: Record<string, unknown> & { image?: false | MarkdownImageOptions }
+  markdown?: MarkdownOptions
   llmstxt?: boolean | LlmsOptions
+  pageContextMenu?: { chatgpt?: boolean, claude?: boolean, perplexity?: boolean }
   copyCode?: boolean | Record<string, unknown>
-  codeHighlighter?: false | Record<string, unknown>
+  codeHighlighter?: false | CodeHighlighterOptions
   plugins?: BuiltinPluginOptions
   watermark?: boolean | Record<string, unknown>
-  bulletin?: false | {
-    enabled?: boolean
-    layout?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center'
-    border?: boolean
-    lifetime?: 'always' | 'session' | 'once'
-    enablePage?: (page: { path: string }) => boolean
-    title?: string
-    contentType?: 'text' | 'html' | 'markdown'
-    content?: string
-    contentFile?: string
-    [key: string]: unknown
-  }
+  bulletin?: false | BulletinOptions
   services?: Record<string, unknown>
   comment?: false | Record<string, unknown>
   verification?: Record<string, string>
@@ -252,8 +413,8 @@ export interface SiteConfigDefaults {
   features: { engagement: boolean, popularPosts: boolean, comments: boolean }
   repository: { url?: string, branch?: string, contentDir?: string, editLinkPattern?: string }
   encrypt: false | Record<string, unknown>
-  markdown: Record<string, unknown> & { image?: false | MarkdownImageOptions, math: false | Record<string, unknown> }
-  codeHighlighter: false | Record<string, unknown>
+  markdown: MarkdownOptions & { math: false | MarkdownMathOptions }
+  codeHighlighter: false | CodeHighlighterOptions
   plugins: BuiltinPluginOptions
   services: Record<string, unknown> & { statsBase: string, statsVisitorHeader: string }
   comment: false | (Record<string, unknown> & { provider: string })

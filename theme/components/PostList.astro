@@ -37,7 +37,7 @@ const visiblePosts = posts.slice(0, limit)
 const visiblePostData = await Promise.all(visiblePosts.map(async (post, index) => {
   const encrypted = encryptionPolicy(post).pageEncrypted
   const excerpt = encrypted ? '' : withBaseInHtml(await postExcerptOf(post), import.meta.env.BASE_URL)
-  const globalCover = typeof configuredPostCover === 'string' ? { layout: configuredPostCover } : configuredPostCover
+  const globalCover = typeof configuredPostCover === 'string' ? { layout: configuredPostCover } : configuredPostCover || {}
   const cover = post.data.cover ? { ...globalCover, ...post.data.coverStyle } : undefined
   const baseLayout = cover?.layout ?? 'right'
   const odd = (index + 1) % 2 === 1

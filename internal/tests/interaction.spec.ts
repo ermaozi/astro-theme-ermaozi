@@ -39,7 +39,8 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
   await expect(page.locator('.vp-navbar-translations')).toHaveCount(0)
 
   await page.goto('/effects/', { waitUntil: 'domcontentloaded' })
-  await expect(page.locator('link[rel="alternate"][hreflang="en-US"]')).toHaveCount(0)
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/img/logo.svg')
   await page.goto('/', { waitUntil: 'domcontentloaded' })
 
   const appearance = page.locator('.vp-navbar-appearance .vp-switch')
@@ -92,7 +93,7 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
 test('desktop navigation resolves every official link, badge, active, and external variant', async ({ page }) => {
   await page.goto('/docs/guide/content/', { waitUntil: 'domcontentloaded' })
   await expect(page.locator('.vp-navbar-translations')).toHaveCount(0)
-  await expect(page.locator('link[rel="alternate"][hreflang="en-US"]')).toHaveCount(0)
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
   await expect(page.locator('.vp-navbar-menu')).toHaveAttribute('aria-labelledby', 'main-nav-aria-label')
   await expect(page.locator('#main-nav-aria-label')).toHaveText('Main Navigation')
 

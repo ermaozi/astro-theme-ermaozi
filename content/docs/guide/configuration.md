@@ -129,6 +129,8 @@ locales: {
 
 Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`linkPrefix`，标签/分类/归档页的开关、自定义路径与标题，以及集合级 `tagsTheme`、`meta`、`postCover`、`profile`、`social`、`categoriesExpand` 和 `categoriesTransform`。生成页、面包屑、分页 JSON、站点地图和多语言切换都会使用集合的实际路径。
 
+从旧版 Plume 迁移时，已弃用的顶层 `blog`、`article`、`notes` 以及 locale 内的 `notes` 会在启动时转换为集合；目标位置已有非空 `collections` 时以新配置为准。全局、locale 和 Post 集合中的旧 `profile.url` 也会归一化为 `profile.avatar`。这些兼容项只用于平滑迁移，新配置应直接使用 `collections` 与 `profile.avatar`。
+
 Doc 集合支持 `sidebar: 'auto'`，会按目录层级和数字前缀递归生成导航；`sidebarCollapsed` 控制自动分组初始折叠，`sidebarScrollbar` 控制滚动条。也可传入字符串或 `{ text, link, prefix, icon, badge, collapsed, items }` 数组手动编排，`items: 'auto'` 只自动读取当前分组，`link: '---'` 生成分隔符。
 
 还可使用 Plume 的全局多侧栏写法：`sidebar: { '/docs/': 'auto', '/guide/': [...] }`，按最长路径前缀匹配。值也可写成 `{ items, prefix }`；单页 `sidebar: '/guide/'` 可强制选择指定侧栏，`sidebar: false` 关闭当前页侧栏。侧栏项兼容旧 `dir` 字段以及 `target`、`rel`。

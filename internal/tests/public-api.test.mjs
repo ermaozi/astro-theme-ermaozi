@@ -9,6 +9,7 @@ import { isIOS } from '../../theme/components/vue/background/helpers.ts'
 import { tintPlateColors } from '../../theme/lib/tint-plate.ts'
 import { homeConfigOf } from '../../theme/lib/home.ts'
 import { seoEnabled } from '../../theme/lib/seo-options.mjs'
+import { collectionForEntry, collectionsFor } from '../../theme/lib/collections.ts'
 
 test('public Node helpers preserve identity and the client barrel covers the frozen documented API', async () => {
   const values = [
@@ -84,16 +85,43 @@ test('legacy Plume plugin options fall back to the canonical flat configuration'
 })
 
 test('deprecated Plume avatar settings fall back to profile globally and per locale', () => {
-  const globalAvatar = { name: 'Global' }
-  const localeAvatar = { name: 'Locale' }
+  const globalAvatar = { name: 'Global', url: '/global.png' }
+  const localeAvatar = { name: 'Locale', url: '/locale.png' }
   const configured = defineSiteConfig({
     origin: 'https://example.com',
     logo: '/logo.svg',
     avatar: globalAvatar,
-    locales: { 'zh-CN': { siteName: 'Site', home: '/', avatar: localeAvatar } },
+    locales: { 'zh-CN': { siteName: 'Site', home: '/', avatar: localeAvatar, collections: [{ type: 'post', dir: 'blog', profile: { url: '/collection.png' } }] } },
   })
   assert.equal(configured.profile, globalAvatar)
   assert.equal(configured.locales['zh-CN'].profile, localeAvatar)
+  assert.equal(configured.profile.avatar, '/global.png')
+  assert.equal(configured.locales['zh-CN'].profile.avatar, '/locale.png')
+  assert.equal(configured.locales['zh-CN'].collections[0].profile.avatar, '/collection.png')
+})
+
+test('deprecated Plume blog, notes, and article settings migrate to collections', () => {
+  const configured = defineSiteConfig({
+    origin: 'https://example.com',
+    logo: '/logo.svg',
+    article: '/articles/',
+    blog: { exclude: 'private/**', pagination: 10 },
+    notes: { dir: '/notes/', link: '/', notes: [{ dir: 'typescript', link: '/typescript/', sidebar: 'auto' }] },
+    locales: {
+      'zh-CN': { siteName: 'Site', home: '/' },
+      'en-US': { siteName: 'Site', home: '/en/', collections: [{ type: 'post', dir: 'journal' }] },
+    },
+  })
+  assert.deepEqual(configured.locales['zh-CN'].collections, [
+    { type: 'post', dir: '/', linkPrefix: '/articles/', exclude: ['private/**', 'notes/typescript'], pagination: 10 },
+    { type: 'doc', dir: 'notes/typescript', linkPrefix: '/typescript/', sidebar: 'auto', sidebarScrollbar: undefined },
+  ])
+  assert.deepEqual(configured.locales['en-US'].collections, [{ type: 'post', dir: 'journal' }])
+  assert.deepEqual(collectionsFor('zh-CN', configured).map(collection => [collection.type, collection.linkPrefix]), [['post', '/articles/'], ['doc', '/typescript/']])
+  assert.equal(collectionForEntry('legacy-post', 'zh-CN', configured)?.type, 'post')
+  assert.equal(collectionForEntry('notes/typescript/start', 'zh-CN', configured)?.type, 'doc')
+  assert.equal(Object.hasOwn(configured, 'blog'), false)
+  assert.equal(Object.hasOwn(configured, 'notes'), false)
 })
 
 test('plugins.seo false disables generated SEO metadata', () => {
@@ -147,6 +175,8 @@ test('public page data excludes unlock credentials and custom CSS loads last', a
   assert.match(clientConfig, /export \{\}/)
   assert.match(layout, /import '\.\.\/styles\/custom\.css'/)
   assert.ok(layout.indexOf("import '../styles/custom.css'") > layout.indexOf("import 'swiper/css/bundle'"))
+  assert.match(layout, /rel="icon" href=\{withBase\(siteConfig\.logo, import\.meta\.env\.BASE_URL\)\}/)
+  assert.doesNotMatch(layout, /rel="icon" href=\{withBase\('\/img\/logo\.svg'/)
   const payload = encrypted.match(/<script id="ermaozi-page-data" type="application\/json">([^<]*)<\/script>/)?.[1]
   assert.ok(payload)
   const data = JSON.parse(payload)

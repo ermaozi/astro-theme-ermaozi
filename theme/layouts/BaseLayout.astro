@@ -68,7 +68,8 @@ const seoDescription = description || (seoOptions.autoDescription === false ? ''
 const fullTitle = minimal404 ? site.siteName : `${title} | ${site.siteName}`
 const canonicalOption = typeof seoOptions.canonical === 'function' ? seoOptions.canonical(pluginPage) : seoOptions.canonical
 const canonical = canonicalOption === null ? null : typeof canonicalOption === 'string' ? `${canonicalOption.replace(/\/$/u, '')}${route}` : seoUrl(route)
-const alternates = languageLinks.length ? languageLinks.filter(item => !item.fallback) : [{ lang, href: route }, ...(translationRoute ? [{ lang: lang === 'en-US' ? 'zh-CN' : 'en-US', href: translationRoute }] : [])]
+const multilingual = siteConfig.multilingual !== false
+const alternates = !multilingual ? [] : languageLinks.length ? languageLinks.filter(item => !item.fallback) : [{ lang, href: route }, ...(translationRoute ? [{ lang: lang === 'en-US' ? 'zh-CN' : 'en-US', href: translationRoute }] : [])]
 const defaultRoute = alternates.find(item => item.lang === rootLanguage())?.href ?? route
 const locale = localeOf(lang)
 const configuredTwitter = seoOptions.twitterID ? `@${seoOptions.twitterID.replace(/^@/u, '')}` : ''
@@ -114,8 +115,8 @@ const jsonLd = automaticJsonLd.length && seoOptions.jsonLd
   : automaticJsonLd
 const managedHead: SeoHeadItem[] = [
   ...(canonical ? [['link', { rel: 'canonical', href: canonical }] as SeoHeadItem] : []),
-  ...(!minimal404 ? alternates.map(item => ['link', { rel: 'alternate', hreflang: item.lang, href: seoUrl(item.href) }] as SeoHeadItem) : []),
-  ...(!minimal404 ? [['link', { rel: 'alternate', hreflang: 'x-default', href: seoUrl(defaultRoute) }] as SeoHeadItem] : []),
+  ...(!minimal404 && multilingual ? alternates.map(item => ['link', { rel: 'alternate', hreflang: item.lang, href: seoUrl(item.href) }] as SeoHeadItem) : []),
+  ...(!minimal404 && multilingual ? [['link', { rel: 'alternate', hreflang: 'x-default', href: seoUrl(defaultRoute) }] as SeoHeadItem] : []),
   ...(seoEnabled ? Object.entries(ogp).flatMap(([name, value]) => (Array.isArray(value) ? value : [value]).filter(item => item !== undefined && item !== null && item !== '').map(item => ['meta', { [name.startsWith('twitter:') ? 'name' : 'property']: name, content: String(item) }] as SeoHeadItem)) : []),
   ...jsonLd.map(data => ['script', { type: 'application/ld+json' }, JSON.stringify(data).replaceAll('<', '\\u003c')] as SeoHeadItem),
 ]
@@ -217,7 +218,7 @@ const clientPageData = JSON.stringify({ page: { path: route, title, description 
     <meta name="description" content={seoDescription} />
     {noindex && <meta name="robots" content="noindex,follow" />}
     <Fragment set:html={managedHeadHtml} />
-    <link rel="icon" href={withBase('/img/logo.svg', import.meta.env.BASE_URL)} type="image/svg+xml" />
+    <link rel="icon" href={withBase(siteConfig.logo, import.meta.env.BASE_URL)} />
     {preconnectMedia && <link rel="preconnect" href={siteConfig.mediaOrigin} />}
     {iconAssets.filter(asset => asset.endsWith('.css')).map(asset => <link rel="stylesheet" href={asset} />)}
     {iconAssets.filter(asset => asset.endsWith('.js')).map(asset => <script is:inline src={asset} data-auto-replace-svg={markdownIcon.provider === 'fontawesome' ? 'nest' : undefined}></script>)}

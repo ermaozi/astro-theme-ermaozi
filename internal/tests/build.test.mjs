@@ -72,7 +72,7 @@ test('build contains generic blog, docs, enhanced Markdown, search, and crawler 
   assert.doesNotMatch(customLayout, /class="theme-plume vp-layout|<header class="vp-nav|<footer class="vp-footer/)
   assert.match(post, /https:\/\/example\.com\/blog\/getting-started\//)
   assert.doesNotMatch(post, /data-comment-provider/)
-  assert.doesNotMatch(post, /hreflang="en-us"/i)
+  assert.doesNotMatch(post, /hreflang=/i)
   assert.doesNotMatch(post, /vp-navbar-translations/)
   assert.match(showcase, /class="vp-doc plume-content external-link-icon-enabled"/)
   assert.match(showcase, /<mark>重点标记<\/mark>/)

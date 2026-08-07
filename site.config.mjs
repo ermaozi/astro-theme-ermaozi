@@ -217,6 +217,7 @@ export const siteConfig = defineSiteConfig({
       askAIMessage: '阅读 {link} 并回答内容相关的问题。',
 
       // 内容集合决定哪些目录是博客或文档，以及它们如何生成列表、侧边栏和前后页。
+      // 迁移旧 Plume 配置时，blog/article/notes 会自动转换；新项目请直接使用 collections。
       collections: [
         // content/blog/ 下的 Markdown 作为博客文章，并生成 /blog/ 及其分类、标签、归档页。
         { type: 'post', dir: 'blog', title: '博客' },
