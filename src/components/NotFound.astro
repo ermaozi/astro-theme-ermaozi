@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import UserSlot from './UserSlot.astro'
+import { configuredLanguages, localeOf, localePath, rootLanguage } from '../lib/locales'
+import { hasUserSlot } from '../lib/user-slots'
+
+const { lang = rootLanguage(), route = '/404.html' } = Astro.props
+const locale = localeOf(lang)
+const localeRecords = configuredLanguages().map(lang => ({ lang, home: localePath(lang), ...localeOf(lang).notFound }))
+const customNotFound = hasUserSlot('not-found')
+---
+
+<BaseLayout title="404" description="404 Not Found" {lang} {route} minimal404>
+  <div id="VPContent" class="vp-content">
+    {customNotFound ? <UserSlot name="not-found" {lang} {route} /> : <div class="vp-not-found">
+      <p class="code">{locale.notFound.code}</p>
+      <h1 class="title">{locale.notFound.title}</h1>
+      <div class="divider"></div>
+      <blockquote class="quote">{locale.notFound.quote}</blockquote>
+      <div class="action"><a class="link" href={locale.home} aria-label={locale.notFound.linkText}>{locale.notFound.linkText}</a></div>
+    </div>}
+  </div>
+  {!customNotFound && <script is:inline define:vars={{ localeRecords }}>
+    const record = localeRecords
+      .filter(item => item.home !== '/' && location.pathname.startsWith(item.home))
+      .sort((left, right) => right.home.length - left.home.length)[0] || localeRecords.find(item => item.home === '/') || localeRecords[0]
+    if (record) {
+      document.documentElement.lang = record.lang
+      document.querySelector('.vp-not-found .code').textContent = record.code
+      document.querySelector('.vp-not-found .title').textContent = record.title
+      document.querySelector('.vp-not-found .quote').textContent = record.quote
+      const link = document.querySelector('.vp-not-found .link')
+      link.href = record.home
+      link.textContent = record.linkText
+      link.setAttribute('aria-label', record.linkText)
+    }
+  </script>}
+</BaseLayout>

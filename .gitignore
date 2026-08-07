@@ -1,0 +1,17 @@
+.astro/
+.tmp/
+dist/
+node_modules/
+reports/
+test-results/
+playwright-report/
+packages/create-astro-theme-ermaozi/template/
+*.tgz
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/

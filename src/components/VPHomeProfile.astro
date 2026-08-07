@@ -1,0 +1,20 @@
+---
+import { siteConfig } from '../../site.config.mjs'
+import VPHomeBox from './VPHomeBox.astro'
+import VPImage from './VPImage.astro'
+
+const { name, description, avatar, circle, ...boxProps } = Astro.props
+const fallback = (typeof siteConfig.profile === 'object' ? siteConfig.profile : {}) as Record<string, any>
+const profile = {
+  name: name || fallback.name,
+  description: description || fallback.description,
+  avatar: avatar || fallback.avatar || fallback.url,
+  circle: circle || fallback.circle,
+}
+---
+
+<VPHomeBox class="vp-home-profile" {...boxProps}>
+  {profile.avatar && <VPImage image={profile.avatar} class:list={{ circle: profile.circle }} />}
+  {profile.name && <h3 set:html={profile.name}></h3>}
+  {profile.description && <p set:html={profile.description}></p>}
+</VPHomeBox>
