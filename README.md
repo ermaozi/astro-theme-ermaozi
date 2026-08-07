@@ -124,11 +124,11 @@ npm publish --access public
 
 后续版本可由 [`.github/workflows/publish-npm.yml`](./.github/workflows/publish-npm.yml) 自动发布：
 
-1. 在 npm 创建仅允许发布 `create-astro-theme-ermaozi`、并允许发布时绕过 2FA 的 granular access token。
-2. 在 GitHub 仓库的 Actions secrets 中添加 `NPM_TOKEN`，不要把 token 写入仓库文件。
+1. 在 npm 的 `create-astro-theme-ermaozi` 包设置中配置 GitHub Actions Trusted Publisher：用户 `ermaozi`、仓库 `astro-theme-ermaozi`、工作流 `publish-npm.yml`，并允许 `npm publish`。
+2. 不需要创建 `NPM_TOKEN` 或 GitHub Actions secret；工作流使用短期 OIDC 凭证发布。
 3. 将初始化器的 `package.json` 版本改为 `x.y.z`，通过完整校验后创建并发布标签为 `vx.y.z` 的 GitHub Release。
 
-工作流会重新安装依赖、执行 `pnpm validate`、校验 Release 标签与包版本完全一致，再发布 npm 包；标签不匹配或版本已存在时会停止。
+工作流会重新安装依赖、执行 `pnpm validate`、校验 Release 标签与包版本完全一致，再通过 npm Trusted Publisher 发布；标签不匹配或版本已存在时会停止。
 
 ## 项目结构
 

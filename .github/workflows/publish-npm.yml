@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: npm-${{ github.event.release.tag_name }}
@@ -25,6 +26,9 @@ jobs:
       - name: Enable pnpm
         run: corepack enable && corepack prepare pnpm@9.10.0 --activate
 
+      - name: Enable npm trusted publishing
+        run: npm install --global npm@11.18.0
+
       - name: Install and validate
         run: pnpm install --frozen-lockfile && pnpm validate
 
@@ -42,6 +46,4 @@ jobs:
 
       - name: Publish
         working-directory: packages/create-astro-theme-ermaozi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public

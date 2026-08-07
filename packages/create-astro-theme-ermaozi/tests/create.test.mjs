@@ -109,11 +109,13 @@ test('reuses the invoking package manager without leaking a Yarn dlx PnP loader'
   assert.equal(readFileSync(path.join(target, '.yarnrc.yml'), 'utf8'), 'nodeLinker: node-modules\n')
 })
 
-test('GitHub releases publish only a matching package version with the npm secret', () => {
+test('GitHub releases publish only a matching package version through trusted publishing', () => {
   const workflow = readFileSync(path.resolve(packageRoot, '../..', '.github/workflows/publish-npm.yml'), 'utf8')
   assert.match(workflow, /release:\s*\n\s+types: \[published\]/)
+  assert.match(workflow, /id-token: write/)
+  assert.match(workflow, /npm install --global npm@11\.18\.0/)
   assert.match(workflow, /RELEASE_TAG.*github\.event\.release\.tag_name/)
   assert.match(workflow, /Release tag must be v/)
-  assert.match(workflow, /NODE_AUTH_TOKEN.*secrets\.NPM_TOKEN/)
+  assert.doesNotMatch(workflow, /NODE_AUTH_TOKEN|NPM_TOKEN/)
   assert.match(workflow, /npm publish --access public/)
 })
