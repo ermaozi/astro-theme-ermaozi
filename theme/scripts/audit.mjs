@@ -3,6 +3,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { siteConfig } from '../../site.config.mjs'
 import { withBase, withoutBase } from '../lib/client-utils.ts'
+import { postCollectionsFor } from '../lib/collections.ts'
+import { configuredLanguages, localeOf } from '../lib/locales.ts'
 import { sitemapOutputNames } from '../lib/sitemap-options.mjs'
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
@@ -34,7 +36,18 @@ const files = await walk(output)
 const outputFiles = new Set(files.map(file => path.resolve(file)))
 const htmlFiles = files.filter(file => file.endsWith('.html'))
 const pages = new Map(await Promise.all(htmlFiles.map(async file => /** @type {[string, string]} */ ([routeOf(file), await readFile(file, 'utf8')]))))
-const requiredRoutes = ['/', '/en/', '/blog/', '/en/blog/', '/docs/', '/en/docs/', '/blog/categories/', '/en/blog/categories/', '/blog/tags/', '/en/blog/tags/', '/blog/archives/', '/en/blog/archives/']
+const requiredRoutes = [...new Set(configuredLanguages().flatMap(lang => {
+  const locale = localeOf(lang)
+  return [
+    locale.home,
+    ...postCollectionsFor(lang).flatMap(collection => [
+      collection.postList === false ? '' : collection.link,
+      collection.categories === false ? '' : collection.categoriesLink,
+      collection.tags === false ? '' : collection.tagsLink,
+      collection.archives === false ? '' : collection.archivesLink,
+    ]),
+  ].filter(Boolean)
+}))]
 const missingRoutes = requiredRoutes.filter(route => !pages.has(route))
 
 const seoErrors = []
@@ -53,7 +66,7 @@ for (const [route, html] of pages) {
     const target = withoutBase(new URL(match[1], siteOrigin).pathname, base)
     if (outputFiles.has(path.resolve(output, target.replace(/^\/+/, '')))) continue
     if (/^\/(?:_astro|pagefind|img|api)\//.test(target) || /\.(?:md|xml|xsl|txt|json|svg|png|jpe?g|webp|ico)$/i.test(target)) continue
-    if (!pages.has(target)) brokenLinks.push({ route, target })
+    if (!pages.has(target) && !pages.has(`${target.replace(/\/$/u, '')}/`)) brokenLinks.push({ route, target })
   }
 }
 

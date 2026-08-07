@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 
 const props = defineProps<{ effect: string, config?: Record<string, unknown> }>()
 const effects = {
@@ -15,6 +15,27 @@ const effects = {
   prism: defineAsyncComponent(() => import('./Prism.vue')),
 }
 const component = computed(() => effects[props.effect as keyof typeof effects])
+const root = useTemplateRef<HTMLDivElement>('root')
+const visible = ref(false)
+let observer: IntersectionObserver | undefined
+
+onMounted(() => {
+  if (!root.value || !('IntersectionObserver' in window)) {
+    visible.value = true
+    return
+  }
+  observer = new IntersectionObserver(entries => visible.value = entries[0]?.isIntersecting ?? false)
+  observer.observe(root.value)
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
-<template><component :is="component" v-if="component" v-bind="config || {}" /></template>
+<template><div ref="root" class="home-hero-effect"><component :is="component" v-if="component && visible" v-bind="config || {}" /></div></template>
+
+<style scoped>
+.home-hero-effect {
+  position: absolute;
+  inset: 0;
+}
+</style>

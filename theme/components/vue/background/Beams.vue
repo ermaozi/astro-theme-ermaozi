@@ -416,6 +416,7 @@ function cleanup() {
 
   if (renderer) {
     renderer.dispose()
+    renderer.forceContextLoss()
     renderer = null
   }
 

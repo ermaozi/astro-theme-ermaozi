@@ -417,6 +417,7 @@ function setup() {
       t.material.dispose()
       t.composer?.dispose()
       t.renderer.dispose()
+      t.renderer.forceContextLoss()
       if (t.renderer.domElement.parentElement === container)
         container.removeChild(t.renderer.domElement)
       threeRef.value = null
@@ -645,8 +646,6 @@ function setup() {
   prevConfigRef.value = cfg
 
   cleanup = () => {
-    if (threeRef.value && mustReinit)
-      return
     if (!threeRef.value)
       return
     const t = threeRef.value
@@ -656,6 +655,7 @@ function setup() {
     t.material.dispose()
     t.composer?.dispose()
     t.renderer.dispose()
+    t.renderer.forceContextLoss()
     if (t.renderer.domElement.parentElement === container)
       container.removeChild(t.renderer.domElement)
     threeRef.value = null

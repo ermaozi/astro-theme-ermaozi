@@ -23,7 +23,7 @@ const errorText = ref('')
 const buttonRef = ref(null)
 const heartBursts = ref([])
 const celebrating = ref(false)
-const isEnglish = computed(() => props.lang.startsWith('en'))
+const isEnglish = computed(() => !props.lang.startsWith('zh'))
 const statsPath = computed(() => canonicalizeStatsPath(props.path))
 const t = (zh, en) => isEnglish.value ? en : zh
 

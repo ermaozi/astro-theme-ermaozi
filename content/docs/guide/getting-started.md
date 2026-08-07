@@ -28,6 +28,8 @@ pnpm create astro-theme-ermaozi@beta my-blog
 yarn create astro-theme-ermaozi@beta my-blog
 ```
 
+向导可选择简体中文或 English 作为站点根语言；启用多语言时，另一种语言会自动放到 `/en/` 或 `/zh/`，无需手动移动内容或修改永久链接。
+
 进入项目并启动预览：
 
 ```sh

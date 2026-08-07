@@ -25,7 +25,7 @@ const bgStyle = hasBackground ? `${image ? `--vp-home-bg-light:${cssBackground(i
   {effect === 'tint-plate'
     ? <TintPlate config={tintPlate ?? heroEffectConfig} />
     : builtInEffect
-      ? <HeroEffect effect={effect} config={heroEffectConfig} client:load />
+      ? <HeroEffect effect={effect} config={heroEffectConfig} client:visible />
       : hasBackground && <div class="home-hero-bg" data-home-background style={bgStyle}></div>}
   <div class="hero-container"><div class="hero-content">
     {hero.name && <h1 class="hero-name" set:html={hero.name}></h1>}

@@ -41,6 +41,56 @@ test('interactive answers update the generated site identity and multilingual sw
     siteDescription: '一个支持全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。',
     multilingual: false,
   }))
+
+  const english = configureSiteConfig(source, {
+    siteName: 'English Site',
+    siteDescription: 'English root description.',
+    multilingual: true,
+    defaultLanguage: 'en-US',
+  })
+  assert.match(english, /'zh-CN': \{[\s\S]*?home: '\/zh\/'/)
+  assert.match(english, /'zh-CN': \{[\s\S]*?href: '\/zh\/blog\/'/)
+  assert.match(english, /'zh-CN': \{[\s\S]*?icon: '\/img\/logo\.svg'/)
+  assert.match(english, /'en-US': \{[\s\S]*?description: "English root description\."/)
+  assert.match(english, /'en-US': \{[\s\S]*?home: '\/'/)
+  assert.match(english, /'en-US': \{[\s\S]*?href: '\/blog\/'/)
+  assert.doesNotMatch(english.slice(english.indexOf("    'en-US': {")), /['"]\/en\//)
+})
+
+test('creates an English-root multilingual project without moving shared snippets', () => {
+  execFileSync(process.execPath, [path.join(packageRoot, 'scripts/sync-template.mjs')])
+  const cwd = mkdtempSync(path.join(tmpdir(), 'ermaozi-create-english-'))
+  execFileSync(process.execPath, [path.join(packageRoot, 'bin/create.mjs'), 'english-site', '--no-install', '--lang=en-US', '--multilingual'], { cwd })
+  const created = path.join(cwd, 'english-site')
+  const config = readFileSync(path.join(created, 'site.config.mjs'), 'utf8')
+  assert.match(readFileSync(path.join(created, 'content/index.md'), 'utf8'), /lang: en-US/)
+  assert.match(readFileSync(path.join(created, 'content/zh/index.md'), 'utf8'), /title: ermaozi 示例站/)
+  assert.match(readFileSync(path.join(created, 'content/about.md'), 'utf8'), /permalink: \/about\/[\s\S]*translationOf: \/zh\/about\//)
+  assert.match(readFileSync(path.join(created, 'content/zh/friends.md'), 'utf8'), /permalink: \/zh\/friends\/[\s\S]*translationOf: \/friends\//)
+  assert.match(readFileSync(path.join(created, 'content/docs/index.md'), 'utf8'), /\]\(\/docs\/guide\/getting-started\/\)/)
+  assert.match(readFileSync(path.join(created, 'content/zh/docs/index.md'), 'utf8'), /\]\(\/zh\/docs\/guide\/getting-started\/\)/)
+  assert.match(readFileSync(path.join(created, 'content/docs/guide/getting-started.md'), 'utf8'), /other language is placed under `\/en\/` or `\/zh\/`/)
+  assert.match(readFileSync(path.join(created, 'content/docs/guide/getting-started.md'), 'utf8'), /Create `content\/blog\/hello\.md`:[\s\S]*permalink: \/blog\/hello\//)
+  assert.match(readFileSync(path.join(created, 'content/zh/docs/guide/getting-started.md'), 'utf8'), /`content\/zh\/blog\/` 下新建/)
+  assert.match(readFileSync(path.join(created, 'content/docs/guide/content.md'), 'utf8'), /\[\[docs\/guide\/configuration\|View site configuration\]\]/)
+  assert.match(readFileSync(path.join(created, 'content/zh/docs/guide/content.md'), 'utf8'), /\[\[zh\/docs\/guide\/configuration\|查看站点配置\]\]/)
+  assert.doesNotMatch(readFileSync(path.join(created, 'content/zh/blog/指南/02.写作/03.基础/内容写作.md'), 'utf8'), /permalink: \/zh\/en\//)
+  assert.doesNotThrow(() => readFileSync(path.join(created, 'content/snippets/demo/Counter.vue')))
+  assert.match(config, /^\s*multilingual: true,$/m)
+  assert.match(config, /'zh-CN': \{[\s\S]*?home: '\/zh\/'/)
+  assert.match(config, /'en-US': \{[\s\S]*?home: '\/'/)
+  assert.match(config, /英文 locale 是当前根语言，对应 content\//)
+  assert.doesNotMatch(config, /英文 locale 保留给 content\/en\//)
+})
+
+test('documents non-interactive language options and rejects unsupported values', () => {
+  const help = execFileSync(process.execPath, [path.join(packageRoot, 'bin/create.mjs'), '--help'], { encoding: 'utf8' })
+  assert.match(help, /--yes\s+Use non-interactive defaults/)
+  assert.match(help, /--lang=<code>\s+Default language/)
+  assert.throws(
+    () => execFileSync(process.execPath, [path.join(packageRoot, 'bin/create.mjs'), 'site', '--no-install', '--lang=invalid'], { stdio: 'pipe' }),
+    /Command failed/,
+  )
 })
 
 test('creates a complete ermaozi project without installing when requested', () => {

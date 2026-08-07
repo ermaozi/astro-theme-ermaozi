@@ -1159,6 +1159,7 @@ function initWebGL() {
           if (canvas && canvas.parentNode)
             canvas.parentNode.removeChild(canvas)
           Common.renderer.dispose()
+          Common.renderer.forceContextLoss()
         }
       }
       catch {

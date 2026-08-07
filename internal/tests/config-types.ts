@@ -11,6 +11,15 @@ minimal.pageContextMenu?.chatgpt
 minimal.mediaOrigin?.trim()
 minimal.repository.branch ?? 'main'
 minimal.search === false
+minimal.multilingual === false
+
+const multilingual = defineSiteConfig({
+  origin: 'https://example.com',
+  logo: '/logo.svg',
+  multilingual: true,
+  locales: { 'en-US': { siteName: 'Site', home: '/' } },
+})
+multilingual.multilingual === false
 
 defineSiteConfig({
   origin: 'https://example.com',

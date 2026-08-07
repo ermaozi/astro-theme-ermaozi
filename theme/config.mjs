@@ -2,9 +2,8 @@
 
 /**
  * Adds editor completion, safe defaults, and early validation.
- * @template {import('./config-types.ts').SiteConfig} T
- * @param {T} config
- * @returns {T & import('./config-types.ts').SiteConfig & import('./config-types.ts').SiteConfigDefaults}
+ * @param {import('./config-types.ts').SiteConfig} config
+ * @returns {import('./config-types.ts').SiteConfig & import('./config-types.ts').SiteConfigDefaults}
  */
 export const defineSiteConfig = config => {
   const resolved = /** @type {import('./config-types.ts').SiteConfig} */ (config)
@@ -148,5 +147,5 @@ export const defineSiteConfig = config => {
   if (wordPerMinute !== undefined && (!Number.isFinite(wordPerMinute) || wordPerMinute <= 0)) invalid('readingTime.wordPerMinute 必须大于 0')
   if ((resolved.features.engagement || resolved.features.popularPosts) && !String(resolved.services?.statsBase ?? '').trim()) invalid('启用互动统计或热门文章时必须配置 services.statsBase')
 
-  return /** @type {T & import('./config-types.ts').SiteConfig & import('./config-types.ts').SiteConfigDefaults} */ (resolved)
+  return /** @type {import('./config-types.ts').SiteConfig & import('./config-types.ts').SiteConfigDefaults} */ (resolved)
 }

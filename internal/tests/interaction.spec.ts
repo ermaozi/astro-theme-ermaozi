@@ -298,16 +298,20 @@ test('all Plume hero effect canvases mount and survive theme changes', async ({ 
   for (const effect of effects) {
     const section = page.locator(`.vp-home-hero.${effect}`)
     await expect(section).toHaveCount(1)
+    await section.scrollIntoViewIfNeeded()
     const canvas = section.locator('canvas')
     await expect(canvas).toHaveCount(1, { timeout: 15_000 })
     await expect.poll(() => canvas.evaluate(element => (element as HTMLCanvasElement).width), { message: `${effect} canvas width`, timeout: 15_000 }).toBeGreaterThan(0)
     await expect.poll(() => canvas.evaluate(element => (element as HTMLCanvasElement).height), { message: `${effect} canvas height`, timeout: 15_000 }).toBeGreaterThan(0)
+    if (effect === 'pixel-blast')
+      await expect(section.locator('.effect-config-pixel')).toHaveCSS('opacity', '0.96')
+    if (effect === 'liquid-ether')
+      await expect(section.locator('.effect-config-liquid')).toHaveCSS('opacity', '0.97')
+    if (effect === 'dot-grid')
+      await expect(section.locator('.effect-config-dot')).toHaveCSS('opacity', '0.98')
+    if (effect === 'orb')
+      await expect(section.locator('.effect-config-orb')).toHaveCount(1)
   }
-
-  await expect(page.locator('.effect-config-pixel')).toHaveCSS('opacity', '0.96')
-  await expect(page.locator('.effect-config-liquid')).toHaveCSS('opacity', '0.97')
-  await expect(page.locator('.effect-config-dot')).toHaveCSS('opacity', '0.98')
-  await expect(page.locator('.effect-config-orb')).toHaveCount(1)
 
   for (const theme of ['light', 'dark'] as const) {
     await page.evaluate(value => {
@@ -319,17 +323,21 @@ test('all Plume hero effect canvases mount and survive theme changes', async ({ 
     for (const width of [1440, 820, 390]) {
       await page.setViewportSize({ width, height: width === 390 ? 844 : 900 })
       await expect(page.locator('.vp-home-hero .hero-name').first()).toHaveCSS('font-size', width >= 960 ? '72px' : width >= 768 ? '64px' : '48px')
-      await expect.poll(() => page.locator('.vp-home-hero').evaluateAll((sections, viewportWidth) => sections.every(section => {
-        const sectionRect = section.getBoundingClientRect()
-        const islandRect = section.querySelector('astro-island')?.getBoundingClientRect()
-        const canvas = section.querySelector('canvas') as HTMLCanvasElement | null
-        const canvasRect = canvas?.getBoundingClientRect()
-        return Math.abs(sectionRect.width - viewportWidth) < 1
-          && sectionRect.height > 200
-          && !!islandRect && Math.abs(islandRect.width - sectionRect.width) < 1 && Math.abs(islandRect.height - sectionRect.height) < 1
-          && !!canvas && canvas.width > 0 && canvas.height > 0
-          && !!canvasRect && canvasRect.width > 0 && canvasRect.height > 0
-      }), width), { message: `${theme} ${width}px effect geometry` }).toBe(true)
+      for (const effect of effects) {
+        const section = page.locator(`.vp-home-hero.${effect}`)
+        await section.scrollIntoViewIfNeeded()
+        await expect.poll(() => section.evaluate((element, viewportWidth) => {
+          const sectionRect = element.getBoundingClientRect()
+          const islandRect = element.querySelector('astro-island')?.getBoundingClientRect()
+          const canvas = element.querySelector('canvas') as HTMLCanvasElement | null
+          const canvasRect = canvas?.getBoundingClientRect()
+          return Math.abs(sectionRect.width - viewportWidth) < 1
+            && sectionRect.height > 200
+            && !!islandRect && Math.abs(islandRect.width - sectionRect.width) < 1 && Math.abs(islandRect.height - sectionRect.height) < 1
+            && !!canvas && canvas.width > 0 && canvas.height > 0
+            && !!canvasRect && canvasRect.width > 0 && canvasRect.height > 0
+        }, width), { message: `${theme} ${width}px ${effect} geometry`, timeout: 15_000 }).toBe(true)
+      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
     }
   }
@@ -345,8 +353,13 @@ test('all Plume hero effect canvases mount and survive theme changes', async ({ 
 
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.reload({ waitUntil: 'domcontentloaded' })
-  await expect(page.locator('.vp-home-hero canvas')).toHaveCount(10, { timeout: 30_000 })
-  await expect.poll(() => page.locator('.vp-home-hero canvas').evaluateAll(canvases => canvases.every(canvas => (canvas as HTMLCanvasElement).width > 0 && (canvas as HTMLCanvasElement).height > 0)), { message: 'frozen effects remain mounted under reduced motion', timeout: 30_000 }).toBe(true)
+  for (const effect of effects) {
+    const section = page.locator(`.vp-home-hero.${effect}`)
+    await section.scrollIntoViewIfNeeded()
+    const canvas = section.locator('canvas')
+    await expect(canvas).toHaveCount(1, { timeout: 15_000 })
+    await expect.poll(() => canvas.evaluate(element => (element as HTMLCanvasElement).width > 0 && (element as HTMLCanvasElement).height > 0), { message: `${effect} remains mounted under reduced motion`, timeout: 15_000 }).toBe(true)
+  }
   expect(errors).toEqual([])
 })
 

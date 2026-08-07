@@ -19,7 +19,7 @@ import '../styles/custom.css'
 import { siteConfig } from '../../site.config.mjs'
 import { encryptContent } from '../lib/encryption'
 import { globalAdminCredentials } from '../lib/encrypt-policy'
-import { localeOf, localePath, rootLanguage } from '../lib/locales'
+import { languageFromPath, localeOf, localePath, rootLanguage } from '../lib/locales'
 import { hasUserSlot } from '../lib/user-slots'
 import { iconAssetUrls } from '../lib/iconify'
 import { homeConfigOf } from '../lib/home'
@@ -69,7 +69,8 @@ const fullTitle = minimal404 ? site.siteName : `${title} | ${site.siteName}`
 const canonicalOption = typeof seoOptions.canonical === 'function' ? seoOptions.canonical(pluginPage) : seoOptions.canonical
 const canonical = canonicalOption === null ? null : typeof canonicalOption === 'string' ? `${canonicalOption.replace(/\/$/u, '')}${route}` : seoUrl(route)
 const multilingual = siteConfig.multilingual !== false
-const alternates = !multilingual ? [] : languageLinks.length ? languageLinks.filter(item => !item.fallback) : [{ lang, href: route }, ...(translationRoute ? [{ lang: lang === 'en-US' ? 'zh-CN' : 'en-US', href: translationRoute }] : [])]
+const fallbackLanguage = translationRoute ? languageFromPath(translationRoute) : undefined
+const alternates = !multilingual ? [] : languageLinks.length ? languageLinks.filter(item => !item.fallback) : [{ lang, href: route }, ...(translationRoute && fallbackLanguage ? [{ lang: fallbackLanguage, href: translationRoute }] : [])]
 const defaultRoute = alternates.find(item => item.lang === rootLanguage())?.href ?? route
 const locale = localeOf(lang)
 const configuredTwitter = seoOptions.twitterID ? `@${seoOptions.twitterID.replace(/^@/u, '')}` : ''

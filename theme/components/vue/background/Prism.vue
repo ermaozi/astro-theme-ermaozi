@@ -439,6 +439,7 @@ function setup() {
     }
     if (gl.canvas.parentElement === container)
       container.removeChild(gl.canvas)
+    gl.getExtension('WEBGL_lose_context')?.loseContext()
   }
 }
 

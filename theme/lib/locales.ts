@@ -91,6 +91,13 @@ export const languageFromPath = (pathname: string): Lang => configuredLanguages(
   .filter(lang => localePath(lang) !== '/')
   .sort((left, right) => localePath(right).length - localePath(left).length)
   .find(lang => pathname === localePrefix(lang) || pathname.startsWith(localePath(lang))) ?? rootLanguage()
+export const routeFromSourcePath = (sourcePath = ''): string => {
+  const normalized = sourcePath.replaceAll('\\', '/')
+  const contentIndex = normalized.lastIndexOf('/content/')
+  const relative = contentIndex >= 0 ? normalized.slice(contentIndex + 9) : normalized.match(/^(?:\.\/)?content\/(.*)$/u)?.[1]
+  return relative === undefined ? '/' : `/${relative}`
+}
+export const languageFromSourcePath = (sourcePath = ''): Lang => languageFromPath(routeFromSourcePath(sourcePath))
 const plainObject = (value: unknown): value is Record<string, any> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 export const localeOf = (lang: Lang): Record<string, any> => {
   const { locales: _, ...globalConfig } = siteConfig

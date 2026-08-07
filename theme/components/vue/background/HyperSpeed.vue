@@ -1152,6 +1152,7 @@ class App {
 
     if (this.renderer) {
       this.renderer.dispose()
+      this.renderer.forceContextLoss()
     }
     if (this.composer) {
       this.composer.dispose()

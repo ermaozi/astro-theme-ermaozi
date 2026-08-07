@@ -1,8 +1,10 @@
 ---
 import type { Lang } from '../lib/content'
+import { localePrefix } from '../lib/locales'
 import { siteConfig } from '../../site.config.mjs'
 const { lang, pageMap = {} } = Astro.props as { lang: Lang, pageMap?: Record<string, string> }
-const en = lang === 'en-US'
+const en = !lang.toLowerCase().startsWith('zh')
+const routePrefix = localePrefix(lang)
 ---
 
 <div class="popular-posts-fixture">
@@ -10,7 +12,7 @@ const en = lang === 'en-US'
   <ol></ol><p>{en ? 'No popular-post data' : '暂无热门数据'}</p>
 </div>
 
-<script is:inline define:vars={{ titles: pageMap, isEnglish: en, statsBase: siteConfig.services.statsBase }}>
+<script is:inline define:vars={{ titles: pageMap, isEnglish: en, statsBase: siteConfig.services.statsBase, routePrefix }}>
   (() => {
     const root = document.currentScript?.previousElementSibling
     if (!root) return
@@ -29,7 +31,7 @@ const en = lang === 'en-US'
         const response = await fetch(kind === 'likes' ? `${statsBase}/likes/top?limit=15` : `${statsBase}/popular`)
         const posts = response.ok ? await response.json() : []
         for (const post of posts.slice(0, 15)) {
-          const route = isEnglish ? (post.path === '/' ? '/en/' : `/en${post.path}`) : post.path
+          const route = routePrefix && post.path !== `${routePrefix}/` && !post.path.startsWith(`${routePrefix}/`) ? `${routePrefix}${post.path}` : post.path
           const item = document.createElement('li')
           const link = document.createElement('a')
           link.href = route

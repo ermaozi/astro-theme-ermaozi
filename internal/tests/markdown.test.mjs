@@ -55,6 +55,8 @@ test('file tree modifiers render independently from the documented project layou
   assert.match(html, /class="vp-file-tree-info file add diff"/)
   assert.match(html, /class="vp-file-tree-info file remove diff"/)
   assert.match(html, /class="vp-file-tree-node generated"/)
+  assert.match(await renderMarkdown('::: file-tree\n- file.ts\n:::', { sourcePath: 'content/en/tree.md' }), /aria-label="Copy" data-copied="Copied"/)
+  assert.match(await renderMarkdown('::: file-tree\n- file.ts\n:::', { sourcePath: 'content/docs/tree.md' }), /aria-label="复制" data-copied="已复制"/)
 })
 
 test('npm badge groups inherit parent props without transforming fenced examples', async () => {

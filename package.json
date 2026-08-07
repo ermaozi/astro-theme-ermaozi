@@ -1,15 +1,22 @@
 {
   "name": "ermaozi",
-  "version": "0.2.0-beta.6",
+  "version": "0.2.0-beta.7",
   "description": "The ermaozi Astro theme for blogs and documentation sites.",
   "private": true,
+  "keywords": [
+    "astro",
+    "astro-theme",
+    "blog",
+    "documentation",
+    "static-site-generator"
+  ],
   "license": "MIT",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/ermaozi/astro-theme-ermaozi.git"
   },
-  "homepage": "https://github.com/ermaozi/astro-theme-ermaozi#readme",
+  "homepage": "https://astro.ermao.net",
   "bugs": {
     "url": "https://github.com/ermaozi/astro-theme-ermaozi/issues"
   },

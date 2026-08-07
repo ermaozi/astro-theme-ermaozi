@@ -45,7 +45,7 @@ import { encryptContent } from './encryption.ts'
 import { globalAdminCredentials } from './encrypt-policy.ts'
 import { installObsidian, resolveContentPage, transformObsidian, type ObsidianOptions } from './obsidian.ts'
 import { injectImageSizes } from './image-size.ts'
-import { languageFromPath, localeOf } from './locales.ts'
+import { languageFromPath, languageFromSourcePath, localeOf, routeFromSourcePath } from './locales.ts'
 import { normalMarkdownSource } from './llm-markdown.ts'
 import { withBaseInHtml } from './client-utils.ts'
 
@@ -112,10 +112,8 @@ const copyCodeLocaleEntries = [
 ] as const
 const copyCodeLocales = Object.fromEntries(copyCodeLocaleEntries.flatMap(([languages, [copy, copied]]) => languages.map(language => [language, { copy, copied }]))) as Record<string, { copy: string, copied: string }>
 const copyCodeLocale = (sourcePath = '') => {
-  const normalized = sourcePath.replaceAll('\\', '/')
-  const contentIndex = normalized.lastIndexOf('/content/')
-  const route = contentIndex < 0 ? '/' : `/${normalized.slice(contentIndex + 9)}`
-  const language = languageFromPath(route)
+  const route = routeFromSourcePath(sourcePath)
+  const language = languageFromSourcePath(sourcePath)
   const preset = copyCodeLocales[language] ?? copyCodeLocales[language.split('-')[0]] ?? copyCodeLocales.en
   if (typeof copyCodeOptions !== 'object') return preset
   const localePath = Object.keys(copyCodeOptions.locales ?? {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]
@@ -416,9 +414,7 @@ const iconComponents = (source: string) => {
 }
 
 const linkComponents = (source: string, sourcePath?: string) => {
-  const normalizedPath = String(sourcePath ?? '').replaceAll('\\', '/')
-  const contentIndex = normalizedPath.lastIndexOf('/content/')
-  const routeHint = contentIndex >= 0 ? `/${normalizedPath.slice(contentIndex + '/content/'.length)}` : '/'
+  const routeHint = routeFromSourcePath(sourcePath)
   const openNewWindowText = escapeHtml(localeOf(languageFromPath(routeHint)).openNewWindowText)
   const renderLink = (raw: string, body = '') => {
     const props = attributes(raw)
@@ -1760,7 +1756,7 @@ const imageCards = (source: string, sourcePath?: string) => {
     let date = ''
     if (props.date) {
       const instance = new Date(/^\d+$/.test(props.date) ? Number(props.date) : props.date)
-      if (!Number.isNaN(instance.getTime())) date = new Intl.DateTimeFormat(String(sourcePath ?? '').replaceAll('\\', '/').includes('/content/en/') ? 'en-US' : 'zh-CN', { year: 'numeric', month: 'short', day: 'numeric' }).format(instance)
+      if (!Number.isNaN(instance.getTime())) date = new Intl.DateTimeFormat(languageFromSourcePath(sourcePath), { year: 'numeric', month: 'short', day: 'numeric' }).format(instance)
     }
     const copyright = props.author || date ? `<p class="copyright">${props.author ? `<span>${escapeHtml(props.author)}</span>` : ''}${props.author && date ? '<span> | </span>' : ''}${date ? `<span>${escapeHtml(date)}</span>` : ''}</p>` : ''
     const description = props.description ? `<p class="description">${escapeHtml(props.description)}</p>` : ''
@@ -2386,7 +2382,7 @@ const fileTreePlugin = (md: MarkdownIt) => {
       const props = attributes(raw)
       const title = props.title ?? (raw.includes('=') ? '' : raw)
       const mode = (props.icon === 'simple' ? 'simple' : (siteConfig.markdown as { fileTree?: { icon?: FileTreeIconMode } }).fileTree?.icon ?? 'colored') as FileTreeIconMode
-      const en = env.sourcePath?.replaceAll('\\', '/').includes('/content/en/')
+      const en = !languageFromSourcePath(env.sourcePath).toLowerCase().startsWith('zh')
       parseFileTree(tokens, index, mode)
       return `<div class="vp-file-tree">${title ? `<p class="vp-file-tree-title">${escapeHtml(title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree aria-label="${en ? 'Copy' : '复制'}" data-copied="${en ? 'Copied' : '已复制'}"></button>\n`
     },
@@ -2486,7 +2482,7 @@ const chartPlugin = (md: MarkdownIt) => {
     if (!siteConfig.markdown?.DANGEROUS_ALLOW_SCRIPT_EXECUTION) return false
     const allowlist = siteConfig.markdown.DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST as '*' | string[]
     if (allowlist === '*') return true
-    const relative = sourcePath.replaceAll('\\', '/').split('/content/').at(-1)?.replace(/^\//, '') ?? ''
+    const relative = routeFromSourcePath(sourcePath).replace(/^\//, '')
     return Array.isArray(allowlist) && allowlist.some((entry: string) => {
       const normalized = entry.replaceAll('\\', '/').replace(/^\//, '')
       return relative === (normalized.endsWith('.md') ? normalized : `${normalized}.md`)
@@ -2688,9 +2684,7 @@ const createMarkdown = () => {
   ] as const
   const hintLocales = Object.fromEntries(hintLocaleEntries.flatMap(([languages, values]) => languages.map(language => [language, Object.fromEntries(['important', 'info', 'note', 'tip', 'warning', 'caution', 'details'].map((key, index) => [key, values[index]]))]))) as Record<string, Record<typeof hintTypes[number] | 'details', string>>
   const hintLocale = (env: { sourcePath?: string }) => {
-    const sourcePath = String(env.sourcePath ?? '').replaceAll('\\', '/')
-    const contentIndex = sourcePath.lastIndexOf('/content/')
-    const language = languageFromPath(contentIndex < 0 ? '/' : `/${sourcePath.slice(contentIndex + 9)}`)
+    const language = languageFromSourcePath(env.sourcePath)
     return hintLocales[language] ?? hintLocales[language.split('-')[0]] ?? hintLocales.en
   }
 
@@ -3026,7 +3020,7 @@ const createMarkdown = () => {
       const props = attributes(info.replace(/^(?:file-)?tree/, '').trim())
       const nodes = parseFileTreeFence(tokens[index].content)
       const mode = (props.icon === 'simple' ? 'simple' : (siteConfig.markdown as { fileTree?: { icon?: FileTreeIconMode } }).fileTree?.icon ?? 'colored') as FileTreeIconMode
-      const en = String(env.sourcePath ?? '').replaceAll('\\', '/').includes('/content/en/')
+      const en = !languageFromSourcePath(env.sourcePath).toLowerCase().startsWith('zh')
       const copyText = Buffer.from(tokens[index].content.trim()).toString('base64')
       return `<div class="vp-file-tree">${props.title ? `<p class="vp-file-tree-title">${escapeHtml(props.title)}</p>` : ''}<button type="button" class="vp-copy-code-button" data-copy-tree data-copy-tree-text="${copyText}" aria-label="${en ? 'Copy' : '复制'}" data-copied="${en ? 'Copied' : '已复制'}"></button>${renderFileTreeNodes(nodes, mode, source => md.renderInline(source))}</div>\n`
     }

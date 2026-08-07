@@ -2,7 +2,7 @@ import GithubSlugger from 'github-slugger'
 import type MarkdownIt from 'markdown-it'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
-import { languageFromPath } from './locales.ts'
+import { languageFromPath, routeFromSourcePath } from './locales.ts'
 
 export type ObsidianOptions = false | true | {
   wikiLink?: boolean
@@ -88,12 +88,6 @@ const calloutLocales = {
 const calloutLocaleAliases: Record<string, keyof typeof calloutLocales> = {
   en: 'en', 'en-US': 'en', zh: 'zh', 'zh-CN': 'zh', 'zh-Hans': 'zh', 'zh-Hant': 'zh', 'zh-TW': 'zh-TW',
   de: 'de', 'de-DE': 'de', fr: 'fr', 'fr-FR': 'fr', ru: 'ru', 'ru-RU': 'ru', ja: 'ja', 'ja-JP': 'ja', ko: 'ko', 'ko-KR': 'ko',
-}
-
-const contentRoute = (sourcePath = '') => {
-  const normalized = sourcePath.replaceAll('\\', '/')
-  const index = normalized.lastIndexOf('/content/')
-  return index < 0 ? '/' : `/${normalized.slice(index + 9)}`
 }
 
 const normalizedOptions = (options: ObsidianOptions) => options === false ? false : typeof options === 'object' ? options : {}
@@ -452,7 +446,7 @@ export const installObsidian = (
         }
         tokens[close].meta = { tag, type }
         const custom = encodedTitle ? Buffer.from(encodedTitle, 'base64').toString() : ''
-        const route = contentRoute(env.sourcePath)
+        const route = routeFromSourcePath(env.sourcePath)
         const language = languageFromPath(route)
         const locale = calloutLocales[calloutLocaleAliases[language] ?? calloutLocaleAliases[language.split('-')[0]] ?? 'en']
         const localePath = Object.keys(callout.locales ?? {}).filter(prefix => route.startsWith(prefix)).sort((left, right) => right.length - left.length)[0]

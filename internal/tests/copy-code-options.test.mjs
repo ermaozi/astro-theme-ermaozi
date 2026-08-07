@@ -30,7 +30,7 @@ test('copy-code keeps every frozen locale preset and route override', async () =
     const url = new URL('../../theme/lib/markdown.ts', import.meta.url)
     url.searchParams.set('copy-code-options', 'route')
     const configured = (await import(url.href)).renderMarkdown
-    const html = await configured('```js\n1\n```', { sourcePath: path.resolve('content/en/copy.md') })
+    const html = await configured('```js\n1\n```', { sourcePath: 'content/en/copy.md' })
     assert.match(html, /data-copy-duration="7" data-copy-mobile="true" aria-label="Route copy" data-copied="Route copied"/)
   } finally {
     siteConfig.copyCode = previous

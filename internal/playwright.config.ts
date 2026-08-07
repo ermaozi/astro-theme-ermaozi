@@ -6,6 +6,7 @@ const projectRoot = fileURLToPath(new URL('..', import.meta.url))
 export default defineConfig({
   testDir: './tests',
   testMatch: '**/*.spec.ts',
+  workers: 1,
   outputDir: './artifacts/test-results',
   timeout: 45_000,
   use: {

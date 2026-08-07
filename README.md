@@ -5,7 +5,7 @@
 > The ermaozi Astro theme with full-text search, dark mode, taxonomies, SEO, and enhanced Markdown.
 
 > [!WARNING]
-> 当前为 `0.2.0-beta.6` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
+> 当前为 `0.2.0-beta.7` 测试版。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 Release 说明。
 
 在线演示：<https://astro.ermao.net>
 
@@ -22,6 +22,8 @@ npm create astro-theme-ermaozi@beta my-site
 pnpm create astro-theme-ermaozi@beta my-site
 yarn create astro-theme-ermaozi@beta my-site
 ```
+
+交互向导可选择简体中文或 English 作为根语言，并决定是否显示多语言入口。自动化创建可追加 `-- --yes --lang=en-US --multilingual`；生成器会同步调整内容目录、永久链接、翻译关系和站内链接。
 
 ## 开始使用
 

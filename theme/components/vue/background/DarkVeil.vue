@@ -105,6 +105,7 @@ function cleanup() {
     frame = null
   }
   window.removeEventListener('resize', resize)
+  renderer?.gl.getExtension('WEBGL_lose_context')?.loseContext()
 }
 
 function resize() {

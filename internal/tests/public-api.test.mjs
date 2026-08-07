@@ -4,7 +4,7 @@ import test from 'node:test'
 import plumeTheme, { defineCollection, defineCollections, defineNavbarConfig, defineSiteConfig, defineThemeConfig } from '../../theme/node.ts'
 import { defineEChartsConfig, useEChartsConfig } from '../../theme/lib/echarts-config.ts'
 import { isActive, isGradient, normalize, normalizeLink, normalizePrefix, numToUnit, resolveEditLink, resolveNavLink, resolveRepoType, toArray, withBase, withBaseInHtml, withoutBase } from '../../theme/lib/client-utils.ts'
-import { languageFromPath } from '../../theme/lib/locales.ts'
+import { languageFromPath, languageFromSourcePath, routeFromSourcePath } from '../../theme/lib/locales.ts'
 import { isIOS } from '../../theme/components/vue/background/helpers.ts'
 import { tintPlateColors } from '../../theme/lib/tint-plate.ts'
 import { homeConfigOf } from '../../theme/lib/home.ts'
@@ -205,6 +205,11 @@ test('public client utilities preserve the frozen path, CSS, and repository cont
   assert.deepEqual(resolveNavLink('/guide/index.html'), { text: 'guide', link: '/guide/' })
   assert.equal(languageFromPath('/en/docs/'), 'en-US')
   assert.equal(languageFromPath('/docs/'), 'zh-CN')
+  assert.equal(languageFromSourcePath('/repo/content/en/docs/page.md'), 'en-US')
+  assert.equal(languageFromSourcePath('/repo/content/docs/page.md'), 'zh-CN')
+  assert.equal(languageFromSourcePath('content/en/docs/page.md'), 'en-US')
+  assert.equal(languageFromSourcePath('./content/docs/page.md'), 'zh-CN')
+  assert.equal(routeFromSourcePath('content/en/docs/page.md'), '/en/docs/page.md')
 })
 
 test('public page data excludes unlock credentials and custom CSS loads last', async () => {

@@ -21,6 +21,7 @@ let animationId = 0
 let gl: WebGLRenderingContext | null = null
 let program: WebGLProgram | null = null
 let startTime = 0
+let cleanup: (() => void) | undefined
 
 const vertexShaderSource = `
 attribute vec2 aPosition;
@@ -168,6 +169,7 @@ function initWebGL() {
 
   resizeCanvas()
   window.addEventListener('resize', resizeCanvas)
+  cleanup = () => window.removeEventListener('resize', resizeCanvas)
 
   gl = canvas.getContext('webgl')
   if (!gl) {
@@ -204,9 +206,6 @@ function initWebGL() {
   startTime = performance.now()
   render()
 
-  return () => {
-    window.removeEventListener('resize', resizeCanvas)
-  }
 }
 
 function render() {
@@ -251,9 +250,11 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  cleanup?.()
   if (animationId) {
     cancelAnimationFrame(animationId)
   }
+  gl?.getExtension('WEBGL_lose_context')?.loseContext()
   gl = null
   program = null
 })

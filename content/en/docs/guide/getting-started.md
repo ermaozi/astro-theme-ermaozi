@@ -29,6 +29,8 @@ pnpm create astro-theme-ermaozi@beta my-blog
 yarn create astro-theme-ermaozi@beta my-blog
 ```
 
+Choose Simplified Chinese or English as the root language. When multilingual mode is enabled, the other language is placed under `/en/` or `/zh/`; content, permalinks, translation links, and internal links are adjusted automatically.
+
 Enter the project and start the fast preview:
 
 ```sh
@@ -53,7 +55,7 @@ Keep every other default for now. See [site configuration](/en/docs/guide/config
 
 ### Build an English-only site
 
-Remove the complete `'zh-CN': { ... }` locale block from `site.config.mjs`, move the English `home` to `/`, update its internal links to remove `/en`, and move `content/en/*` directly under `content/`. Back up the project before moving files.
+Choose English as the default language during creation. If the generated Chinese examples are not needed, remove the complete `'zh-CN': { ... }` locale block and `content/zh/`; no English files or routes need to be moved manually. Back up the project before deleting files.
 
 ## 4. Publish the first post
 
