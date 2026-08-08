@@ -19,7 +19,7 @@ ermaozi builds a static site by default. The build command is `npm run build` an
 Run the initializer and choose a platform under “Deployment”:
 
 ```sh
-npm create astro-theme-ermaozi@beta
+npm create astro-theme-ermaozi
 ```
 
 The initializer writes the smallest configuration for the package manager that invoked it:

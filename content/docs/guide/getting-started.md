@@ -23,9 +23,9 @@ tags: [入门, 配置, Astro]
 任选一种已经安装的包管理器：
 
 ```sh
-npm create astro-theme-ermaozi@beta my-blog
-pnpm create astro-theme-ermaozi@beta my-blog
-yarn create astro-theme-ermaozi@beta my-blog
+npm create astro-theme-ermaozi my-blog
+pnpm create astro-theme-ermaozi my-blog
+yarn create astro-theme-ermaozi my-blog
 ```
 
 向导可选择简体中文或 English 作为站点根语言；启用多语言时，另一种语言会自动放到 `/en/` 或 `/zh/`，无需手动移动内容或修改永久链接。

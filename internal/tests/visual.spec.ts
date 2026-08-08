@@ -1149,10 +1149,10 @@ test('Iconify, IconFont, and Font Awesome keep frozen provider geometry', async 
   }
 })
 
-test('forced-dark home keeps the frozen root and body backgrounds', async ({ page }) => {
+test('forced-dark home paints the root and body backgrounds', async ({ page }) => {
   await page.goto('/hero/', { waitUntil: 'domcontentloaded' })
   await expect(page.locator('html')).toHaveClass(/\bforce-dark\b/)
-  await expect(page.locator('html')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(27, 27, 31)')
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(27, 27, 31)')
 })
 

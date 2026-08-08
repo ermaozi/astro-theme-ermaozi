@@ -18,7 +18,7 @@ ermaozi 默认生成纯静态站点。构建命令是 `npm run build`，发布�
 运行创建器并在“部署方式”中选择平台：
 
 ```sh
-npm create astro-theme-ermaozi@beta
+npm create astro-theme-ermaozi
 ```
 
 创建器会按当前包管理器生成最小配置：

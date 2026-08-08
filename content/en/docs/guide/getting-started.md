@@ -24,9 +24,9 @@ Install [Node.js 22.12 or newer](https://nodejs.org/) and a text editor. Windows
 Use one package manager already installed on your computer:
 
 ```sh
-npm create astro-theme-ermaozi@beta my-blog
-pnpm create astro-theme-ermaozi@beta my-blog
-yarn create astro-theme-ermaozi@beta my-blog
+npm create astro-theme-ermaozi my-blog
+pnpm create astro-theme-ermaozi my-blog
+yarn create astro-theme-ermaozi my-blog
 ```
 
 Choose Simplified Chinese or English as the root language. When multilingual mode is enabled, the other language is placed under `/en/` or `/zh/`; content, permalinks, translation links, and internal links are adjusted automatically.

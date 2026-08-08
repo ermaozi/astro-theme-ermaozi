@@ -33,6 +33,7 @@
 }
 
 html {
+  background: var(--vp-c-bg);
   scroll-padding-top: calc(var(--vp-nav-height) + 16px);
 }
 

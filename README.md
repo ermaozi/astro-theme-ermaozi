@@ -12,15 +12,15 @@
 创建新站点并自动安装依赖：
 
 ```bash
-npm create astro-theme-ermaozi@beta
+npm create astro-theme-ermaozi
 ```
 
 也可以直接指定目录，或使用对应包管理器的创建命令：
 
 ```bash
-npm create astro-theme-ermaozi@beta my-site
-pnpm create astro-theme-ermaozi@beta my-site
-yarn create astro-theme-ermaozi@beta my-site
+npm create astro-theme-ermaozi my-site
+pnpm create astro-theme-ermaozi my-site
+yarn create astro-theme-ermaozi my-site
 ```
 
 交互向导可选择简体中文或 English 作为根语言，并决定是否显示多语言入口。自动化创建可追加 `-- --yes --lang=en-US --multilingual`；生成器会同步调整内容目录、永久链接、翻译关系和站内链接。
@@ -118,7 +118,7 @@ yarn install && yarn deploy
 
 ## 发布初始化器
 
-`npm create astro-theme-ermaozi@beta` 会由 npm 解析并执行 `create-astro-theme-ermaozi` 的测试版本。发布前在初始化器目录检查模板包：
+`npm create astro-theme-ermaozi` 会由 npm 解析并执行 `create-astro-theme-ermaozi` 的正式版本。发布前在初始化器目录检查模板包：
 
 ```bash
 cd internal/create
@@ -127,7 +127,7 @@ npm pack --dry-run
 npm publish --access public
 ```
 
-只有最后一步成功发布到 npm 后，公开的 `npm create astro-theme-ermaozi@beta` 命令才会生效；本项目不会在构建或测试时自动发布。预发布版本使用 npm `beta` 标签，不覆盖现有 `latest`。
+只有最后一步成功发布到 npm 后，公开的 `npm create astro-theme-ermaozi` 命令才会生效；本项目不会在构建或测试时自动发布。正式版本使用 npm `latest` 标签，预发布版本使用 `beta`。
 
 后续版本可由 [`.github/workflows/publish-npm.yml`](./.github/workflows/publish-npm.yml) 自动发布：
 
