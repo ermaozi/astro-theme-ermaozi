@@ -155,6 +155,7 @@ function runCodex({ issueNumber, checkout, kind, model, effort, profile, prompt,
       '--profile', profile,
       '--strict-config',
       '--ephemeral',
+      '--ignore-user-config',
       '--cd', checkout,
       '--model', model,
       '--config', `model_reasoning_effort="${effort}"`,
@@ -167,11 +168,16 @@ function runCodex({ issueNumber, checkout, kind, model, effort, profile, prompt,
       env: codexEnvironment(),
       input: prompt,
       encoding: 'utf8',
-      stdio: ['pipe', 'inherit', 'inherit'],
+      maxBuffer: 8 * 1024 * 1024,
       timeout: 45 * 60 * 1000,
     });
     if (result.error) throw result.error;
-    if (result.status !== 0) throw new Error(`Codex exited with status ${result.status}.`);
+    if (result.status !== 0) {
+      const details = `${result.stdout}${result.stderr}`
+        .replace(/<issue_data>[\s\S]*?<\/issue_data>/g, '<issue_data>[redacted]</issue_data>')
+        .slice(-4000);
+      throw new Error(`Codex exited with status ${result.status}.${details ? `\n${details}` : ''}`);
+    }
     return JSON.parse(fs.readFileSync(outputPath, 'utf8'));
   } finally {
     fs.rmSync(schemaPath, { force: true });
