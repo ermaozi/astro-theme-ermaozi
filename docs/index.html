@@ -1,0 +1,809 @@
+<!DOCTYPE html><html class="layout-doc" lang="zh-CN" data-page-transition data-katex-copy="true" data-mark-mode="lazy" data-repl-theme="{&quot;light&quot;:&quot;github-light&quot;,&quot;dark&quot;:&quot;github-dark&quot;}" data-photo-swipe-selector=".vp-doc :not(a) > img:not([no-view],.no-view,.ignore)" data-photo-swipe-download="true" data-photo-swipe-fullscreen="true" data-photo-swipe-scroll-close="true" data-photo-swipe-locale="{&quot;close&quot;:&quot;关闭&quot;,&quot;download&quot;:&quot;下载图片&quot;,&quot;fullscreen&quot;:&quot;切换全屏&quot;,&quot;zoom&quot;:&quot;缩放&quot;,&quot;arrowPrev&quot;:&quot;上一个 (左箭头)&quot;,&quot;arrowNext&quot;:&quot;下一个 (右箭头)&quot;}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#336f87"><meta name="color-scheme" content="light dark"><script>(function(){const appearance = true;
+const forceDark = false;
+
+      (() => {
+        const root = document.documentElement
+        const stored = localStorage.getItem('vuepress-theme-appearance')
+        const selected = stored || (appearance === 'dark' ? 'dark' : 'auto')
+        const dark = forceDark || (appearance !== false && (selected === 'dark' || (selected !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)))
+        root.dataset.theme = dark ? 'dark' : 'light'
+        root.classList.toggle('dark', dark)
+      })()
+    })();</script><meta name="referrer" content="strict-origin-when-cross-origin"><title>文档中心 | 文档中心 | ermaozi</title><meta name="description" content="了解 ermaozi 的配置、内容模型和内置能力。"><link data-ermaozi-managed-head rel="canonical" href="https://astro.ermao.net/docs/"><meta data-ermaozi-managed-head property="og:title" content="文档中心"><meta data-ermaozi-managed-head property="og:description" content="了解 ermaozi 的配置、内容模型和内置能力。"><meta data-ermaozi-managed-head property="og:url" content="https://astro.ermao.net/docs/"><meta data-ermaozi-managed-head property="og:type" content="article"><meta data-ermaozi-managed-head property="og:site_name" content="ermaozi"><meta data-ermaozi-managed-head property="og:locale" content="zh-CN"><meta data-ermaozi-managed-head property="og:image" content="https://astro.ermao.net/img/logo.svg"><meta data-ermaozi-managed-head property="og:image:alt" content="文档中心"><meta data-ermaozi-managed-head property="og:updated_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:author" content="站点作者"><meta data-ermaozi-managed-head property="article:tag" content="文档"><meta data-ermaozi-managed-head property="article:tag" content="Astro"><meta data-ermaozi-managed-head property="article:published_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:modified_time" content="2026-08-05T00:00:00.000Z"><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"文档中心","image":["https://astro.ermao.net/img/logo.svg"],"datePublished":"2026-08-05T00:00:00.000Z","dateModified":"2026-08-05T00:00:00.000Z","author":[{"@type":"Person","name":"站点作者"}],"@id":"https://astro.ermao.net/docs/#article","mainEntityOfPage":{"@type":"WebPage","@id":"https://astro.ermao.net/docs/"},"inLanguage":"zh-CN","articleSection":"文档中心","keywords":"Astro, 文档","publisher":{"@id":"https://astro.ermao.net/about/#person"},"isPartOf":{"@id":"https://astro.ermao.net/#website"}}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://astro.ermao.net/#website","url":"https://astro.ermao.net/","name":"ermaozi","description":"一个支持全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。","inLanguage":"zh-CN","publisher":{"@id":"https://astro.ermao.net/about/#person"}},{"@type":"Person","@id":"https://astro.ermao.net/about/#person","name":"站点作者","url":"https://astro.ermao.net/about/","image":"https://astro.ermao.net/img/logo.svg","description":"使用 ermaozi 发布文章、文档和项目记录。","sameAs":["https://github.com/ermaozi/astro-theme-ermaozi"]}]}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://astro.ermao.net/"},{"@type":"ListItem","position":2,"name":"文档中心","item":"https://astro.ermao.net/docs/"}]}</script><link rel="icon" href="/img/logo.svg"><meta name="keywords" content="Astro,静态博客,Markdown,博客主题"><link rel="stylesheet" href="/_astro/_..BozvyjkW.css"><link rel="stylesheet" href="/_astro/BaseLayout.DzgLzYEh.css"><style>.home-hero-effect-dark-veil[data-v-d452a4a0]{width:100%;height:100%;display:block;position:absolute;transform:translate(0,0)}
+.home-hero-effect-beams[data-v-7d45be68]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-dot-grid[data-v-60f95dd7]{justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;overflow:hidden}.dot-grid-container[data-v-60f95dd7]{width:100%;height:100%;position:relative}.dot-grid-container canvas[data-v-60f95dd7]{pointer-events:none;width:100%;height:100%;position:absolute;inset:0}
+.home-hero-hyperspeed[data-v-6103dcc7]{width:100%;height:100%;position:absolute;overflow:hidden}.home-hero-hyperspeed[data-v-6103dcc7] canvas{display:block;width:100%!important;height:100%!important}
+.home-hero-effect-lighting[data-v-11b14641]{width:100%;height:100%;position:absolute;transform:translate(0,0)}.home-hero-effect-lighting canvas[data-v-11b14641]{mix-blend-mode:screen;width:100%;height:100%}
+.home-hero-effect-iridescence[data-v-57569e3d]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-liquid-ether[data-v-4f4b1a4e]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+.home-hero-effect-orb[data-v-0cd01e9e]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-prism[data-v-efa4438a]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-pixel-blast[data-v-012c650c]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+</style></head><body data-page-shell="PmNoSj3tRCtNHj0z" data-pagefind-ready="true"><div id="nprogress" aria-hidden="true" hidden><div class="bar"></div></div><script id="ermaozi-page-data" type="application/json">{"page":{"path":"/docs/","title":"文档中心","description":"了解 ermaozi 的配置、内容模型和内置能力。"},"frontmatter":{"title":"文档中心","description":"了解 ermaozi 的配置、内容模型和内置能力。","permalink":"/docs/","createTime":"2026-08-05T00:00:00.000Z","type":"doc","order":1,"group":"概览","badge":"开始","icon":"material-symbols:docs-outline","tags":["Astro","文档"]}}</script><div id="app"><div class="theme-plume vp-layout"><div class="global-protected" data-global-protected><span tabindex="-1"></span><a class="vp-skip-link visually-hidden" href="#VPContent">跳到内容</a><header class="vp-nav"><div class="vp-navbar has-sidebar"><div class="wrapper"><div class="container"><div class="title"><div class="vp-navbar-title"><a href="/" aria-label="ermaozi 首页" class="vp-link title link no-icon"><img class="vp-image dark logo" src="/img/logo.svg" alt="" width="24" height="24"><img class="vp-image light logo" src="/img/logo.svg" alt="" width="24" height="24"><span>ermaozi</span></a></div></div><div class="content"><div class="content-body"><div class="vp-navbar-search search"><div class="search-wrapper"><div id="local-search"><button class="mini-search mini-search-button search-button" type="button" aria-label="搜索文档"><span class="mini-search-button-container"><span class="mini-search-search-icon vpi-mini-search" aria-label="search icon"></span><span class="mini-search-button-placeholder">搜索文档</span></span><span class="mini-search-button-keys" aria-hidden="true"><kbd class="mini-search-button-key"></kbd><kbd class="mini-search-button-key">K</kbd></span></button></div></div></div><nav class="vp-navbar-menu menu" aria-labelledby="main-nav-aria-label"><span id="main-nav-aria-label" class="visually-hidden">Main Navigation</span><a tabindex="0" href="/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link navbar-menu-link"><span class="vp-icon nav-symbol icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>博客</span></span></a><div class="vp-flyout vp-navbar-menu-group nav-group active"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span class="nav-label">文档</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link active"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span>文档中心<span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></a></div><div class="vp-menu-group"><p class="title"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><span>指南</span></p><div class="vp-menu-link"><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span>快速开始</a></div><div class="vp-menu-link"><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span>站点配置</a></div><div class="vp-menu-link"><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span>部署站点</a></div><div class="vp-menu-link"><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>内容能力<span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a></div><div class="vp-menu-link"><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>Astro<span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></div></div><div class="vp-flyout vp-navbar-menu-group nav-group"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span class="nav-label">更多</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon-img nav-menu-icon" aria-hidden="true"><img src="/img/logo.svg" alt=""></span>分类</a></div><div class="vp-menu-link"><a href="/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon is-svg nav-menu-icon" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span>标签</a></div><div class="vp-menu-link"><a href="/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span>归档</a></div><div class="vp-menu-link"><a href="/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span>关于</a></div></div></div></div></div></nav><div class="vp-navbar-appearance appearance"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-navbar-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div><div class="vp-flyout vp-navbar-extra extra"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation"><span class="vpi-more-horizontal icon" aria-hidden="true"></span></button><div class="menu flyout-menu"><div class="vp-menu flyout-panel extra-panel"><div class="group appearance"><div class="item appearance"><p class="label">外观</p><div class="appearance-action"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div></div></div><div class="group social"><div class="item social-links"><div class="vp-social-links social-links-list"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></div></div></div><button class="vp-navbar-hamburger hamburger" type="button" aria-label="移动端导航" aria-expanded="false" aria-controls="nav-screen"><span class="container"><span class="top"></span><span class="middle"></span><span class="bottom"></span></span></button></div></div></div></div><div class="divider"><div class="divider-line"></div></div></div><div id="navScreen" class="vp-nav-screen" hidden><div class="container"><nav class="vp-nav-screen-menu menu"><a href="/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-link"><span class="vp-icon icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>博客</span></span></a><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-文档" aria-expanded="false"><span class="button-text"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>文档</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-文档" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link active"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>文档中心</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></a></div><div class="group"><div class="vp-nav-screen-menu-group-section"><p class="title"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span>指南</p><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span><span>快速开始</span></a><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><span>站点配置</span></a><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span><span>部署站点</span></a><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>内容能力</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>Astro</span><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></div><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-更多" aria-expanded="false"><span class="button-text"><span class="vp-icon icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span>更多</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-更多" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon-img" aria-hidden="true"><img src="/img/logo.svg" alt=""></span><span>分类</span></a></div><div class="item"><a href="/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon is-svg" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span><span>标签</span></a></div><div class="item"><a href="/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span><span>归档</span></a></div><div class="item"><a href="/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span><span>关于</span></a></div></div></div></div></nav><div class="vp-nav-screen-appearance mobile-appearance appearance"><p class="text">外观</p><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-nav-screen-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></header><div role="button" aria-expanded="true" aria-haspopup="listbox" aria-labelledby="mini-search-label" class="VPLocalSearchBox" hidden data-no-results="无搜索结果："><div class="backdrop"></div><div class="shell"><form class="search-bar" role="search"><label id="localsearch-label" title="搜索文档" for="localsearch-input"><svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></g></svg></label><div class="search-actions before"><button class="back-button" type="button" title="关闭" aria-label="关闭"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m7 7-7-7 7-7"></path></svg></button></div><input id="localsearch-input" class="search-input" placeholder="搜索文档" aria-labelledby="localsearch-label" autocomplete="off"><div class="search-actions"><span class="search-loading" aria-live="polite"></span><button class="clear-button" type="reset" disabled title="重置搜索"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm-2 4-6 6m0-6 6 6"></path></svg></button></div></form><ul class="results"></ul><div class="search-keyboard-shortcuts" aria-hidden="true"><span><kbd aria-label="向上"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m-7 7 7-7 7 7"></path></svg></kbd><kbd aria-label="向下"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7-7 7-7-7"></path></svg></kbd>切换</span><span><kbd aria-label="输入"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 10-5 5 5 5"></path><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></g></svg></kbd>选择</span><span><kbd aria-label="退出">esc</kbd>关闭</span></div></div></div><script>(function(){const appearanceDefault = "auto";
+const appearanceEnabled = true;
+const appearanceTransition = "fade";
+const searchProvider = "local";
+const disableQueryPersistence = false;
+const basePath = "/";
+const lightModeSwitchTitle = "切换为浅色主题";
+const darkModeSwitchTitle = "切换为深色主题";
+
+  (() => {
+    const root = document.documentElement
+    const updateAppearance = dark => {
+      document.querySelectorAll('.vp-switch-appearance').forEach(button => {
+        button.setAttribute('aria-checked', String(dark))
+        button.setAttribute('title', dark ? lightModeSwitchTitle : darkModeSwitchTitle)
+      })
+    }
+    const preferredDark = matchMedia('(prefers-color-scheme: dark)')
+    const setTheme = dark => {
+      dark ||= root.classList.contains('force-dark')
+      root.dataset.theme = dark ? 'dark' : 'light'
+      root.classList.toggle('dark', dark)
+      updateAppearance(dark)
+      document.querySelector('iframe.giscus-frame')?.contentWindow?.postMessage({ giscus: { setConfig: { theme: dark ? 'dark' : 'light' } } }, 'https://giscus.app')
+      document.dispatchEvent(new CustomEvent('theme-change'))
+    }
+    const appearanceKeyframes = (mode, x, y, dark) => {
+      const reverse = values => dark ? values.toReversed() : values
+      const distance = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+      const strategies = {
+        fade: { opacity: reverse(['0', '1']), duration: 300 },
+        'circle-clip': { clipPath: reverse([`circle(0px at ${x}px ${y}px)`, `circle(${distance}px at ${x}px ${y}px)`]), duration: 650 },
+        'horizontal-clip': { clipPath: reverse([`inset(0px ${innerWidth}px 0px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'vertical-clip': { clipPath: reverse([`inset(0px 0px ${innerHeight}px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'skew-clip': { clipPath: reverse(['polygon(0px 0px, 0px 0px, 0px 0px)', `polygon(0px 0px, ${innerWidth * 2}px 0px, 0px ${innerHeight * 2}px)`]) },
+        'blinds-vertical': { clipPath: reverse(['inset(50% 0% 50% 0%)', 'inset(0 0 0 0)']) },
+        'blinds-horizontal': { clipPath: reverse(['polygon(50% 0, 50% 100%, 50% 100%, 50% 0)', 'polygon(0 0, 0 100%, 100% 100%, 100% 0)']) },
+        'soft-blur-fade': { opacity: reverse(['0', '1']), filter: reverse(['blur(10px)', 'blur(0px)']), duration: 380 },
+        'diamond-reveal': { clipPath: reverse(['polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)', 'polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%)']), duration: 500 },
+      }
+      const { duration = 400, ...keyframes } = strategies[mode] ?? strategies.fade
+      return { duration, keyframes }
+    }
+    const syncAutomaticAppearance = () => {
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      const appearance = localStorage.getItem('vuepress-theme-appearance') || appearanceDefault
+      if (!appearance || appearance === 'auto') setTheme(preferredDark.matches)
+      else setTheme(appearance === 'dark')
+    }
+    updateAppearance(root.dataset.theme === 'dark')
+    preferredDark.addEventListener('change', syncAutomaticAppearance)
+    addEventListener('storage', event => {
+      if (event.key !== 'vuepress-theme-appearance') return
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      if (event.newValue === 'dark' || event.newValue === 'light') setTheme(event.newValue === 'dark')
+      else syncAutomaticAppearance()
+    })
+    let printWasDark = false
+    addEventListener('beforeprint', () => {
+      printWasDark = root.dataset.theme === 'dark'
+      if (printWasDark) { root.dataset.theme = 'light'; root.classList.remove('dark') }
+    })
+    addEventListener('afterprint', () => {
+      if (printWasDark) { root.dataset.theme = 'dark'; root.classList.add('dark') }
+    })
+
+    const navbar = document.querySelector('.vp-navbar')
+    const updateNavbarTop = () => navbar?.classList.toggle('top', scrollY === 0)
+    updateNavbarTop()
+    addEventListener('scroll', updateNavbarTop, { passive: true })
+    document.querySelector('.vp-skip-link')?.addEventListener('click', event => {
+      const link = event.currentTarget
+      if (!(link instanceof HTMLAnchorElement)) return
+      const target = document.querySelector(link.hash)
+      if (!(target instanceof HTMLElement)) return
+      const clear = () => { target.removeAttribute('tabindex'); target.removeEventListener('blur', clear) }
+      target.tabIndex = -1
+      target.addEventListener('blur', clear)
+      target.focus()
+      scrollTo(0, 0)
+    })
+
+    document.querySelectorAll('.vp-switch-appearance').forEach(button => button.addEventListener('click', async event => {
+      const next = root.dataset.theme !== 'dark'
+      const apply = () => {
+        localStorage.setItem('vuepress-theme-appearance', next ? 'dark' : 'light')
+        setTheme(next)
+      }
+      if (appearanceTransition === false || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        apply()
+        return
+      }
+      try {
+        root.classList.add('appearance-transition')
+        const transition = document.startViewTransition(apply)
+        void transition.finished.finally(() => root.classList.remove('appearance-transition'))
+        await transition.ready
+        const { keyframes, duration } = appearanceKeyframes(appearanceTransition, event.clientX, event.clientY, next)
+        root.animate(keyframes, {
+          duration,
+          easing: 'ease-in',
+          fill: 'forwards',
+          pseudoElement: `::view-transition-${next ? 'old' : 'new'}(root)`,
+        })
+      } catch {
+        root.classList.remove('appearance-transition')
+        apply()
+      }
+    }))
+
+    const button = document.querySelector('.vp-navbar-hamburger')
+    const menu = document.querySelector('.vp-nav-screen')
+    let screenTimer
+    let screenFrame
+    const screenClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const resetScreen = visible => {
+      clearTimeout(screenTimer)
+      cancelAnimationFrame(screenFrame)
+      menu?.classList.remove(...screenClasses)
+      if (menu instanceof HTMLElement) menu.hidden = !visible
+    }
+    const toggleScreen = open => {
+      resetScreen(true)
+      if (!(menu instanceof HTMLElement) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        resetScreen(open)
+        if (!open) document.body.style.overflow = ''
+        return
+      }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`)
+      void menu.offsetWidth
+      menu.classList.add(`fade-in-${phase}-active`)
+      screenFrame = requestAnimationFrame(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        screenTimer = setTimeout(() => {
+          resetScreen(open)
+          if (!open) document.body.style.overflow = ''
+        }, 200)
+      })
+    }
+    const expandTimers = new WeakMap()
+    const expandClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetExpand = (container, visible) => {
+      const pending = expandTimers.get(container)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      expandTimers.delete(container)
+      container.classList.remove(...expandClasses)
+      container.style.maxHeight = ''
+      container.style.transition = ''
+      container.style.display = visible ? '' : 'none'
+    }
+    const toggleExpand = (container, open) => {
+      resetExpand(container, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetExpand(container, open)
+      const phase = open ? 'enter' : 'leave'
+      const from = `fade-in-height-expand-${phase}-from`
+      const active = `fade-in-height-expand-${phase}-active`
+      const to = `fade-in-height-expand-${phase}-to`
+      container.classList.add(from, active)
+      if (open) {
+        container.style.transition = 'none'
+        const height = container.offsetHeight
+        container.style.maxHeight = '0px'
+        void container.offsetWidth
+        container.style.transition = ''
+        container.style.maxHeight = `${height}px`
+      } else {
+        container.style.maxHeight = `${container.offsetHeight}px`
+        void container.offsetWidth
+        container.style.maxHeight = '0px'
+      }
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        pending.frame = requestAnimationFrame(() => {
+          container.classList.remove(from)
+          container.classList.add(to)
+          pending.timer = setTimeout(() => resetExpand(container, open), 300)
+        })
+      })
+      expandTimers.set(container, pending)
+    }
+    const closeMobileMenu = () => {
+      button?.setAttribute('aria-expanded', 'false')
+      button?.classList.remove('active')
+      document.querySelector('.vp-navbar')?.classList.remove('screen-open')
+      menu?.querySelectorAll('.vp-nav-screen-menu-group.open').forEach(group => {
+        group.classList.remove('open')
+        group.querySelector('.button')?.setAttribute('aria-expanded', 'false')
+        const container = group.querySelector('.vp-nav-screen-menu-group-container')
+        if (container instanceof HTMLElement) resetExpand(container, false)
+      })
+      const translations = menu?.querySelector('.vp-nav-screen-translations.open')
+      translations?.classList.remove('open')
+      translations?.querySelector('.title')?.setAttribute('aria-expanded', 'false')
+      const translationsContainer = translations?.querySelector('.vp-nav-screen-translations-container')
+      if (translationsContainer instanceof HTMLElement) resetExpand(translationsContainer, false)
+      toggleScreen(false)
+    }
+    button?.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true'
+      if (!open) return closeMobileMenu()
+      button.setAttribute('aria-expanded', 'true')
+      button.classList.add('active')
+      document.querySelector('.vp-navbar')?.classList.add('screen-open')
+      document.body.style.overflow = 'hidden'
+      toggleScreen(true)
+    })
+    menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu))
+    menu?.querySelectorAll('.vp-nav-screen-menu-group > .button').forEach(groupButton => groupButton.addEventListener('click', () => {
+      const group = groupButton.closest('.vp-nav-screen-menu-group')
+      const container = group?.querySelector('.vp-nav-screen-menu-group-container')
+      const open = groupButton.getAttribute('aria-expanded') !== 'true'
+      groupButton.setAttribute('aria-expanded', String(open))
+      group?.classList.toggle('open', open)
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    }))
+    const mobileTranslations = menu?.querySelector('.vp-nav-screen-translations')
+    const mobileTranslationsButton = mobileTranslations?.querySelector('.title')
+    mobileTranslationsButton?.addEventListener('click', () => {
+      const open = mobileTranslationsButton.getAttribute('aria-expanded') !== 'true'
+      mobileTranslationsButton.setAttribute('aria-expanded', String(open))
+      mobileTranslations?.classList.toggle('open', open)
+      const container = mobileTranslations?.querySelector('.vp-nav-screen-translations-container')
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    })
+
+    const flyouts = [...document.querySelectorAll('.vp-flyout')]
+    const closeFlyouts = except => flyouts.forEach(flyout => {
+      if (flyout === except) return
+      const button = flyout.querySelector('.flyout-button')
+      button?.setAttribute('aria-expanded', 'false')
+      if (button instanceof HTMLElement) delete button.dataset.clickedOpen
+    })
+    flyouts.forEach(flyout => {
+      const trigger = flyout.querySelector('.flyout-button')
+      const setOpen = open => trigger?.setAttribute('aria-expanded', String(open))
+      flyout.addEventListener('mouseenter', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('mouseleave', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      })
+      flyout.addEventListener('focusin', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('focusout', event => {
+        if (!(event.relatedTarget instanceof Node) || !flyout.contains(event.relatedTarget)) {
+          if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+          setOpen(false)
+        }
+      })
+      trigger?.addEventListener('click', () => {
+        const open = !(trigger instanceof HTMLElement && trigger.dataset.clickedOpen === 'true')
+        closeFlyouts(flyout)
+        if (trigger instanceof HTMLElement) {
+          if (open) trigger.dataset.clickedOpen = 'true'
+          else delete trigger.dataset.clickedOpen
+        }
+        setOpen(open)
+      })
+      flyout.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      }))
+    })
+
+    document.addEventListener('pointerdown', event => {
+      if (!(event.target instanceof Element)) return
+      if (!event.target.closest('.vp-flyout')) closeFlyouts()
+    })
+
+    const dialog = document.querySelector('.VPLocalSearchBox')
+    const searchButton = document.querySelector('.search-button')
+    if (dialog) document.body.append(dialog)
+    const searchInput = dialog?.querySelector('.search-input')
+    const results = dialog?.querySelector('.results')
+    const clearButton = dialog?.querySelector('.clear-button')
+    const loading = dialog?.querySelector('.search-loading')
+    const searchNoResultsText = dialog instanceof HTMLElement ? dialog.dataset.noResults || 'No results for' : 'No results for'
+    let pagefind
+    let searchTimer
+    let searchRun = 0
+    let selectedIndex = -1
+    let bodyOverflow = ''
+    const searchResults = []
+    const closeSearch = () => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      dialog.hidden = true
+      document.body.style.overflow = bodyOverflow
+      searchButton?.focus()
+    }
+    const setLoading = active => {
+      loading?.classList.toggle('active', active)
+      if (active) {
+        loading?.setAttribute('role', 'status')
+        loading?.setAttribute('aria-label', 'Loading search results')
+      } else {
+        loading?.removeAttribute('role')
+        loading?.removeAttribute('aria-label')
+      }
+    }
+    const selectResult = index => {
+      const links = [...(results?.querySelectorAll('.result') || [])]
+      selectedIndex = links.length ? (index + links.length) % links.length : -1
+      links.forEach((link, i) => {
+        link.classList.toggle('selected', i === selectedIndex)
+        link.parentElement?.setAttribute('aria-selected', String(i === selectedIndex))
+      })
+      links[selectedIndex]?.scrollIntoView({ block: 'nearest' })
+    }
+    const appendHighlighted = (target, value, query) => {
+      const text = String(value || '')
+      const needle = query.trim().toLocaleLowerCase(root.lang)
+      if (!needle) {
+        target.textContent = text
+        return
+      }
+      const lower = text.toLocaleLowerCase(root.lang)
+      let offset = 0
+      let index
+      while ((index = lower.indexOf(needle, offset)) >= 0) {
+        target.append(document.createTextNode(text.slice(offset, index)))
+        const mark = document.createElement('mark')
+        mark.textContent = text.slice(index, index + needle.length)
+        target.append(mark)
+        offset = index + needle.length
+      }
+      target.append(document.createTextNode(text.slice(offset)))
+    }
+    const chevron = () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('width', '18')
+      svg.setAttribute('height', '18')
+      svg.setAttribute('viewBox', '0 0 24 24')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      for (const [name, value] of Object.entries({ fill: 'none', stroke: 'currentColor', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'm9 18 6-6-6-6' })) path.setAttribute(name, value)
+      svg.append(path)
+      return svg
+    }
+    const renderResults = (items, query) => {
+      searchResults.splice(0, searchResults.length, ...items)
+      results?.replaceChildren()
+      if (!results) return
+      for (const attribute of ['id', 'role', 'aria-labelledby']) results.removeAttribute(attribute)
+      if (items.length) {
+        results.id = 'localsearch-list'
+        results.setAttribute('role', 'listbox')
+        results.setAttribute('aria-labelledby', 'localsearch-label')
+        dialog?.setAttribute('aria-owns', 'localsearch-list')
+      } else {
+        dialog?.removeAttribute('aria-owns')
+      }
+      if (query && !items.length) {
+        const empty = document.createElement('li')
+        empty.className = 'no-results'
+        const strong = document.createElement('strong')
+        strong.textContent = query
+        empty.append(`${searchNoResultsText} "`, strong, '"')
+        results.append(empty)
+      }
+      items.forEach((item, index) => {
+        const li = document.createElement('li')
+        li.setAttribute('role', 'option')
+        li.setAttribute('aria-selected', String(index === 0))
+        const link = document.createElement('a')
+        link.href = !item.url?.startsWith('/') || basePath === '/' || item.url.startsWith(basePath) ? item.url : `${basePath}${item.url.replace(/^\/+/, '')}`
+        link.className = `result${index === 0 ? ' selected' : ''}`
+        link.setAttribute('aria-label', [...item.parents, item.title].join(' > '))
+        const body = document.createElement('div')
+        const titles = document.createElement('div')
+        titles.className = 'titles'
+        const icon = document.createElement('span')
+        icon.className = 'title-icon'
+        icon.textContent = '#'
+        titles.append(icon)
+        for (const parent of item.parents) {
+          const title = document.createElement('span')
+          title.className = 'title'
+          const text = document.createElement('span')
+          text.className = 'text'
+          text.textContent = parent
+          title.append(text, chevron())
+          titles.append(title)
+        }
+        const main = document.createElement('span')
+        main.className = 'title main'
+        const text = document.createElement('span')
+        text.className = 'text'
+        appendHighlighted(text, item.title, query)
+        main.append(text)
+        titles.append(main)
+        body.append(titles)
+        link.append(body)
+        link.addEventListener('mouseenter', () => selectResult(index))
+        link.addEventListener('focus', () => selectResult(index))
+        link.addEventListener('click', closeSearch)
+        li.append(link)
+        results.append(li)
+      })
+      selectedIndex = items.length ? 0 : -1
+    }
+    const runSearch = async query => {
+      const run = ++searchRun
+      if (!query.trim()) {
+        renderResults([], '')
+        setLoading(false)
+        return
+      }
+      setLoading(true)
+      try {
+        pagefind ||= await import(/* @vite-ignore */ `${basePath}pagefind/pagefind.js`).then(async module => {
+          await module.init()
+          return module
+        })
+        const response = await pagefind.search(query)
+        const pages = await Promise.all(response.results.map(result => result.data()))
+        if (run !== searchRun) return
+        const items = pages.flatMap(data => {
+          const pageTitle = data.meta?.title || data.title || data.url
+          const matches = data.sub_results?.length ? data.sub_results : [{ title: pageTitle, url: data.url }]
+          return matches.map(match => ({
+            title: match.title || pageTitle,
+            url: match.url || data.url,
+            parents: (match.url || data.url) === data.url ? [] : [pageTitle],
+          }))
+        }).slice(0, 16)
+        renderResults(items, query)
+      } catch {
+        if (run === searchRun) renderResults([], query)
+      } finally {
+        if (run === searchRun) setLoading(false)
+      }
+    }
+    const openSearch = async () => {
+      if (!(dialog instanceof HTMLElement) || !dialog.hidden) return
+      closeFlyouts()
+      closeMobileMenu()
+      dialog.hidden = false
+      bodyOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      history.pushState(null, '', null)
+      if (document.body.dataset.pagefindReady !== 'true') {
+        renderResults([{ title: root.lang.startsWith('zh') ? '快速开发模式未生成搜索索引，请先执行 pnpm build。' : 'The development preview has no search index. Run pnpm build first.', url: location.pathname, parents: [] }], '')
+        return
+      }
+      const saved = disableQueryPersistence ? '' : sessionStorage.getItem('vuepress-plume:mini-search-filter') || ''
+      if (searchInput instanceof HTMLInputElement) searchInput.value = saved
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !saved
+      await runSearch(saved)
+      requestAnimationFrame(() => { searchInput?.focus(); searchInput?.select() })
+    }
+    searchButton?.addEventListener('click', openSearch)
+    dialog?.querySelector('.back-button')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.backdrop')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.search-bar')?.addEventListener('pointerup', event => {
+      if (event.pointerType === 'mouse') {
+        searchInput?.focus()
+        searchInput?.select()
+      }
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('submit', event => {
+      event.preventDefault()
+      if (selectedIndex >= 0) location.href = searchResults[selectedIndex].url
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('reset', event => {
+      event.preventDefault()
+      clearTimeout(searchTimer)
+      if (searchInput instanceof HTMLInputElement) searchInput.value = ''
+      if (!disableQueryPersistence) sessionStorage.removeItem('vuepress-plume:mini-search-filter')
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = true
+      runSearch('')
+      searchInput?.focus()
+    })
+    searchInput?.addEventListener('input', () => {
+      const query = searchInput.value
+      if (!disableQueryPersistence) sessionStorage.setItem('vuepress-plume:mini-search-filter', query)
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !query
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(() => runSearch(query), 200)
+    })
+    dialog?.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        closeSearch()
+        return
+      }
+      if (event.key === 'Tab') {
+        const focusable = [...dialog.querySelectorAll('button:not([disabled]), input, a[href]')].filter(element => element instanceof HTMLElement && !element.hidden && element.getClientRects().length)
+        const first = focusable[0]
+        const last = focusable.at(-1)
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first?.focus()
+        }
+      }
+      const macControl = root.classList.contains('mac') && event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey
+      const offset = event.key === 'ArrowDown' || (macControl && event.key.toLowerCase() === 'n') ? 1
+        : event.key === 'ArrowUp' || (macControl && event.key.toLowerCase() === 'p') ? -1 : 0
+      if (!offset || !searchResults.length) return
+      event.preventDefault()
+      selectResult(selectedIndex + offset)
+    })
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeSearch()
+        closeFlyouts()
+        closeMobileMenu()
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        if (searchProvider !== 'local') return
+        event.preventDefault()
+        openSearch()
+      }
+      const target = event.target
+      const editing = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
+      if (searchProvider === 'local' && event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !editing) {
+        event.preventDefault()
+        openSearch()
+      }
+    })
+    addEventListener('popstate', event => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      event.preventDefault()
+      closeSearch()
+    })
+  })()
+})();</script><div class="vp-local-nav has-sidebar"><button class="menu" type="button" aria-expanded="false" aria-controls="SidebarNav"><span class="vpi-align-left menu-icon" aria-hidden="true"></span><span class="menu-text">菜单</span></button><div class="vp-local-nav-outline-dropdown"><button class="outline-toggle" type="button" aria-expanded="false">此页内容<span class="vpi-chevron-right icon" aria-hidden="true"></span></button><div class="outline-mask" hidden></div><div class="items" hidden><div class="outline"><ul class="nested"><li><a class="outline-link" href="#从这里开始">从这里开始</a></li><li><a class="outline-link" href="#当前兼容环境">当前兼容环境</a></li></ul></div></div></div></div><div class="vp-backdrop" hidden></div><aside class="vp-sidebar" data-sidebar-signature="Gc339bMWFobppkKd"><div class="curtain"></div><nav id="SidebarNav" class="nav" aria-labelledby="sidebar-aria-label" tabindex="-1"><span id="sidebar-aria-label" class="visually-hidden">侧边栏导航</span><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0 collapsible"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><h2 class="text"><span>指南</span></h2><button class="caret" type="button" aria-label="Collapse 指南" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><section class="vp-sidebar-item sidebar-item level-1 collapsible"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><h3 class="text"><span>基础</span></h3><button class="caret" type="button" aria-label="Collapse 基础" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>零基础快速开始</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>站点配置</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>部署站点</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/api/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>公共 API 与样式定制</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></p></a></div></div></div></div></section><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>内容能力</span></p></a></div></div></div></div></section></div><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0"><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon separator icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><p class="text separator"><span>参考</span></p></div></div><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><p class="text"><span>Astro</span></p><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></section></div></nav></aside><div class="vp-sidebar-control"><button class="toggle-sidebar-btn" type="button" aria-label="收起侧边栏"><span class="vpi-sidebar-close" aria-hidden="true"></span></button></div><script>
+  (() => {
+    const sidebar = document.querySelector('.vp-sidebar')
+    const backdrop = document.querySelector('.vp-backdrop')
+    const menu = document.querySelector('.vp-local-nav .menu')
+    let backdropTimer
+    const closeSidebar = () => {
+      sidebar?.classList.remove('open')
+      menu?.setAttribute('aria-expanded', 'false')
+      if (backdrop instanceof HTMLElement) {
+        backdrop.classList.remove('show')
+        clearTimeout(backdropTimer)
+        backdropTimer = setTimeout(() => { backdrop.hidden = true }, 250)
+      }
+      document.body.style.overflow = ''
+    }
+    menu?.addEventListener('click', () => {
+      sidebar?.classList.add('open')
+      menu.setAttribute('aria-expanded', 'true')
+      if (backdrop instanceof HTMLElement) {
+        clearTimeout(backdropTimer)
+        backdrop.hidden = false
+        requestAnimationFrame(() => backdrop.classList.add('show'))
+      }
+      document.body.style.overflow = 'hidden'
+      sidebar?.querySelector('.nav')?.focus()
+    })
+    backdrop?.addEventListener('click', closeSidebar)
+    sidebar?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeSidebar))
+
+    const collapseTimers = new WeakMap()
+    const collapseClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetCollapse = (element, visible) => {
+      const pending = collapseTimers.get(element)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      collapseTimers.delete(element)
+      element.classList.remove(...collapseClasses)
+      element.style.removeProperty('max-height')
+      element.hidden = !visible
+    }
+    const setCollapse = (element, visible) => {
+      resetCollapse(element, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetCollapse(element, visible)
+      const phase = visible ? 'enter' : 'leave'
+      const height = element.scrollHeight
+      element.style.maxHeight = `${visible ? 0 : height}px`
+      element.classList.add(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-active`)
+      void element.offsetHeight
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        element.classList.replace(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-to`)
+        element.style.maxHeight = `${visible ? height : 0}px`
+        pending.timer = setTimeout(() => resetCollapse(element, visible), 320)
+      })
+      collapseTimers.set(element, pending)
+    }
+    setTimeout(() => sidebar?.querySelectorAll('.group.no-transition').forEach(group => group.classList.remove('no-transition')), 300)
+
+    sidebar?.addEventListener('click', event => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const item = target.closest('.vp-sidebar-item.collapsible > .item')
+      if (!(item instanceof HTMLElement) || (target.closest('a') && !target.closest('.caret'))) return
+      const group = item.parentElement
+      const content = group?.querySelector(':scope > .items-wrapper')
+      const caret = item.querySelector('.caret')
+      const collapsed = !group?.classList.contains('collapsed')
+      group?.classList.toggle('collapsed', collapsed)
+      if (content instanceof HTMLElement) setCollapse(content, !collapsed)
+      caret?.setAttribute('aria-expanded', String(!collapsed))
+    })
+    sidebar?.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return
+      const target = event.target
+      if (target instanceof HTMLElement && target.matches('.vp-sidebar-item.collapsible > .item')) target.click()
+    })
+
+    const control = document.querySelector('.vp-sidebar-control')
+    control?.querySelector('button')?.addEventListener('click', () => {
+      const collapsed = sidebar?.classList.toggle('collapsed') ?? false
+      control.classList.toggle('collapsed', collapsed)
+      document.querySelector('.vp-doc-container')?.classList.toggle('sidebar-collapsed', collapsed)
+      document.querySelector('.vp-navbar')?.classList.toggle('sidebar-collapsed', collapsed)
+      const icon = control.querySelector('span')
+      icon?.classList.toggle('vpi-sidebar-close', !collapsed)
+      icon?.classList.toggle('vpi-sidebar-open', collapsed)
+    })
+    addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar() })
+
+    requestAnimationFrame(() => {
+      const active = sidebar?.querySelector('.vp-link[aria-current="page"]')
+      if (!(sidebar instanceof HTMLElement) || !(active instanceof HTMLElement)) return
+      const navRect = sidebar.getBoundingClientRect()
+      const activeRect = active.getBoundingClientRect()
+      if (activeRect.top < navRect.top || activeRect.bottom > navRect.bottom) active.scrollIntoView({ block: 'center' })
+    })
+  })()
+</script><div id="VPContent" class="vp-content has-sidebar"><div class="vp-doc-container has-sidebar has-aside" data-outline-range="[2,3]" data-outline-label="此页内容" data-outline-menu-label="菜单" data-outline-print-label="打印" data-outline-aside="right"><div class="container"><div class="aside"><div class="aside-curtain"></div><div class="aside-container"><div class="aside-content"><div class="vp-doc-aside"><nav class="vp-doc-aside-outline has-outline" aria-labelledby="doc-outline-aria-label" role="navigation"><div class="content"><div class="outline-marker"></div><div id="doc-outline-aria-label" aria-level="2" class="outline-title" role="heading"><span>此页内容</span><span class="vpi-print icon" role="button" tabindex="0" aria-label="打印"></span></div><ul class="root"><li><a class="outline-link" href="#从这里开始">从这里开始</a></li><li><a class="outline-link" href="#当前兼容环境">当前兼容环境</a></li></ul></div></nav><div class="spacer"></div></div></div></div></div><div class="content"><div class="content-container"><main class="main"><nav class="vp-breadcrumb" aria-label="面包屑"><ol vocab="https://schema.org/" typeof="BreadcrumbList"><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">首页</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="首页"><meta property="position" content="1"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" aria-current="page" href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb current">文档中心</a><meta property="name" content="文档中心"><meta property="position" content="2"></li></ol></nav><div class="vp-doc-title"><h1 class="page-title">文档中心<span> </span><span class="vp-badge tip" data-astro-cid-3ffhilwq>开始</span></h1><div class="vp-page-context-menu" data-raw-route="/docs/index.md" data-copy-label="复制页面" data-copying-label="复制中.." data-copied-label="复制成功"><div class="page-context-button"><span class="page-context-copy" role="button" tabindex="0" data-copy-page="/docs/index.md"><span class="vpi-copy" aria-hidden="true"></span><span class="text">复制页面</span></span><span class="page-context-toggle" role="button" tabindex="0" aria-expanded="false" aria-label="更多页面操作"><span class="vpi-chevron-down" aria-hidden="true"></span></span></div><ul class="page-context-menu" hidden><li><a href="javascript:void(0)" data-copy-page="/docs/index.md"><span class="vpi-copy" aria-hidden="true"></span><span><span class="text">复制页面</span><small>将页面以 Markdown 格式复制供 LLMs 使用</small></span></a></li><li><a href="/docs/index.md" target="_blank" rel="noopener noreferrer" aria-label="以 Markdown 格式查看" type="text/markdown"><span class="vpi-markdown" aria-hidden="true"></span><span>以 Markdown 格式查看<span class="vpi-external-link" aria-hidden="true"></span><small>以纯文本查看此页面</small></span></a></li><li><a href="https://chat.openai.com/?prompt=" data-ai-url="https://chat.openai.com/?prompt=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 ChatGPT 中打开"><span class="vpi-chatgpt" aria-hidden="true"></span><span>在 ChatGPT 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 ChatGPT 提问有关此页面</small></span></a></li><li><a href="https://claude.ai/new?q=" data-ai-url="https://claude.ai/new?q=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 Claude 中打开"><span class="vpi-claude" aria-hidden="true"></span><span>在 Claude 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 Claude 提问有关此页面</small></span></a></li><li><a href="https://perplexity.ai/?q=" data-ai-url="https://perplexity.ai/?q=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 Perplexity 中打开"><span class="vpi-perplexity" aria-hidden="true"></span><span>在 Perplexity 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 Perplexity 提问有关此页面</small></span></a></li></ul></div><script>
+  (() => {
+    const root = document.currentScript?.previousElementSibling
+    if (!(root instanceof HTMLElement)) return
+    const toggle = root.querySelector('.page-context-toggle')
+    const menu = root.querySelector('.page-context-menu')
+    const markdownUrl = new URL(root.dataset.rawRoute || '', location.origin).href
+    root.querySelectorAll('[data-ai-url]').forEach(item => {
+      if (!(item instanceof HTMLAnchorElement)) return
+      item.href = `${item.dataset.aiUrl}${encodeURIComponent((item.dataset.aiPrompt || '').replace('{link}', markdownUrl))}`
+    })
+
+    let markdown = ''
+    let pending
+    const load = () => pending ||= fetch(markdownUrl)
+      .then(response => response.ok ? response.text() : Promise.reject(new Error('Source unavailable')))
+      .then(source => markdown = source.trimStart().replace(/^---[\s\S]+?---/, '').trimStart())
+      .finally(() => { pending = undefined })
+    const setCopyState = state => {
+      const label = root.dataset[state === 'copying' ? 'copyingLabel' : state === 'copied' ? 'copiedLabel' : 'copyLabel'] || ''
+      root.querySelectorAll('[data-copy-page] .text').forEach(item => { item.textContent = label })
+      root.querySelectorAll('[data-copy-page] .vpi-copy').forEach(item => {
+        item.classList.toggle('loading', state === 'copying')
+        item.classList.toggle('copied', state === 'copied')
+      })
+    }
+    root.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => {
+      setCopyState('copying')
+      try {
+        if (!markdown) await load()
+        if (markdown) await navigator.clipboard.writeText(markdown)
+        setCopyState('copied')
+        setTimeout(() => setCopyState('copy'), 1500)
+      } catch {
+        setCopyState('copy')
+      }
+    }))
+    const idle = window.requestIdleCallback || window.requestAnimationFrame || (callback => setTimeout(callback, 0))
+    idle(() => { void load() })
+
+    const close = () => {
+      if (toggle?.getAttribute('aria-expanded') !== 'true') return
+      toggle?.setAttribute('aria-expanded', 'false')
+      toggle?.classList.remove('open')
+      transitionMenu(false)
+    }
+    let transitionTimer
+    let transitionStartTimer
+    const transitionClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const transitionMenu = open => {
+      clearTimeout(transitionTimer)
+      clearTimeout(transitionStartTimer)
+      if (!(menu instanceof HTMLElement)) return
+      menu.classList.remove(...transitionClasses)
+      menu.hidden = false
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { menu.hidden = !open; return }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`, `fade-in-${phase}-active`)
+      void menu.offsetWidth
+      transitionStartTimer = setTimeout(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        transitionTimer = setTimeout(() => {
+          menu.classList.remove(...transitionClasses)
+          menu.hidden = !open
+        }, 200)
+      }, 16)
+    }
+    root.querySelectorAll('[role="button"]').forEach(button => button.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); button.click() }
+    }))
+    toggle?.addEventListener('click', event => {
+      event.stopPropagation()
+      const open = toggle.getAttribute('aria-expanded') !== 'true'
+      toggle.setAttribute('aria-expanded', String(open))
+      toggle.classList.toggle('open', open)
+      transitionMenu(open)
+    })
+    document.addEventListener('pointerdown', event => { if (!(event.target instanceof Node) || !root.contains(event.target)) close() })
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') close() })
+  })()
+</script></div><div class="vp-doc-meta"><p class="reading-time"><span class="vpi-books icon" aria-hidden="true"></span><span>约 292 字</span><span>小于 1 分钟</span></p><p><span class="vpi-tag icon" aria-hidden="true"></span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-13">Astro</span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-10">文档</span></p><p class="create-time"><span class="vpi-clock icon" aria-hidden="true"></span><span>2026-08-05</span></p></div><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><div class="hint-container warning">
+<p class="hint-container-title">测试阶段</p>
+<p>当前 <code>0.2</code> 系列仍处于测试阶段。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 GitHub Release 说明。</p>
+</div>
+<p>主题同时支持博客与产品文档。<code>content/docs/</code> 下的页面会自动生成文档侧栏、移动端目录和上一篇/下一篇导航。</p>
+<div class="vp-card-grid cols-2" data-card-grid-cols="2" style="grid-template-columns:repeat(2,1fr)">
+<ul>
+<li>
+<p><strong>配置驱动</strong></p>
+<p>站点身份、导航、语言和可选服务集中在一个配置文件中。</p>
+</li>
+<li>
+<p><strong>内容优先</strong></p>
+<p>Markdown 文件决定路由、排序、分组、标签和页面行为。</p>
+</li>
+</ul>
+</div>
+<h2 id="从这里开始" tabindex="-1"><a class="header-anchor" href="#从这里开始"><span>从这里开始</span></a></h2>
+<ol>
+<li>按<a href="/docs/guide/getting-started/" class="vp-link link">零基础快速开始</a>完成站点身份和第一篇文章。</li>
+<li>需要更多选项时阅读<a href="/docs/guide/configuration/" class="vp-link link">站点配置</a>和<a href="/docs/guide/content/" class="vp-link link">内容能力</a>。</li>
+<li>删除不需要的示例内容并运行 <code>pnpm validate</code>。</li>
+</ol>
+<h2 id="当前兼容环境" tabindex="-1"><a class="header-anchor" href="#当前兼容环境"><span>当前兼容环境</span></a></h2>
+<ul>
+<li>Node.js 22.12 或更高版本</li>
+<li>Astro 7.1</li>
+<li>Vue 3.5</li>
+<li>npm、pnpm 或 Yarn</li>
+</ul>
+<div><script type="module">document.querySelectorAll(`[data-git-changelog]`).forEach(e=>{let t=e.querySelector(`.vp-changelog-header`);!t||t.dataset.ready||(t.dataset.ready=`true`,t.addEventListener(`click`,()=>{let n=e.classList.toggle(`active`);t.setAttribute(`aria-expanded`,String(n))}))});</script><div class="vp-doc-copyright"><h2 id="doc-copyright" tabindex="-1" class="vp-doc-header"><a href="#doc-copyright" class="header-anchor"><span>版权所有</span></a></h2><div class="vp-copyright"><span class="copyright-mask"></span><p><span>版权归属：</span><span data-astro-cid-p2o5vn2b="true" class="vp-link no-icon">Site Author</span></p><p><span>本文链接：</span><span class="source"><a data-copyright-original href="https://astro.ermao.net/docs/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">https://astro.ermao.net/docs/</a></span></p><p><span>许可证：</span><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">署名 4.0 国际 (CC-BY-4.0)</a><span class="vpi-license-cc" aria-hidden="true"></span><span class="vpi-license-by" aria-hidden="true"></span></p></div></div><script type="module">var e=document.querySelector(`[data-copyright-original]`);if(e){let t=new URL(location.href.split(`#`)[0]);t.searchParams.delete(`giscus`),e.href=t.toString(),e.textContent=decodeURIComponent(t.toString())}</script><footer class="vp-doc-footer"><div class="edit-info"><div class="last-updated" aria-label="Last updated"><p class="last-updated-text">最后更新于: <time datetime="2026-08-08T12:05:37.000Z" class="last-updated-time" data-date-options="{&quot;dateStyle&quot;:&quot;short&quot;,&quot;timeStyle&quot;:&quot;short&quot;}">8/8/26, 12:05 PM</time></p></div></div><div class="contributors right" aria-label="Contributors"><span class="contributors-label">贡献者:</span><span class="contributors-info"><span class="contributor">github-actions[bot]</span></span></div></footer><script type="module">document.querySelectorAll(`.last-updated-time[data-date-options]`).forEach(e=>{let t=new Date(e.dateTime);Number.isNaN(t.getTime())||(e.textContent=new Intl.DateTimeFormat(void 0,JSON.parse(e.dataset.dateOptions||`{}`)).format(t))});</script></div></article></main></div></div></div></div></div><footer class="vp-footer has-sidebar" vp-footer><div class="container"><div class="message">Powered by <a target="_blank" rel="noopener" href="https://astro.build/">Astro</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/ermaozi/astro-theme-ermaozi">ermaozi</a></div><div class="copyright">Copyright © 2026 ermaozi</div></div></footer><script>
+    (() => {
+      const footer = document.currentScript?.previousElementSibling
+      if (!(footer instanceof HTMLElement)) return
+      const update = () => document.body.style.setProperty('--vp-footer-height', `${footer.offsetHeight}px`)
+      update()
+      new ResizeObserver(update).observe(footer)
+    })()
+  </script><button type="button" class="vp-back-to-top" aria-label="返回顶部" hidden><span class="percent">0%</span><span class="icon vpi-back-to-top" aria-hidden="true"></span><svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="50%" cy="50%"></circle></svg></button></div></div></div><script>
+      (() => {
+        const content = document.querySelector('#VPContent')
+        if (!(content instanceof HTMLElement)) return
+        const storageKey = '__ERMAOZI_PAGE_TRANSITION__'
+        const classes = ['fade-slide-y-enter-from', 'fade-slide-y-enter-active', 'fade-slide-y-enter-to', 'fade-slide-y-leave-from', 'fade-slide-y-leave-active', 'fade-slide-y-leave-to']
+        const reset = () => content.classList.remove(...classes)
+        const timestamp = Number(sessionStorage.getItem(storageKey))
+        sessionStorage.removeItem(storageKey)
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - timestamp < 10_000) {
+          content.classList.add('fade-slide-y-enter-from', 'fade-slide-y-enter-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-enter-from')
+            content.classList.add('fade-slide-y-enter-to')
+            setTimeout(reset, 150)
+          }))
+        }
+        addEventListener('pageshow', event => { if (event.persisted) reset() })
+        let leaving = false
+        document.addEventListener('click', event => {
+          if (leaving || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+          const link = event.target instanceof Element ? event.target.closest('a[href]') : null
+          if (!(link instanceof HTMLAnchorElement) || link.target && link.target !== '_self' || link.hasAttribute('download')) return
+          if (link.closest('.vp-sidebar')) return
+          const next = new URL(link.href, location.href)
+          if (next.origin !== location.origin || !/^https?:$/.test(next.protocol) || next.pathname === location.pathname && next.search === location.search) return
+          event.preventDefault()
+          document.dispatchEvent(new CustomEvent('plume-navigation-start'))
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            location.href = next.href
+            return
+          }
+          leaving = true
+          content.classList.add('fade-slide-y-leave-from', 'fade-slide-y-leave-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-leave-from')
+            content.classList.add('fade-slide-y-leave-to')
+            setTimeout(() => {
+              sessionStorage.setItem(storageKey, String(Date.now()))
+              location.href = next.href
+            }, 150)
+          }))
+        })
+      })()
+    </script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DhTLxJEj.js"></script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_1_lang.CZuyuKlw.js"></script></body></html>

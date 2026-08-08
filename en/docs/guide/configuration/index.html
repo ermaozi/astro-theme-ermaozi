@@ -1,0 +1,936 @@
+<!DOCTYPE html><html class="layout-doc" lang="en-US" data-page-transition data-katex-copy="true" data-mark-mode="lazy" data-repl-theme="{&quot;light&quot;:&quot;github-light&quot;,&quot;dark&quot;:&quot;github-dark&quot;}" data-photo-swipe-selector=".vp-doc :not(a) > img:not([no-view],.no-view,.ignore)" data-photo-swipe-download="true" data-photo-swipe-fullscreen="true" data-photo-swipe-scroll-close="true" data-photo-swipe-locale="{&quot;close&quot;:&quot;Close&quot;,&quot;download&quot;:&quot;Download Image&quot;,&quot;fullscreen&quot;:&quot;Switch to fullscreen&quot;,&quot;zoom&quot;:&quot;Zoom in/out&quot;,&quot;arrowPrev&quot;:&quot;Prev (Arrow Left)&quot;,&quot;arrowNext&quot;:&quot;Next (Arrow Right)&quot;}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#336f87"><meta name="color-scheme" content="light dark"><script>(function(){const appearance = true;
+const forceDark = false;
+
+      (() => {
+        const root = document.documentElement
+        const stored = localStorage.getItem('vuepress-theme-appearance')
+        const selected = stored || (appearance === 'dark' ? 'dark' : 'auto')
+        const dark = forceDark || (appearance !== false && (selected === 'dark' || (selected !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)))
+        root.dataset.theme = dark ? 'dark' : 'light'
+        root.classList.toggle('dark', dark)
+      })()
+    })();</script><meta name="referrer" content="strict-origin-when-cross-origin"><title>Site configuration | Documentation | ermaozi</title><meta name="description" content="Configure identity, navigation, bilingual content, and optional services."><link data-ermaozi-managed-head rel="canonical" href="https://astro.ermao.net/en/docs/guide/configuration/"><meta data-ermaozi-managed-head property="og:title" content="Site configuration"><meta data-ermaozi-managed-head property="og:description" content="Configure identity, navigation, bilingual content, and optional services."><meta data-ermaozi-managed-head property="og:url" content="https://astro.ermao.net/en/docs/guide/configuration/"><meta data-ermaozi-managed-head property="og:type" content="article"><meta data-ermaozi-managed-head property="og:site_name" content="ermaozi"><meta data-ermaozi-managed-head property="og:locale" content="en-US"><meta data-ermaozi-managed-head property="og:image" content="https://astro.ermao.net/img/logo.svg"><meta data-ermaozi-managed-head property="og:image:alt" content="Site configuration"><meta data-ermaozi-managed-head property="og:updated_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:author" content="Site Author"><meta data-ermaozi-managed-head property="article:tag" content="Astro"><meta data-ermaozi-managed-head property="article:tag" content="Configuration"><meta data-ermaozi-managed-head property="article:published_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:modified_time" content="2026-08-05T00:00:00.000Z"><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Site configuration","image":["https://astro.ermao.net/img/logo.svg"],"datePublished":"2026-08-05T00:00:00.000Z","dateModified":"2026-08-05T00:00:00.000Z","author":[{"@type":"Person","name":"Site Author"}],"@id":"https://astro.ermao.net/en/docs/guide/configuration/#article","mainEntityOfPage":{"@type":"WebPage","@id":"https://astro.ermao.net/en/docs/guide/configuration/"},"inLanguage":"en-US","articleSection":"Documentation","keywords":"Configuration, Astro","publisher":{"@id":"https://astro.ermao.net/en/about/#person"},"isPartOf":{"@id":"https://astro.ermao.net/en/#website"}}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://astro.ermao.net/en/#website","url":"https://astro.ermao.net/en/","name":"ermaozi","description":"An Astro static blog theme with bilingual content, full-text search, dark mode, and enhanced Markdown.","inLanguage":"en-US","publisher":{"@id":"https://astro.ermao.net/en/about/#person"}},{"@type":"Person","@id":"https://astro.ermao.net/en/about/#person","name":"Site Author","url":"https://astro.ermao.net/en/about/","image":"https://astro.ermao.net/img/logo.svg","description":"Publish articles, documentation, and project notes with ermaozi.","sameAs":["https://github.com/ermaozi/astro-theme-ermaozi"]}]}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://astro.ermao.net/en/"},{"@type":"ListItem","position":2,"name":"Documentation","item":"https://astro.ermao.net/en/docs/"},{"@type":"ListItem","position":3,"name":"Guides"},{"@type":"ListItem","position":4,"name":"Site configuration","item":"https://astro.ermao.net/en/docs/guide/configuration/"}]}</script><link rel="icon" href="/img/logo.svg"><meta name="keywords" content="Astro,static blog,Markdown,bilingual site,theme"><link rel="stylesheet" href="/_astro/_..BozvyjkW.css"><link rel="stylesheet" href="/_astro/BaseLayout.DzgLzYEh.css"><style>.home-hero-effect-dark-veil[data-v-d452a4a0]{width:100%;height:100%;display:block;position:absolute;transform:translate(0,0)}
+.home-hero-effect-beams[data-v-7d45be68]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-dot-grid[data-v-60f95dd7]{justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;overflow:hidden}.dot-grid-container[data-v-60f95dd7]{width:100%;height:100%;position:relative}.dot-grid-container canvas[data-v-60f95dd7]{pointer-events:none;width:100%;height:100%;position:absolute;inset:0}
+.home-hero-hyperspeed[data-v-6103dcc7]{width:100%;height:100%;position:absolute;overflow:hidden}.home-hero-hyperspeed[data-v-6103dcc7] canvas{display:block;width:100%!important;height:100%!important}
+.home-hero-effect-lighting[data-v-11b14641]{width:100%;height:100%;position:absolute;transform:translate(0,0)}.home-hero-effect-lighting canvas[data-v-11b14641]{mix-blend-mode:screen;width:100%;height:100%}
+.home-hero-effect-iridescence[data-v-57569e3d]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-liquid-ether[data-v-4f4b1a4e]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+.home-hero-effect-orb[data-v-0cd01e9e]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-prism[data-v-efa4438a]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-pixel-blast[data-v-012c650c]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+</style></head><body data-page-shell="PmNoSj3tRCtNHj0z" data-pagefind-ready="true"><div id="nprogress" aria-hidden="true" hidden><div class="bar"></div></div><script id="ermaozi-page-data" type="application/json">{"page":{"path":"/en/docs/guide/configuration/","title":"Site configuration","description":"Configure identity, navigation, bilingual content, and optional services."},"frontmatter":{"title":"Site configuration","description":"Configure identity, navigation, bilingual content, and optional services.","permalink":"/en/docs/guide/configuration/","createTime":"2026-08-05T00:00:00.000Z","translationOf":"/docs/guide/configuration/","type":"doc","order":10,"group":"Guide","tags":["Configuration","Astro"]}}</script><div id="app"><div class="theme-plume vp-layout"><div class="global-protected" data-global-protected><span tabindex="-1"></span><a class="vp-skip-link visually-hidden" href="#VPContent">Skip to content</a><header class="vp-nav"><div class="vp-navbar has-sidebar"><div class="wrapper"><div class="container"><div class="title"><div class="vp-navbar-title"><a href="/en/" aria-label="ermaozi Home" class="vp-link title link no-icon"><img class="vp-image dark logo" src="/img/logo.svg" alt="" width="24" height="24"><img class="vp-image light logo" src="/img/logo.svg" alt="" width="24" height="24"><span>ermaozi</span></a></div></div><div class="content"><div class="content-body"><div class="vp-navbar-search search"><div class="search-wrapper"><div id="local-search"><button class="mini-search mini-search-button search-button" type="button" aria-label="Search"><span class="mini-search-button-container"><span class="mini-search-search-icon vpi-mini-search" aria-label="search icon"></span><span class="mini-search-button-placeholder">Search</span></span><span class="mini-search-button-keys" aria-hidden="true"><kbd class="mini-search-button-key"></kbd><kbd class="mini-search-button-key">K</kbd></span></button></div></div></div><nav class="vp-navbar-menu menu" aria-labelledby="main-nav-aria-label"><span id="main-nav-aria-label" class="visually-hidden">Main Navigation</span><a tabindex="0" href="/en/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link navbar-menu-link"><span class="vp-icon nav-symbol icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>Blog</span></span></a><div class="vp-flyout vp-navbar-menu-group nav-group active"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span class="nav-label">Docs</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/en/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span>Documentation<span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>Start</span></a></div><div class="vp-menu-group"><p class="title"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><span>Guides</span></p><div class="vp-menu-link"><a href="/en/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span>Quick start</a></div><div class="vp-menu-link"><a href="/en/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link active"><span class="vp-icon nav-menu-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span>Site configuration</a></div><div class="vp-menu-link"><a href="/en/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span>Deploy the site</a></div><div class="vp-menu-link"><a href="/en/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>Content features<span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a></div><div class="vp-menu-link"><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>Astro<span class="visually-hidden" data-astro-cid-p2o5vn2b>(Open in new window)</span></a></div></div></div></div></div></div><div class="vp-flyout vp-navbar-menu-group nav-group"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span class="nav-label">More</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/en/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon-img nav-menu-icon" aria-hidden="true"><img src="/img/logo.svg" alt=""></span>Categories</a></div><div class="vp-menu-link"><a href="/en/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon is-svg nav-menu-icon" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span>Tags</a></div><div class="vp-menu-link"><a href="/en/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span>Archives</a></div><div class="vp-menu-link"><a href="/en/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span>About</a></div></div></div></div></div></nav><div class="vp-navbar-appearance appearance"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="Switch to dark theme" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-navbar-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div><div class="vp-flyout vp-navbar-extra extra"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation"><span class="vpi-more-horizontal icon" aria-hidden="true"></span></button><div class="menu flyout-menu"><div class="vp-menu flyout-panel extra-panel"><div class="group appearance"><div class="item appearance"><p class="label">Appearance</p><div class="appearance-action"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="Switch to dark theme" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div></div></div><div class="group social"><div class="item social-links"><div class="vp-social-links social-links-list"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></div></div></div><button class="vp-navbar-hamburger hamburger" type="button" aria-label="Mobile navigation" aria-expanded="false" aria-controls="nav-screen"><span class="container"><span class="top"></span><span class="middle"></span><span class="bottom"></span></span></button></div></div></div></div><div class="divider"><div class="divider-line"></div></div></div><div id="navScreen" class="vp-nav-screen" hidden><div class="container"><nav class="vp-nav-screen-menu menu"><a href="/en/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-link"><span class="vp-icon icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>Blog</span></span></a><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-docs" aria-expanded="false"><span class="button-text"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>Docs</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-docs" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/en/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>Documentation</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>Start</span></a></div><div class="group"><div class="vp-nav-screen-menu-group-section"><p class="title"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span>Guides</p><a href="/en/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span><span>Quick start</span></a><a href="/en/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link active"><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><span>Site configuration</span></a><a href="/en/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span><span>Deploy the site</span></a><a href="/en/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>Content features</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>Astro</span><span class="visually-hidden" data-astro-cid-p2o5vn2b>(Open in new window)</span></a></div></div></div></div></div><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-more" aria-expanded="false"><span class="button-text"><span class="vp-icon icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span>More</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-more" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/en/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon-img" aria-hidden="true"><img src="/img/logo.svg" alt=""></span><span>Categories</span></a></div><div class="item"><a href="/en/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon is-svg" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span><span>Tags</span></a></div><div class="item"><a href="/en/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span><span>Archives</span></a></div><div class="item"><a href="/en/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span><span>About</span></a></div></div></div></div></nav><div class="vp-nav-screen-appearance mobile-appearance appearance"><p class="text">Appearance</p><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="Switch to dark theme" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-nav-screen-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></header><div role="button" aria-expanded="true" aria-haspopup="listbox" aria-labelledby="mini-search-label" class="VPLocalSearchBox" hidden data-no-results="No results for"><div class="backdrop"></div><div class="shell"><form class="search-bar" role="search"><label id="localsearch-label" title="Search" for="localsearch-input"><svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></g></svg></label><div class="search-actions before"><button class="back-button" type="button" title="Close search" aria-label="Close search"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m7 7-7-7 7-7"></path></svg></button></div><input id="localsearch-input" class="search-input" placeholder="Search" aria-labelledby="localsearch-label" autocomplete="off"><div class="search-actions"><span class="search-loading" aria-live="polite"></span><button class="clear-button" type="reset" disabled title="Reset search"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm-2 4-6 6m0-6 6 6"></path></svg></button></div></form><ul class="results"></ul><div class="search-keyboard-shortcuts" aria-hidden="true"><span><kbd aria-label="up arrow"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m-7 7 7-7 7 7"></path></svg></kbd><kbd aria-label="down arrow"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7-7 7-7-7"></path></svg></kbd>to navigate</span><span><kbd aria-label="enter"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 10-5 5 5 5"></path><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></g></svg></kbd>to select</span><span><kbd aria-label="escape">esc</kbd>to close</span></div></div></div><script>(function(){const appearanceDefault = "auto";
+const appearanceEnabled = true;
+const appearanceTransition = "fade";
+const searchProvider = "local";
+const disableQueryPersistence = false;
+const basePath = "/";
+const lightModeSwitchTitle = "Switch to light theme";
+const darkModeSwitchTitle = "Switch to dark theme";
+
+  (() => {
+    const root = document.documentElement
+    const updateAppearance = dark => {
+      document.querySelectorAll('.vp-switch-appearance').forEach(button => {
+        button.setAttribute('aria-checked', String(dark))
+        button.setAttribute('title', dark ? lightModeSwitchTitle : darkModeSwitchTitle)
+      })
+    }
+    const preferredDark = matchMedia('(prefers-color-scheme: dark)')
+    const setTheme = dark => {
+      dark ||= root.classList.contains('force-dark')
+      root.dataset.theme = dark ? 'dark' : 'light'
+      root.classList.toggle('dark', dark)
+      updateAppearance(dark)
+      document.querySelector('iframe.giscus-frame')?.contentWindow?.postMessage({ giscus: { setConfig: { theme: dark ? 'dark' : 'light' } } }, 'https://giscus.app')
+      document.dispatchEvent(new CustomEvent('theme-change'))
+    }
+    const appearanceKeyframes = (mode, x, y, dark) => {
+      const reverse = values => dark ? values.toReversed() : values
+      const distance = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+      const strategies = {
+        fade: { opacity: reverse(['0', '1']), duration: 300 },
+        'circle-clip': { clipPath: reverse([`circle(0px at ${x}px ${y}px)`, `circle(${distance}px at ${x}px ${y}px)`]), duration: 650 },
+        'horizontal-clip': { clipPath: reverse([`inset(0px ${innerWidth}px 0px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'vertical-clip': { clipPath: reverse([`inset(0px 0px ${innerHeight}px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'skew-clip': { clipPath: reverse(['polygon(0px 0px, 0px 0px, 0px 0px)', `polygon(0px 0px, ${innerWidth * 2}px 0px, 0px ${innerHeight * 2}px)`]) },
+        'blinds-vertical': { clipPath: reverse(['inset(50% 0% 50% 0%)', 'inset(0 0 0 0)']) },
+        'blinds-horizontal': { clipPath: reverse(['polygon(50% 0, 50% 100%, 50% 100%, 50% 0)', 'polygon(0 0, 0 100%, 100% 100%, 100% 0)']) },
+        'soft-blur-fade': { opacity: reverse(['0', '1']), filter: reverse(['blur(10px)', 'blur(0px)']), duration: 380 },
+        'diamond-reveal': { clipPath: reverse(['polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)', 'polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%)']), duration: 500 },
+      }
+      const { duration = 400, ...keyframes } = strategies[mode] ?? strategies.fade
+      return { duration, keyframes }
+    }
+    const syncAutomaticAppearance = () => {
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      const appearance = localStorage.getItem('vuepress-theme-appearance') || appearanceDefault
+      if (!appearance || appearance === 'auto') setTheme(preferredDark.matches)
+      else setTheme(appearance === 'dark')
+    }
+    updateAppearance(root.dataset.theme === 'dark')
+    preferredDark.addEventListener('change', syncAutomaticAppearance)
+    addEventListener('storage', event => {
+      if (event.key !== 'vuepress-theme-appearance') return
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      if (event.newValue === 'dark' || event.newValue === 'light') setTheme(event.newValue === 'dark')
+      else syncAutomaticAppearance()
+    })
+    let printWasDark = false
+    addEventListener('beforeprint', () => {
+      printWasDark = root.dataset.theme === 'dark'
+      if (printWasDark) { root.dataset.theme = 'light'; root.classList.remove('dark') }
+    })
+    addEventListener('afterprint', () => {
+      if (printWasDark) { root.dataset.theme = 'dark'; root.classList.add('dark') }
+    })
+
+    const navbar = document.querySelector('.vp-navbar')
+    const updateNavbarTop = () => navbar?.classList.toggle('top', scrollY === 0)
+    updateNavbarTop()
+    addEventListener('scroll', updateNavbarTop, { passive: true })
+    document.querySelector('.vp-skip-link')?.addEventListener('click', event => {
+      const link = event.currentTarget
+      if (!(link instanceof HTMLAnchorElement)) return
+      const target = document.querySelector(link.hash)
+      if (!(target instanceof HTMLElement)) return
+      const clear = () => { target.removeAttribute('tabindex'); target.removeEventListener('blur', clear) }
+      target.tabIndex = -1
+      target.addEventListener('blur', clear)
+      target.focus()
+      scrollTo(0, 0)
+    })
+
+    document.querySelectorAll('.vp-switch-appearance').forEach(button => button.addEventListener('click', async event => {
+      const next = root.dataset.theme !== 'dark'
+      const apply = () => {
+        localStorage.setItem('vuepress-theme-appearance', next ? 'dark' : 'light')
+        setTheme(next)
+      }
+      if (appearanceTransition === false || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        apply()
+        return
+      }
+      try {
+        root.classList.add('appearance-transition')
+        const transition = document.startViewTransition(apply)
+        void transition.finished.finally(() => root.classList.remove('appearance-transition'))
+        await transition.ready
+        const { keyframes, duration } = appearanceKeyframes(appearanceTransition, event.clientX, event.clientY, next)
+        root.animate(keyframes, {
+          duration,
+          easing: 'ease-in',
+          fill: 'forwards',
+          pseudoElement: `::view-transition-${next ? 'old' : 'new'}(root)`,
+        })
+      } catch {
+        root.classList.remove('appearance-transition')
+        apply()
+      }
+    }))
+
+    const button = document.querySelector('.vp-navbar-hamburger')
+    const menu = document.querySelector('.vp-nav-screen')
+    let screenTimer
+    let screenFrame
+    const screenClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const resetScreen = visible => {
+      clearTimeout(screenTimer)
+      cancelAnimationFrame(screenFrame)
+      menu?.classList.remove(...screenClasses)
+      if (menu instanceof HTMLElement) menu.hidden = !visible
+    }
+    const toggleScreen = open => {
+      resetScreen(true)
+      if (!(menu instanceof HTMLElement) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        resetScreen(open)
+        if (!open) document.body.style.overflow = ''
+        return
+      }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`)
+      void menu.offsetWidth
+      menu.classList.add(`fade-in-${phase}-active`)
+      screenFrame = requestAnimationFrame(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        screenTimer = setTimeout(() => {
+          resetScreen(open)
+          if (!open) document.body.style.overflow = ''
+        }, 200)
+      })
+    }
+    const expandTimers = new WeakMap()
+    const expandClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetExpand = (container, visible) => {
+      const pending = expandTimers.get(container)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      expandTimers.delete(container)
+      container.classList.remove(...expandClasses)
+      container.style.maxHeight = ''
+      container.style.transition = ''
+      container.style.display = visible ? '' : 'none'
+    }
+    const toggleExpand = (container, open) => {
+      resetExpand(container, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetExpand(container, open)
+      const phase = open ? 'enter' : 'leave'
+      const from = `fade-in-height-expand-${phase}-from`
+      const active = `fade-in-height-expand-${phase}-active`
+      const to = `fade-in-height-expand-${phase}-to`
+      container.classList.add(from, active)
+      if (open) {
+        container.style.transition = 'none'
+        const height = container.offsetHeight
+        container.style.maxHeight = '0px'
+        void container.offsetWidth
+        container.style.transition = ''
+        container.style.maxHeight = `${height}px`
+      } else {
+        container.style.maxHeight = `${container.offsetHeight}px`
+        void container.offsetWidth
+        container.style.maxHeight = '0px'
+      }
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        pending.frame = requestAnimationFrame(() => {
+          container.classList.remove(from)
+          container.classList.add(to)
+          pending.timer = setTimeout(() => resetExpand(container, open), 300)
+        })
+      })
+      expandTimers.set(container, pending)
+    }
+    const closeMobileMenu = () => {
+      button?.setAttribute('aria-expanded', 'false')
+      button?.classList.remove('active')
+      document.querySelector('.vp-navbar')?.classList.remove('screen-open')
+      menu?.querySelectorAll('.vp-nav-screen-menu-group.open').forEach(group => {
+        group.classList.remove('open')
+        group.querySelector('.button')?.setAttribute('aria-expanded', 'false')
+        const container = group.querySelector('.vp-nav-screen-menu-group-container')
+        if (container instanceof HTMLElement) resetExpand(container, false)
+      })
+      const translations = menu?.querySelector('.vp-nav-screen-translations.open')
+      translations?.classList.remove('open')
+      translations?.querySelector('.title')?.setAttribute('aria-expanded', 'false')
+      const translationsContainer = translations?.querySelector('.vp-nav-screen-translations-container')
+      if (translationsContainer instanceof HTMLElement) resetExpand(translationsContainer, false)
+      toggleScreen(false)
+    }
+    button?.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true'
+      if (!open) return closeMobileMenu()
+      button.setAttribute('aria-expanded', 'true')
+      button.classList.add('active')
+      document.querySelector('.vp-navbar')?.classList.add('screen-open')
+      document.body.style.overflow = 'hidden'
+      toggleScreen(true)
+    })
+    menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu))
+    menu?.querySelectorAll('.vp-nav-screen-menu-group > .button').forEach(groupButton => groupButton.addEventListener('click', () => {
+      const group = groupButton.closest('.vp-nav-screen-menu-group')
+      const container = group?.querySelector('.vp-nav-screen-menu-group-container')
+      const open = groupButton.getAttribute('aria-expanded') !== 'true'
+      groupButton.setAttribute('aria-expanded', String(open))
+      group?.classList.toggle('open', open)
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    }))
+    const mobileTranslations = menu?.querySelector('.vp-nav-screen-translations')
+    const mobileTranslationsButton = mobileTranslations?.querySelector('.title')
+    mobileTranslationsButton?.addEventListener('click', () => {
+      const open = mobileTranslationsButton.getAttribute('aria-expanded') !== 'true'
+      mobileTranslationsButton.setAttribute('aria-expanded', String(open))
+      mobileTranslations?.classList.toggle('open', open)
+      const container = mobileTranslations?.querySelector('.vp-nav-screen-translations-container')
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    })
+
+    const flyouts = [...document.querySelectorAll('.vp-flyout')]
+    const closeFlyouts = except => flyouts.forEach(flyout => {
+      if (flyout === except) return
+      const button = flyout.querySelector('.flyout-button')
+      button?.setAttribute('aria-expanded', 'false')
+      if (button instanceof HTMLElement) delete button.dataset.clickedOpen
+    })
+    flyouts.forEach(flyout => {
+      const trigger = flyout.querySelector('.flyout-button')
+      const setOpen = open => trigger?.setAttribute('aria-expanded', String(open))
+      flyout.addEventListener('mouseenter', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('mouseleave', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      })
+      flyout.addEventListener('focusin', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('focusout', event => {
+        if (!(event.relatedTarget instanceof Node) || !flyout.contains(event.relatedTarget)) {
+          if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+          setOpen(false)
+        }
+      })
+      trigger?.addEventListener('click', () => {
+        const open = !(trigger instanceof HTMLElement && trigger.dataset.clickedOpen === 'true')
+        closeFlyouts(flyout)
+        if (trigger instanceof HTMLElement) {
+          if (open) trigger.dataset.clickedOpen = 'true'
+          else delete trigger.dataset.clickedOpen
+        }
+        setOpen(open)
+      })
+      flyout.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      }))
+    })
+
+    document.addEventListener('pointerdown', event => {
+      if (!(event.target instanceof Element)) return
+      if (!event.target.closest('.vp-flyout')) closeFlyouts()
+    })
+
+    const dialog = document.querySelector('.VPLocalSearchBox')
+    const searchButton = document.querySelector('.search-button')
+    if (dialog) document.body.append(dialog)
+    const searchInput = dialog?.querySelector('.search-input')
+    const results = dialog?.querySelector('.results')
+    const clearButton = dialog?.querySelector('.clear-button')
+    const loading = dialog?.querySelector('.search-loading')
+    const searchNoResultsText = dialog instanceof HTMLElement ? dialog.dataset.noResults || 'No results for' : 'No results for'
+    let pagefind
+    let searchTimer
+    let searchRun = 0
+    let selectedIndex = -1
+    let bodyOverflow = ''
+    const searchResults = []
+    const closeSearch = () => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      dialog.hidden = true
+      document.body.style.overflow = bodyOverflow
+      searchButton?.focus()
+    }
+    const setLoading = active => {
+      loading?.classList.toggle('active', active)
+      if (active) {
+        loading?.setAttribute('role', 'status')
+        loading?.setAttribute('aria-label', 'Loading search results')
+      } else {
+        loading?.removeAttribute('role')
+        loading?.removeAttribute('aria-label')
+      }
+    }
+    const selectResult = index => {
+      const links = [...(results?.querySelectorAll('.result') || [])]
+      selectedIndex = links.length ? (index + links.length) % links.length : -1
+      links.forEach((link, i) => {
+        link.classList.toggle('selected', i === selectedIndex)
+        link.parentElement?.setAttribute('aria-selected', String(i === selectedIndex))
+      })
+      links[selectedIndex]?.scrollIntoView({ block: 'nearest' })
+    }
+    const appendHighlighted = (target, value, query) => {
+      const text = String(value || '')
+      const needle = query.trim().toLocaleLowerCase(root.lang)
+      if (!needle) {
+        target.textContent = text
+        return
+      }
+      const lower = text.toLocaleLowerCase(root.lang)
+      let offset = 0
+      let index
+      while ((index = lower.indexOf(needle, offset)) >= 0) {
+        target.append(document.createTextNode(text.slice(offset, index)))
+        const mark = document.createElement('mark')
+        mark.textContent = text.slice(index, index + needle.length)
+        target.append(mark)
+        offset = index + needle.length
+      }
+      target.append(document.createTextNode(text.slice(offset)))
+    }
+    const chevron = () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('width', '18')
+      svg.setAttribute('height', '18')
+      svg.setAttribute('viewBox', '0 0 24 24')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      for (const [name, value] of Object.entries({ fill: 'none', stroke: 'currentColor', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'm9 18 6-6-6-6' })) path.setAttribute(name, value)
+      svg.append(path)
+      return svg
+    }
+    const renderResults = (items, query) => {
+      searchResults.splice(0, searchResults.length, ...items)
+      results?.replaceChildren()
+      if (!results) return
+      for (const attribute of ['id', 'role', 'aria-labelledby']) results.removeAttribute(attribute)
+      if (items.length) {
+        results.id = 'localsearch-list'
+        results.setAttribute('role', 'listbox')
+        results.setAttribute('aria-labelledby', 'localsearch-label')
+        dialog?.setAttribute('aria-owns', 'localsearch-list')
+      } else {
+        dialog?.removeAttribute('aria-owns')
+      }
+      if (query && !items.length) {
+        const empty = document.createElement('li')
+        empty.className = 'no-results'
+        const strong = document.createElement('strong')
+        strong.textContent = query
+        empty.append(`${searchNoResultsText} "`, strong, '"')
+        results.append(empty)
+      }
+      items.forEach((item, index) => {
+        const li = document.createElement('li')
+        li.setAttribute('role', 'option')
+        li.setAttribute('aria-selected', String(index === 0))
+        const link = document.createElement('a')
+        link.href = !item.url?.startsWith('/') || basePath === '/' || item.url.startsWith(basePath) ? item.url : `${basePath}${item.url.replace(/^\/+/, '')}`
+        link.className = `result${index === 0 ? ' selected' : ''}`
+        link.setAttribute('aria-label', [...item.parents, item.title].join(' > '))
+        const body = document.createElement('div')
+        const titles = document.createElement('div')
+        titles.className = 'titles'
+        const icon = document.createElement('span')
+        icon.className = 'title-icon'
+        icon.textContent = '#'
+        titles.append(icon)
+        for (const parent of item.parents) {
+          const title = document.createElement('span')
+          title.className = 'title'
+          const text = document.createElement('span')
+          text.className = 'text'
+          text.textContent = parent
+          title.append(text, chevron())
+          titles.append(title)
+        }
+        const main = document.createElement('span')
+        main.className = 'title main'
+        const text = document.createElement('span')
+        text.className = 'text'
+        appendHighlighted(text, item.title, query)
+        main.append(text)
+        titles.append(main)
+        body.append(titles)
+        link.append(body)
+        link.addEventListener('mouseenter', () => selectResult(index))
+        link.addEventListener('focus', () => selectResult(index))
+        link.addEventListener('click', closeSearch)
+        li.append(link)
+        results.append(li)
+      })
+      selectedIndex = items.length ? 0 : -1
+    }
+    const runSearch = async query => {
+      const run = ++searchRun
+      if (!query.trim()) {
+        renderResults([], '')
+        setLoading(false)
+        return
+      }
+      setLoading(true)
+      try {
+        pagefind ||= await import(/* @vite-ignore */ `${basePath}pagefind/pagefind.js`).then(async module => {
+          await module.init()
+          return module
+        })
+        const response = await pagefind.search(query)
+        const pages = await Promise.all(response.results.map(result => result.data()))
+        if (run !== searchRun) return
+        const items = pages.flatMap(data => {
+          const pageTitle = data.meta?.title || data.title || data.url
+          const matches = data.sub_results?.length ? data.sub_results : [{ title: pageTitle, url: data.url }]
+          return matches.map(match => ({
+            title: match.title || pageTitle,
+            url: match.url || data.url,
+            parents: (match.url || data.url) === data.url ? [] : [pageTitle],
+          }))
+        }).slice(0, 16)
+        renderResults(items, query)
+      } catch {
+        if (run === searchRun) renderResults([], query)
+      } finally {
+        if (run === searchRun) setLoading(false)
+      }
+    }
+    const openSearch = async () => {
+      if (!(dialog instanceof HTMLElement) || !dialog.hidden) return
+      closeFlyouts()
+      closeMobileMenu()
+      dialog.hidden = false
+      bodyOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      history.pushState(null, '', null)
+      if (document.body.dataset.pagefindReady !== 'true') {
+        renderResults([{ title: root.lang.startsWith('zh') ? '快速开发模式未生成搜索索引，请先执行 pnpm build。' : 'The development preview has no search index. Run pnpm build first.', url: location.pathname, parents: [] }], '')
+        return
+      }
+      const saved = disableQueryPersistence ? '' : sessionStorage.getItem('vuepress-plume:mini-search-filter') || ''
+      if (searchInput instanceof HTMLInputElement) searchInput.value = saved
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !saved
+      await runSearch(saved)
+      requestAnimationFrame(() => { searchInput?.focus(); searchInput?.select() })
+    }
+    searchButton?.addEventListener('click', openSearch)
+    dialog?.querySelector('.back-button')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.backdrop')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.search-bar')?.addEventListener('pointerup', event => {
+      if (event.pointerType === 'mouse') {
+        searchInput?.focus()
+        searchInput?.select()
+      }
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('submit', event => {
+      event.preventDefault()
+      if (selectedIndex >= 0) location.href = searchResults[selectedIndex].url
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('reset', event => {
+      event.preventDefault()
+      clearTimeout(searchTimer)
+      if (searchInput instanceof HTMLInputElement) searchInput.value = ''
+      if (!disableQueryPersistence) sessionStorage.removeItem('vuepress-plume:mini-search-filter')
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = true
+      runSearch('')
+      searchInput?.focus()
+    })
+    searchInput?.addEventListener('input', () => {
+      const query = searchInput.value
+      if (!disableQueryPersistence) sessionStorage.setItem('vuepress-plume:mini-search-filter', query)
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !query
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(() => runSearch(query), 200)
+    })
+    dialog?.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        closeSearch()
+        return
+      }
+      if (event.key === 'Tab') {
+        const focusable = [...dialog.querySelectorAll('button:not([disabled]), input, a[href]')].filter(element => element instanceof HTMLElement && !element.hidden && element.getClientRects().length)
+        const first = focusable[0]
+        const last = focusable.at(-1)
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first?.focus()
+        }
+      }
+      const macControl = root.classList.contains('mac') && event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey
+      const offset = event.key === 'ArrowDown' || (macControl && event.key.toLowerCase() === 'n') ? 1
+        : event.key === 'ArrowUp' || (macControl && event.key.toLowerCase() === 'p') ? -1 : 0
+      if (!offset || !searchResults.length) return
+      event.preventDefault()
+      selectResult(selectedIndex + offset)
+    })
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeSearch()
+        closeFlyouts()
+        closeMobileMenu()
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        if (searchProvider !== 'local') return
+        event.preventDefault()
+        openSearch()
+      }
+      const target = event.target
+      const editing = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
+      if (searchProvider === 'local' && event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !editing) {
+        event.preventDefault()
+        openSearch()
+      }
+    })
+    addEventListener('popstate', event => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      event.preventDefault()
+      closeSearch()
+    })
+  })()
+})();</script><div class="vp-local-nav has-sidebar"><button class="menu" type="button" aria-expanded="false" aria-controls="SidebarNav"><span class="vpi-align-left menu-icon" aria-hidden="true"></span><span class="menu-text">Menu</span></button><div class="vp-local-nav-outline-dropdown"><button class="outline-toggle" type="button" aria-expanded="false">On this page<span class="vpi-chevron-right icon" aria-hidden="true"></span></button><div class="outline-mask" hidden></div><div class="items" hidden><div class="outline"><ul class="nested"><li><a class="outline-link" href="#post-covers">Post covers</a></li><li><a class="outline-link" href="#page-transitions">Page transitions</a></li><li><a class="outline-link" href="#appearance">Appearance</a></li><li><a class="outline-link" href="#locales">Locales</a></li><li><a class="outline-link" href="#navbar">Navbar</a></li><li><a class="outline-link" href="#page-and-content-options">Page and content options</a></li><li><a class="outline-link" href="#layout-slots">Layout slots</a></li><li><a class="outline-link" href="#automatic-frontmatter">Automatic frontmatter</a></li><li><a class="outline-link" href="#pagination">Pagination</a></li><li><a class="outline-link" href="#post-and-doc-collections">Post and doc collections</a></li><li><a class="outline-link" href="#trusted-chart-scripts">Trusted chart scripts</a></li><li><a class="outline-link" href="#media-embeds">Media embeds</a></li><li><a class="outline-link" href="#markdown-icons">Markdown icons</a></li><li><a class="outline-link" href="#social-links-and-footer">Social links and footer</a></li><li><a class="outline-link" href="#friends-pages">Friends pages</a></li><li><a class="outline-link" href="#bulletin">Bulletin</a></li><li><a class="outline-link" href="#search-providers">Search providers</a></li><li><a class="outline-link" href="#asset-url-replacement">Asset URL replacement</a></li><li><a class="outline-link" href="#build-time-image-dimensions">Build-time image dimensions</a></li><li><a class="outline-link" href="#content-encryption">Content encryption</a></li><li><a class="outline-link" href="#git-contributors-and-changelog">Git contributors and changelog</a></li><li><a class="outline-link" href="#comment-providers">Comment providers</a></li><li><a class="outline-link" href="#project-structure">Project structure</a></li><li><a class="outline-link" href="#page-fields">Page fields</a></li></ul></div></div></div></div><div class="vp-backdrop" hidden></div><aside class="vp-sidebar" data-sidebar-signature="Da_3noQlP_Uh8Zg_"><div class="curtain"></div><nav id="SidebarNav" class="nav" aria-labelledby="sidebar-aria-label" tabindex="-1"><span id="sidebar-aria-label" class="visually-hidden">Sidebar Navigation</span><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0 collapsible has-active"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><h2 class="text"><span>Guides</span></h2><button class="caret" type="button" aria-label="Collapse Guides" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><section class="vp-sidebar-item sidebar-item level-1 collapsible has-active"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><h3 class="text"><span>Basics</span></h3><button class="caret" type="button" aria-label="Collapse Basics" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/en/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>Beginner quick start</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>Start</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link is-active has-active"><div class="item"><div class="indicator"></div><a aria-current="page" href="/en/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>Site configuration</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/en/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>Deploy the site</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/en/docs/guide/api/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>Public API and styling</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></p></a></div></div></div></div></section><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="/en/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>Content features</span></p></a></div></div></div></div></section></div><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0"><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon separator icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><p class="text separator"><span>Reference</span></p></div></div><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><p class="text"><span>Astro</span></p><span class="visually-hidden" data-astro-cid-p2o5vn2b>(Open in new window)</span></a></div></div></div></div></section></div></nav></aside><div class="vp-sidebar-control"><button class="toggle-sidebar-btn" type="button" aria-label="Toggle sidebar"><span class="vpi-sidebar-close" aria-hidden="true"></span></button></div><script>
+  (() => {
+    const sidebar = document.querySelector('.vp-sidebar')
+    const backdrop = document.querySelector('.vp-backdrop')
+    const menu = document.querySelector('.vp-local-nav .menu')
+    let backdropTimer
+    const closeSidebar = () => {
+      sidebar?.classList.remove('open')
+      menu?.setAttribute('aria-expanded', 'false')
+      if (backdrop instanceof HTMLElement) {
+        backdrop.classList.remove('show')
+        clearTimeout(backdropTimer)
+        backdropTimer = setTimeout(() => { backdrop.hidden = true }, 250)
+      }
+      document.body.style.overflow = ''
+    }
+    menu?.addEventListener('click', () => {
+      sidebar?.classList.add('open')
+      menu.setAttribute('aria-expanded', 'true')
+      if (backdrop instanceof HTMLElement) {
+        clearTimeout(backdropTimer)
+        backdrop.hidden = false
+        requestAnimationFrame(() => backdrop.classList.add('show'))
+      }
+      document.body.style.overflow = 'hidden'
+      sidebar?.querySelector('.nav')?.focus()
+    })
+    backdrop?.addEventListener('click', closeSidebar)
+    sidebar?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeSidebar))
+
+    const collapseTimers = new WeakMap()
+    const collapseClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetCollapse = (element, visible) => {
+      const pending = collapseTimers.get(element)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      collapseTimers.delete(element)
+      element.classList.remove(...collapseClasses)
+      element.style.removeProperty('max-height')
+      element.hidden = !visible
+    }
+    const setCollapse = (element, visible) => {
+      resetCollapse(element, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetCollapse(element, visible)
+      const phase = visible ? 'enter' : 'leave'
+      const height = element.scrollHeight
+      element.style.maxHeight = `${visible ? 0 : height}px`
+      element.classList.add(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-active`)
+      void element.offsetHeight
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        element.classList.replace(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-to`)
+        element.style.maxHeight = `${visible ? height : 0}px`
+        pending.timer = setTimeout(() => resetCollapse(element, visible), 320)
+      })
+      collapseTimers.set(element, pending)
+    }
+    setTimeout(() => sidebar?.querySelectorAll('.group.no-transition').forEach(group => group.classList.remove('no-transition')), 300)
+
+    sidebar?.addEventListener('click', event => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const item = target.closest('.vp-sidebar-item.collapsible > .item')
+      if (!(item instanceof HTMLElement) || (target.closest('a') && !target.closest('.caret'))) return
+      const group = item.parentElement
+      const content = group?.querySelector(':scope > .items-wrapper')
+      const caret = item.querySelector('.caret')
+      const collapsed = !group?.classList.contains('collapsed')
+      group?.classList.toggle('collapsed', collapsed)
+      if (content instanceof HTMLElement) setCollapse(content, !collapsed)
+      caret?.setAttribute('aria-expanded', String(!collapsed))
+    })
+    sidebar?.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return
+      const target = event.target
+      if (target instanceof HTMLElement && target.matches('.vp-sidebar-item.collapsible > .item')) target.click()
+    })
+
+    const control = document.querySelector('.vp-sidebar-control')
+    control?.querySelector('button')?.addEventListener('click', () => {
+      const collapsed = sidebar?.classList.toggle('collapsed') ?? false
+      control.classList.toggle('collapsed', collapsed)
+      document.querySelector('.vp-doc-container')?.classList.toggle('sidebar-collapsed', collapsed)
+      document.querySelector('.vp-navbar')?.classList.toggle('sidebar-collapsed', collapsed)
+      const icon = control.querySelector('span')
+      icon?.classList.toggle('vpi-sidebar-close', !collapsed)
+      icon?.classList.toggle('vpi-sidebar-open', collapsed)
+    })
+    addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar() })
+
+    requestAnimationFrame(() => {
+      const active = sidebar?.querySelector('.vp-link[aria-current="page"]')
+      if (!(sidebar instanceof HTMLElement) || !(active instanceof HTMLElement)) return
+      const navRect = sidebar.getBoundingClientRect()
+      const activeRect = active.getBoundingClientRect()
+      if (activeRect.top < navRect.top || activeRect.bottom > navRect.bottom) active.scrollIntoView({ block: 'center' })
+    })
+  })()
+</script><div id="VPContent" class="vp-content has-sidebar"><div class="vp-doc-container has-sidebar has-aside" data-outline-range="[2,3]" data-outline-label="On this page" data-outline-menu-label="Menu" data-outline-print-label="Print" data-outline-aside="right"><div class="container"><div class="aside"><div class="aside-curtain"></div><div class="aside-container"><div class="aside-content"><div class="vp-doc-aside"><nav class="vp-doc-aside-outline has-outline" aria-labelledby="doc-outline-aria-label" role="navigation"><div class="content"><div class="outline-marker"></div><div id="doc-outline-aria-label" aria-level="2" class="outline-title" role="heading"><span>On this page</span><span class="vpi-print icon" role="button" tabindex="0" aria-label="Print"></span></div><ul class="root"><li><a class="outline-link" href="#post-covers">Post covers</a></li><li><a class="outline-link" href="#page-transitions">Page transitions</a></li><li><a class="outline-link" href="#appearance">Appearance</a></li><li><a class="outline-link" href="#locales">Locales</a></li><li><a class="outline-link" href="#navbar">Navbar</a></li><li><a class="outline-link" href="#page-and-content-options">Page and content options</a></li><li><a class="outline-link" href="#layout-slots">Layout slots</a></li><li><a class="outline-link" href="#automatic-frontmatter">Automatic frontmatter</a></li><li><a class="outline-link" href="#pagination">Pagination</a></li><li><a class="outline-link" href="#post-and-doc-collections">Post and doc collections</a></li><li><a class="outline-link" href="#trusted-chart-scripts">Trusted chart scripts</a></li><li><a class="outline-link" href="#media-embeds">Media embeds</a></li><li><a class="outline-link" href="#markdown-icons">Markdown icons</a></li><li><a class="outline-link" href="#social-links-and-footer">Social links and footer</a></li><li><a class="outline-link" href="#friends-pages">Friends pages</a></li><li><a class="outline-link" href="#bulletin">Bulletin</a></li><li><a class="outline-link" href="#search-providers">Search providers</a></li><li><a class="outline-link" href="#asset-url-replacement">Asset URL replacement</a></li><li><a class="outline-link" href="#build-time-image-dimensions">Build-time image dimensions</a></li><li><a class="outline-link" href="#content-encryption">Content encryption</a></li><li><a class="outline-link" href="#git-contributors-and-changelog">Git contributors and changelog</a></li><li><a class="outline-link" href="#comment-providers">Comment providers</a></li><li><a class="outline-link" href="#project-structure">Project structure</a></li><li><a class="outline-link" href="#page-fields">Page fields</a></li></ul></div></nav><div class="spacer"></div></div></div></div></div><div class="content"><div class="content-container"><main class="main"><nav class="vp-breadcrumb" aria-label="Breadcrumb"><ol vocab="https://schema.org/" typeof="BreadcrumbList"><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/en/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">Home</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="Home"><meta property="position" content="1"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/en/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">Documentation</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="Documentation"><meta property="position" content="2"></li><li property="itemListElement" typeof="ListItem"><span property="item" typeof="WebPage" data-astro-cid-p2o5vn2b="true" class="vp-link no-icon breadcrumb">Guides</span><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="Guides"><meta property="position" content="3"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" aria-current="page" href="/en/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb current">Site configuration</a><meta property="name" content="Site configuration"><meta property="position" content="4"></li></ol></nav><div class="vp-doc-title"><h1 class="page-title">Site configuration</h1></div><div class="vp-doc-meta"><p class="reading-time"><span class="vpi-books icon" aria-hidden="true"></span><span>About 3400 words</span><span>About 11 min</span></p><p><span class="vpi-tag icon" aria-hidden="true"></span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-14">Configuration</span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-13">Astro</span></p><p class="create-time"><span class="vpi-clock icon" aria-hidden="true"></span><span>2026-08-05</span></p></div><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><p>Public configuration lives in <code>site.config.mjs</code>. Astro refreshes the development site after changes to names, origins, or navigation. The outer <code>defineSiteConfig()</code> call adds completion, fills safe defaults for omitted optional sections, and reports invalid origins, paths, and pagination values at startup.</p>
+<h2 id="post-covers" tabindex="-1"><a class="header-anchor" href="#post-covers"><span>Post covers</span></a></h2>
+<p><code>siteConfig.postCover</code> sets the default post-cover layout: <code>left</code>, <code>right</code>, <code>odd-left</code>, <code>odd-right</code>, or <code>top</code>. A post can override the layout, ratio, side width, and compact mode in frontmatter:</p>
+<div class="language-yaml" data-highlighter="shiki" data-ext="yaml"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#998418;--shiki-dark:#B8A965">cover</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> /img/cover.webp</span></span>
+<span class="line"><span style="--shiki-light:#998418;--shiki-dark:#B8A965">coverStyle</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">layout</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> right</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">ratio</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> 4/3</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">width</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 240</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">compact</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span></span>
+<span class="line"></span></code></pre></div><p><code>siteConfig.profile</code> accepts <code>avatar</code> (plus the legacy <code>url</code> alias), <code>name</code>, <code>description</code>, <code>circle</code>, <code>location</code>, <code>organization</code>, and <code>layout: 'left' | 'right'</code>. Mobile pages reuse the same profile in the bottom sheet with taxonomy navigation. Plume's deprecated top-level or locale <code>avatar: { ... }</code> form also falls back to <code>profile</code>.</p>
+<p>Set <code>profile</code> to <code>false</code> to remove the desktop card. As in Plume, a horizontal Tags/Categories/Archives navigation then appears above the post list, while mobile keeps those links in the extract sheet.</p>
+<p>Side covers automatically move above the post on mobile, matching Plume.</p>
+<h2 id="page-transitions" tabindex="-1"><a class="header-anchor" href="#page-transitions"><span>Page transitions</span></a></h2>
+<p><code>transition.page</code> applies a Plume-compatible content transition during full-page navigation: <code>fade-slide-y</code> leaves first, then enters, without taking a whole-page browser snapshot that can flash the wrong theme. Documentation sidebar links preserve the shared shell and replace only the document content, while Blog, Tags, Categories, and Archives preserve the header and profile card. Page scripts are re-initialized after each partial update. <code>prefers-reduced-motion</code> disables the animation. Set <code>transition: false</code> to disable all transitions or <code>transition.page: false</code> to disable only full-page navigation.</p>
+<h2 id="appearance" tabindex="-1"><a class="header-anchor" href="#appearance"><span>Appearance</span></a></h2>
+<p><code>appearance</code> matches Plume and defaults to <code>true</code>, following the system color preference until the user makes a stored choice. Use <code>'dark'</code> for a dark default when no choice is stored, <code>false</code> to force light mode and hide every appearance switch, or <code>'force-dark'</code> to force dark mode and hide the switches. A locale-level value overrides the global setting.</p>
+<p><code>transition.appearance</code> accepts <code>fade</code>, <code>circle-clip</code>, <code>horizontal-clip</code>, <code>vertical-clip</code>, <code>skew-clip</code>, <code>blinds-vertical</code>, <code>blinds-horizontal</code>, <code>soft-blur-fade</code>, and <code>diamond-reveal</code>. Set it to <code>false</code>, or enable reduced motion at the OS level, to switch immediately without a View Transition. Dark pages temporarily print in light mode and restore their prior appearance afterwards.</p>
+<h2 id="locales" tabindex="-1"><a class="header-anchor" href="#locales"><span>Locales</span></a></h2>
+<p><code>locales</code> accepts any number of languages. Each locale uses <code>home</code> as its route prefix; place content under the matching directory or set <code>lang</code> explicitly in frontmatter. The framework generates blog, tag, category, archive, pagination-data, LLM-document, and SEO-alternate routes for every configured locale, while the language menu only lists translations that actually exist.</p>
+<p>The frozen Plume presets for Simplified Chinese, Traditional Chinese, English, German, French, Russian, Japanese, and Korean are built in, including their short and regional language codes. Site identity, descriptions, and navigation remain locale configuration fields, and an explicitly configured label overrides its preset.</p>
+<h2 id="navbar" tabindex="-1"><a class="header-anchor" href="#navbar"><span>Navbar</span></a></h2>
+<p>Each locale's canonical <code>navbar</code> field accepts Plume string links and <code>{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }</code>; the old <code>navigation</code> field remains an alias. The legacy <code>label</code> and <code>href</code> names also remain supported. An internal string link inherits the target page's title, icon, and badge. <code>prefix</code> recursively resolves relative child links, with up to two visible dropdown levels. When omitted, Home, Posts, Tags, and Archives are generated from the locale's first Post collection.</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">navbar</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/docs/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Blog</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/blog/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> activeMatch</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">^/(blog|article)/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">material-symbols:article-outline</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Guide</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">prefix</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/docs/guide/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">items</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">[</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Configuration</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">configuration/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> badge</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#bda437;--shiki-dark:#e6cc77">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">New</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">warning</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#bda437;--shiki-dark:#e6cc77">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Astro</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://astro.build/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">simple-icons:astro</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>External links open in a new window and show the external-link marker by default; set <code>noIcon: true</code> to hide it. Navbar icons share the Markdown icon provider and support Iconify, IconFont, Font Awesome, image URLs, and <code>{ svg }</code>.</p>
+<p>Global options provide defaults and object-valued locale options are shallow-merged over them. A locale may independently override <code>logo</code>, <code>logoDark</code>, <code>profile</code>, <code>social</code>, <code>navbarSocialInclude</code>, <code>appearance</code>, <code>transition</code>, <code>footer</code>, <code>outline</code>, <code>aside</code>, <code>externalLinkIcon</code>, and <code>createTime</code> without inheriting another locale's navbar or labels. Use <code>navbar: false</code> in page frontmatter to hide the navbar on that page.</p>
+<h2 id="page-and-content-options" tabindex="-1"><a class="header-anchor" href="#page-and-content-options"><span>Page and content options</span></a></h2>
+<p><code>pageLayout</code> supports <code>home</code>, <code>posts</code>, <code>doc</code>, <code>page</code>, <code>friends</code>, <code>custom</code>, <code>false</code>, and custom component names, plus Plume's legacy <code>blog</code> alias for <code>posts</code>. A <code>posts</code> page may select a Post collection with <code>collection</code>; <code>page</code> keeps the navigation and standalone body; <code>custom</code>/<code>false</code> output only the Markdown body. Named component layouts replace the main content region while retaining the theme navigation, footer, and applicable collection sidebar. Put them in <code>theme/components/layouts/</code> with the layout name as the filename.</p>
+<p>Global, locale, and page-level <code>outline</code> and <code>aside</code> values control the content outline. <code>externalLinkIcon</code> is enabled by default and can be disabled per page; the old <code>externalLink</code> name remains compatible. <code>createTime: 'only-posts'</code> limits creation dates to posts and post lists, while <code>false</code> hides them everywhere. Set <code>plugins.nprogress: false</code> to disable the top progress bar during internal navigation.</p>
+<h2 id="layout-slots" tabindex="-1"><a class="header-anchor" href="#layout-slots"><span>Layout slots</span></a></h2>
+<p>Add an <code>.astro</code> or <code>.vue</code> file named after a Plume slot under <code>theme/components/slots/</code>, for example <code>doc-top.astro</code> or <code>DocTop.astro</code>. Components receive the currently available <code>lang</code>, <code>route</code>, <code>entry</code>, <code>layout</code>, and <code>posts</code> props. A missing component produces no extra DOM.</p>
+<p>Supported names include:</p>
+<ul>
+<li>General: <code>layout-top</code>, <code>layout-bottom</code>, <code>custom-content</code>, <code>footer-content</code>, <code>bulletin-content</code>, and <code>not-found</code>.</li>
+<li>Navigation: every <code>nav-bar-*-before/after</code> and <code>nav-screen-*-before/after</code> slot from Plume.</li>
+<li>Documents and pages: <code>page-top/bottom</code>, <code>doc-top/bottom</code>, <code>doc-before/after</code>, <code>doc-content-before</code>, <code>doc-footer-before</code>, all <code>doc-title-*</code> and <code>doc-meta-*</code> positions, <code>sidebar-nav-before/after</code>, <code>aside-top/bottom</code>, and <code>aside-outline-before/after</code>.</li>
+<li>Posts: <code>posts-top/bottom</code>, <code>posts-aside-top/bottom</code>, <code>posts-extract-before/after</code>, every <code>posts-post-list-*</code> hook, plus all tag, category, and archive positions.</li>
+</ul>
+<p>The legacy <code>FooterContent.astro</code> and <code>BulletinContent.astro</code> overrides remain compatible; a same-named slot component takes precedence.</p>
+<h2 id="automatic-frontmatter" tabindex="-1"><a class="header-anchor" href="#automatic-frontmatter"><span>Automatic frontmatter</span></a></h2>
+<p><code>autoFrontmatter</code> is enabled by default. Before development, checks, or builds, a new Markdown file receives a filename-derived <code>title</code>, filesystem <code>createTime</code>, and random eight-character <code>permalink</code> only when those fields are missing; the result is written back to the source as in Plume. Use <code>{ permalink: 'filepath' }</code> for stable path-derived URLs. When the optional <code>pinyin-pro</code> package is installed, Chinese paths are transliterated.</p>
+<p>Global and collection-level options can independently disable <code>title</code>, <code>createTime</code>, or <code>permalink</code>, and may provide a synchronous or asynchronous <code>transform(data, context, locale)</code>. <code>context</code> contains <code>filepath</code>, <code>relativePath</code>, and body <code>content</code>; collection settings take precedence. Set <code>autoFrontmatter: false</code> to disable source write-back entirely.</p>
+<h2 id="pagination" tabindex="-1"><a class="header-anchor" href="#pagination"><span>Pagination</span></a></h2>
+<p><code>siteConfig.pagination</code> accepts <code>false</code>, a page size, or <code>{ perPage: number }</code>. Both the starter and Plume default to 15 posts per page.</p>
+<p><code>siteConfig.categoriesExpand</code> controls the initially expanded category depth and accepts a number or <code>'deep'</code>. Directory names may use an <code>01.Name</code> prefix for ordering; the prefix stays hidden while every category level remains available in the category page and post breadcrumbs.</p>
+<p><code>siteConfig.tagsTheme</code> accepts <code>'colored'</code>, <code>'gray'</code>, or <code>'brand'</code>; colored mode uses Plume's complete 18-color preset. <code>siteConfig.meta</code> independently controls <code>tags</code>, <code>readingTime</code>, <code>wordCount</code>, and <code>createTime</code>, with <code>'short'</code> and <code>'long'</code> date formats. Set it to <code>false</code> to hide all metadata; a collection may still re-enable individual fields. <code>postCover: false</code> disables list covers. A page may set <code>readingTime: false</code> to hide its reading statistics.</p>
+<p><code>siteConfig.readingTime</code> matches Plume's reading-time plugin and accepts <code>false</code>, <code>wordPerMinute</code>, and <code>locales</code> keyed by locale path. Each locale may override <code>word</code> with <code>$word</code>, <code>time</code> with <code>$time</code>, and <code>less1Minute</code>; otherwise the frozen Chinese, English, Traditional Chinese, German, French, Russian, Japanese, and Korean presets are used.</p>
+<h2 id="post-and-doc-collections" tabindex="-1"><a class="header-anchor" href="#post-and-doc-collections"><span>Post and doc collections</span></a></h2>
+<p>Each locale accepts any number of Plume-style collections. <code>dir</code> is relative to that locale's content directory:</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">locales</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">en-US</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">home</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/en/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">collections</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">[</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">post</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> dir</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">blog</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> title</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Blog</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">post</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> dir</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">news</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> title</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">News</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/updates/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">doc</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> dir</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">docs</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> title</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Docs</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> sidebar</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">auto</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Post collections support <code>include</code>, <code>exclude</code>, <code>pagination</code>, <code>postList</code>, <code>link</code>, <code>linkPrefix</code>, independent tag/category/archive switches, paths and labels, plus collection-level <code>tagsTheme</code>, <code>meta</code>, <code>postCover</code>, <code>profile</code>, <code>social</code>, <code>categoriesExpand</code>, and <code>categoriesTransform</code>. As in Plume, <code>categoriesTransform</code> receives each post's outer-to-inner <code>{ id, name, sort }[]</code> category chain; its result is shared by cards, breadcrumbs, statistics, and the category tree. Generated pages, pagination JSON, sitemap entries, and language switching use the resolved collection routes.</p>
+<p>When migrating an older Plume site, deprecated top-level <code>blog</code>, <code>article</code>, and <code>notes</code> settings plus locale-level <code>notes</code> are converted into collections at startup; a non-empty <code>collections</code> array at the target level takes precedence. Legacy <code>profile.url</code> is also normalized to <code>profile.avatar</code> globally, per locale, and in Post collections. These aliases are migration aids only; new configuration should use <code>collections</code> and <code>profile.avatar</code> directly.</p>
+<p>Doc collections support recursive directory and numeric-prefix navigation through <code>sidebar: 'auto'</code>; <code>sidebarCollapsed</code> controls initial group state and <code>sidebarScrollbar</code> controls the scrollbar. A manual array accepts strings or <code>{ text, link, prefix, icon, badge, collapsed, items }</code>, including scoped <code>items: 'auto'</code> and <code>link: '---'</code> separators.</p>
+<p>Plume's global multi-sidebar form is also supported: <code>sidebar: { '/docs/': 'auto', '/guide/': [...] }</code>, with longest-prefix matching. A value may also use <code>{ items, prefix }</code>; page frontmatter can force a configured sidebar with <code>sidebar: '/guide/'</code> or disable it with <code>sidebar: false</code>. Sidebar items retain the legacy <code>dir</code> alias plus <code>target</code> and <code>rel</code>.</p>
+<p><code>site.config.mjs</code> already imports <code>defineSiteConfig</code> from <code>./theme/config.mjs</code>. It preserves the supplied object reference while filling defaults required by the theme runtime. Theme integrations may also use <code>defineThemeConfig</code>, <code>defineNavbarConfig</code>, <code>defineCollections</code>, and <code>defineCollection</code> from <code>theme/node.ts</code>; the other helpers still return their input unchanged.</p>
+<p>Legacy Plume options under <code>plugins.copyCode</code>, <code>plugins.shiki</code>, <code>plugins.readingTime</code>, <code>plugins.comment</code>, <code>plugins.watermark</code>, <code>plugins.replaceAssets</code>, <code>plugins.llmstxt</code>, <code>plugins.markdownPower</code>, <code>plugins.markdownChart</code>, <code>plugins.markdownImage</code>, <code>plugins.markdownInclude</code>, <code>plugins.markdownMath</code>, <code>plugins.search</code>, and <code>plugins.docsearch</code> fall back to their flat equivalents. Flat or <code>markdown</code> options win when both forms exist. <code>markdown.image</code> supports Plume's complete <code>figure</code>, <code>lazyload</code>, <code>mark</code>, <code>size</code>, <code>legacySize</code>, and <code>obsidianSize</code> option set; <code>codeHighlighter: false</code> falls back to plain fenced code. <code>plugins.markdownPower: false</code> disables only that enhancement group, leaving image, math, include, hint, and chart features under their own switches.</p>
+<p>The <code>plugins.seo</code> object supports Plume's <code>hostname</code>, <code>author</code>, <code>restrictions</code>, <code>autoDescription</code>, <code>fallBackImage</code>, <code>twitterID</code>, <code>isArticle</code>, <code>ogp</code>, <code>jsonLd</code>, <code>customHead</code>, and <code>canonical</code>; <code>false</code> disables generated Open Graph, Twitter Card, and JSON-LD data. Twitter/X handles are resolved from <code>social</code> first, with <code>twitterID</code> kept only as a compatibility fallback. <code>plugins.sitemap</code> supports <code>hostname</code>, <code>extraUrls</code>, <code>excludePaths</code>, <code>sitemapFilename</code>, <code>sitemapXSLFilename</code>, <code>sitemapXSLTemplate</code>, <code>changefreq</code>, <code>modifyTimeGetter</code>, <code>devServer</code>, <code>devHostname</code>, and <code>xmlNameSpace</code>; <code>false</code> removes sitemap output and its robots.txt entry.</p>
+<p>Page frontmatter <code>head</code> accepts Plume/VuePress-style <code>[tag, attributes, content?]</code> tuples for <code>meta</code>, <code>link</code>, <code>style</code>, <code>script</code>, and other valid head tags. <code>description</code>, <code>keywords</code>, <code>robots</code>, and <code>canonical</code> override generated values; <code>robots: noindex</code> also excludes the page from Pagefind and the sitemap. Partial navigation synchronizes JSON-LD and theme-managed head nodes, and falls back to a full navigation when the target changes its shell, sidebar, or custom head. <code>script</code> and <code>style</code> contents are emitted verbatim, so use only fully trusted content.</p>
+<p>Local search uses Pagefind. <code>plugins.search.isSearchable(page)</code> controls indexing, while <code>disableQueryPersistence</code> and <code>locales</code> remain effective. Plume's <code>miniSearch</code> tokenizer options have no Pagefind equivalent, so their types are retained for migration but they do not alter Pagefind tokenization. Plume's top-level <code>cache</code> and <code>configFile</code> options control VuePress compilation caching and configuration loading; Astro has no matching runtime stage, so these fields are type-only migration shims and should be removed from migrated configuration.</p>
+<h2 id="trusted-chart-scripts" tabindex="-1"><a class="header-anchor" href="#trusted-chart-scripts"><span>Trusted chart scripts</span></a></h2>
+<p>As in Plume, <code>chartjs</code>, <code>echarts</code>, <code>flowchart</code>, <code>markmap</code>, <code>plantuml</code>, and <code>mermaid</code> are disabled by default and enabled independently under <code>markdown</code>. <code>plantuml</code> may instead be an array of <code>@mdit/plugin-plantuml</code> options to limit syntax, change the server, or select an output format. This starter explicitly enables all six for its showcase.</p>
+<p><code>js</code> and <code>javascript</code> configurations for Chart.js and ECharts are disabled by default. Enable script execution and allowlist each trusted Markdown file only when you control its contents:</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">DANGEROUS_ALLOW_SCRIPT_EXECUTION</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">docs/guide/chart-demo.md</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>The allowlist also accepts <code>'*'</code>, but that is not recommended for sites containing user content. Prefer <code>json</code> for ordinary charts.</p>
+<h2 id="media-embeds" tabindex="-1"><a class="header-anchor" href="#media-embeds"><span>Media embeds</span></a></h2>
+<p>As in Plume, <code>acfun</code>, <code>bilibili</code>, <code>youtube</code>, <code>pdf</code>, <code>audioReader</code>, and <code>artPlayer</code> are disabled by default and enabled independently under <code>markdown</code>. This starter explicitly enables all six for its showcase. Obsidian PDF and video embeds also depend on <code>pdf</code> and <code>artPlayer</code>, respectively.</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">youtube</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">pdf</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> pdfjsUrl</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://static.pengzhanbo.cn/pdfjs/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">audioReader</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">artPlayer</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>Desktop browsers embed PDFs directly, while mobile browsers lazily load PDF.js. <code>pdfjsUrl</code> must point to a PDF.js distribution containing <code>web/viewer.html</code>. ArtPlayer supports Plume's MP4, MP3, WebM, Ogg, DASH, HLS, TS, FLV, MKV, MOV, and OGV types.</p>
+<h2 id="markdown-icons" tabindex="-1"><a class="header-anchor" href="#markdown-icons"><span>Markdown icons</span></a></h2>
+<p>Content uses Plume's <code>::name =size /color::</code> syntax, for example <code>::mdi:home =24 /#336f87::</code>. Iconify embeds icons from installed collections and lazily loads other collections from the official Iconify API in the browser. The legacy <code>:[name size/color]:</code> form remains compatible.</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">iconify</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> prefix</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">mdi</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>Set <code>provider</code> to <code>iconfont</code> or <code>fontawesome</code> and use <code>assets</code> for one or more <code>.css</code> / <code>.js</code> URLs. Font Awesome also accepts the built-ins <code>fontawesome</code> and <code>fontawesome-with-brands</code>, while <code>::fontawesome fas:house 2xl::</code> overrides the provider for one icon.</p>
+<p><code>markdown.repl</code> independently enables <code>go</code>, <code>kotlin</code>, <code>rust</code>, and <code>python</code>, while <code>theme</code> selects one Shiki theme or a <code>{ light, dark }</code> pair. Editable REPLs lazily load the highlighter and refresh syntax highlighting as you type. The first three submit code to Plume's public playground services; Python lazily loads Pyodide and executes locally in the browser. Run only trusted, lightweight examples. <code>markdown.codeTree</code> also accepts <code>{ height, icon }</code> defaults; attributes on an individual container take precedence.</p>
+<h2 id="social-links-and-footer" tabindex="-1"><a class="header-anchor" href="#social-links-and-footer"><span>Social links and footer</span></a></h2>
+<p><code>social</code> uses Plume's array shape and accepts built-in Simple Icons names, the <code>twitter</code> / <code>weibo</code> compatibility aliases, and custom SVG. <code>navbarSocialInclude</code> filters only the desktop navbar and its extra menu; mobile navigation and the blog profile retain the full list.</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">social</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">github</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://github.com/example</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">weibo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://weibo.com/example</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> ariaLabel</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Weibo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> svg</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">&#x3C;svg>...&#x3C;/svg></span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> name</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">custom</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">navbarSocialInclude</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">github</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">weibo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">footer</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">message</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Power by &#x3C;a href="https://astro.build/">Astro&#x3C;/a></span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">copyright</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Copyright © 2026 Example</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Set the global <code>footer</code> to <code>false</code> to hide it site-wide, or use <code>footer: false</code> in page frontmatter to hide it only on that page.</p>
+<h2 id="friends-pages" tabindex="-1"><a class="header-anchor" href="#friends-pages"><span>Friends pages</span></a></h2>
+<p>Set <code>pageLayout: friends</code> in frontmatter (the legacy <code>friends: true</code> also works) to enable Plume's friends layout. <code>cols</code> controls the desktop column limit and <code>contentPosition</code> places Markdown before or after the lists. Both <code>list</code> and <code>groups</code> support avatars, descriptions, location, organization, social links, and separate light/dark colors. See <code>/en/friends/</code> for a complete example.</p>
+<h2 id="bulletin" tabindex="-1"><a class="header-anchor" href="#bulletin"><span>Bulletin</span></a></h2>
+<p><code>bulletin</code> supports the <code>top-left</code>, <code>top-right</code>, <code>bottom-left</code>, <code>bottom-right</code>, and <code>center</code> positions plus the <code>always</code>, <code>session</code>, and <code>once</code> dismissal lifetimes. <code>enablePage</code> accepts a boolean or a function receiving <code>{ path }</code>; when <code>id</code> is omitted, the theme derives a stable identifier from the configuration. The starter bulletin appears only on <code>/landing/</code>.</p>
+<h2 id="search-providers" tabindex="-1"><a class="header-anchor" href="#search-providers"><span>Search providers</span></a></h2>
+<p><code>llmstxt: true</code> generates <code>/llms.txt</code>, <code>/llms-full.txt</code>, each page's Plume-style <code>index.md</code>, the legacy <code>/raw/</code> route, and the page-context menu beside document titles. As in Plume, the feature defaults to disabled; <code>false</code> removes the files and menu together, while page frontmatter <code>llmstxt: false</code> excludes only that page. Object form supports <code>llmsTxt</code>, <code>llmsFullTxt</code>, <code>llmsPageTxt</code>, <code>stripHTML</code>, <code>locale</code>, <code>domain</code>, <code>linkExtension</code>, <code>filter</code>, <code>transformMarkdown</code>, <code>llmsTxtTemplate</code>, and <code>llmsTxtTemplateGetter</code>; <code>locale</code> defaults to the root locale and must be set to <code>'all'</code> for every language. <code>plugins.llmstxt</code> remains an alias, though the top-level field is preferred.</p>
+<p>The default Pagefind index is generated at build time and needs no external service:</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">search</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">local</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">locales</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/en/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> placeholder</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Search documentation</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>Local-search locales may override <code>placeholder</code>, <code>buttonText</code>, <code>resetButtonTitle</code>, <code>backButtonTitle</code>, <code>noResultsText</code>, and the footer keyboard labels; omitted values use the same presets as Plume.</p>
+<p>Large documentation sites can switch to the same Algolia DocSearch adapter used by Plume. Its client and stylesheet load only when this provider is selected, and the adapter adds the current language as a <code>lang</code> facet:</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">search</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">algolia</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">appId</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">YOUR_APP_ID</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">apiKey</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">YOUR_SEARCH_API_KEY</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">indexName</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">YOUR_INDEX_NAME</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">locales</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/en/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> placeholder</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Search documentation</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>The adapter also accepts DocSearch <code>indices</code>, <code>searchParameters</code>, <code>translations</code>, <code>keyboardShortcuts</code>, and <code>indexBase</code>. <code>apiKey</code> must be a public search-only key, never an admin key.</p>
+<h2 id="asset-url-replacement" tabindex="-1"><a class="header-anchor" href="#asset-url-replacement"><span>Asset URL replacement</span></a></h2>
+<p><code>replaceAssets</code> is disabled by default. A production build can rewrite images under <code>/images/</code> and video, audio, subtitle, or PDF URLs under <code>/medias/</code> to a CDN without modifying the source Markdown, HTML, CSS, or JavaScript files:</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">replaceAssets</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> process</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">env</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">NODE_ENV</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676"> ===</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">production</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">?</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> image</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://images.example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> media</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://media.example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre></div><p>A string or function replaces every built-in asset type. <code>{ find, replacement }</code>, rule arrays, and a <code>rules</code> property provide custom matching. A string <code>find</code> beginning with <code>^</code> or ending with <code>$</code> is treated as a regular expression; other strings match the start or end of a URL. As in Plume, built-in rules only recognize known extensions under <code>/images/</code> and <code>/medias/</code>.</p>
+<h2 id="build-time-image-dimensions" tabindex="-1"><a class="header-anchor" href="#build-time-image-dimensions"><span>Build-time image dimensions</span></a></h2>
+<p><code>markdown.imageSize</code> is disabled by default. Set it to <code>true</code> or <code>'local'</code> to read local images during production builds and add intrinsic <code>width</code> and <code>height</code> attributes to content images; use <code>'all'</code> to inspect remote images too. The legacy <code>plugins.markdownPower.imageSize</code> form remains supported:</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">imageSize</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">local</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre></div><p>Existing dimensions are preserved, and a single missing dimension is derived from the original ratio. Only built output changes; Markdown sources remain untouched. Remote mode adds network work and waits up to three seconds for each unreadable URL, so prefer local mode unless remote sizing is required. For parser safety, automatic sizing is temporarily skipped for AVIF, HEIF, HEIC, JXL, and ICNS files; the images themselves remain usable.</p>
+<h2 id="content-encryption" tabindex="-1"><a class="header-anchor" href="#content-encryption"><span>Content encryption</span></a></h2>
+<p>Like Plume, <code>encrypt</code> supports a site-wide gate, administrator passwords, and page rules matched by Markdown file, directory, request path, or regular expression. A password may be one string or an array; unlocking a shared directory or rule remains valid for the current session:</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">encrypt</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">global</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">admin</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">REPLACE_WITH_ADMIN_PASSWORD</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">rules</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">notes/private/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">directory-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/private/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">reader-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">editor-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">^/(?:en/)?members/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">member-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Individual pages still accept <code>password</code> and <code>passwordHint</code> in frontmatter. A partial <code>::: encrypt</code> container accepts either its own password or an administrator password, while <code>markdown.encrypt: { password: 'default password' }</code> supplies a default. Page and partial content use PBKDF2 and AES-GCM at build time, but a static-site gate is not a substitute for server-side access control; do not ship sensitive data in a public build. Replace or remove every demonstration password before using the theme for real content.</p>
+<h2 id="git-contributors-and-changelog" tabindex="-1"><a class="header-anchor" href="#git-contributors-and-changelog"><span>Git contributors and changelog</span></a></h2>
+<p>Production builds derive each Markdown page's last-updated time and contributors from Git history. Development skips <code>git log</code> by default. Contributors appear as inline names by default, or as an in-content block with avatars and links. As in Plume, the changelog is disabled by default:</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">lastUpdated</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> formatOptions</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> dateStyle</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">short</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> timeStyle</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">short</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">contributors</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">mode</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">block</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#A0ADA0;--shiki-dark:#758575DD"> // or 'inline'</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">info</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">[</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> username</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">octocat</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> name</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Site author</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> alias</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Local Git Name</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">changelog</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">maxCount</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 10</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">repoUrl</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://github.com/owner/repo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Frontmatter can disable one page with <code>contributors: false</code>, <code>changelog: false</code>, or <code>lastUpdated: false</code>; <code>contributors: [extra contributor]</code> supplements the generated list. <code>gitInclude</code> adds related files from the same repository to the page history. Set <code>plugins: { git: true }</code> when testing in development. CI must fetch complete history (<code>fetch-depth: 0</code> in GitHub Actions). Missing Git, shallow history, and untracked files degrade to no metadata without failing the build.</p>
+<h2 id="comment-providers" tabindex="-1"><a class="header-anchor" href="#comment-providers"><span>Comment providers</span></a></h2>
+<p>Set <code>features.comments</code> to <code>true</code>, then choose <code>Giscus</code>, <code>Waline</code>, <code>Twikoo</code>, or <code>Artalk</code> in <code>comment.provider</code>. All four clients load on demand and use Plume's server fields:</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="Copy code" data-copied="Copied"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">comment</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Giscus</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">repo</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">owner/repo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">repoId</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">R_...</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">category</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">General</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">categoryId</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">DIC_...</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#A0ADA0;--shiki-dark:#758575DD">// inputPosition: 'top',</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#A0ADA0;--shiki-dark:#758575DD">// strict: true,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Waline uses <code>serverURL</code>, Twikoo uses <code>envId</code>, and Artalk uses <code>server</code>. Set <code>comments: false</code> in page frontmatter to disable comments on one page. Password-protected posts load comments only after a successful unlock.</p>
+<h2 id="project-structure" tabindex="-1"><a class="header-anchor" href="#project-structure"><span>Project structure</span></a></h2>
+<div class="vp-file-tree"><p class="vp-file-tree-title">ermaozi</p><button type="button" class="vp-copy-code-button" data-copy-tree aria-label="Copy" data-copied="Copied"></button>
+<div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c09553" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/></svg></span><span class="name folder">content</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">blog</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">docs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">en</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#00a23c" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/><path fill="#aaffa2" d="M22.6 16.3a3.79 3.79 0 0 1 1.8 2.8a3.048 3.048 0 1 0-1.8-2.8m-2 6.3a3.1 3.1 0 1 0-3.1-3.1a3.116 3.116 0 0 0 3.1 3.1m1.3.2h-2.6a3.9 3.9 0 0 0-3.9 3.9V30l.2.1a16.1 16.1 0 0 0 5.4.9a9.64 9.64 0 0 0 4.7-.9l.2-.1v-3.2a4.15 4.15 0 0 0-4-4m5.1-3.2h-2.6a3.23 3.23 0 0 1-1.2 2.6a4.62 4.62 0 0 1 3.3 4.5v1a9.8 9.8 0 0 0 4.1-.9l.2-.1v-3.2a3.82 3.82 0 0 0-3.8-3.9m-11.8-.2a3 3 0 0 0 1.6-.5a3.7 3.7 0 0 1 1.4-2.4v-.2a3.1 3.1 0 0 0-6.2 0a3.27 3.27 0 0 0 3.2 3.1m2.7 2.9a4.2 4.2 0 0 1-1.2-2.6h-2.9a3.9 3.9 0 0 0-3.9 3.9v3.2l.2.1a16.3 16.3 0 0 0 4.4.8v-1a4.81 4.81 0 0 1 3.4-4.4"/></svg></span><span class="name folder">public</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">img</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#bf8e55" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/><path fill="#a86749" d="M27.3 16.881a8 8 0 0 1 1.576 1.419a4.666 4.666 0 0 1 .17 6.087a5.2 5.2 0 0 1-3.163 1.765a9.3 9.3 0 0 1-3.381-.073a11 11 0 0 0-1.608-.176a.9.9 0 0 0-1.046.724v.015a.94.94 0 0 0 .18.742a10.5 10.5 0 0 0 .848 1.108a2.2 2.2 0 0 1 .529.99a.787.787 0 0 1-.491.946a6.4 6.4 0 0 1-3.139.552a15 15 0 0 1-7.736-2.555a6.84 6.84 0 0 1-2.928-4.416a5.87 5.87 0 0 1 1-4.544a10.2 10.2 0 0 1 4.317-3.6a15.05 15.05 0 0 1 11.67-.6c.04.02 3.131 1.677 3.202 1.616"/><path fill="#3783ff" d="M11.247 22.676a2.47 2.47 0 0 1 1.594.514a1.126 1.126 0 0 1 .321 1.533a1.1 1.1 0 0 1-.321.328a2.77 2.77 0 0 1-3.195 0a1.13 1.13 0 0 1-.33-1.535a1.1 1.1 0 0 1 .337-.342a2.46 2.46 0 0 1 1.594-.498"/><path fill="#4de94c" d="M10.965 21.431a1.92 1.92 0 0 1-1.171-.371a.9.9 0 0 1-.3-1.214a.9.9 0 0 1 .29-.3a2.11 2.11 0 0 1 2.458.025a.887.887 0 0 1 .235 1.212a.9.9 0 0 1-.226.234a1.95 1.95 0 0 1-1.286.414"/><path fill="#fe0" d="M14.11 18.49a1.46 1.46 0 0 1-1.072-.385a.72.72 0 0 1-.087-1a1 1 0 0 1 .087-.089a1.656 1.656 0 0 1 2.124 0a.72.72 0 0 1 .087 1a.7.7 0 0 1-.128.123a1.5 1.5 0 0 1-1.011.351"/><path fill="#4c1ac6" d="M15.859 25.412a2.8 2.8 0 0 1 1.793.568a1.235 1.235 0 0 1 .373 1.677a1.2 1.2 0 0 1-.373.382a3.16 3.16 0 0 1-3.6 0a1.24 1.24 0 0 1-.39-1.678a1.2 1.2 0 0 1 .4-.4a2.8 2.8 0 0 1 1.797-.549"/><path fill="#2a3e4f" d="M31 13.466a5.8 5.8 0 0 1-1.151 1.909a47 47 0 0 1-3.749 4.084a.51.51 0 0 1-.537.189a.7.7 0 0 1-.251-.153q-.429-.409-.844-.833a.473.473 0 0 1-.076-.653l.052-.057l.056-.052a48 48 0 0 1 4.1-3.7a8.5 8.5 0 0 1 1.42-.946a2.6 2.6 0 0 1 .508-.189a.353.353 0 0 1 .463.187v.014Z"/><path fill="#7e8c8d" d="M20 22.963a.1.1 0 0 1 .03.006a2.26 2.26 0 0 0 2.977-.465a1.53 1.53 0 0 0 .411-1.21a1.17 1.17 0 0 0-1-1.006a1.02 1.02 0 0 0-.923.408a1.55 1.55 0 0 0-.284.657A2.57 2.57 0 0 1 20 22.938Z"/><path fill="#f89b36" d="M25.16 19.792q-.489-.49-.984-.976a.236.236 0 0 0-.33-.053h-.006a.2.2 0 0 0-.063.072q-.417.544-.83 1.092a.22.22 0 0 0 .008.3l.011.01q.369.366.738.728a.224.224 0 0 0 .316.035c.375-.277.751-.554 1.12-.839a.8.8 0 0 0 .136-.2a1 1 0 0 0-.116-.169"/><path fill="#ff8c00" d="M17.865 17.121a1.15 1.15 0 0 1-.859-.321a.617.617 0 0 1-.048-.856l.048-.05a1.286 1.286 0 0 1 1.7 0a.617.617 0 0 1 .048.857a.6.6 0 0 1-.08.077a1.17 1.17 0 0 1-.809.293"/><path fill="#8f9fa0" d="M20 22.963s3.915-1.136 2.659-2.614c0 0-.857-.393-1.455 1.007A3.9 3.9 0 0 1 20 22.963"/><path fill="#e9bb42" d="m23.306 20.585l1.373-1.272l-.5-.5a.24.24 0 0 0-.336-.045l-.008.006a.3.3 0 0 0-.055.063c-.2.259-1.152 1.07-.812 1.407Z"/><path fill="#32495d" d="M24.878 19.073L31 13.254s.041-.393-.468-.2s-.8-.177-6.094 4.9a.442.442 0 0 0 .024.71Z"/><path fill="#f60000" d="M21.721 17.41a1.15 1.15 0 0 1-.858-.321a.617.617 0 0 1-.048-.857l.048-.049a1.286 1.286 0 0 1 1.7 0a.617.617 0 0 1 .048.855a.6.6 0 0 1-.082.078a1.16 1.16 0 0 1-.808.294"/></svg></span><span class="name folder">theme</span><span class="comment"># Theme internals; usually leave unchanged</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">components</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">lib</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">pages</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">styles</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#f5de19" d="M18.774 19.7a3.73 3.73 0 0 0 3.376 2.078c1.418 0 2.324-.709 2.324-1.688c0-1.173-.931-1.589-2.491-2.272l-.856-.367c-2.469-1.052-4.11-2.37-4.11-5.156c0-2.567 1.956-4.52 5.012-4.52A5.06 5.06 0 0 1 26.9 10.52l-2.665 1.711a2.33 2.33 0 0 0-2.2-1.467a1.49 1.49 0 0 0-1.638 1.467c0 1.027.636 1.442 2.1 2.078l.856.366c2.908 1.247 4.549 2.518 4.549 5.376c0 3.081-2.42 4.769-5.671 4.769a6.58 6.58 0 0 1-6.236-3.5ZM6.686 20c.538.954 1.027 1.76 2.2 1.76c1.124 0 1.834-.44 1.834-2.15V7.975h3.422v11.683c0 3.543-2.078 5.156-5.11 5.156A5.31 5.31 0 0 1 3.9 21.688Z"/></svg></span><span class="name file">astro.config.mjs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#f5de19" d="M18.774 19.7a3.73 3.73 0 0 0 3.376 2.078c1.418 0 2.324-.709 2.324-1.688c0-1.173-.931-1.589-2.491-2.272l-.856-.367c-2.469-1.052-4.11-2.37-4.11-5.156c0-2.567 1.956-4.52 5.012-4.52A5.06 5.06 0 0 1 26.9 10.52l-2.665 1.711a2.33 2.33 0 0 0-2.2-1.467a1.49 1.49 0 0 0-1.638 1.467c0 1.027.636 1.442 2.1 2.078l.856.366c2.908 1.247 4.549 2.518 4.549 5.376c0 3.081-2.42 4.769-5.671 4.769a6.58 6.58 0 0 1-6.236-3.5ZM6.686 20c.538.954 1.027 1.76 2.2 1.76c1.124 0 1.834-.44 1.834-2.15V7.975h3.422v11.683c0 3.543-2.078 5.156-5.11 5.156A5.31 5.31 0 0 1 3.9 21.688Z"/></svg></span><span class="name file">site.config.mjs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#83cd29" d="M16 30a2.15 2.15 0 0 1-1.076-.288L11.5 27.685c-.511-.286-.262-.387-.093-.446a6.8 6.8 0 0 0 1.549-.7a.26.26 0 0 1 .255.019l2.631 1.563a.34.34 0 0 0 .318 0l10.26-5.922a.32.32 0 0 0 .157-.278V10.075a.33.33 0 0 0-.159-.283l-10.26-5.917a.32.32 0 0 0-.317 0L5.587 9.794a.33.33 0 0 0-.162.281v11.841a.32.32 0 0 0 .161.274L8.4 23.814c1.525.762 2.459-.136 2.459-1.038V11.085a.3.3 0 0 1 .3-.3h1.3a.3.3 0 0 1 .3.3v11.692c0 2.035-1.108 3.2-3.038 3.2a4.4 4.4 0 0 1-2.363-.642l-2.697-1.547a2.17 2.17 0 0 1-1.076-1.872V10.075A2.16 2.16 0 0 1 4.661 8.2l10.261-5.924a2.25 2.25 0 0 1 2.156 0L27.338 8.2a2.17 2.17 0 0 1 1.077 1.87v11.846a2.17 2.17 0 0 1-1.077 1.872l-10.26 5.924A2.15 2.15 0 0 1 16 30"/><path fill="#83cd29" d="M14.054 17.953a.3.3 0 0 1 .3-.3h1.327a.3.3 0 0 1 .295.251c.2 1.351.8 2.032 3.513 2.032c2.161 0 3.082-.489 3.082-1.636c0-.661-.261-1.152-3.62-1.481c-2.808-.278-4.544-.9-4.544-3.144c0-2.07 1.745-3.305 4.67-3.305c3.287 0 4.914 1.141 5.12 3.589a.3.3 0 0 1-.295.323h-1.336a.3.3 0 0 1-.288-.232c-.319-1.421-1.1-1.875-3.2-1.875c-2.36 0-2.634.822-2.634 1.438c0 .746.324.964 3.51 1.385c3.153.417 4.651 1.007 4.651 3.223c0 2.236-1.864 3.516-5.115 3.516c-4.495.006-5.436-2.055-5.436-3.784"/></svg></span><span class="name file">package.json</span></p></div></div>
+<p>Use <code>icon=&quot;simple&quot;</code> on a file-tree container or fence for generic file/folder icons. The default <code>colored</code> mode selects local VS Code icons by folder name and file type; set the global default with <code>markdown.fileTree.icon</code>.</p>
+<h2 id="page-fields" tabindex="-1"><a class="header-anchor" href="#page-fields"><span>Page fields</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Page title</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Search and SEO summary</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>post</code>, <code>doc</code>, or <code>page</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Documentation order</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>group</code></td>
+<td>Documentation group</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>cover</code> / <code>coverStyle</code></td>
+<td>Post cover and per-post cover layout</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Without a <code>permalink</code>, the theme derives a stable route from the file path. Set one explicitly when the URL must remain unchanged long term.</p>
+<div><script type="module">document.querySelectorAll(`[data-git-changelog]`).forEach(e=>{let t=e.querySelector(`.vp-changelog-header`);!t||t.dataset.ready||(t.dataset.ready=`true`,t.addEventListener(`click`,()=>{let n=e.classList.toggle(`active`);t.setAttribute(`aria-expanded`,String(n))}))});</script><div class="vp-doc-copyright"><h2 id="doc-copyright" tabindex="-1" class="vp-doc-header"><a href="#doc-copyright" class="header-anchor"><span>Copyright</span></a></h2><div class="vp-copyright"><span class="copyright-mask"></span><p><span>Copyright Ownership:</span><span data-astro-cid-p2o5vn2b="true" class="vp-link no-icon">Site Author</span></p><p><span>This article link:</span><span class="source"><a data-copyright-original href="https://astro.ermao.net/en/docs/guide/configuration/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">https://astro.ermao.net/en/docs/guide/configuration/</a></span></p><p><span>License under:</span><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">Attribution 4.0 International (CC-BY-4.0)</a><span class="vpi-license-cc" aria-hidden="true"></span><span class="vpi-license-by" aria-hidden="true"></span></p></div></div><script type="module">var e=document.querySelector(`[data-copyright-original]`);if(e){let t=new URL(location.href.split(`#`)[0]);t.searchParams.delete(`giscus`),e.href=t.toString(),e.textContent=decodeURIComponent(t.toString())}</script><footer class="vp-doc-footer"><div class="edit-info"><div class="last-updated" aria-label="Last updated"><p class="last-updated-text">Last Updated: <time datetime="2026-08-08T12:05:37.000Z" class="last-updated-time" data-date-options="{&quot;dateStyle&quot;:&quot;short&quot;,&quot;timeStyle&quot;:&quot;short&quot;}">8/8/26, 12:05 PM</time></p></div></div><div class="contributors right" aria-label="Contributors"><span class="contributors-label">Contributors:</span><span class="contributors-info"><span class="contributor">github-actions[bot]</span></span></div><nav class="prev-next"><div class="pager"><a href="/en/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link pager-link prev"><span class="desc">Previous page</span><span class="title"><span>Beginner quick start</span></span></a></div><div class="pager"><a href="/en/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link pager-link next"><span class="desc">Next page</span><span class="title"><span>Deploy the site</span></span></a></div></nav></footer><script type="module">document.querySelectorAll(`.last-updated-time[data-date-options]`).forEach(e=>{let t=new Date(e.dateTime);Number.isNaN(t.getTime())||(e.textContent=new Intl.DateTimeFormat(void 0,JSON.parse(e.dataset.dateOptions||`{}`)).format(t))});</script></div></article></main></div></div></div></div></div><footer class="vp-footer has-sidebar" vp-footer><div class="container"><div class="message">Powered by <a target="_blank" rel="noopener" href="https://astro.build/">Astro</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/ermaozi/astro-theme-ermaozi">ermaozi</a></div><div class="copyright">Copyright © 2026 ermaozi</div></div></footer><script>
+    (() => {
+      const footer = document.currentScript?.previousElementSibling
+      if (!(footer instanceof HTMLElement)) return
+      const update = () => document.body.style.setProperty('--vp-footer-height', `${footer.offsetHeight}px`)
+      update()
+      new ResizeObserver(update).observe(footer)
+    })()
+  </script><button type="button" class="vp-back-to-top" aria-label="Back to top" hidden><span class="percent">0%</span><span class="icon vpi-back-to-top" aria-hidden="true"></span><svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="50%" cy="50%"></circle></svg></button></div></div></div><script>
+      (() => {
+        const content = document.querySelector('#VPContent')
+        if (!(content instanceof HTMLElement)) return
+        const storageKey = '__ERMAOZI_PAGE_TRANSITION__'
+        const classes = ['fade-slide-y-enter-from', 'fade-slide-y-enter-active', 'fade-slide-y-enter-to', 'fade-slide-y-leave-from', 'fade-slide-y-leave-active', 'fade-slide-y-leave-to']
+        const reset = () => content.classList.remove(...classes)
+        const timestamp = Number(sessionStorage.getItem(storageKey))
+        sessionStorage.removeItem(storageKey)
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - timestamp < 10_000) {
+          content.classList.add('fade-slide-y-enter-from', 'fade-slide-y-enter-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-enter-from')
+            content.classList.add('fade-slide-y-enter-to')
+            setTimeout(reset, 150)
+          }))
+        }
+        addEventListener('pageshow', event => { if (event.persisted) reset() })
+        let leaving = false
+        document.addEventListener('click', event => {
+          if (leaving || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+          const link = event.target instanceof Element ? event.target.closest('a[href]') : null
+          if (!(link instanceof HTMLAnchorElement) || link.target && link.target !== '_self' || link.hasAttribute('download')) return
+          if (link.closest('.vp-sidebar')) return
+          const next = new URL(link.href, location.href)
+          if (next.origin !== location.origin || !/^https?:$/.test(next.protocol) || next.pathname === location.pathname && next.search === location.search) return
+          event.preventDefault()
+          document.dispatchEvent(new CustomEvent('plume-navigation-start'))
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            location.href = next.href
+            return
+          }
+          leaving = true
+          content.classList.add('fade-slide-y-leave-from', 'fade-slide-y-leave-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-leave-from')
+            content.classList.add('fade-slide-y-leave-to')
+            setTimeout(() => {
+              sessionStorage.setItem(storageKey, String(Date.now()))
+              location.href = next.href
+            }, 150)
+          }))
+        })
+      })()
+    </script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DhTLxJEj.js"></script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_1_lang.CZuyuKlw.js"></script></body></html>

@@ -1,0 +1,1034 @@
+<!DOCTYPE html><html class="layout-doc" lang="zh-CN" data-page-transition data-katex-copy="true" data-mark-mode="lazy" data-repl-theme="{&quot;light&quot;:&quot;github-light&quot;,&quot;dark&quot;:&quot;github-dark&quot;}" data-photo-swipe-selector=".vp-doc :not(a) > img:not([no-view],.no-view,.ignore)" data-photo-swipe-download="true" data-photo-swipe-fullscreen="true" data-photo-swipe-scroll-close="true" data-photo-swipe-locale="{&quot;close&quot;:&quot;关闭&quot;,&quot;download&quot;:&quot;下载图片&quot;,&quot;fullscreen&quot;:&quot;切换全屏&quot;,&quot;zoom&quot;:&quot;缩放&quot;,&quot;arrowPrev&quot;:&quot;上一个 (左箭头)&quot;,&quot;arrowNext&quot;:&quot;下一个 (右箭头)&quot;}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#336f87"><meta name="color-scheme" content="light dark"><script>(function(){const appearance = true;
+const forceDark = false;
+
+      (() => {
+        const root = document.documentElement
+        const stored = localStorage.getItem('vuepress-theme-appearance')
+        const selected = stored || (appearance === 'dark' ? 'dark' : 'auto')
+        const dark = forceDark || (appearance !== false && (selected === 'dark' || (selected !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)))
+        root.dataset.theme = dark ? 'dark' : 'light'
+        root.classList.toggle('dark', dark)
+      })()
+    })();</script><meta name="referrer" content="strict-origin-when-cross-origin"><title>内容能力 | 文档中心 | ermaozi</title><meta name="description" content="使用代码高亮、脚注、提示框、表格、媒体嵌入和其他 Markdown 扩展。"><link data-ermaozi-managed-head rel="canonical" href="https://astro.ermao.net/docs/guide/content/"><meta data-ermaozi-managed-head property="og:title" content="内容能力"><meta data-ermaozi-managed-head property="og:description" content="使用代码高亮、脚注、提示框、表格、媒体嵌入和其他 Markdown 扩展。"><meta data-ermaozi-managed-head property="og:url" content="https://astro.ermao.net/docs/guide/content/"><meta data-ermaozi-managed-head property="og:type" content="article"><meta data-ermaozi-managed-head property="og:site_name" content="ermaozi"><meta data-ermaozi-managed-head property="og:locale" content="zh-CN"><meta data-ermaozi-managed-head property="og:image" content="https://astro.ermao.net/img/logo.svg"><meta data-ermaozi-managed-head property="og:image:alt" content="内容能力"><meta data-ermaozi-managed-head property="og:updated_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:author" content="站点作者"><meta data-ermaozi-managed-head property="article:tag" content="写作"><meta data-ermaozi-managed-head property="article:tag" content="Markdown"><meta data-ermaozi-managed-head property="article:published_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:modified_time" content="2026-08-05T00:00:00.000Z"><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"内容能力","image":["https://astro.ermao.net/img/logo.svg"],"datePublished":"2026-08-05T00:00:00.000Z","dateModified":"2026-08-05T00:00:00.000Z","author":[{"@type":"Person","name":"站点作者"}],"@id":"https://astro.ermao.net/docs/guide/content/#article","mainEntityOfPage":{"@type":"WebPage","@id":"https://astro.ermao.net/docs/guide/content/"},"inLanguage":"zh-CN","articleSection":"文档中心","keywords":"Markdown, 写作","publisher":{"@id":"https://astro.ermao.net/about/#person"},"isPartOf":{"@id":"https://astro.ermao.net/#website"}}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://astro.ermao.net/#website","url":"https://astro.ermao.net/","name":"ermaozi","description":"一个支持全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。","inLanguage":"zh-CN","publisher":{"@id":"https://astro.ermao.net/about/#person"}},{"@type":"Person","@id":"https://astro.ermao.net/about/#person","name":"站点作者","url":"https://astro.ermao.net/about/","image":"https://astro.ermao.net/img/logo.svg","description":"使用 ermaozi 发布文章、文档和项目记录。","sameAs":["https://github.com/ermaozi/astro-theme-ermaozi"]}]}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://astro.ermao.net/"},{"@type":"ListItem","position":2,"name":"文档中心","item":"https://astro.ermao.net/docs/"},{"@type":"ListItem","position":3,"name":"指南"},{"@type":"ListItem","position":4,"name":"内容能力","item":"https://astro.ermao.net/docs/guide/content/"}]}</script><link rel="icon" href="/img/logo.svg"><meta name="keywords" content="Astro,静态博客,Markdown,博客主题"><link rel="stylesheet" href="/_astro/_..BozvyjkW.css"><link rel="stylesheet" href="/_astro/BaseLayout.DzgLzYEh.css"><style>.home-hero-effect-dark-veil[data-v-d452a4a0]{width:100%;height:100%;display:block;position:absolute;transform:translate(0,0)}
+.home-hero-effect-beams[data-v-7d45be68]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-dot-grid[data-v-60f95dd7]{justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;overflow:hidden}.dot-grid-container[data-v-60f95dd7]{width:100%;height:100%;position:relative}.dot-grid-container canvas[data-v-60f95dd7]{pointer-events:none;width:100%;height:100%;position:absolute;inset:0}
+.home-hero-hyperspeed[data-v-6103dcc7]{width:100%;height:100%;position:absolute;overflow:hidden}.home-hero-hyperspeed[data-v-6103dcc7] canvas{display:block;width:100%!important;height:100%!important}
+.home-hero-effect-lighting[data-v-11b14641]{width:100%;height:100%;position:absolute;transform:translate(0,0)}.home-hero-effect-lighting canvas[data-v-11b14641]{mix-blend-mode:screen;width:100%;height:100%}
+.home-hero-effect-iridescence[data-v-57569e3d]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-liquid-ether[data-v-4f4b1a4e]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+.home-hero-effect-orb[data-v-0cd01e9e]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-prism[data-v-efa4438a]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-pixel-blast[data-v-012c650c]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+</style></head><body data-page-shell="PmNoSj3tRCtNHj0z" data-pagefind-ready="true"><div id="nprogress" aria-hidden="true" hidden><div class="bar"></div></div><script id="ermaozi-page-data" type="application/json">{"page":{"path":"/docs/guide/content/","title":"内容能力","description":"使用代码高亮、脚注、提示框、表格、媒体嵌入和其他 Markdown 扩展。"},"frontmatter":{"title":"内容能力","description":"使用代码高亮、脚注、提示框、表格、媒体嵌入和其他 Markdown 扩展。","permalink":"/docs/guide/content/","createTime":"2026-08-05T00:00:00.000Z","updateTime":"2026-08-05T00:00:00.000Z","type":"doc","order":20,"group":"指南","tags":["Markdown","写作"]}}</script><div id="app"><div class="theme-plume vp-layout"><div class="global-protected" data-global-protected><span tabindex="-1"></span><a class="vp-skip-link visually-hidden" href="#VPContent">跳到内容</a><header class="vp-nav"><div class="vp-navbar has-sidebar"><div class="wrapper"><div class="container"><div class="title"><div class="vp-navbar-title"><a href="/" aria-label="ermaozi 首页" class="vp-link title link no-icon"><img class="vp-image dark logo" src="/img/logo.svg" alt="" width="24" height="24"><img class="vp-image light logo" src="/img/logo.svg" alt="" width="24" height="24"><span>ermaozi</span></a></div></div><div class="content"><div class="content-body"><div class="vp-navbar-search search"><div class="search-wrapper"><div id="local-search"><button class="mini-search mini-search-button search-button" type="button" aria-label="搜索文档"><span class="mini-search-button-container"><span class="mini-search-search-icon vpi-mini-search" aria-label="search icon"></span><span class="mini-search-button-placeholder">搜索文档</span></span><span class="mini-search-button-keys" aria-hidden="true"><kbd class="mini-search-button-key"></kbd><kbd class="mini-search-button-key">K</kbd></span></button></div></div></div><nav class="vp-navbar-menu menu" aria-labelledby="main-nav-aria-label"><span id="main-nav-aria-label" class="visually-hidden">Main Navigation</span><a tabindex="0" href="/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link navbar-menu-link"><span class="vp-icon nav-symbol icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>博客</span></span></a><div class="vp-flyout vp-navbar-menu-group nav-group active"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span class="nav-label">文档</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span>文档中心<span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></a></div><div class="vp-menu-group"><p class="title"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><span>指南</span></p><div class="vp-menu-link"><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span>快速开始</a></div><div class="vp-menu-link"><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span>站点配置</a></div><div class="vp-menu-link"><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span>部署站点</a></div><div class="vp-menu-link"><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link active"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>内容能力<span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a></div><div class="vp-menu-link"><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>Astro<span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></div></div><div class="vp-flyout vp-navbar-menu-group nav-group"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span class="nav-label">更多</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon-img nav-menu-icon" aria-hidden="true"><img src="/img/logo.svg" alt=""></span>分类</a></div><div class="vp-menu-link"><a href="/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon is-svg nav-menu-icon" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span>标签</a></div><div class="vp-menu-link"><a href="/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span>归档</a></div><div class="vp-menu-link"><a href="/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span>关于</a></div></div></div></div></div></nav><div class="vp-navbar-appearance appearance"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-navbar-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div><div class="vp-flyout vp-navbar-extra extra"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation"><span class="vpi-more-horizontal icon" aria-hidden="true"></span></button><div class="menu flyout-menu"><div class="vp-menu flyout-panel extra-panel"><div class="group appearance"><div class="item appearance"><p class="label">外观</p><div class="appearance-action"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div></div></div><div class="group social"><div class="item social-links"><div class="vp-social-links social-links-list"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></div></div></div><button class="vp-navbar-hamburger hamburger" type="button" aria-label="移动端导航" aria-expanded="false" aria-controls="nav-screen"><span class="container"><span class="top"></span><span class="middle"></span><span class="bottom"></span></span></button></div></div></div></div><div class="divider"><div class="divider-line"></div></div></div><div id="navScreen" class="vp-nav-screen" hidden><div class="container"><nav class="vp-nav-screen-menu menu"><a href="/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-link"><span class="vp-icon icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>博客</span></span></a><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-文档" aria-expanded="false"><span class="button-text"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>文档</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-文档" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>文档中心</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></a></div><div class="group"><div class="vp-nav-screen-menu-group-section"><p class="title"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span>指南</p><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span><span>快速开始</span></a><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><span>站点配置</span></a><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span><span>部署站点</span></a><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link active"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>内容能力</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>Astro</span><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></div><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-更多" aria-expanded="false"><span class="button-text"><span class="vp-icon icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span>更多</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-更多" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon-img" aria-hidden="true"><img src="/img/logo.svg" alt=""></span><span>分类</span></a></div><div class="item"><a href="/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon is-svg" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span><span>标签</span></a></div><div class="item"><a href="/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span><span>归档</span></a></div><div class="item"><a href="/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span><span>关于</span></a></div></div></div></div></nav><div class="vp-nav-screen-appearance mobile-appearance appearance"><p class="text">外观</p><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-nav-screen-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></header><div role="button" aria-expanded="true" aria-haspopup="listbox" aria-labelledby="mini-search-label" class="VPLocalSearchBox" hidden data-no-results="无搜索结果："><div class="backdrop"></div><div class="shell"><form class="search-bar" role="search"><label id="localsearch-label" title="搜索文档" for="localsearch-input"><svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></g></svg></label><div class="search-actions before"><button class="back-button" type="button" title="关闭" aria-label="关闭"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m7 7-7-7 7-7"></path></svg></button></div><input id="localsearch-input" class="search-input" placeholder="搜索文档" aria-labelledby="localsearch-label" autocomplete="off"><div class="search-actions"><span class="search-loading" aria-live="polite"></span><button class="clear-button" type="reset" disabled title="重置搜索"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm-2 4-6 6m0-6 6 6"></path></svg></button></div></form><ul class="results"></ul><div class="search-keyboard-shortcuts" aria-hidden="true"><span><kbd aria-label="向上"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m-7 7 7-7 7 7"></path></svg></kbd><kbd aria-label="向下"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7-7 7-7-7"></path></svg></kbd>切换</span><span><kbd aria-label="输入"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 10-5 5 5 5"></path><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></g></svg></kbd>选择</span><span><kbd aria-label="退出">esc</kbd>关闭</span></div></div></div><script>(function(){const appearanceDefault = "auto";
+const appearanceEnabled = true;
+const appearanceTransition = "fade";
+const searchProvider = "local";
+const disableQueryPersistence = false;
+const basePath = "/";
+const lightModeSwitchTitle = "切换为浅色主题";
+const darkModeSwitchTitle = "切换为深色主题";
+
+  (() => {
+    const root = document.documentElement
+    const updateAppearance = dark => {
+      document.querySelectorAll('.vp-switch-appearance').forEach(button => {
+        button.setAttribute('aria-checked', String(dark))
+        button.setAttribute('title', dark ? lightModeSwitchTitle : darkModeSwitchTitle)
+      })
+    }
+    const preferredDark = matchMedia('(prefers-color-scheme: dark)')
+    const setTheme = dark => {
+      dark ||= root.classList.contains('force-dark')
+      root.dataset.theme = dark ? 'dark' : 'light'
+      root.classList.toggle('dark', dark)
+      updateAppearance(dark)
+      document.querySelector('iframe.giscus-frame')?.contentWindow?.postMessage({ giscus: { setConfig: { theme: dark ? 'dark' : 'light' } } }, 'https://giscus.app')
+      document.dispatchEvent(new CustomEvent('theme-change'))
+    }
+    const appearanceKeyframes = (mode, x, y, dark) => {
+      const reverse = values => dark ? values.toReversed() : values
+      const distance = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+      const strategies = {
+        fade: { opacity: reverse(['0', '1']), duration: 300 },
+        'circle-clip': { clipPath: reverse([`circle(0px at ${x}px ${y}px)`, `circle(${distance}px at ${x}px ${y}px)`]), duration: 650 },
+        'horizontal-clip': { clipPath: reverse([`inset(0px ${innerWidth}px 0px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'vertical-clip': { clipPath: reverse([`inset(0px 0px ${innerHeight}px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'skew-clip': { clipPath: reverse(['polygon(0px 0px, 0px 0px, 0px 0px)', `polygon(0px 0px, ${innerWidth * 2}px 0px, 0px ${innerHeight * 2}px)`]) },
+        'blinds-vertical': { clipPath: reverse(['inset(50% 0% 50% 0%)', 'inset(0 0 0 0)']) },
+        'blinds-horizontal': { clipPath: reverse(['polygon(50% 0, 50% 100%, 50% 100%, 50% 0)', 'polygon(0 0, 0 100%, 100% 100%, 100% 0)']) },
+        'soft-blur-fade': { opacity: reverse(['0', '1']), filter: reverse(['blur(10px)', 'blur(0px)']), duration: 380 },
+        'diamond-reveal': { clipPath: reverse(['polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)', 'polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%)']), duration: 500 },
+      }
+      const { duration = 400, ...keyframes } = strategies[mode] ?? strategies.fade
+      return { duration, keyframes }
+    }
+    const syncAutomaticAppearance = () => {
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      const appearance = localStorage.getItem('vuepress-theme-appearance') || appearanceDefault
+      if (!appearance || appearance === 'auto') setTheme(preferredDark.matches)
+      else setTheme(appearance === 'dark')
+    }
+    updateAppearance(root.dataset.theme === 'dark')
+    preferredDark.addEventListener('change', syncAutomaticAppearance)
+    addEventListener('storage', event => {
+      if (event.key !== 'vuepress-theme-appearance') return
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      if (event.newValue === 'dark' || event.newValue === 'light') setTheme(event.newValue === 'dark')
+      else syncAutomaticAppearance()
+    })
+    let printWasDark = false
+    addEventListener('beforeprint', () => {
+      printWasDark = root.dataset.theme === 'dark'
+      if (printWasDark) { root.dataset.theme = 'light'; root.classList.remove('dark') }
+    })
+    addEventListener('afterprint', () => {
+      if (printWasDark) { root.dataset.theme = 'dark'; root.classList.add('dark') }
+    })
+
+    const navbar = document.querySelector('.vp-navbar')
+    const updateNavbarTop = () => navbar?.classList.toggle('top', scrollY === 0)
+    updateNavbarTop()
+    addEventListener('scroll', updateNavbarTop, { passive: true })
+    document.querySelector('.vp-skip-link')?.addEventListener('click', event => {
+      const link = event.currentTarget
+      if (!(link instanceof HTMLAnchorElement)) return
+      const target = document.querySelector(link.hash)
+      if (!(target instanceof HTMLElement)) return
+      const clear = () => { target.removeAttribute('tabindex'); target.removeEventListener('blur', clear) }
+      target.tabIndex = -1
+      target.addEventListener('blur', clear)
+      target.focus()
+      scrollTo(0, 0)
+    })
+
+    document.querySelectorAll('.vp-switch-appearance').forEach(button => button.addEventListener('click', async event => {
+      const next = root.dataset.theme !== 'dark'
+      const apply = () => {
+        localStorage.setItem('vuepress-theme-appearance', next ? 'dark' : 'light')
+        setTheme(next)
+      }
+      if (appearanceTransition === false || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        apply()
+        return
+      }
+      try {
+        root.classList.add('appearance-transition')
+        const transition = document.startViewTransition(apply)
+        void transition.finished.finally(() => root.classList.remove('appearance-transition'))
+        await transition.ready
+        const { keyframes, duration } = appearanceKeyframes(appearanceTransition, event.clientX, event.clientY, next)
+        root.animate(keyframes, {
+          duration,
+          easing: 'ease-in',
+          fill: 'forwards',
+          pseudoElement: `::view-transition-${next ? 'old' : 'new'}(root)`,
+        })
+      } catch {
+        root.classList.remove('appearance-transition')
+        apply()
+      }
+    }))
+
+    const button = document.querySelector('.vp-navbar-hamburger')
+    const menu = document.querySelector('.vp-nav-screen')
+    let screenTimer
+    let screenFrame
+    const screenClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const resetScreen = visible => {
+      clearTimeout(screenTimer)
+      cancelAnimationFrame(screenFrame)
+      menu?.classList.remove(...screenClasses)
+      if (menu instanceof HTMLElement) menu.hidden = !visible
+    }
+    const toggleScreen = open => {
+      resetScreen(true)
+      if (!(menu instanceof HTMLElement) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        resetScreen(open)
+        if (!open) document.body.style.overflow = ''
+        return
+      }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`)
+      void menu.offsetWidth
+      menu.classList.add(`fade-in-${phase}-active`)
+      screenFrame = requestAnimationFrame(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        screenTimer = setTimeout(() => {
+          resetScreen(open)
+          if (!open) document.body.style.overflow = ''
+        }, 200)
+      })
+    }
+    const expandTimers = new WeakMap()
+    const expandClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetExpand = (container, visible) => {
+      const pending = expandTimers.get(container)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      expandTimers.delete(container)
+      container.classList.remove(...expandClasses)
+      container.style.maxHeight = ''
+      container.style.transition = ''
+      container.style.display = visible ? '' : 'none'
+    }
+    const toggleExpand = (container, open) => {
+      resetExpand(container, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetExpand(container, open)
+      const phase = open ? 'enter' : 'leave'
+      const from = `fade-in-height-expand-${phase}-from`
+      const active = `fade-in-height-expand-${phase}-active`
+      const to = `fade-in-height-expand-${phase}-to`
+      container.classList.add(from, active)
+      if (open) {
+        container.style.transition = 'none'
+        const height = container.offsetHeight
+        container.style.maxHeight = '0px'
+        void container.offsetWidth
+        container.style.transition = ''
+        container.style.maxHeight = `${height}px`
+      } else {
+        container.style.maxHeight = `${container.offsetHeight}px`
+        void container.offsetWidth
+        container.style.maxHeight = '0px'
+      }
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        pending.frame = requestAnimationFrame(() => {
+          container.classList.remove(from)
+          container.classList.add(to)
+          pending.timer = setTimeout(() => resetExpand(container, open), 300)
+        })
+      })
+      expandTimers.set(container, pending)
+    }
+    const closeMobileMenu = () => {
+      button?.setAttribute('aria-expanded', 'false')
+      button?.classList.remove('active')
+      document.querySelector('.vp-navbar')?.classList.remove('screen-open')
+      menu?.querySelectorAll('.vp-nav-screen-menu-group.open').forEach(group => {
+        group.classList.remove('open')
+        group.querySelector('.button')?.setAttribute('aria-expanded', 'false')
+        const container = group.querySelector('.vp-nav-screen-menu-group-container')
+        if (container instanceof HTMLElement) resetExpand(container, false)
+      })
+      const translations = menu?.querySelector('.vp-nav-screen-translations.open')
+      translations?.classList.remove('open')
+      translations?.querySelector('.title')?.setAttribute('aria-expanded', 'false')
+      const translationsContainer = translations?.querySelector('.vp-nav-screen-translations-container')
+      if (translationsContainer instanceof HTMLElement) resetExpand(translationsContainer, false)
+      toggleScreen(false)
+    }
+    button?.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true'
+      if (!open) return closeMobileMenu()
+      button.setAttribute('aria-expanded', 'true')
+      button.classList.add('active')
+      document.querySelector('.vp-navbar')?.classList.add('screen-open')
+      document.body.style.overflow = 'hidden'
+      toggleScreen(true)
+    })
+    menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu))
+    menu?.querySelectorAll('.vp-nav-screen-menu-group > .button').forEach(groupButton => groupButton.addEventListener('click', () => {
+      const group = groupButton.closest('.vp-nav-screen-menu-group')
+      const container = group?.querySelector('.vp-nav-screen-menu-group-container')
+      const open = groupButton.getAttribute('aria-expanded') !== 'true'
+      groupButton.setAttribute('aria-expanded', String(open))
+      group?.classList.toggle('open', open)
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    }))
+    const mobileTranslations = menu?.querySelector('.vp-nav-screen-translations')
+    const mobileTranslationsButton = mobileTranslations?.querySelector('.title')
+    mobileTranslationsButton?.addEventListener('click', () => {
+      const open = mobileTranslationsButton.getAttribute('aria-expanded') !== 'true'
+      mobileTranslationsButton.setAttribute('aria-expanded', String(open))
+      mobileTranslations?.classList.toggle('open', open)
+      const container = mobileTranslations?.querySelector('.vp-nav-screen-translations-container')
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    })
+
+    const flyouts = [...document.querySelectorAll('.vp-flyout')]
+    const closeFlyouts = except => flyouts.forEach(flyout => {
+      if (flyout === except) return
+      const button = flyout.querySelector('.flyout-button')
+      button?.setAttribute('aria-expanded', 'false')
+      if (button instanceof HTMLElement) delete button.dataset.clickedOpen
+    })
+    flyouts.forEach(flyout => {
+      const trigger = flyout.querySelector('.flyout-button')
+      const setOpen = open => trigger?.setAttribute('aria-expanded', String(open))
+      flyout.addEventListener('mouseenter', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('mouseleave', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      })
+      flyout.addEventListener('focusin', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('focusout', event => {
+        if (!(event.relatedTarget instanceof Node) || !flyout.contains(event.relatedTarget)) {
+          if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+          setOpen(false)
+        }
+      })
+      trigger?.addEventListener('click', () => {
+        const open = !(trigger instanceof HTMLElement && trigger.dataset.clickedOpen === 'true')
+        closeFlyouts(flyout)
+        if (trigger instanceof HTMLElement) {
+          if (open) trigger.dataset.clickedOpen = 'true'
+          else delete trigger.dataset.clickedOpen
+        }
+        setOpen(open)
+      })
+      flyout.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      }))
+    })
+
+    document.addEventListener('pointerdown', event => {
+      if (!(event.target instanceof Element)) return
+      if (!event.target.closest('.vp-flyout')) closeFlyouts()
+    })
+
+    const dialog = document.querySelector('.VPLocalSearchBox')
+    const searchButton = document.querySelector('.search-button')
+    if (dialog) document.body.append(dialog)
+    const searchInput = dialog?.querySelector('.search-input')
+    const results = dialog?.querySelector('.results')
+    const clearButton = dialog?.querySelector('.clear-button')
+    const loading = dialog?.querySelector('.search-loading')
+    const searchNoResultsText = dialog instanceof HTMLElement ? dialog.dataset.noResults || 'No results for' : 'No results for'
+    let pagefind
+    let searchTimer
+    let searchRun = 0
+    let selectedIndex = -1
+    let bodyOverflow = ''
+    const searchResults = []
+    const closeSearch = () => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      dialog.hidden = true
+      document.body.style.overflow = bodyOverflow
+      searchButton?.focus()
+    }
+    const setLoading = active => {
+      loading?.classList.toggle('active', active)
+      if (active) {
+        loading?.setAttribute('role', 'status')
+        loading?.setAttribute('aria-label', 'Loading search results')
+      } else {
+        loading?.removeAttribute('role')
+        loading?.removeAttribute('aria-label')
+      }
+    }
+    const selectResult = index => {
+      const links = [...(results?.querySelectorAll('.result') || [])]
+      selectedIndex = links.length ? (index + links.length) % links.length : -1
+      links.forEach((link, i) => {
+        link.classList.toggle('selected', i === selectedIndex)
+        link.parentElement?.setAttribute('aria-selected', String(i === selectedIndex))
+      })
+      links[selectedIndex]?.scrollIntoView({ block: 'nearest' })
+    }
+    const appendHighlighted = (target, value, query) => {
+      const text = String(value || '')
+      const needle = query.trim().toLocaleLowerCase(root.lang)
+      if (!needle) {
+        target.textContent = text
+        return
+      }
+      const lower = text.toLocaleLowerCase(root.lang)
+      let offset = 0
+      let index
+      while ((index = lower.indexOf(needle, offset)) >= 0) {
+        target.append(document.createTextNode(text.slice(offset, index)))
+        const mark = document.createElement('mark')
+        mark.textContent = text.slice(index, index + needle.length)
+        target.append(mark)
+        offset = index + needle.length
+      }
+      target.append(document.createTextNode(text.slice(offset)))
+    }
+    const chevron = () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('width', '18')
+      svg.setAttribute('height', '18')
+      svg.setAttribute('viewBox', '0 0 24 24')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      for (const [name, value] of Object.entries({ fill: 'none', stroke: 'currentColor', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'm9 18 6-6-6-6' })) path.setAttribute(name, value)
+      svg.append(path)
+      return svg
+    }
+    const renderResults = (items, query) => {
+      searchResults.splice(0, searchResults.length, ...items)
+      results?.replaceChildren()
+      if (!results) return
+      for (const attribute of ['id', 'role', 'aria-labelledby']) results.removeAttribute(attribute)
+      if (items.length) {
+        results.id = 'localsearch-list'
+        results.setAttribute('role', 'listbox')
+        results.setAttribute('aria-labelledby', 'localsearch-label')
+        dialog?.setAttribute('aria-owns', 'localsearch-list')
+      } else {
+        dialog?.removeAttribute('aria-owns')
+      }
+      if (query && !items.length) {
+        const empty = document.createElement('li')
+        empty.className = 'no-results'
+        const strong = document.createElement('strong')
+        strong.textContent = query
+        empty.append(`${searchNoResultsText} "`, strong, '"')
+        results.append(empty)
+      }
+      items.forEach((item, index) => {
+        const li = document.createElement('li')
+        li.setAttribute('role', 'option')
+        li.setAttribute('aria-selected', String(index === 0))
+        const link = document.createElement('a')
+        link.href = !item.url?.startsWith('/') || basePath === '/' || item.url.startsWith(basePath) ? item.url : `${basePath}${item.url.replace(/^\/+/, '')}`
+        link.className = `result${index === 0 ? ' selected' : ''}`
+        link.setAttribute('aria-label', [...item.parents, item.title].join(' > '))
+        const body = document.createElement('div')
+        const titles = document.createElement('div')
+        titles.className = 'titles'
+        const icon = document.createElement('span')
+        icon.className = 'title-icon'
+        icon.textContent = '#'
+        titles.append(icon)
+        for (const parent of item.parents) {
+          const title = document.createElement('span')
+          title.className = 'title'
+          const text = document.createElement('span')
+          text.className = 'text'
+          text.textContent = parent
+          title.append(text, chevron())
+          titles.append(title)
+        }
+        const main = document.createElement('span')
+        main.className = 'title main'
+        const text = document.createElement('span')
+        text.className = 'text'
+        appendHighlighted(text, item.title, query)
+        main.append(text)
+        titles.append(main)
+        body.append(titles)
+        link.append(body)
+        link.addEventListener('mouseenter', () => selectResult(index))
+        link.addEventListener('focus', () => selectResult(index))
+        link.addEventListener('click', closeSearch)
+        li.append(link)
+        results.append(li)
+      })
+      selectedIndex = items.length ? 0 : -1
+    }
+    const runSearch = async query => {
+      const run = ++searchRun
+      if (!query.trim()) {
+        renderResults([], '')
+        setLoading(false)
+        return
+      }
+      setLoading(true)
+      try {
+        pagefind ||= await import(/* @vite-ignore */ `${basePath}pagefind/pagefind.js`).then(async module => {
+          await module.init()
+          return module
+        })
+        const response = await pagefind.search(query)
+        const pages = await Promise.all(response.results.map(result => result.data()))
+        if (run !== searchRun) return
+        const items = pages.flatMap(data => {
+          const pageTitle = data.meta?.title || data.title || data.url
+          const matches = data.sub_results?.length ? data.sub_results : [{ title: pageTitle, url: data.url }]
+          return matches.map(match => ({
+            title: match.title || pageTitle,
+            url: match.url || data.url,
+            parents: (match.url || data.url) === data.url ? [] : [pageTitle],
+          }))
+        }).slice(0, 16)
+        renderResults(items, query)
+      } catch {
+        if (run === searchRun) renderResults([], query)
+      } finally {
+        if (run === searchRun) setLoading(false)
+      }
+    }
+    const openSearch = async () => {
+      if (!(dialog instanceof HTMLElement) || !dialog.hidden) return
+      closeFlyouts()
+      closeMobileMenu()
+      dialog.hidden = false
+      bodyOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      history.pushState(null, '', null)
+      if (document.body.dataset.pagefindReady !== 'true') {
+        renderResults([{ title: root.lang.startsWith('zh') ? '快速开发模式未生成搜索索引，请先执行 pnpm build。' : 'The development preview has no search index. Run pnpm build first.', url: location.pathname, parents: [] }], '')
+        return
+      }
+      const saved = disableQueryPersistence ? '' : sessionStorage.getItem('vuepress-plume:mini-search-filter') || ''
+      if (searchInput instanceof HTMLInputElement) searchInput.value = saved
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !saved
+      await runSearch(saved)
+      requestAnimationFrame(() => { searchInput?.focus(); searchInput?.select() })
+    }
+    searchButton?.addEventListener('click', openSearch)
+    dialog?.querySelector('.back-button')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.backdrop')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.search-bar')?.addEventListener('pointerup', event => {
+      if (event.pointerType === 'mouse') {
+        searchInput?.focus()
+        searchInput?.select()
+      }
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('submit', event => {
+      event.preventDefault()
+      if (selectedIndex >= 0) location.href = searchResults[selectedIndex].url
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('reset', event => {
+      event.preventDefault()
+      clearTimeout(searchTimer)
+      if (searchInput instanceof HTMLInputElement) searchInput.value = ''
+      if (!disableQueryPersistence) sessionStorage.removeItem('vuepress-plume:mini-search-filter')
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = true
+      runSearch('')
+      searchInput?.focus()
+    })
+    searchInput?.addEventListener('input', () => {
+      const query = searchInput.value
+      if (!disableQueryPersistence) sessionStorage.setItem('vuepress-plume:mini-search-filter', query)
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !query
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(() => runSearch(query), 200)
+    })
+    dialog?.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        closeSearch()
+        return
+      }
+      if (event.key === 'Tab') {
+        const focusable = [...dialog.querySelectorAll('button:not([disabled]), input, a[href]')].filter(element => element instanceof HTMLElement && !element.hidden && element.getClientRects().length)
+        const first = focusable[0]
+        const last = focusable.at(-1)
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first?.focus()
+        }
+      }
+      const macControl = root.classList.contains('mac') && event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey
+      const offset = event.key === 'ArrowDown' || (macControl && event.key.toLowerCase() === 'n') ? 1
+        : event.key === 'ArrowUp' || (macControl && event.key.toLowerCase() === 'p') ? -1 : 0
+      if (!offset || !searchResults.length) return
+      event.preventDefault()
+      selectResult(selectedIndex + offset)
+    })
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeSearch()
+        closeFlyouts()
+        closeMobileMenu()
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        if (searchProvider !== 'local') return
+        event.preventDefault()
+        openSearch()
+      }
+      const target = event.target
+      const editing = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
+      if (searchProvider === 'local' && event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !editing) {
+        event.preventDefault()
+        openSearch()
+      }
+    })
+    addEventListener('popstate', event => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      event.preventDefault()
+      closeSearch()
+    })
+  })()
+})();</script><div class="vp-local-nav has-sidebar"><button class="menu" type="button" aria-expanded="false" aria-controls="SidebarNav"><span class="vpi-align-left menu-icon" aria-hidden="true"></span><span class="menu-text">菜单</span></button><div class="vp-local-nav-outline-dropdown"><button class="outline-toggle" type="button" aria-expanded="false">此页内容<span class="vpi-chevron-right icon" aria-hidden="true"></span></button><div class="outline-mask" hidden></div><div class="items" hidden><div class="outline"><ul class="nested"><li><a class="outline-link" href="#代码块">代码块</a></li><li><a class="outline-link" href="#脚注和表格">脚注和表格</a></li><li><a class="outline-link" href="#行内扩展与环境预设">行内扩展与环境预设</a></li><li><a class="outline-link" href="#提示容器">提示容器</a></li><li><a class="outline-link" href="#obsidian-兼容">Obsidian 兼容</a></li><li><a class="outline-link" href="#媒体语法">媒体语法</a></li><li><a class="outline-link" href="#仓库卡片">仓库卡片</a></li><li><a class="outline-link" href="#浏览器兼容性">浏览器兼容性</a></li><li><a class="outline-link" href="#轮播图">轮播图</a></li><li><a class="outline-link" href="#对话记录">对话记录</a></li><li><a class="outline-link" href="#代码演示">代码演示</a><ul class="nested"><li><a class="outline-link" href="#普通演示文件与外部资源">普通演示文件与外部资源</a></li><li><a class="outline-link" href="#vue-演示">Vue 演示</a></li><li><a class="outline-link" href="#markdown-演示">Markdown 演示</a></li></ul></li><li><a class="outline-link" href="#数学公式">数学公式</a></li><li><a class="outline-link" href="#在线代码演示">在线代码演示</a></li><li><a class="outline-link" href="#多语言代码运行">多语言代码运行</a></li><li><a class="outline-link" href="#隐秘文本">隐秘文本</a></li><li><a class="outline-link" href="#图表">图表</a></li></ul></div></div></div></div><div class="vp-backdrop" hidden></div><aside class="vp-sidebar" data-sidebar-signature="Gc339bMWFobppkKd"><div class="curtain"></div><nav id="SidebarNav" class="nav" aria-labelledby="sidebar-aria-label" tabindex="-1"><span id="sidebar-aria-label" class="visually-hidden">侧边栏导航</span><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0 collapsible has-active"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><h2 class="text"><span>指南</span></h2><button class="caret" type="button" aria-label="Collapse 指南" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><section class="vp-sidebar-item sidebar-item level-1 collapsible"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><h3 class="text"><span>基础</span></h3><button class="caret" type="button" aria-label="Collapse 基础" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>零基础快速开始</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>站点配置</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>部署站点</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/api/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>公共 API 与样式定制</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></p></a></div></div></div></div></section><div class="vp-sidebar-item sidebar-item level-1 is-link is-active has-active"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a aria-current="page" href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>内容能力</span></p></a></div></div></div></div></section></div><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0"><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon separator icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><p class="text separator"><span>参考</span></p></div></div><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><p class="text"><span>Astro</span></p><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></section></div></nav></aside><div class="vp-sidebar-control"><button class="toggle-sidebar-btn" type="button" aria-label="收起侧边栏"><span class="vpi-sidebar-close" aria-hidden="true"></span></button></div><script>
+  (() => {
+    const sidebar = document.querySelector('.vp-sidebar')
+    const backdrop = document.querySelector('.vp-backdrop')
+    const menu = document.querySelector('.vp-local-nav .menu')
+    let backdropTimer
+    const closeSidebar = () => {
+      sidebar?.classList.remove('open')
+      menu?.setAttribute('aria-expanded', 'false')
+      if (backdrop instanceof HTMLElement) {
+        backdrop.classList.remove('show')
+        clearTimeout(backdropTimer)
+        backdropTimer = setTimeout(() => { backdrop.hidden = true }, 250)
+      }
+      document.body.style.overflow = ''
+    }
+    menu?.addEventListener('click', () => {
+      sidebar?.classList.add('open')
+      menu.setAttribute('aria-expanded', 'true')
+      if (backdrop instanceof HTMLElement) {
+        clearTimeout(backdropTimer)
+        backdrop.hidden = false
+        requestAnimationFrame(() => backdrop.classList.add('show'))
+      }
+      document.body.style.overflow = 'hidden'
+      sidebar?.querySelector('.nav')?.focus()
+    })
+    backdrop?.addEventListener('click', closeSidebar)
+    sidebar?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeSidebar))
+
+    const collapseTimers = new WeakMap()
+    const collapseClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetCollapse = (element, visible) => {
+      const pending = collapseTimers.get(element)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      collapseTimers.delete(element)
+      element.classList.remove(...collapseClasses)
+      element.style.removeProperty('max-height')
+      element.hidden = !visible
+    }
+    const setCollapse = (element, visible) => {
+      resetCollapse(element, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetCollapse(element, visible)
+      const phase = visible ? 'enter' : 'leave'
+      const height = element.scrollHeight
+      element.style.maxHeight = `${visible ? 0 : height}px`
+      element.classList.add(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-active`)
+      void element.offsetHeight
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        element.classList.replace(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-to`)
+        element.style.maxHeight = `${visible ? height : 0}px`
+        pending.timer = setTimeout(() => resetCollapse(element, visible), 320)
+      })
+      collapseTimers.set(element, pending)
+    }
+    setTimeout(() => sidebar?.querySelectorAll('.group.no-transition').forEach(group => group.classList.remove('no-transition')), 300)
+
+    sidebar?.addEventListener('click', event => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const item = target.closest('.vp-sidebar-item.collapsible > .item')
+      if (!(item instanceof HTMLElement) || (target.closest('a') && !target.closest('.caret'))) return
+      const group = item.parentElement
+      const content = group?.querySelector(':scope > .items-wrapper')
+      const caret = item.querySelector('.caret')
+      const collapsed = !group?.classList.contains('collapsed')
+      group?.classList.toggle('collapsed', collapsed)
+      if (content instanceof HTMLElement) setCollapse(content, !collapsed)
+      caret?.setAttribute('aria-expanded', String(!collapsed))
+    })
+    sidebar?.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return
+      const target = event.target
+      if (target instanceof HTMLElement && target.matches('.vp-sidebar-item.collapsible > .item')) target.click()
+    })
+
+    const control = document.querySelector('.vp-sidebar-control')
+    control?.querySelector('button')?.addEventListener('click', () => {
+      const collapsed = sidebar?.classList.toggle('collapsed') ?? false
+      control.classList.toggle('collapsed', collapsed)
+      document.querySelector('.vp-doc-container')?.classList.toggle('sidebar-collapsed', collapsed)
+      document.querySelector('.vp-navbar')?.classList.toggle('sidebar-collapsed', collapsed)
+      const icon = control.querySelector('span')
+      icon?.classList.toggle('vpi-sidebar-close', !collapsed)
+      icon?.classList.toggle('vpi-sidebar-open', collapsed)
+    })
+    addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar() })
+
+    requestAnimationFrame(() => {
+      const active = sidebar?.querySelector('.vp-link[aria-current="page"]')
+      if (!(sidebar instanceof HTMLElement) || !(active instanceof HTMLElement)) return
+      const navRect = sidebar.getBoundingClientRect()
+      const activeRect = active.getBoundingClientRect()
+      if (activeRect.top < navRect.top || activeRect.bottom > navRect.bottom) active.scrollIntoView({ block: 'center' })
+    })
+  })()
+</script><div id="VPContent" class="vp-content has-sidebar"><div class="vp-doc-container has-sidebar has-aside" data-outline-range="[2,3]" data-outline-label="此页内容" data-outline-menu-label="菜单" data-outline-print-label="打印" data-outline-aside="right"><div class="container"><div class="aside"><div class="aside-curtain"></div><div class="aside-container"><div class="aside-content"><div class="vp-doc-aside"><nav class="vp-doc-aside-outline has-outline" aria-labelledby="doc-outline-aria-label" role="navigation"><div class="content"><div class="outline-marker"></div><div id="doc-outline-aria-label" aria-level="2" class="outline-title" role="heading"><span>此页内容</span><span class="vpi-print icon" role="button" tabindex="0" aria-label="打印"></span></div><ul class="root"><li><a class="outline-link" href="#代码块">代码块</a></li><li><a class="outline-link" href="#脚注和表格">脚注和表格</a></li><li><a class="outline-link" href="#行内扩展与环境预设">行内扩展与环境预设</a></li><li><a class="outline-link" href="#提示容器">提示容器</a></li><li><a class="outline-link" href="#obsidian-兼容">Obsidian 兼容</a></li><li><a class="outline-link" href="#媒体语法">媒体语法</a></li><li><a class="outline-link" href="#仓库卡片">仓库卡片</a></li><li><a class="outline-link" href="#浏览器兼容性">浏览器兼容性</a></li><li><a class="outline-link" href="#轮播图">轮播图</a></li><li><a class="outline-link" href="#对话记录">对话记录</a></li><li><a class="outline-link" href="#代码演示">代码演示</a><ul class="nested"><li><a class="outline-link" href="#普通演示文件与外部资源">普通演示文件与外部资源</a></li><li><a class="outline-link" href="#vue-演示">Vue 演示</a></li><li><a class="outline-link" href="#markdown-演示">Markdown 演示</a></li></ul></li><li><a class="outline-link" href="#数学公式">数学公式</a></li><li><a class="outline-link" href="#在线代码演示">在线代码演示</a></li><li><a class="outline-link" href="#多语言代码运行">多语言代码运行</a></li><li><a class="outline-link" href="#隐秘文本">隐秘文本</a></li><li><a class="outline-link" href="#图表">图表</a></li></ul></div></nav><div class="spacer"></div></div></div></div></div><div class="content"><div class="content-container"><main class="main"><nav class="vp-breadcrumb" aria-label="面包屑"><ol vocab="https://schema.org/" typeof="BreadcrumbList"><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">首页</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="首页"><meta property="position" content="1"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">文档中心</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="文档中心"><meta property="position" content="2"></li><li property="itemListElement" typeof="ListItem"><span property="item" typeof="WebPage" data-astro-cid-p2o5vn2b="true" class="vp-link no-icon breadcrumb">指南</span><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="指南"><meta property="position" content="3"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" aria-current="page" href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb current">内容能力</a><meta property="name" content="内容能力"><meta property="position" content="4"></li></ol></nav><div class="vp-doc-title"><h1 class="page-title">内容能力</h1><div class="vp-page-context-menu" data-raw-route="/docs/guide/content/index.md" data-copy-label="复制页面" data-copying-label="复制中.." data-copied-label="复制成功"><div class="page-context-button"><span class="page-context-copy" role="button" tabindex="0" data-copy-page="/docs/guide/content/index.md"><span class="vpi-copy" aria-hidden="true"></span><span class="text">复制页面</span></span><span class="page-context-toggle" role="button" tabindex="0" aria-expanded="false" aria-label="更多页面操作"><span class="vpi-chevron-down" aria-hidden="true"></span></span></div><ul class="page-context-menu" hidden><li><a href="javascript:void(0)" data-copy-page="/docs/guide/content/index.md"><span class="vpi-copy" aria-hidden="true"></span><span><span class="text">复制页面</span><small>将页面以 Markdown 格式复制供 LLMs 使用</small></span></a></li><li><a href="/docs/guide/content/index.md" target="_blank" rel="noopener noreferrer" aria-label="以 Markdown 格式查看" type="text/markdown"><span class="vpi-markdown" aria-hidden="true"></span><span>以 Markdown 格式查看<span class="vpi-external-link" aria-hidden="true"></span><small>以纯文本查看此页面</small></span></a></li><li><a href="https://chat.openai.com/?prompt=" data-ai-url="https://chat.openai.com/?prompt=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 ChatGPT 中打开"><span class="vpi-chatgpt" aria-hidden="true"></span><span>在 ChatGPT 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 ChatGPT 提问有关此页面</small></span></a></li><li><a href="https://claude.ai/new?q=" data-ai-url="https://claude.ai/new?q=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 Claude 中打开"><span class="vpi-claude" aria-hidden="true"></span><span>在 Claude 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 Claude 提问有关此页面</small></span></a></li><li><a href="https://perplexity.ai/?q=" data-ai-url="https://perplexity.ai/?q=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 Perplexity 中打开"><span class="vpi-perplexity" aria-hidden="true"></span><span>在 Perplexity 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 Perplexity 提问有关此页面</small></span></a></li></ul></div><script>
+  (() => {
+    const root = document.currentScript?.previousElementSibling
+    if (!(root instanceof HTMLElement)) return
+    const toggle = root.querySelector('.page-context-toggle')
+    const menu = root.querySelector('.page-context-menu')
+    const markdownUrl = new URL(root.dataset.rawRoute || '', location.origin).href
+    root.querySelectorAll('[data-ai-url]').forEach(item => {
+      if (!(item instanceof HTMLAnchorElement)) return
+      item.href = `${item.dataset.aiUrl}${encodeURIComponent((item.dataset.aiPrompt || '').replace('{link}', markdownUrl))}`
+    })
+
+    let markdown = ''
+    let pending
+    const load = () => pending ||= fetch(markdownUrl)
+      .then(response => response.ok ? response.text() : Promise.reject(new Error('Source unavailable')))
+      .then(source => markdown = source.trimStart().replace(/^---[\s\S]+?---/, '').trimStart())
+      .finally(() => { pending = undefined })
+    const setCopyState = state => {
+      const label = root.dataset[state === 'copying' ? 'copyingLabel' : state === 'copied' ? 'copiedLabel' : 'copyLabel'] || ''
+      root.querySelectorAll('[data-copy-page] .text').forEach(item => { item.textContent = label })
+      root.querySelectorAll('[data-copy-page] .vpi-copy').forEach(item => {
+        item.classList.toggle('loading', state === 'copying')
+        item.classList.toggle('copied', state === 'copied')
+      })
+    }
+    root.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => {
+      setCopyState('copying')
+      try {
+        if (!markdown) await load()
+        if (markdown) await navigator.clipboard.writeText(markdown)
+        setCopyState('copied')
+        setTimeout(() => setCopyState('copy'), 1500)
+      } catch {
+        setCopyState('copy')
+      }
+    }))
+    const idle = window.requestIdleCallback || window.requestAnimationFrame || (callback => setTimeout(callback, 0))
+    idle(() => { void load() })
+
+    const close = () => {
+      if (toggle?.getAttribute('aria-expanded') !== 'true') return
+      toggle?.setAttribute('aria-expanded', 'false')
+      toggle?.classList.remove('open')
+      transitionMenu(false)
+    }
+    let transitionTimer
+    let transitionStartTimer
+    const transitionClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const transitionMenu = open => {
+      clearTimeout(transitionTimer)
+      clearTimeout(transitionStartTimer)
+      if (!(menu instanceof HTMLElement)) return
+      menu.classList.remove(...transitionClasses)
+      menu.hidden = false
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { menu.hidden = !open; return }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`, `fade-in-${phase}-active`)
+      void menu.offsetWidth
+      transitionStartTimer = setTimeout(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        transitionTimer = setTimeout(() => {
+          menu.classList.remove(...transitionClasses)
+          menu.hidden = !open
+        }, 200)
+      }, 16)
+    }
+    root.querySelectorAll('[role="button"]').forEach(button => button.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); button.click() }
+    }))
+    toggle?.addEventListener('click', event => {
+      event.stopPropagation()
+      const open = toggle.getAttribute('aria-expanded') !== 'true'
+      toggle.setAttribute('aria-expanded', String(open))
+      toggle.classList.toggle('open', open)
+      transitionMenu(open)
+    })
+    document.addEventListener('pointerdown', event => { if (!(event.target instanceof Node) || !root.contains(event.target)) close() })
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') close() })
+  })()
+</script></div><div class="vp-doc-meta"><p class="reading-time"><span class="vpi-books icon" aria-hidden="true"></span><span>约 1710 字</span><span>大约 6 分钟</span></p><p><span class="vpi-tag icon" aria-hidden="true"></span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-3">Markdown</span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-3">写作</span></p><p class="create-time"><span class="vpi-clock icon" aria-hidden="true"></span><span>2026-08-05</span></p></div><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><p>主题在标准 Markdown 上增加了写作常用能力，并保持静态输出。<a href="https://plume.pengzhanbo.cn/guide/intro/" target="_blank" rel="noopener noreferrer">功能设计参考</a> Theme Plume 的公开文档，但实现基于 Astro 和 Markdown-it。</p>
+<nav class="table-of-contents"><ul><li><a href="#代码块">代码块</a></li><li><a href="#脚注和表格">脚注和表格</a></li><li><a href="#行内扩展与环境预设">行内扩展与环境预设</a></li><li><a href="#提示容器">提示容器</a></li><li><a href="#obsidian-兼容">Obsidian 兼容</a></li><li><a href="#媒体语法">媒体语法</a></li><li><a href="#仓库卡片">仓库卡片</a></li><li><a href="#浏览器兼容性">浏览器兼容性</a></li><li><a href="#轮播图">轮播图</a></li><li><a href="#对话记录">对话记录</a></li><li><a href="#代码演示">代码演示</a><ul><li><a href="#普通演示文件与外部资源">普通演示文件与外部资源</a></li><li><a href="#vue-演示">Vue 演示</a></li><li><a href="#markdown-演示">Markdown 演示</a></li></ul></li><li><a href="#数学公式">数学公式</a></li><li><a href="#在线代码演示">在线代码演示</a></li><li><a href="#多语言代码运行">多语言代码运行</a></li><li><a href="#隐秘文本">隐秘文本</a></li><li><a href="#图表">图表</a></li></ul></nav>
+<h2 id="代码块" tabindex="-1"><a class="header-anchor" href="#代码块"><span>代码块</span></a></h2>
+<p>代码块支持 Shiki 双主题高亮、标题、行号和指定行高亮。</p>
+<div class="code-block-title" data-title="site.config.mjs"><div class="code-block-title-bar"><span class="title"><span class="vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#f5de19" d="M18.774 19.7a3.73 3.73 0 0 0 3.376 2.078c1.418 0 2.324-.709 2.324-1.688c0-1.173-.931-1.589-2.491-2.272l-.856-.367c-2.469-1.052-4.11-2.37-4.11-5.156c0-2.567 1.956-4.52 5.012-4.52A5.06 5.06 0 0 1 26.9 10.52l-2.665 1.711a2.33 2.33 0 0 0-2.2-1.467a1.49 1.49 0 0 0-1.638 1.467c0 1.027.636 1.442 2.1 2.078l.856.366c2.908 1.247 4.549 2.518 4.549 5.376c0 3.081-2.42 4.769-5.671 4.769a6.58 6.58 0 0 1-6.236-3.5ZM6.686 20c.538.954 1.027 1.76 2.2 1.76c1.124 0 1.834-.44 1.834-2.15V7.975h3.422v11.683c0 3.543-2.078 5.156-5.11 5.156A5.31 5.31 0 0 1 3.9 21.688Z"/></svg></span>site.config.mjs</span></div><div class="language-ts line-numbers-mode" data-highlighter="shiki" data-ext="ts"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">export</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676"> const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">siteConfig</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line highlighted"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">origin</span><span style="--shiki-light:#999999;--shiki-dark:#666666">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line highlighted"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">logo</span><span style="--shiki-light:#999999;--shiki-dark:#666666">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/img/logo.svg</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></div><p>代码注释语法支持聚焦、高亮、差异、警告、错误与词高亮，控制注释不会出现在输出中：</p>
+<div class="code-block-title" data-title="notations.ts"><div class="code-block-title-bar"><span class="title"><span class="vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#007acc" d="M23.827 8.243a4.4 4.4 0 0 1 2.223 1.281a6 6 0 0 1 .852 1.143c.011.045-1.534 1.083-2.471 1.662c-.034.023-.169-.124-.322-.35a2.01 2.01 0 0 0-1.67-1c-1.077-.074-1.771.49-1.766 1.433a1.3 1.3 0 0 0 .153.666c.237.49.677.784 2.059 1.383c2.544 1.095 3.636 1.817 4.31 2.843a5.16 5.16 0 0 1 .416 4.333a4.76 4.76 0 0 1-3.932 2.815a11 11 0 0 1-2.708-.028a6.53 6.53 0 0 1-3.616-1.884a6.3 6.3 0 0 1-.926-1.371a3 3 0 0 1 .327-.208c.158-.09.756-.434 1.32-.761l1.024-.6l.214.312a4.8 4.8 0 0 0 1.35 1.292a3.3 3.3 0 0 0 3.458-.175a1.545 1.545 0 0 0 .2-1.974c-.276-.395-.84-.727-2.443-1.422a8.8 8.8 0 0 1-3.349-2.055a4.7 4.7 0 0 1-.976-1.777a7.1 7.1 0 0 1-.062-2.268a4.33 4.33 0 0 1 3.644-3.374a9 9 0 0 1 2.691.084m-8.343 1.483l.011 1.454h-4.63v13.148H7.6V11.183H2.97V9.755a14 14 0 0 1 .04-1.466c.017-.023 2.832-.034 6.245-.028l6.211.017Z"/></svg></span>notations.ts</span></div><div class="language-ts line-numbers-mode" data-highlighter="shiki" data-ext="ts"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark has-diff has-highlighted has-focused-lines" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">plain</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">普通行</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line has-focus"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">focused</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">聚焦行</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line diff remove"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">removed</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span></span>
+<span class="line diff add"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">added</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span></span>
+<span class="line highlighted warning"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">warning</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">注意</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line highlighted error"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">error</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">错误</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line highlighted"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">highlighted</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">高亮</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">greeting</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D" class="highlighted-word">Hello</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> </span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D" class="highlighted-word">Hello</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></div><p>长代码块可从指定行开始折叠：</p>
+<div class="language-css has-collapsed-lines collapsed" data-highlighter="shiki" data-ext="css" style="--vp-collapsed-lines:4"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">one</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> red</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">two</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> orange</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">three</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> yellow</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">four</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> green</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">five</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> blue</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">six</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> indigo</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">seven</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> violet</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">eight</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> black</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre><div class="collapsed-lines" role="button" tabindex="0" aria-expanded="false"></div></div><h2 id="脚注和表格" tabindex="-1"><a class="header-anchor" href="#脚注和表格"><span>脚注和表格</span></a></h2>
+<p>脚注适合补充来源或术语说明。<sup class="footnote-ref"><a href="#footnote1">[1]</a><a class="footnote-anchor" id="footnote-ref1"></a></sup></p>
+<div class="vp-table left"><div class="table-container"><div class="table-content"><div class="table-toolbar"><button type="button" aria-label="Copy Table as HTML" data-copy-table="html"><span class="vpi-table-copy" aria-hidden="true"></span><span>HTML</span></button><button type="button" aria-label="Copy Table as Markdown" data-copy-table="md"><span class="vpi-table-copy" aria-hidden="true"></span><span>Markdown</span></button></div><div class="table-inner"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>默认状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pagefind 搜索</td>
+<td>开启</td>
+</tr>
+<tr>
+<td>Giscus 评论</td>
+<td>关闭</td>
+</tr>
+<tr>
+<td>浏览量与点赞</td>
+<td>关闭</td>
+</tr>
+</tbody>
+</table>
+</div></div></div></div>
+<p>表格右上角可复制为 HTML 或 Markdown。</p>
+<h2 id="行内扩展与环境预设" tabindex="-1"><a class="header-anchor" href="#行内扩展与环境预设"><span>行内扩展与环境预设</span></a></h2>
+<p>Emoji、上标和下标可直接使用：🎉 💯，X<sup>2</sup>，H<sub>2</sub>O。</p>
+<p>全局引用、缩写和内容注释只需在 <code>markdown.env</code> 中配置一次，之后可在任意页面使用：<a href="https://astro.build/" title="Astro" target="_blank" rel="noopener noreferrer">Astro</a> 是一个 <span class="vp-abbr" role="tooltip" tabindex="0" aria-label="Static Site Generator" data-abbr-content="U3RhdGljIFNpdGUgR2VuZXJhdG9y">SSG</span> <button class="vp-annotation ignore-header bottom" aria-label="preset" aria-expanded="false" data-annotation-content="PGRpdiBjbGFzcz0iYW5ub3RhdGlvbiI+PHA+VGhpcyBhbm5vdGF0aW9uIGlzIGNvbmZpZ3VyZWQgb25jZSBpbiA8Y29kZT5zaXRlLmNvbmZpZy5tanM8L2NvZGU+LjwvcD4KPC9kaXY+" data-annotation-total="1"><span class="vpi-annotation"></span></button>。</p>
+<p>Markdown 文件链接会自动解析到最终永久链接，例如<a href="/docs/guide/configuration/" class="vp-link link">站点配置</a>。</p>
+<h2 id="提示容器" tabindex="-1"><a class="header-anchor" href="#提示容器"><span>提示容器</span></a></h2>
+<div class="hint-container info">
+<p class="hint-container-title">相关信息</p>
+<p>相关信息使用本地化的默认标题。</p>
+</div>
+<div class="hint-container note">
+<p class="hint-container-title">注</p>
+<p>注释内容。</p>
+</div>
+<div class="hint-container tip">
+<p class="hint-container-title"><strong>自定义标题</strong></p>
+<p>标题支持 Markdown。</p>
+</div>
+<div class="hint-container warning">
+<p class="hint-container-title">外层提示</p>
+<p>注意事项可以嵌套。</p>
+<div class="hint-container important">
+<p class="hint-container-title">重要</p>
+<p>这是内层的重要内容。</p>
+</div>
+</div>
+<div class="hint-container caution">
+<p class="hint-container-title">警告</p>
+<p>需要谨慎处理。</p>
+</div>
+<div class="hint-container caution">
+<p class="hint-container-title">警告</p>
+<p>旧版 <code>danger</code> 语法兼容为 caution。</p>
+</div>
+<details class="hint-container details"><summary><strong>展开详情</strong></summary>
+<p>这是可折叠的详细内容。</p>
+</details>
+<div class="hint-container note">
+<p class="hint-container-title">笔记</p>
+<p>GitHub Alert 使用同一套提示样式。</p>
+</div>
+<h2 id="obsidian-兼容" tabindex="-1"><a class="header-anchor" href="#obsidian-兼容"><span>Obsidian 兼容</span></a></h2>
+<p>Wiki 链接、内容嵌入、Callout 与 <code>%%</code> 注释默认开启，并可在 <code>site.config.mjs</code> 的 <code>markdown.obsidian</code> 中分别关闭。<a class="vp-link link" href="/docs/guide/configuration/">查看站点配置</a>。</p>
+<p>当前页标题也可以直接链接：<a class="vp-link link" href="#obsidian-兼容">内容能力 &gt; Obsidian 兼容</a>。</p>
+<div class="hint-container caution bug">
+<p class="hint-container-title"><strong>自定义 Callout 标题</strong></p>
+<p>Obsidian 类型和别名会映射到同一套 Plume 提示样式。</p>
+</div>
+<img src="/img/logo.svg" alt="/img/logo.svg" style="width:48px;height:48px" decoding="async" loading="eager" fetchpriority="high">
+<p>下面从配置文档嵌入“页面过渡”小节的正文：</p>
+<p><code>transition.page</code> 在完整页面导航时对内容区域执行与 Plume 一致的 <code>fade-slide-y</code> 先退出、再进入动画，不会创建容易造成主题闪烁的整页浏览器快照；文档左侧栏不会执行完整页面导航，而会像 Plume 一样保留公共页面外壳，只更新正文、目录和当前导航状态。博客列表、分类、标签与归档之间也会保留共用的头部和资料侧栏，只切换集合内容。系统开启“减少动态效果”时自动禁用完整页面动画。设置 <code>transition: false</code> 可关闭全部过渡，或仅设置 <code>transition.page: false</code> 关闭完整页面跳转动画。</p>
+<p>这段文字包含 ，构建后不会输出注释内容。</p>
+<h2 id="媒体语法" tabindex="-1"><a class="header-anchor" href="#媒体语法"><span>媒体语法</span></a></h2>
+<p>YouTube、Bilibili、音视频和 PDF 使用简短的块级语法；只有使用时才产生对应标签。块级指令必须独占一行，可以放在引用或列表项中，指令后不能追加正文。</p>
+<div class="language-md" data-highlighter="shiki" data-ext="md"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">youtube</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">video-id</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">bilibili</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">BV-id</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">video</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">/media/demo.mp4</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">audio</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">/media/demo.mp3</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">pdf</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">/files/guide.pdf</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"></span></code></pre></div><p>audio 美 <span class="vp-audio-reader" role="button" tabindex="0" aria-pressed="false" data-audio-reader data-audio-src="https://sensearch.baidu.com/gettts?lan=en&amp;spd=3&amp;source=alading&amp;text=audio" data-audio-type="" data-audio-autoplay="false" data-audio-start="1" data-audio-end="3" data-audio-volume="0.7">[ˈɔːdioʊ]<span class="icon-audio" aria-hidden="true"><svg fill="currentcolor" width="16" height="16" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><g stroke="none" stroke-width="1" fill-rule="evenodd"><path d="M24.1538 5.86289C24.8505 5.23954 25.738 4.95724 26.6005 5.00519C27.463 5.05313 28.3137 5.43204 28.9371 6.12878C29.4928 6.74989 29.8 7.55405 29.8 8.38746V46.28C29.8 47.2149 29.4186 48.0645 28.8078 48.6754C28.197 49.2862 27.3474 49.6675 26.4125 49.6675C25.5843 49.6675 24.7848 49.3641 24.1651 48.8147L13.0526 38.9618C12.5285 38.4971 11.8523 38.2405 11.1518 38.2405H5.3875C4.45261 38.2405 3.603 37.8591 2.99218 37.2483C2.38135 36.6375 2 35.7879 2 34.853V19.7719C2 18.837 2.38135 17.9874 2.99218 17.3766C3.603 16.7658 4.45262 16.3844 5.3875 16.3844H11.2991C12.004 16.3844 12.6841 16.1246 13.2095 15.6546L24.1538 5.86289ZM25.8 9.75731L15.8766 18.6356C14.6178 19.7618 12.9881 20.3844 11.2991 20.3844H6V34.2405H11.1518C12.8302 34.2405 14.4505 34.8553 15.7064 35.9688L25.8 44.9184V9.75731Z"/><path class="audio-wave wave-1" d="M38.1519 17.8402L36.992 16.2108L33.7333 18.5304L34.8931 20.1598C36.2942 22.1281 37.1487 24.6457 37.1487 27.4131C37.1487 30.1933 36.2862 32.7214 34.8736 34.6937L33.709 36.3197L36.9609 38.6488L38.1255 37.0229C40.0285 34.366 41.1487 31.0221 41.1487 27.4131C41.1487 23.8207 40.0388 20.4911 38.1519 17.8402Z"/><path class="audio-wave wave-2" d="M43.617 8.17398L44.9714 9.64556C49.0913 14.1219 51.6179 20.3637 51.6179 27.2257C51.6179 34.0838 49.0943 40.3223 44.9787 44.798L43.6249 46.2702L40.6805 43.5627L42.0343 42.0905C45.4542 38.3714 47.6179 33.1061 47.6179 27.2257C47.6179 21.3419 45.4516 16.0739 42.0282 12.3544L40.6738 10.8828L43.617 8.17398Z"/></g></svg></span></span></p>
+<div class="vp-artplayer-wrapper" data-artplayer data-artplayer-src="https://artplayer.org/assets/sample/video.mp4" data-artplayer-options="eyJ0eXBlIjoibXA0Iiwidm9sdW1lIjowLjc1LCJhdXRvcGxheSI6ZmFsc2UsIm11dGVkIjp0cnVlLCJhdXRvTWluaSI6ZmFsc2UsImxvb3AiOnRydWUsImZ1bGxzY3JlZW4iOnRydWUsImZsaXAiOnRydWUsInBsYXliYWNrUmF0ZSI6dHJ1ZSwiYXNwZWN0UmF0aW8iOnRydWUsInNldHRpbmciOnRydWUsInBpcCI6dHJ1ZX0=" data-artplayer-ratio="16:9" data-artplayer-height=""><div class="vp-artplayer" style="width:100%"></div><div class="md-power-loading absolute"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-dasharray="15" stroke-dashoffset="15" stroke-linecap="round" stroke-width="2" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"></animate><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"></animateTransform></path></svg></div></div>
+<iframe class="video-iframe youtube" src="https://www.youtube.com/embed//video-id?autoplay=1&amp;loop=1&amp;start=62&amp;end=90" title="YouTube 参数示例" style="width:90%;height:auto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture" data-video-embed data-video-height="" data-video-ratio="4:3"></iframe>
+<iframe class="video-iframe bilibili" src="https://player.bilibili.com/player.html?bvid=BV1EZ42187Hg&amp;aid=123&amp;cid=456&amp;p=2&amp;t=65&amp;autoplay=1&amp;high_quality=1" title="Bilibili" style="width:80%;height:auto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture" data-video-embed data-video-height="180px" data-video-ratio=""></iframe>
+<iframe class="video-iframe acfun" src="https://www.acfun.cn/player/ac47431669" title="AcFun" style="width:70%;height:auto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture" data-video-embed data-video-height="" data-video-ratio="16:10"></iframe>
+<div class="pdf-viewer-wrapper" style="width:100%;height:auto" data-pdf-viewer data-pdf-src="https://plume.pengzhanbo.cn/files/sample-1.pdf" data-pdf-page="2" data-pdf-toolbar="0" data-pdf-zoom="95" data-pdf-height="180px" data-pdf-ratio="" data-pdf-title="sample-1.pdf" data-pdfjs-url="https://static.pengzhanbo.cn/pdfjs/"></div>
+<p><img src="/img/logo.svg" alt="可点击预览的主题标志" width="160" height="160" decoding="async" loading="lazy"></p>
+<h2 id="仓库卡片" tabindex="-1"><a class="header-anchor" href="#仓库卡片"><span>仓库卡片</span></a></h2>
+<p>仓库卡片支持 GitHub 与 Gitee，展示语言、Star、Fork、许可证、模板和归档状态，并在浏览器中缓存 24 小时。</p>
+<div class="language-md" data-highlighter="shiki" data-ext="md"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">RepoCard</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> repo</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">pengzhanbo/vuepress-theme-plume</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> /</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span></code></pre></div><div class="vp-repo-card" data-repo-card data-repo="pengzhanbo/vuepress-theme-plume" data-provider="github" hidden></div>
+<h2 id="浏览器兼容性" tabindex="-1"><a class="header-anchor" href="#浏览器兼容性"><span>浏览器兼容性</span></a></h2>
+<p><code>caniuse</code> 指令支持完整兼容表和 Baseline 摘要，也可以指定过去与未来的版本周期。</p>
+<div class="language-md" data-highlighter="shiki" data-ext="md"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">caniuse{-2,1}</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">css-matches-pseudo</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">@</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">caniuse baseline</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#393A3490;--shiki-light-text-decoration:underline;--shiki-dark:#DEDCD590;--shiki-dark-text-decoration:underline">css-matches-pseudo</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">::: caniuse css-container-queries</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">-2,1</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">:::</span></span>
+<span class="line"></span></code></pre></div><div class="ciu_embed baseline" data-caniuse data-feature="css-matches-pseudo" data-past="2" data-future="1" data-meta="ermaozi-168-css-matches-pseudo" data-baseline="true"><iframe src="https://caniuse.pengzhanbo.cn/css-matches-pseudo/baseline#meta=ermaozi-168-css-matches-pseudo&theme=light" style="height:150px" title="Can I use css-matches-pseudo" loading="lazy"></iframe></div>
+<p>旧版 Plume 文档中的容器语法也可以直接迁移：</p>
+<div class="ciu_embed" data-caniuse data-feature="css-container-queries" data-past="2" data-future="1" data-meta="ermaozi-189-css-container-queries" data-baseline="false"><iframe src="https://caniuse.pengzhanbo.cn/css-container-queries#past=2&future=1&meta=ermaozi-189-css-container-queries&theme=light" style="height:350px" title="Can I use css-container-queries" loading="lazy"></iframe></div><h2 id="轮播图" tabindex="-1"><a class="header-anchor" href="#轮播图"><span>轮播图</span></a></h2>
+<p><code>Swiper</code> 支持 Plume 的轮播、导航、分页、自动播放和动画参数：</p>
+<div class="swiper vp-swiper" style="width:100%;height:240px" data-swiper-options="{&quot;mode&quot;:&quot;banner&quot;,&quot;effect&quot;:&quot;fade&quot;,&quot;navigation&quot;:true,&quot;delay&quot;:5000,&quot;speed&quot;:300,&quot;loop&quot;:true,&quot;pauseOnMouseEnter&quot;:false,&quot;swipe&quot;:true,&quot;mousewheel&quot;:false,&quot;slidesPerView&quot;:1,&quot;spaceBetween&quot;:0}"><div class="swiper-wrapper"><div class="swiper-slide"><img class="swiper-slide-img" src="/img/logo.svg?slide=1" alt="" loading="lazy"></div><div class="swiper-slide"><img class="swiper-slide-img" src="/img/logo.svg?slide=2" alt="" loading="lazy"></div><div class="swiper-slide"><img class="swiper-slide-img" src="/img/logo.svg?slide=3" alt="" loading="lazy"></div></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div><div class="swiper-pagination"></div></div>
+<h2 id="对话记录" tabindex="-1"><a class="header-anchor" href="#对话记录"><span>对话记录</span></a></h2>
+<div class="vp-chat"><div class="vp-chat-header"><p class="vp-chat-title">主题讨论</p></div><div class="vp-chat-content"><div class="vp-chat-date"><span>2026-08-05 10:15</span></div><div class="vp-chat-message user"><div class="vp-chat-message-body"><p class="vp-chat-username">访客</p><div class="message-content"><p>这个主题支持 <strong>Markdown</strong> 消息吗？</p></div></div></div>
+<div class="vp-chat-message self"><div class="vp-chat-message-body"><div class="message-content"><p>支持，发送者、时间与本人消息都会按 Plume 样式渲染。</p></div></div></div>
+<div class="vp-chat-date"><span>2026-08-05 10:18</span></div><div class="vp-chat-message user"><div class="vp-chat-message-body"><p class="vp-chat-username">访客</p><div class="message-content"><p>很好。</p></div></div></div></div></div>
+<h2 id="代码演示" tabindex="-1"><a class="header-anchor" href="#代码演示"><span>代码演示</span></a></h2>
+<div class="vp-demo-wrapper normal" data-demo data-demo-html="PGJ1dHRvbiBpZD0iZGVtby1idXR0b24iPueCueWHuyAwPC9idXR0b24+" data-demo-css="I2RlbW8tYnV0dG9uIHsgcGFkZGluZzogOHB4IDE0cHg7IGJvcmRlcjogMDsgYm9yZGVyLXJhZGl1czogNnB4OyBjb2xvcjogd2hpdGU7IGJhY2tncm91bmQ6ICMzMzZmODc7Cn0=" data-demo-js="KCgpPT57dmFyIGU9MCx0PWRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIiNkZW1vLWJ1dHRvbiIpO3QuYWRkRXZlbnRMaXN0ZW5lcigiY2xpY2siLCgpPT57dC50ZXh0Q29udGVudD1gXHU3MEI5XHU1MUZCICR7KytlfWB9KTt9KSgpOwo=" data-demo-js-lib="W10=" data-demo-css-lib="W10="><div class="demo-draw"><iframe title="按钮演示" class="draw-iframe" allow="accelerometer *; bluetooth *; camera *; encrypted-media *; display-capture *; geolocation *; gyroscope *; microphone *; midi *; clipboard-read *; clipboard-write *; web-share *; serial *; xr-spatial-tracking *" allowfullscreen allowpaymentrequest allowtransparency sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups-to-escape-sandbox allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation"></iframe></div><div class="demo-info"><p class="title">按钮演示</p><p class="desc">HTML、CSS 与 JavaScript 在隔离 iframe 中运行。</p></div><div class="demo-ctrl"><div class="extra"><form action="https://codepen.io/pen/define" method="POST" target="_blank" enctype="application/x-www-form-urlencoded;charset=utf-8"><input type="hidden" name="data" value="{&quot;title&quot;:&quot;按钮演示&quot;,&quot;description&quot;:&quot;HTML、CSS 与 JavaScript 在隔离 iframe 中运行。&quot;,&quot;html&quot;:&quot;&lt;button id=\&quot;demo-button\&quot;&gt;点击 0&lt;/button&gt;&quot;,&quot;css&quot;:&quot;#demo-button { padding: 8px 14px; border: 0; border-radius: 6px; color: white; background: #336f87; }&quot;,&quot;js&quot;:&quot;let count = 0\nconst button = document.querySelector('#demo-button')\nbutton.addEventListener('click', () =&gt; { button.textContent = `点击 ${++count}` })&quot;,&quot;js_pre_processor&quot;:&quot;none&quot;,&quot;css_pre_processor&quot;:&quot;css&quot;,&quot;css_external&quot;:&quot;&quot;,&quot;js_external&quot;:&quot;&quot;}"><button type="submit" title="CodePen" aria-label="CodePen"><span class="vpi-demo-codepen"></span></button></form><form action="https://jsfiddle.net/api/post/library/pure/" method="POST" target="_blank" enctype="application/x-www-form-urlencoded;charset=UTF-8" accept-charset="UTF-8"><button type="submit" title="jsFiddle" aria-label="jsFiddle"><span class="vpi-demo-jsfiddle bg"></span></button><input type="hidden" name="wrap" value="b"><input type="hidden" name="html" value="&lt;button id=&quot;demo-button&quot;&gt;点击 0&lt;/button&gt;"><input type="hidden" name="js" value="let count = 0
+const button = document.querySelector('#demo-button')
+button.addEventListener('click', () =&gt; { button.textContent = `点击 ${++count}` })"><input type="hidden" name="css" value="#demo-button { padding: 8px 14px; border: 0; border-radius: 6px; color: white; background: #336f87; }"><input type="hidden" name="panel_css" value="0"><input type="hidden" name="panel_js" value="0"><input type="hidden" name="title" value="按钮演示"><input type="hidden" name="description" value="HTML、CSS 与 JavaScript 在隔离 iframe 中运行。"><input type="hidden" name="resources" value=""></form></div><button type="button" aria-label="Toggle Code" aria-expanded="false"><span class="vpi-demo-code"></span></button></div><div class="demo-code" hidden><div class="vp-tabs" data-tabs data-tab-kind="content" data-tab-store="VUEPRESS_TAB_STORE"><div class="vp-tabs-nav" role="tablist"><button id="vp-tab-0-0" type="button" class="vp-tab-nav active" role="tab" aria-controls="tab-0-0" aria-selected="true" tabindex="0" data-tab-index="0" data-tab-value="HTML">HTML</button><button id="vp-tab-0-1" type="button" class="vp-tab-nav" role="tab" aria-controls="tab-0-1" aria-selected="false" tabindex="-1" data-tab-index="1" data-tab-value="Javascript">Javascript</button><button id="vp-tab-0-2" type="button" class="vp-tab-nav" role="tab" aria-controls="tab-0-2" aria-selected="false" tabindex="-1" data-tab-index="2" data-tab-value="CSS">CSS</button></div><div id="tab-0-0" class="vp-tab active" role="tabpanel" aria-expanded="true"><div class="vp-tab-title">HTML</div><div class="language-html" data-highlighter="shiki" data-ext="html"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> id</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">demo-button</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">点击 0</span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span></code></pre></div></div><div id="tab-0-1" class="vp-tab" role="tabpanel" aria-expanded="false"><div class="vp-tab-title">Javascript</div><div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">let</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> count</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 0</span></span>
+<span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> button</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> document</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">querySelector</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">#demo-button</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">button</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">addEventListener</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">click</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">(</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">)</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> button</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">textContent</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> `</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">点击 </span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">${</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">++</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">count</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">}</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">`</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"></span></code></pre></div></div><div id="tab-0-2" class="vp-tab" role="tabpanel" aria-expanded="false"><div class="vp-tab-title">CSS</div><div class="language-css" data-highlighter="shiki" data-ext="css"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">#</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">demo-button</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> padding</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 8</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 14</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> border</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 0</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> border-radius</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 6</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> color</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> white</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> background</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> #</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076">336f87</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div></div></div></div></div>
+<h3 id="普通演示文件与外部资源" tabindex="-1"><a class="header-anchor" href="#普通演示文件与外部资源"><span>普通演示文件与外部资源</span></a></h3>
+<div class="vp-demo-wrapper normal" data-demo data-demo-html="PGRpdiBpZD0iZW1iZWRkZWQtbm9ybWFsLWRlbW8iPlJlc291cmNlIHJlYWR5OiA8c3Ryb25nIGlkPSJkZW1vLXJlc291cmNlLXZhbHVlIj5ubzwvc3Ryb25nPjwvZGl2Pg==" data-demo-css="I2VtYmVkZGVkLW5vcm1hbC1kZW1vIHsgcGFkZGluZzogOHB4IDEycHg7IGJvcmRlci1yYWRpdXM6IDZweDsKfQ==" data-demo-js="KCgpPT57dmFyIGU9ZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiI2RlbW8tcmVzb3VyY2UtdmFsdWUiKTtlJiYoZS50ZXh0Q29udGVudD1TdHJpbmcod2luZG93LmRlbW9SZXNvdXJjZVJlYWR5KSk7fSkoKTsK" data-demo-js-lib="WyIvZGVtby9kZW1vLWxpYi5qcyJd" data-demo-css-lib="WyIvZGVtby9kZW1vLWxpYi5jc3MiXQ=="><div class="demo-draw"><iframe title="资源与 TypeScript" class="draw-iframe" allow="accelerometer *; bluetooth *; camera *; encrypted-media *; display-capture *; geolocation *; gyroscope *; microphone *; midi *; clipboard-read *; clipboard-write *; web-share *; serial *; xr-spatial-tracking *" allowfullscreen allowpaymentrequest allowtransparency sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups-to-escape-sandbox allow-popups allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation"></iframe></div><div class="demo-info"><p class="title">资源与 TypeScript</p><p class="desc">嵌入文件会在构建期编译，并在资源菜单列出依赖。</p></div><div class="demo-ctrl"><div class="extra"><form action="https://codepen.io/pen/define" method="POST" target="_blank" enctype="application/x-www-form-urlencoded;charset=utf-8"><input type="hidden" name="data" value="{&quot;title&quot;:&quot;资源与 TypeScript&quot;,&quot;description&quot;:&quot;嵌入文件会在构建期编译，并在资源菜单列出依赖。&quot;,&quot;html&quot;:&quot;&lt;div id=\&quot;embedded-normal-demo\&quot;&gt;Resource ready: &lt;strong id=\&quot;demo-resource-value\&quot;&gt;no&lt;/strong&gt;&lt;/div&gt;&quot;,&quot;css&quot;:&quot;#embedded-normal-demo { padding: 8px 12px; border-radius: 6px; }&quot;,&quot;js&quot;:&quot;const value = document.querySelector&lt;HTMLElement&gt;('#demo-resource-value')\nif (value) value.textContent = String(window.demoResourceReady)&quot;,&quot;js_pre_processor&quot;:&quot;typescript&quot;,&quot;css_pre_processor&quot;:&quot;css&quot;,&quot;css_external&quot;:&quot;/demo/demo-lib.css&quot;,&quot;js_external&quot;:&quot;/demo/demo-lib.js&quot;}"><button type="submit" title="CodePen" aria-label="CodePen"><span class="vpi-demo-codepen"></span></button></form><form action="https://jsfiddle.net/api/post/library/pure/" method="POST" target="_blank" enctype="application/x-www-form-urlencoded;charset=UTF-8" accept-charset="UTF-8"><button type="submit" title="jsFiddle" aria-label="jsFiddle"><span class="vpi-demo-jsfiddle bg"></span></button><input type="hidden" name="wrap" value="b"><input type="hidden" name="html" value="&lt;div id=&quot;embedded-normal-demo&quot;&gt;Resource ready: &lt;strong id=&quot;demo-resource-value&quot;&gt;no&lt;/strong&gt;&lt;/div&gt;"><input type="hidden" name="js" value="const value = document.querySelector&lt;HTMLElement&gt;('#demo-resource-value')
+if (value) value.textContent = String(window.demoResourceReady)"><input type="hidden" name="css" value="#embedded-normal-demo { padding: 8px 12px; border-radius: 6px; }"><input type="hidden" name="panel_css" value="0"><input type="hidden" name="panel_js" value="4"><input type="hidden" name="title" value="资源与 TypeScript"><input type="hidden" name="description" value="嵌入文件会在构建期编译，并在资源菜单列出依赖。"><input type="hidden" name="resources" value="/demo/demo-lib.js,/demo/demo-lib.css"></form></div><div class="demo-resources"><button type="button" class="demo-resources-toggle" title="Resources" aria-label="Resources" aria-expanded="false"><span class="vpi-demo-resources"></span></button><div class="demo-resources-container" hidden><div class="demo-resources-list"><p>JavaScript</p><ul><li><a href="/demo/demo-lib.js" target="_blank" rel="noopener noreferrer" class="no-icon" aria-label="demo-lib.js">demo-lib.js</a></li></ul></div><div class="demo-resources-list"><p>CSS</p><ul><li><a href="/demo/demo-lib.css" target="_blank" rel="noopener noreferrer" class="no-icon" aria-label="demo-lib.css">demo-lib.css</a></li></ul></div></div></div><button type="button" aria-label="Toggle Code" aria-expanded="false"><span class="vpi-demo-code"></span></button></div><div class="demo-code" hidden><div class="vp-tabs" data-tabs data-tab-kind="content" data-tab-store="VUEPRESS_TAB_STORE"><div class="vp-tabs-nav" role="tablist"><button id="vp-tab-0-0" type="button" class="vp-tab-nav active" role="tab" aria-controls="tab-0-0" aria-selected="true" tabindex="0" data-tab-index="0" data-tab-value="HTML">HTML</button><button id="vp-tab-0-1" type="button" class="vp-tab-nav" role="tab" aria-controls="tab-0-1" aria-selected="false" tabindex="-1" data-tab-index="1" data-tab-value="Typescript">Typescript</button><button id="vp-tab-0-2" type="button" class="vp-tab-nav" role="tab" aria-controls="tab-0-2" aria-selected="false" tabindex="-1" data-tab-index="2" data-tab-value="CSS">CSS</button></div><div id="tab-0-0" class="vp-tab active" role="tabpanel" aria-expanded="true"><div class="vp-tab-title">HTML</div><div class="language-html" data-highlighter="shiki" data-ext="html"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">div</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> id</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">embedded-normal-demo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">Resource ready: </span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">strong</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> id</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">demo-resource-value</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">no</span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">strong</span><span style="--shiki-light:#999999;--shiki-dark:#666666">>&#x3C;/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">div</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span></code></pre></div></div><div id="tab-0-1" class="vp-tab" role="tabpanel" aria-expanded="false"><div class="vp-tab-title">Typescript</div><div class="language-ts" data-highlighter="shiki" data-ext="ts"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">value</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> document</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">querySelector</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">&#x3C;</span><span style="--shiki-light:#2E8F82;--shiki-dark:#5DA994">HTMLElement</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">></span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">#demo-resource-value</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">if</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">value</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> value</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">textContent</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> String</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">window</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">demoResourceReady</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"></span></code></pre></div></div><div id="tab-0-2" class="vp-tab" role="tabpanel" aria-expanded="false"><div class="vp-tab-title">CSS</div><div class="language-css" data-highlighter="shiki" data-ext="css"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">#</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">embedded-normal-demo</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> padding</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 8</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 12</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> border-radius</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 6</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div></div></div></div></div>
+<h3 id="vue-演示" tabindex="-1"><a class="header-anchor" href="#vue-演示"><span>Vue 演示</span></a></h3>
+<div class="vp-demo-wrapper vue" data-vue-demo data-demo-vue-code="dmFyIHI9T2JqZWN0LmRlZmluZVByb3BlcnR5O3ZhciBtPU9iamVjdC5nZXRPd25Qcm9wZXJ0eURlc2NyaXB0b3I7dmFyIHA9T2JqZWN0LmdldE93blByb3BlcnR5TmFtZXM7dmFyIGk9T2JqZWN0LnByb3RvdHlwZS5oYXNPd25Qcm9wZXJ0eTt2YXIgdT0obyxlKT0+e2Zvcih2YXIgdCBpbiBlKXIobyx0LHtnZXQ6ZVt0XSxlbnVtZXJhYmxlOiEwfSl9LGQ9KG8sZSx0LGEpPT57aWYoZSYmdHlwZW9mIGU9PSJvYmplY3QifHx0eXBlb2YgZT09ImZ1bmN0aW9uIilmb3IobGV0IHMgb2YgcChlKSkhaS5jYWxsKG8scykmJnMhPT10JiZyKG8scyx7Z2V0OigpPT5lW3NdLGVudW1lcmFibGU6IShhPW0oZSxzKSl8fGEuZW51bWVyYWJsZX0pO3JldHVybiBvfTt2YXIgZj1vPT5kKHIoe30sIl9fZXNNb2R1bGUiLHt2YWx1ZTohMH0pLG8pO3ZhciBrPXt9O3Uoayx7ZGVmYXVsdDooKT0+eX0pO21vZHVsZS5leHBvcnRzPWYoayk7dmFyIF89cmVxdWlyZSgidnVlIiksbj1yZXF1aXJlKCJ2dWUiKSxjPXJlcXVpcmUoInZ1ZSIpLGw9KDAsXy5kZWZpbmVDb21wb25lbnQpKHtfX25hbWU6ImNvbnRlbnQubWQuZGVtby0yNDAiLHNldHVwKG8pe2xldCBlPSgwLGMucmVmKSgwKTtyZXR1cm4odCxhKT0+KCgwLG4ub3BlbkJsb2NrKSgpLCgwLG4uY3JlYXRlRWxlbWVudEJsb2NrKSgiYnV0dG9uIix7aWQ6ImlubGluZS12dWUtY291bnQiLGNsYXNzOigwLG4ubm9ybWFsaXplQ2xhc3MpKHQuJHN0eWxlLmNvdW50ZXIpLHR5cGU6ImJ1dHRvbiIsb25DbGljazphWzBdfHwoYVswXT1zPT5lLnZhbHVlKz0xKX0sIlx1NTE4NVx1ODA1NFx1OEJBMVx1NjU3MCAiKygwLG4udG9EaXNwbGF5U3RyaW5nKShlLnZhbHVlKSwzKSl9fSk7bC5fX3Njb3BlSWQ9ImRhdGEtdi1mNzk0MDRhNCI7bC5fX2Nzc01vZHVsZXM9eyRzdHlsZTp7Y291bnRlcjoiX2NvdW50ZXJfa3M1cDhfMiJ9fTt2YXIgeT1sOwo="><div class="demo-draw"><div class="demo-draw-vue" data-demo-vue-mount></div></div><div class="demo-info"><p class="title">内联 Vue 计数器</p><p class="desc">真实 Vue SFC 在构建期编译并挂载。</p></div><div class="demo-ctrl"><button type="button" aria-label="Toggle Code" aria-expanded="false"><span class="vpi-demo-code"></span></button></div><div class="demo-code" hidden><div class="language-vue line-numbers-mode" data-highlighter="shiki" data-ext="vue"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">script</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> setup</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> lang</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">ts</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">import</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> ref</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> from</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">vue</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">count</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> ref</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91">0</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">script</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">template</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> id</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">inline-vue-count</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> :class</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">$style.counter</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">button</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> @click</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">count += 1</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">内联计数 </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE"> count </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">template</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">style</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> module</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">counter</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> border</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 2</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> solid</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> #</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076">336f87</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">style</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></div><style>
+._counter_ks5p8_2[data-v-f79404a4] { border: 2px solid #336f87;
+}
+</style></div>
+<div class="vp-demo-wrapper vue" data-vue-demo data-demo-vue-code="dmFyIHA9T2JqZWN0LmRlZmluZVByb3BlcnR5O3ZhciBkPU9iamVjdC5nZXRPd25Qcm9wZXJ0eURlc2NyaXB0b3I7dmFyIGk9T2JqZWN0LmdldE93blByb3BlcnR5TmFtZXM7dmFyIGY9T2JqZWN0LnByb3RvdHlwZS5oYXNPd25Qcm9wZXJ0eTt2YXIgeT0obyxlKT0+e2Zvcih2YXIgdCBpbiBlKXAobyx0LHtnZXQ6ZVt0XSxlbnVtZXJhYmxlOiEwfSl9LGs9KG8sZSx0LGMpPT57aWYoZSYmdHlwZW9mIGU9PSJvYmplY3QifHx0eXBlb2YgZT09ImZ1bmN0aW9uIilmb3IobGV0IG4gb2YgaShlKSkhZi5jYWxsKG8sbikmJm4hPT10JiZwKG8sbix7Z2V0OigpPT5lW25dLGVudW1lcmFibGU6IShjPWQoZSxuKSl8fGMuZW51bWVyYWJsZX0pO3JldHVybiBvfTt2YXIgQj1vPT5rKHAoe30sIl9fZXNNb2R1bGUiLHt2YWx1ZTohMH0pLG8pO3ZhciB4PXt9O3koeCx7ZGVmYXVsdDooKT0+dn0pO21vZHVsZS5leHBvcnRzPUIoeCk7dmFyIG09cmVxdWlyZSgidnVlIiksYT1yZXF1aXJlKCJ2dWUiKSxsPXJlcXVpcmUoInZ1ZSIpO3ZhciB1PXJlcXVpcmUoInZ1ZSIpLHI9cmVxdWlyZSgidnVlIiksQz17aWQ6Im5lc3RlZC12dWUtY291bnQifSxiPSgwLHUuZGVmaW5lQ29tcG9uZW50KSh7X19uYW1lOiJDb3VudGVyTGFiZWwiLHByb3BzOntjb3VudDp7dHlwZTpOdW1iZXIscmVxdWlyZWQ6ITB9fSxzZXR1cChvKXtyZXR1cm4oZSx0KT0+KCgwLHIub3BlbkJsb2NrKSgpLCgwLHIuY3JlYXRlRWxlbWVudEJsb2NrKSgic3BhbiIsQywiVnVlIGNvdW50ICIrKDAsci50b0Rpc3BsYXlTdHJpbmcpKG8uY291bnQpLDEpKX19KSxfPWI7dmFyIHM9KDAsbS5kZWZpbmVDb21wb25lbnQpKHtfX25hbWU6IkNvdW50ZXIiLHNldHVwKG8pe2xldCBlPSgwLGwucmVmKSgwKTtyZXR1cm4odCxjKT0+KCgwLGEub3BlbkJsb2NrKSgpLCgwLGEuY3JlYXRlRWxlbWVudEJsb2NrKSgiYnV0dG9uIix7aWQ6ImVtYmVkZGVkLXZ1ZS1jb3VudCIsdHlwZToiYnV0dG9uIixvbkNsaWNrOmNbMF18fChjWzBdPW49PmUudmFsdWUrPTEpfSxbKDAsYS5jcmVhdGVWTm9kZSkoXyx7Y291bnQ6ZS52YWx1ZX0sbnVsbCw4LFsiY291bnQiXSldKSl9fSk7cy5fX3Njb3BlSWQ9ImRhdGEtdi1hN2I3ZTVkZSI7dmFyIHY9czsK"><div class="demo-draw"><div class="demo-draw-vue" data-demo-vue-mount></div></div><div class="demo-info"><p class="title">嵌入 Vue 组件</p></div><div class="demo-ctrl"><button type="button" aria-label="Toggle Code" aria-expanded="false"><span class="vpi-demo-code"></span></button></div><div class="demo-code" hidden><div class="language-vue line-numbers-mode" data-highlighter="shiki" data-ext="vue"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">script</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> setup</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> lang</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">ts</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">import</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> ref</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> from</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">vue</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">import</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> CounterLabel</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> from</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">./CounterLabel.vue</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">count</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> ref</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91">0</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">script</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">template</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> id</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">embedded-vue-count</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">button</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> @click</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">count += 1</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">CounterLabel</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> :count</span><span style="--shiki-light:#999999;--shiki-dark:#666666">=</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">count</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> /</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">template</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">style</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> scoped</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">button</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">padding</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 8</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 12</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">border</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 1</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#A65E2B;--shiki-dark:#C99076"> solid</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> var</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">(</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">--vp-c-divider</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">)</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">border-radius</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 6</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">px</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">&#x3C;</span><span style="--shiki-light:#999999;--shiki-dark:#666666">/</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">style</span><span style="--shiki-light:#999999;--shiki-dark:#666666">></span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></div><style>
+button[data-v-a7b7e5de] {
+  padding: 8px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+}
+</style></div>
+<h3 id="markdown-演示" tabindex="-1"><a class="header-anchor" href="#markdown-演示"><span>Markdown 演示</span></a></h3>
+<div class="vp-demo-wrapper markdown" data-basic-demo><div class="demo-draw"><h4 id="markdown-渲染结果" tabindex="-1"><a class="header-anchor" href="#markdown-渲染结果"><span>Markdown 渲染结果</span></a></h4>
+<p>支持 <strong>加粗</strong>、列表和其它 Markdown 语法。</p></div><div class="demo-info"><p class="title">内联 Markdown</p></div><div class="demo-ctrl"><button type="button" aria-label="Toggle Code" aria-expanded="false"><span class="vpi-demo-code"></span></button></div><div class="demo-code" hidden><div class="language-md" data-highlighter="shiki" data-ext="md"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-light-font-weight:bold;--shiki-dark:#666666;--shiki-dark-font-weight:bold">####</span><span style="--shiki-light:#1C6B48;--shiki-light-font-weight:bold;--shiki-dark:#4D9375;--shiki-dark-font-weight:bold"> Markdown 渲染结果</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">支持 </span><span style="--shiki-light:#999999;--shiki-light-font-weight:bold;--shiki-dark:#666666;--shiki-dark-font-weight:bold">**</span><span style="--shiki-light:#393A34;--shiki-light-font-weight:bold;--shiki-dark:#DBD7CAEE;--shiki-dark-font-weight:bold">加粗</span><span style="--shiki-light:#999999;--shiki-light-font-weight:bold;--shiki-dark:#666666;--shiki-dark-font-weight:bold">**</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">、列表和其它 Markdown 语法。</span></span>
+<span class="line"></span></code></pre></div></div></div>
+<div class="vp-demo-wrapper markdown" data-basic-demo><div class="demo-draw"><h3 id="embedded-markdown" tabindex="-1"><a class="header-anchor" href="#embedded-markdown"><span>Embedded Markdown</span></a></h3>
+<p>This <strong>Markdown demo</strong> is rendered before its source code.</p></div><div class="demo-info"><p class="title">嵌入 Markdown</p></div><div class="demo-ctrl"><button type="button" aria-label="Toggle Code" aria-expanded="false"><span class="vpi-demo-code"></span></button></div><div class="demo-code" hidden><div class="language-md" data-highlighter="shiki" data-ext="md"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#999999;--shiki-light-font-weight:bold;--shiki-dark:#666666;--shiki-dark-font-weight:bold">###</span><span style="--shiki-light:#1C6B48;--shiki-light-font-weight:bold;--shiki-dark:#4D9375;--shiki-dark-font-weight:bold"> Embedded Markdown</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">This </span><span style="--shiki-light:#999999;--shiki-light-font-weight:bold;--shiki-dark:#666666;--shiki-dark-font-weight:bold">**</span><span style="--shiki-light:#393A34;--shiki-light-font-weight:bold;--shiki-dark:#DBD7CAEE;--shiki-dark-font-weight:bold">Markdown demo</span><span style="--shiki-light:#999999;--shiki-light-font-weight:bold;--shiki-dark:#666666;--shiki-dark-font-weight:bold">**</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE"> is rendered before its source code.</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre></div></div></div>
+<h2 id="数学公式" tabindex="-1"><a class="header-anchor" href="#数学公式"><span>数学公式</span></a></h2>
+<p>默认使用与 Plume 相同的 KaTeX 渲染行内公式 <span v-pre class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mrow><mi>i</mi><mi>π</mi></mrow></msup><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">e^{i\pi}+1=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.908em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">iπ</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，并支持独立块级公式：</p>
+<p v-pre class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><msup><mi mathvariant="normal">∂</mi><mi>r</mi></msup><mrow><mi mathvariant="normal">∂</mi><msup><mi>ω</mi><mi>r</mi></msup></mrow></mfrac><mrow><mo fence="true">(</mo><mfrac><msup><mi>y</mi><mi>ω</mi></msup><mi>ω</mi></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\frac {\partial^r} {\partial \omega^r} \left(\frac {y^{\omega}} {\omega}\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.0556em;">∂</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5904em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord" style="margin-right:0.0556em;">∂</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3414em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">ω</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
+<p>标记为 <code>twoslash</code> 的 TypeScript 代码块会执行真实类型分析：</p>
+<div class="code-block-title" data-title="twoslash.ts"><div class="code-block-title-bar"><span class="title"><span class="vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#007acc" d="M23.827 8.243a4.4 4.4 0 0 1 2.223 1.281a6 6 0 0 1 .852 1.143c.011.045-1.534 1.083-2.471 1.662c-.034.023-.169-.124-.322-.35a2.01 2.01 0 0 0-1.67-1c-1.077-.074-1.771.49-1.766 1.433a1.3 1.3 0 0 0 .153.666c.237.49.677.784 2.059 1.383c2.544 1.095 3.636 1.817 4.31 2.843a5.16 5.16 0 0 1 .416 4.333a4.76 4.76 0 0 1-3.932 2.815a11 11 0 0 1-2.708-.028a6.53 6.53 0 0 1-3.616-1.884a6.3 6.3 0 0 1-.926-1.371a3 3 0 0 1 .327-.208c.158-.09.756-.434 1.32-.761l1.024-.6l.214.312a4.8 4.8 0 0 0 1.35 1.292a3.3 3.3 0 0 0 3.458-.175a1.545 1.545 0 0 0 .2-1.974c-.276-.395-.84-.727-2.443-1.422a8.8 8.8 0 0 1-3.349-2.055a4.7 4.7 0 0 1-.976-1.777a7.1 7.1 0 0 1-.062-2.268a4.33 4.33 0 0 1 3.644-3.374a9 9 0 0 1 2.691.084m-8.343 1.483l.011 1.454h-4.63v13.148H7.6V11.183H2.97V9.755a14 14 0 0 1 .04-1.466c.017-.023 2.832-.034 6.245-.028l6.211.017Z"/></svg></span>twoslash.ts</span></div><div class="language-ts" data-highlighter="shiki" data-ext="ts"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark twoslash lsp" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"><span class="twoslash-hover twoslash-query-persisted"><span class="twoslash-popup-container"><div class="twoslash-popup-arrow"></div><code class="twoslash-popup-code"><pre class="shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212" tabindex="0"><code><span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">const </span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">greeting</span><span style="--shiki-light:#999999;--shiki-dark:#666666">: {</span></span>
+<span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">    readonly</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">hello</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">}</span></span></code></pre></code></span>greeting</span></span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> "</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">hello</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span></code></span>text</span></span><span style="--shiki-light:#999999;--shiki-dark:#666666">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">hello</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> as</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676"> </span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676"><span class="twoslash-hover"><span class="twoslash-popup-container"><code class="twoslash-popup-code"><pre class="shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212" tabindex="0"><code><span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">type</span><span style="--shiki-light:#2E8F82;--shiki-dark:#5DA994"> const</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> =</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> {</span></span>
+<span class="line"><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">    readonly</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">hello</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span></span>
+<span class="line"><span style="--shiki-light:#999999;--shiki-dark:#666666">}</span></span></code></pre></code></span>const</span></span></span>
+<span class="line"></span></code></pre></div></div><h2 id="在线代码演示" tabindex="-1"><a class="header-anchor" href="#在线代码演示"><span>在线代码演示</span></a></h2>
+<iframe src="https://codepen.io/leimapapa/embed/RwOZQOW?default-tab=html%2Cresult&amp;theme-id=light" class="code-pen-iframe" title="Code Pen" style="width:100%;height:180px" frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen="true" data-code-embed="codepen"></iframe>
+<iframe class="js-fiddle-iframe" src="https://jsfiddle.net/zalun/NmudS/embedded/result,js/" title="JS Fiddle" style="width:100%;height:180px" frameborder="0" allowfullscreen="true" allowpaymentrequest="true" data-code-embed="jsfiddle" data-code-source="zalun/NmudS" data-code-tab="result,js"></iframe>
+<iframe src="https://codesandbox.io/embed/5wyzu?module=src%252Findex.js&amp;view=Editor%2BPreview&amp;hidenavigation=1" class="code-sandbox-iframe" title="CodeSandbox 演示" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" style="width:100%;height:180px"></iframe>
+<p><a class="code-sandbox-link no-icon" href="https://codesandbox.io/p/sandbox/reaction-5wyzu?from-embed=" target="_blank" rel="noopener noreferrer" aria-label="CodeSandbox"><svg xmlns="http://www.w3.org/2000/svg" width="165" height="32" viewBox="0 0 165 32" role="img" aria-hidden="true"><rect width="165" height="32" rx="4" fill="#e3ff73"/><path fill="#191919" fill-rule="evenodd" d="M10 10h13v13H10zm1.33 1.33v10.34h10.34V11.33z"/><text x="39" y="21" fill="#191919" font-family="system-ui,sans-serif" font-size="13" font-weight="600">Edit in CodeSandbox</text></svg></a></p>
+<iframe class="replit-iframe-wrapper" src="https://replit.com/%40TechPandaPro/Cursor-Hangout?embed=true&amp;theme=light&amp;file=package.json" title="Replit 演示" style="width:100%;height:180px" allowtransparency="true" allowfullscreen="true" data-code-embed="replit"></iframe>
+<h2 id="多语言代码运行" tabindex="-1"><a class="header-anchor" href="#多语言代码运行"><span>多语言代码运行</span></a></h2>
+<p>Go、Kotlin 与 Rust 会把代码发送到 Plume 使用的在线运行服务；Python 通过 Pyodide 在浏览器本地执行。<code>editable</code> 会启用就地编辑器。</p>
+<div class="code-repl" data-code-repl data-repl-lang="go" data-repl-editable="true"><div class="code-repl-title"><h4>Go playground</h4><button class="icon-run" type="button" title="Run Code" aria-label="Run Code"><span class="vpi-play" aria-hidden="true"></span></button></div><div class="code-repl-editor editable">
+<div class="language-go" data-highlighter="shiki" data-ext="go"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">package</span><span style="--shiki-light:#2E8F82;--shiki-dark:#5DA994"> main</span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">import</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> "</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">fmt</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span></span>
+<span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">func</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> main</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> fmt</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">Println</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">(</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Hello Go</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">)</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div></div><div class="code-repl-pin"></div><div class="code-repl-output" hidden><div class="output-head"><span class="vpi-console" aria-hidden="true"></span><span class="title">console</span><span class="output-version"></span><button class="icon-close" type="button" aria-label="Close output">×</button></div><div class="output-content"></div></div></div>
+<div class="code-repl" data-code-repl data-repl-lang="kotlin"><div class="code-repl-title"><h4>Kotlin playground</h4><button class="icon-run" type="button" title="Run Code" aria-label="Run Code"><span class="vpi-play" aria-hidden="true"></span></button></div><div class="code-repl-editor">
+<div class="language-kotlin" data-highlighter="shiki" data-ext="kotlin"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span>fun main() { println("Hello Kotlin") }</span></span>
+<span class="line"><span></span></span></code></pre></div></div><div class="code-repl-pin"></div><div class="code-repl-output" hidden><div class="output-head"><span class="vpi-console" aria-hidden="true"></span><span class="title">console</span><span class="output-version"></span><button class="icon-close" type="button" aria-label="Close output">×</button></div><div class="output-content"></div></div></div>
+<div class="code-repl" data-code-repl data-repl-lang="rust"><div class="code-repl-title"><h4>Rust playground</h4><button class="icon-run" type="button" title="Run Code" aria-label="Run Code"><span class="vpi-play" aria-hidden="true"></span></button></div><div class="code-repl-editor">
+<div class="language-rust" data-highlighter="shiki" data-ext="rust"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375">fn</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> main</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> println!</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">(</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Hello Rust</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">)</span><span style="--shiki-light:#999999;--shiki-dark:#666666">;</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div></div><div class="code-repl-pin"></div><div class="code-repl-output" hidden><div class="output-head"><span class="vpi-console" aria-hidden="true"></span><span class="title">console</span><span class="output-version"></span><button class="icon-close" type="button" aria-label="Close output">×</button></div><div class="output-content"></div></div></div>
+<div class="code-repl" data-code-repl data-repl-lang="python" data-repl-editable="true"><div class="code-repl-title"><h4>Python playground</h4><button class="icon-run" type="button" title="Run Code" aria-label="Run Code"><span class="vpi-play" aria-hidden="true"></span></button></div><div class="code-repl-editor editable">
+<div class="language-python" data-highlighter="shiki" data-ext="python"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#998418;--shiki-dark:#B8A965">print</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">(</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Hello Python</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">"</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">)</span></span>
+<span class="line"></span></code></pre></div></div><div class="code-repl-pin"></div><div class="code-repl-output" hidden><div class="output-head"><span class="vpi-console" aria-hidden="true"></span><span class="title">console</span><span class="output-version"></span><button class="icon-close" type="button" aria-label="Close output">×</button></div><div class="output-content"></div></div></div>
+<h2 id="隐秘文本" tabindex="-1"><a class="header-anchor" href="#隐秘文本"><span>隐秘文本</span></a></h2>
+<p>桌面悬停显示：<span class="hover mask vp-plot" data-plot-default-trigger="true">这段内容默认被遮住</span>；显式点击与模糊效果：<span class="click blur vp-plot">点击后显示</span>。</p>
+<p>组件写法同样可用：<span class="vp-plot click mask">点击组件内容</span>。</p>
+<h2 id="图表" tabindex="-1"><a class="header-anchor" href="#图表"><span>图表</span></a></h2>
+<div class="chartjs-title">月度趋势</div><div class="chartjs-loading" style="display:flex;align-items:center;justify-content:center;height:192px"><span class="vp-loading-icon"></span></div><div class="chartjs-wrapper" style="display:none" data-chartjs data-chart-type="json" data-chart-config="eyJ0eXBlIjoibGluZSIsImRhdGEiOnsibGFiZWxzIjpbIuS4gOaciCIsIuS6jOaciCIsIuS4ieaciCJdLCJkYXRhc2V0cyI6W3sibGFiZWwiOiLorr/pl67ph48iLCJkYXRhIjpbMTIsMTksOF0sImJvcmRlckNvbG9yIjoiIzMzNmY4NyJ9XX19Cg==" data-chart-index="0"><canvas height="400"></canvas></div><div class="echarts-title">分类占比</div><div class="echarts-wrapper" data-echarts data-chart-type="json" data-chart-config="eyJ0b29sdGlwIjp7fSwic2VyaWVzIjpbeyJ0eXBlIjoicGllIiwicmFkaXVzIjoiNjAlIiwiZGF0YSI6W3sidmFsdWUiOjQyLCJuYW1lIjoi5paH5qGjIn0seyJ2YWx1ZSI6MjgsIm5hbWUiOiLljZrlrqIifV19XX0K" data-chart-index="1"><div class="echarts-container"></div><div class="echarts-loading" style="display:flex;align-items:center;justify-content:center;height:360px"><span class="vp-loading-icon"></span></div></div><img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuNBCoKnELT2rKt3AJx9IUB5koOlrZI_MRt-siOdBAJz9GLVNJW6i12Rtic7MY_tjN0wfUIcbkJa0" alt="PlantUML Diagram">
+<div class="flowchart-loading" style="display:flex;align-items:center;justify-content:center;height:192px"><span class="vp-loading-icon"></span></div><div class="flowchart-wrapper vue" style="display:none" id="flowchart-0" data-flowchart data-flow-code="c3Q9PnN0YXJ0OiDlvIDlp4sKb3A9Pm9wZXJhdGlvbjog5aSE55CGCmU9PmVuZDog57uT5p2fCnN0LT5vcC0+ZQo=" data-flow-preset="vue"></div>
+<div class="markmap-wrapper" data-markmap data-markmap-content="LS0tCm1hcmttYXA6CiAgY29sb3JGcmVlemVMZXZlbDogMgotLS0KCiMgZXJtYW96aQoKIyMgTWFya2Rvd24KCi0g6ZO+5o6lCi0gKirlvLrosIMqKgoKIyMgQXN0cm8KCi0g6Z2Z5oCB6L6T5Ye6Ci0g5Y+M6K+t6Lev55SxCg==" data-markmap-index="0"><svg class="markmap-svg"></svg><div class="markmap-loading" style="display:flex;align-items:center;justify-content:center;height:360px"><span class="vp-loading-icon"></span></div></div>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="footnote1" class="footnote-item"><p>所有页面在构建阶段生成，部署时不需要 Node.js 服务。 <a href="#footnote-ref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+<div><script type="module">document.querySelectorAll(`[data-git-changelog]`).forEach(e=>{let t=e.querySelector(`.vp-changelog-header`);!t||t.dataset.ready||(t.dataset.ready=`true`,t.addEventListener(`click`,()=>{let n=e.classList.toggle(`active`);t.setAttribute(`aria-expanded`,String(n))}))});</script><div class="vp-doc-copyright"><h2 id="doc-copyright" tabindex="-1" class="vp-doc-header"><a href="#doc-copyright" class="header-anchor"><span>版权所有</span></a></h2><div class="vp-copyright"><span class="copyright-mask"></span><p><span>版权归属：</span><span data-astro-cid-p2o5vn2b="true" class="vp-link no-icon">Site Author</span></p><p><span>本文链接：</span><span class="source"><a data-copyright-original href="https://astro.ermao.net/docs/guide/content/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">https://astro.ermao.net/docs/guide/content/</a></span></p><p><span>许可证：</span><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">署名 4.0 国际 (CC-BY-4.0)</a><span class="vpi-license-cc" aria-hidden="true"></span><span class="vpi-license-by" aria-hidden="true"></span></p></div></div><script type="module">var e=document.querySelector(`[data-copyright-original]`);if(e){let t=new URL(location.href.split(`#`)[0]);t.searchParams.delete(`giscus`),e.href=t.toString(),e.textContent=decodeURIComponent(t.toString())}</script><footer class="vp-doc-footer"><div class="edit-info"><div class="last-updated" aria-label="Last updated"><p class="last-updated-text">最后更新于: <time datetime="2026-08-05T00:00:00.000Z" class="last-updated-time" data-date-options="{&quot;dateStyle&quot;:&quot;short&quot;,&quot;timeStyle&quot;:&quot;short&quot;}">8/5/26, 12:00 AM</time></p></div></div><div class="contributors right" aria-label="Contributors"><span class="contributors-label">贡献者:</span><span class="contributors-info"><span class="contributor">github-actions[bot]</span></span></div><nav class="prev-next"><div class="pager"><a href="/docs/guide/api/" data-astro-cid-p2o5vn2b="true" class="vp-link link pager-link prev"><span class="desc">上一页</span><span class="title"><span>公共 API 与样式定制</span></span></a></div><div class="pager"><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon pager-link next"><span class="desc">下一页</span><span class="title"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>Astro</span></span><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></nav></footer><script type="module">document.querySelectorAll(`.last-updated-time[data-date-options]`).forEach(e=>{let t=new Date(e.dateTime);Number.isNaN(t.getTime())||(e.textContent=new Intl.DateTimeFormat(void 0,JSON.parse(e.dataset.dateOptions||`{}`)).format(t))});</script></div></article></main></div></div></div></div></div><footer class="vp-footer has-sidebar" vp-footer><div class="container"><div class="message">Powered by <a target="_blank" rel="noopener" href="https://astro.build/">Astro</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/ermaozi/astro-theme-ermaozi">ermaozi</a></div><div class="copyright">Copyright © 2026 ermaozi</div></div></footer><script>
+    (() => {
+      const footer = document.currentScript?.previousElementSibling
+      if (!(footer instanceof HTMLElement)) return
+      const update = () => document.body.style.setProperty('--vp-footer-height', `${footer.offsetHeight}px`)
+      update()
+      new ResizeObserver(update).observe(footer)
+    })()
+  </script><button type="button" class="vp-back-to-top" aria-label="返回顶部" hidden><span class="percent">0%</span><span class="icon vpi-back-to-top" aria-hidden="true"></span><svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="50%" cy="50%"></circle></svg></button></div></div></div><script>
+      (() => {
+        const content = document.querySelector('#VPContent')
+        if (!(content instanceof HTMLElement)) return
+        const storageKey = '__ERMAOZI_PAGE_TRANSITION__'
+        const classes = ['fade-slide-y-enter-from', 'fade-slide-y-enter-active', 'fade-slide-y-enter-to', 'fade-slide-y-leave-from', 'fade-slide-y-leave-active', 'fade-slide-y-leave-to']
+        const reset = () => content.classList.remove(...classes)
+        const timestamp = Number(sessionStorage.getItem(storageKey))
+        sessionStorage.removeItem(storageKey)
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - timestamp < 10_000) {
+          content.classList.add('fade-slide-y-enter-from', 'fade-slide-y-enter-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-enter-from')
+            content.classList.add('fade-slide-y-enter-to')
+            setTimeout(reset, 150)
+          }))
+        }
+        addEventListener('pageshow', event => { if (event.persisted) reset() })
+        let leaving = false
+        document.addEventListener('click', event => {
+          if (leaving || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+          const link = event.target instanceof Element ? event.target.closest('a[href]') : null
+          if (!(link instanceof HTMLAnchorElement) || link.target && link.target !== '_self' || link.hasAttribute('download')) return
+          if (link.closest('.vp-sidebar')) return
+          const next = new URL(link.href, location.href)
+          if (next.origin !== location.origin || !/^https?:$/.test(next.protocol) || next.pathname === location.pathname && next.search === location.search) return
+          event.preventDefault()
+          document.dispatchEvent(new CustomEvent('plume-navigation-start'))
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            location.href = next.href
+            return
+          }
+          leaving = true
+          content.classList.add('fade-slide-y-leave-from', 'fade-slide-y-leave-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-leave-from')
+            content.classList.add('fade-slide-y-leave-to')
+            setTimeout(() => {
+              sessionStorage.setItem(storageKey, String(Date.now()))
+              location.href = next.href
+            }, 150)
+          }))
+        })
+      })()
+    </script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.DhTLxJEj.js"></script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_1_lang.CZuyuKlw.js"></script></body></html>

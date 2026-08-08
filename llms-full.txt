@@ -1,0 +1,1585 @@
+---
+url: /index.md
+description: 一个支持双语内容、全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。
+---
+# ermaozi 示例站
+
+# ermaozi
+
+从 `site.config.mjs` 开始配置站点，然后在 `content/` 中编写 Markdown。
+
+---
+url: /about/index.md
+description: 了解 ermaozi 的设计目标、功能边界和定制入口。
+---
+# 关于这个主题
+
+# 关于这个主题
+
+ermaozi 是一个偏内容型的静态站点起点，适合博客、个人知识库和项目文档。
+
+## 设计目标
+
+- 保持静态输出，部署环境不受限制。
+- 用一份配置管理站点身份、导航和可选服务。
+- 同时支持中文和英文内容。
+- 默认提供搜索、深色模式、分类、标签、归档和增强 Markdown。
+
+#### 适用场景
+
+个人博客、项目文档与轻量知识库都可以从同一套内容结构开始。
+
+## 定制入口
+
+站点信息在 `site.config.mjs`，文章在 `content/`，样式在 `theme/styles/`。如果不需要评论、浏览量或点赞，不配置对应服务即可。
+
+---
+url: /banner/index.md
+description: 验证 Plume 单区块 Banner 首页、主题遮罩、操作按钮与 footer 边界。
+---
+# Banner 首页验收矩阵
+
+
+
+---
+url: /blog/content-guide/index.md
+description: 介绍文章目录、固定链接、分类标签和中英文关联方式。
+---
+# 内容与双语路由指南
+
+# 内容与双语路由指南
+
+内容文件决定文章分类，frontmatter 决定公开路由和元数据。
+
+
+
+## 目录就是分类
+
+文件 `content/blog/指南/02.写作/03.基础/内容写作.md` 会依次归入“指南 / 写作 / 基础”分类；数字前缀只控制排序，不会显示在页面上。分类页、标签页和归档页都在构建时自动生成。
+
+## 固定公开链接
+
+建议为每篇文章设置 `permalink`。以后移动 Markdown 文件时，公开 URL 不会随目录改变。
+
+## 添加英文版本
+
+英文内容放在 `content/en/blog/` 下，并使用 `translationOf` 指向中文路由：
+
+```yaml
+lang: en-US
+permalink: /en/blog/content-guide/
+translationOf: /blog/content-guide/
+```
+
+主题会自动输出语言切换入口、`hreflang` 和对应的 sitemap 关系。
+
+::: tip 写作建议
+标题说明主题，description 说明读者能得到什么，正文只保留真正有用的内容。
+:::
+
+---
+url: /blog/getting-started/index.md
+description: 安装依赖、修改站点配置并发布第一篇文章。
+---
+# ermaozi 快速开始
+
+# ermaozi 快速开始
+
+只需要 Node.js、pnpm 和一个可以编辑文本的工具，就能开始使用这个主题。
+
+
+
+## 安装与启动
+
+```bash
+pnpm install
+pnpm dev
+```
+
+`pnpm dev` 会直接启动支持热更新的 Astro 开发服务器。需要验收全文搜索时运行 `pnpm build && pnpm preview`。
+
+## 修改站点信息
+
+打开 `site.config.mjs`，依次修改域名、站名、作者信息和导航。未配置的评论与互动服务不会加载。
+
+## 新建文章
+
+在 `content/blog/分类名/` 中增加 Markdown 文件，并提供最小 frontmatter：
+
+```yaml
+---
+title: 我的第一篇文章
+description: 用一句话说明文章内容。
+permalink: /blog/my-first-post/
+createTime: 2026-08-05
+tags: [示例]
+---
+```
+
+完成后运行 `pnpm validate`，检查类型、构建、路由、SEO 和依赖安全。
+
+---
+url: /blog/markdown-showcase/index.md
+description: 查看高亮、提示框、折叠面板、标签页、任务列表和 Mermaid 图表效果。
+---
+# 增强 Markdown 展示
+
+import { onMounted, ref } from 'vue'
+
+const dynamicCards = ref([])
+onMounted(() => {
+  dynamicCards.value = [
+    { image: '/img/logo.svg', title: '动态图片卡片', description: '由 v-for 与 v-bind 渲染。', author: 'ermaozi', date: '2026-08-06', width: 240, center: true },
+  ]
+})
+
+
+# 增强 Markdown 展示
+
+这个页面覆盖主题内置的主要 Markdown 扩展，可作为写作速查表。
+
+
+
+## 文本与任务
+
+普通 Markdown 支持 **加粗**、`行内代码` 和 ==重点标记==。
+
+行内注释需要点击图标查看补充内容 [+静态站点]。
+
+[+静态站点]:
+  静态站点在构建阶段生成 HTML，访问时无需持续运行应用服务器。
+
+- [x] 配置站点信息
+- [x] 写一篇示例文章
+- [ ] 替换示例内容
+
+## 提示框
+
+::: warning 发布前检查
+请把 `https://example.com` 换成真实域名，并确认 sitemap 中的链接正确。
+:::
+
+## 折叠面板
+
+::: collapse accordion
+- :+ 默认展开
+
+  折叠面板支持点击、键盘操作和手风琴模式。
+
+- :- 默认收起
+
+  适合放置补充说明或较长的代码示例。
+:::
+
+## 标签页
+
+::: tabs#package-manager
+@tab pnpm
+
+```bash
+pnpm install
+```
+
+@tab npm
+
+```bash
+npm install
+```
+:::
+
+::: tabs#package-manager
+@tab pnpm#pnpm
+
+共享状态：pnpm
+
+@tab npm#npm
+
+共享状态：npm
+:::
+
+::: code-tabs#install-command
+@tab npm
+
+```bash
+npm install
+```
+
+@tab:active pnpm
+
+```bash
+pnpm install
+```
+
+@tab yarn
+
+```bash
+yarn install
+```
+:::
+
+## Mermaid
+
+```mermaid title="markdown-flow"
+flowchart LR
+  A[Markdown] --> B[Astro 构建]
+  B --> C[静态页面]
+  C --> D[Pagefind 搜索]
+```
+
+## 时间线
+
+::: timeline card placement="between" line="dashed"
+- 初始化项目
+  time=第一步 type=success icon=mdi:package-variant-closed placement=right card=false
+
+  安装依赖并填写站点配置。
+
+- 编写内容
+  time=第二步 type=warning icon=mdi:pencil
+
+  使用 Markdown 和主题组件组织页面。
+
+- 构建发布
+  time=第三步 type=important icon=mdi:rocket-launch-outline placement=right
+
+  完成检查后生成静态文件。
+:::
+
+## 图片卡片与瀑布流
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+  自定义标题插槽
+  任意标题插槽内容仍保留 Markdown 正文。
+
+
+
+  
+
+
+:::: card-masonry :cols="{ sm: 1, md: 2, lg: 3 }" gap="16"
+::: card title="短卡片"
+适合放置简短摘要。
+:::
+
+::: card title="较长卡片"
+瀑布流会根据每项渲染后的高度，将内容放入当前最短的列。
+
+它支持卡片、图片、代码块等普通 Markdown 内容。
+:::
+
+::: card title="第三张卡片"
+窗口尺寸变化后会重新计算列布局。
+:::
+::::
+
+## 步骤与布局
+
+::: steps
+1. 安装依赖
+
+   选择 npm、pnpm 或 Yarn。
+
+2. 编写内容
+
+   使用 Markdown 维护页面。
+
+3. 构建站点
+
+   输出可直接托管的静态文件。
+:::
+
+::: flex between wrap gap="12"
+**响应式布局**
+
+**支持自动换行**
+:::
+
+## 窗口
+
+::: window title="ermaozi" height="180" gap="16"
+窗口容器支持标题、高度和内容间距。
+
+```bash
+npm run build
+```
+:::
+
+## 代码树
+
+::: code-tree title="示例项目" height="260" entry="src/index.ts"
+```ts title="src/index.ts" :active
+export const theme = 'plume'
+```
+
+```ts title="src/config.ts"
+export const locale = 'zh-CN'
+```
+
+```json title="package.json"
+{ "scripts": { "build": "astro build" } }
+```
+:::
+
+@[code-tree title="目录导入示例" height="260" entry="src/index.ts"](/snippets/code-tree-example)
+
+## 包状态徽章
+
+
+
+
+  
+  
+
+
+## 图标
+
+Iconify 图标支持尺寸、颜色和远程集合回退：::simple-icons:astro =28 /#bc52ee:: ::mdi:home::
+
+直接组件语法同样可用：
+
+提供器外壳：Iconify ::simple-icons:astro =24x16 /#bc52ee class="provider-icon provider-iconify" id="provider-iconify":: IconFont ::iconfont home =24 /#2e7d32 class="provider-icon provider-iconfont" id="provider-iconfont":: Font Awesome ::fontawesome fas:house =24x16 /#c62828 border class="provider-icon provider-fontawesome" id="provider-fontawesome":: 组件 
+
+## 二维码
+
+@[qrcode card title="示例站点" align="center" logo="/img/logo.svg" logo-size="0.25"](https://example.com)
+
+::: flex wrap gap="12"
+@[qrcode title="当前页面" width="96" level="Q" version="8" mask="2" margin="1" scale="3" dark="#336f87ff" light="#ffffffff"](.)
+
+@[qrcode title="文档首页" width="96"](/docs/index.md)
+:::
+
+::: qrcode card reverse align="right" title="多行文本"
+第一行
+第二行
+:::
+
+## 局部内容加密
+
+> Encrypted content is omitted from public source exports.
+## 文件引入与代码导入
+
+
+
+@[code{2-4} javascript{2}](../../snippets/import-example.js)
+
+## 多包管理器命令
+
+::: npm-to
+```bash
+npm install astro --save-dev
+```
+:::
+
+---
+url: /blog/web-performance-basics/index.md
+description: 用一份简短清单检查页面加载、图片、脚本和布局稳定性。
+---
+# 静态站点性能检查清单
+
+# 静态站点性能检查清单
+
+静态输出只是起点，页面仍可能因为图片、字体和第三方脚本变慢。
+
+
+
+## 加载路径
+
+1. 为首屏图片设置准确尺寸，避免布局跳动。
+2. 非首屏图片使用懒加载。
+3. 只在需要的页面加载图表、评论等大型脚本。
+4. 为静态资源设置长期缓存，同时让 HTML 保持可更新。
+
+## 交互与可访问性
+
+- 键盘可以打开菜单、切换标签页并关闭对话框。
+- 控件有可读名称和清晰的焦点状态。
+- 深色模式不应在首次渲染时闪烁。
+- 尊重 `prefers-reduced-motion`。
+
+## 验证
+
+构建检查、浏览器回归和真实部署验证回答的是不同问题。先运行自动化检查，再在目标部署环境确认缓存头和第三方服务。
+
+---
+url: /custom-layout/index.md
+description: 验证 Plume 自定义布局组件名的迁移能力。
+---
+# 自定义布局示例
+
+# 自定义布局示例
+
+此内容由 `theme/components/layouts/Minimal.astro` 包裹，并像 Plume 的命名全局组件布局一样保留主题导航与页脚；页面若属于文档集合，仍会保留集合侧栏。
+
+---
+url: /docs/index.md
+description: 了解 ermaozi 的配置、内容模型和内置能力。
+---
+# 文档中心
+
+# 文档中心
+
+::: warning 测试阶段
+当前 `0.2` 系列仍处于测试阶段。功能和配置尚未完全稳定，后续版本可能包含破坏性更新；测试期间请固定版本，并在升级前查看 GitHub Release 说明。
+:::
+
+主题同时支持博客与产品文档。`content/docs/` 下的页面会自动生成文档侧栏、移动端目录和上一篇/下一篇导航。
+
+::: card-grid cols="2"
+- **配置驱动**
+
+  站点身份、导航、语言和可选服务集中在一个配置文件中。
+
+- **内容优先**
+
+  Markdown 文件决定路由、排序、分组、标签和页面行为。
+:::
+
+## 从这里开始
+
+1. 按[零基础快速开始](/docs/guide/getting-started/)完成站点身份和第一篇文章。
+2. 需要更多选项时阅读[站点配置](/docs/guide/configuration/)和[内容能力](/docs/guide/content/)。
+3. 删除不需要的示例内容并运行 `pnpm validate`。
+
+## 当前兼容环境
+
+- Node.js 22.12 或更高版本
+- Astro 7.1
+- Vue 3.5
+- npm、pnpm 或 Yarn
+
+---
+url: /docs/guide/api/index.md
+description: 在 Astro 或 Vue 组件中复用 ermaozi 布局、通用组件和响应式数据，并覆盖主题变量。
+---
+# 公共 API 与样式定制
+
+# 公共 API 与样式定制
+
+## 布局与通用组件
+
+Astro 组件可从 `theme/client.ts` 统一导入，也可直接从 `theme/components/` 导入：
+
+```astro
+---
+import { VPBadge, VPButton, VPCard, VPCardGrid, VPIcon, VPImage, VPLink, VPHomeFeatures } from '../../../theme/client'
+---
+
+<VPBadge type="tip" text="稳定" />
+<VPButton href="/docs/" text="阅读文档" icon="book" />
+<VPLink href="https://astro.build/">Astro</VPLink>
+<VPImage image={{ light: '/img/light.svg', dark: '/img/dark.svg', alt: '主题图片' }} />
+<VPCardGrid cols={{ sm: 1, md: 2, lg: 3 }}><VPCard title="卡片">内容</VPCard></VPCardGrid>
+```
+
+首页组件同时导出 `VPHomeBanner`、`VPHomeBox`、`VPHomeCustom`、`VPHomeFeatures`、`VPHomeHero`、`VPHomeProfile` 和 `VPHomeTextImage`；站点首页配置与直接引用共用同一套组件。
+
+`Layout` 是完整页面壳层，`NotFound` 是可复用的 404 布局。普通内容页通常不需要直接使用它们，因为主题路由已经自动套用布局。
+
+## 客户端组合式 API
+
+`useDarkMode()` 返回 Vue `Ref`，可读取或切换当前外观；`useData()` 返回与 Plume 同形的 `theme`、`page`、`frontmatter`、`lang`、`site` 和 `isDark` refs。页面数据来自构建时写入的安全 JSON，密码和密码提示不会发送到该接口。
+
+```ts
+import { useDarkMode, useData, useLocalePostList } from '../../../theme/client'
+
+const isDark = useDarkMode()
+isDark.value = true
+
+const { page, frontmatter, lang } = useData()
+console.log(page.value.path, frontmatter.value.title, lang.value)
+
+const posts = useLocalePostList()
+// posts.value 会在 /posts.json 加载后更新
+```
+
+`useLocalePostList(lang, collection)` 的第二个参数可传完整集合键（如 `zh-CN:blog`）或当前语言下的目录名。
+
+## ECharts 全局配置
+
+在浏览器启动前编辑 `theme/client-config.ts`，通过 `defineEChartsConfig()` 设置一次性初始化逻辑和所有 ECharts 实例共享的选项。页面级图表选项会覆盖同名全局项：
+
+```ts
+import { defineEChartsConfig } from './lib/echarts-config'
+
+defineEChartsConfig({
+  option: { animation: false },
+  setup: async () => {
+    await import('echarts-wordcloud')
+  },
+})
+```
+
+## Node 配置帮助函数
+
+`theme/node.ts` 导出 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`，用于保留 TypeScript 推导；它们不会改变传入配置。
+
+```ts
+import { defineCollections } from '../../../theme/node'
+
+export const collections = defineCollections([
+  { type: 'post', dir: 'blog', title: '博客' },
+  { type: 'doc', dir: 'docs', title: '文档', sidebar: 'auto' },
+])
+```
+
+## 自定义样式
+
+把站点专属样式写入 `theme/styles/custom.css`。该文件在主题和第三方样式之后加载，适合覆盖 CSS 变量或追加选择器：
+
+```css
+:root {
+  --vp-c-brand-1: #5086a1;
+  --vp-c-brand-2: #6aa1b7;
+  --vp-c-brand-3: #8cccd5;
+}
+
+[data-theme='dark'] {
+  --vp-c-brand-1: #8cccd5;
+}
+```
+
+插槽组件中的 `` 默认由 Astro 作用域隔离；需要覆盖全局主题选择器时使用 `:global(...)` 或 `custom.css`。
+
+---
+url: /docs/guide/configuration/index.md
+description: 配置站点身份、导航、双语内容和可选服务。
+---
+# 站点配置
+
+# 站点配置
+
+公共配置位于 `site.config.mjs`。修改站名、域名和导航后，Astro 开发服务器会自动刷新。最外层的 `defineSiteConfig()` 提供自动补全，为省略的可选区块补充安全默认值，并在启动时报告无效域名、路径和分页等配置。
+
+## 公告板
+
+公告板默认关闭。将 `siteConfig.bulletin.enabled` 改为 `true` 后，可选择 `top-left`、`top-right`、`bottom-left`、`bottom-right` 或 `center` 布局，并通过 `always`、`session`、`once` 控制关闭后的显示周期。`contentType: 'markdown'` 会使用与正文相同的 Markdown 渲染器，也可以通过 `contentFile` 读取独立的 Markdown 或 HTML 文件。
+
+## 文章封面
+
+`siteConfig.postCover` 设置全站文章封面布局，支持 `left`、`right`、`odd-left`、`odd-right` 和 `top`。文章 frontmatter 可用 `coverStyle` 覆盖布局、比例、侧栏宽度和紧凑模式：
+
+```yaml
+cover: /img/cover.webp
+coverStyle:
+  layout: right
+  ratio: 4/3
+  width: 240
+  compact: false
+```
+
+`siteConfig.profile` 支持 `avatar`（兼容旧名 `url`）、`name`、`description`、`circle`、`location`、`organization` 和 `layout: 'left' | 'right'`。移动端会使用同一份资料显示底部弹窗和分类导航；Plume 已弃用的顶层或 locale `avatar: { ... }` 也会回退为 `profile`。
+
+将 `profile` 设为 `false` 会移除桌面资料卡，并像 Plume 一样在文章列表上方显示标签、分类和归档的横向本地导航；移动端仍保留包含这三项入口的弹层按钮。
+
+在手机宽度下，左右封面会与 Plume 一样自动切换到顶部。
+
+## 页面过渡
+
+`transition.page` 在完整页面导航时对内容区域执行与 Plume 一致的 `fade-slide-y` 先退出、再进入动画，不会创建容易造成主题闪烁的整页浏览器快照；文档左侧栏不会执行完整页面导航，而会像 Plume 一样保留公共页面外壳，只更新正文、目录和当前导航状态。博客列表、分类、标签与归档之间也会保留共用的头部和资料侧栏，只切换集合内容。系统开启“减少动态效果”时自动禁用完整页面动画。设置 `transition: false` 可关闭全部过渡，或仅设置 `transition.page: false` 关闭完整页面跳转动画。
+
+## 外观
+
+`appearance` 与 Plume 一致，默认为 `true`，会跟随系统首选配色并记住用户手动选择。设为 `'dark'` 会在没有已保存选择时默认使用深色；设为 `false` 会固定浅色并隐藏所有外观开关；设为 `'force-dark'` 会固定深色并隐藏开关。locale 内的同名配置可覆盖全局值。
+
+`transition.appearance` 支持 `fade`、`circle-clip`、`horizontal-clip`、`vertical-clip`、`skew-clip`、`blinds-vertical`、`blinds-horizontal`、`soft-blur-fade` 和 `diamond-reveal`。设置为 `false`，或系统开启“减少动态效果”时，会立即切换而不执行 View Transition。打印深色页面时会临时使用浅色，打印完成后恢复。
+
+## 多语言
+
+`locales` 可配置任意数量的语言；每种语言用 `home` 指定路径前缀，内容放在同名目录或在 frontmatter 显式填写 `lang`。框架会为每种已配置语言生成博客、标签、分类、归档、分页数据、LLM 文档和 SEO alternate，并在语言下拉框列出确实存在的翻译页面。
+
+Plume 的简体中文、繁体中文、英语、德语、法语、俄语、日语和韩语预设均已内置，识别 `zh-CN`、`zh-TW`、`en-US`、`de-DE`、`fr-FR`、`ru-RU`、`ja-JP`、`ko-KR` 及其短名称。站点名称、说明、导航等业务字段仍应在对应 locale 中填写；同名字段可覆盖预设文案。
+
+## 导航栏
+
+每个 locale 的 `navbar` 接受 Plume 的字符串链接，以及 `{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }`；旧字段 `navigation` 继续兼容。`label` 与 `href` 也作为兼容别名保留。字符串指向站内内容时会自动读取页面标题、图标和徽章；`prefix` 会递归拼接组内相对链接，最多显示两层下拉分组。省略 `navbar` 时会根据当前语言的第一个 Post 集合自动生成首页、文章、标签和归档入口。
+
+```js
+navbar: [
+  '/docs/',
+  { text: '博客', link: '/blog/', activeMatch: '^/(blog|article)/', icon: 'material-symbols:article-outline' },
+  {
+    text: '指南',
+    prefix: '/docs/guide/',
+    items: [
+      { text: '配置', link: 'configuration/', badge: { text: 'New', type: 'warning' } },
+      { text: 'Astro', link: 'https://astro.build/', icon: 'simple-icons:astro' },
+    ],
+  },
+]
+```
+
+外链默认在新窗口打开并显示外链标识，`noIcon: true` 可隐藏该标识。导航图标复用 Markdown 图标提供方，因此支持 Iconify、IconFont、Font Awesome、图片 URL 和 `{ svg }`。
+
+全局配置先作为默认值，再与当前 locale 的对象字段浅合并；一个语言只需填写不同的部分。locale 可独立覆盖 `logo`、`logoDark`、`profile`、`social`、`navbarSocialInclude`、`appearance`、`transition`、`footer`、`outline`、`aside`、`externalLinkIcon` 和 `createTime`，不会继承另一种语言的导航或文案。单页 frontmatter 使用 `navbar: false` 可隐藏导航栏。
+
+## 页面与正文选项
+
+`pageLayout` 支持 `home`、`posts`、`doc`、`page`、`friends`、`custom`、`false` 和自定义组件名，并兼容 Plume 旧名 `blog`（等同于 `posts`）。`posts` 可配合 `collection` 指定 Post 集合；`page` 保留导航栏与专页正文；`custom`/`false` 只输出 Markdown 正文；命名组件布局替换主内容区域，但保留主题导航、页脚以及适用的集合侧栏。自定义组件放在 `theme/components/layouts/`，文件名就是布局名。
+
+正文目录可通过全局、locale 或单页的 `outline` 与 `aside` 配置。`externalLinkIcon` 默认开启，单页也可关闭；旧字段 `externalLink` 仍兼容。`createTime: 'only-posts'` 只在博客文章和文章列表显示创建时间，`false` 则全站隐藏。`plugins.nprogress: false` 可关闭站内页面切换时的顶部进度条。
+
+## 布局插槽
+
+在 `theme/components/slots/` 新建与 Plume 插槽同名的 `.astro` 或 `.vue` 文件即可注入内容，例如 `doc-top.astro` 或 `DocTop.astro`。组件会收到当前可用的 `lang`、`route`、`entry`、`layout`、`posts` 等属性；没有对应文件时不会增加额外 DOM。
+
+支持的布局文件名包括：
+
+- 通用：`layout-top`、`layout-bottom`、`custom-content`、`footer-content`、`bulletin-content`、`not-found`；
+- 导航：`nav-bar-title-before/after`、`nav-bar-content-before/after`、`nav-bar-menu-before/after`、`nav-screen-content-before/after`、`nav-screen-menu-before/after`；
+- 文档与页面：`page-top/bottom`、`doc-top/bottom`、`doc-before/after`、`doc-content-before`、`doc-footer-before`、`doc-title-before/after`、`doc-meta-top/bottom/before/after`、`sidebar-nav-before/after`、`aside-top/bottom`、`aside-outline-before/after`；
+- 博客：`posts-top/bottom`、`posts-aside-top/bottom`、`posts-extract-before/after`、`posts-post-list-before/after`、`posts-post-list-pagination-after`，以及 `posts-tags-*`、`posts-categories-*`、`posts-archives-before/after`。
+
+`FooterContent.astro` 与 `BulletinContent.astro` 的旧式组件覆盖仍兼容；同名插槽文件优先。
+
+## 自动 frontmatter
+
+`autoFrontmatter` 默认启用。新 Markdown 缺少字段时，开发、检查或构建前会像 Plume 一样把 `title`、文件创建时间 `createTime` 和 8 位随机 `permalink` 写回源文件，已有字段绝不覆盖。设为 `{ permalink: 'filepath' }` 可按路径生成稳定链接；安装可选的 `pinyin-pro` 后会把中文路径转换为拼音。
+
+全局或集合级配置均可分别关闭 `title`、`createTime`、`permalink`，也可提供同步或异步 `transform(data, context, locale)`。`context` 包含 `filepath`、`relativePath` 与正文 `content`；集合配置优先于全局配置。设置 `autoFrontmatter: false` 可完全关闭源文件写回。
+
+## 文章分页
+
+`siteConfig.pagination` 接受 `false`、每页文章数，或 `{ perPage: 文章数 }`。示例项目与 Plume 的默认值均为每页 15 篇。
+
+`siteConfig.categoriesExpand` 控制分类树默认展开深度，接受数字或 `'deep'`。分类目录可使用 `01.名称` 形式控制顺序；数字前缀不会显示，并且任意层级都会保留在分类页和文章面包屑中。
+
+`siteConfig.tagsTheme` 可设为 `'colored'`、`'gray'` 或 `'brand'`；彩色模式使用 Plume 的完整 18 色预设。`siteConfig.meta` 可分别开关 `tags`、`readingTime`、`wordCount`、`createTime`，其中创建时间支持 `'short'` 和 `'long'`；设为 `false` 会全部隐藏，集合仍可单独重新开启字段。`postCover: false` 会关闭列表封面。单页可用 `readingTime: false` 隐藏阅读统计。
+
+`siteConfig.readingTime` 与 Plume 的阅读统计插件一致，支持 `false`、`wordPerMinute`，以及按 locale 路径配置的 `locales`。每个 locale 可覆盖包含 `$word` 的 `word`、包含 `$time` 的 `time` 和 `less1Minute`；未配置时使用 Plume 内置的中、英、繁中、德、法、俄、日、韩文案。
+
+## Post 与 doc 集合
+
+每个 locale 可配置任意多个 Plume 风格集合；`dir` 相对于该语言的内容目录：
+
+```js
+locales: {
+  'zh-CN': {
+    home: '/',
+    collections: [
+      { type: 'post', dir: 'blog', title: '博客' },
+      { type: 'post', dir: 'news', title: '新闻', link: '/updates/' },
+      { type: 'doc', dir: 'docs', title: '文档', sidebar: 'auto' },
+    ],
+  },
+},
+```
+
+Post 集合支持 `include`、`exclude`、`pagination`、`postList`、`link`、`linkPrefix`，标签/分类/归档页的开关、自定义路径与标题，以及集合级 `tagsTheme`、`meta`、`postCover`、`profile`、`social`、`categoriesExpand` 和 `categoriesTransform`。`categoriesTransform` 会像 Plume 一样为每篇文章接收从外到内的 `{ id, name, sort }[]` 分类链，返回值会统一用于文章卡片、面包屑、统计和分类树。生成页、分页 JSON、站点地图和多语言切换都会使用集合的实际路径。
+
+从旧版 Plume 迁移时，已弃用的顶层 `blog`、`article`、`notes` 以及 locale 内的 `notes` 会在启动时转换为集合；目标位置已有非空 `collections` 时以新配置为准。全局、locale 和 Post 集合中的旧 `profile.url` 也会归一化为 `profile.avatar`。这些兼容项只用于平滑迁移，新配置应直接使用 `collections` 与 `profile.avatar`。
+
+Doc 集合支持 `sidebar: 'auto'`，会按目录层级和数字前缀递归生成导航；`sidebarCollapsed` 控制自动分组初始折叠，`sidebarScrollbar` 控制滚动条。也可传入字符串或 `{ text, link, prefix, icon, badge, collapsed, items }` 数组手动编排，`items: 'auto'` 只自动读取当前分组，`link: '---'` 生成分隔符。
+
+还可使用 Plume 的全局多侧栏写法：`sidebar: { '/docs/': 'auto', '/guide/': [...] }`，按最长路径前缀匹配。值也可写成 `{ items, prefix }`；单页 `sidebar: '/guide/'` 可强制选择指定侧栏，`sidebar: false` 关闭当前页侧栏。侧栏项兼容旧 `dir` 字段以及 `target`、`rel`。
+
+`site.config.mjs` 已从 `./theme/config.mjs` 导入 `defineSiteConfig`。它保留传入的对象引用，并为主题运行必需的可选区块补充默认值。开发主题集成时还可从 `theme/node.ts` 使用 `defineThemeConfig`、`defineNavbarConfig`、`defineCollections` 和 `defineCollection`；其余帮助函数仍原样返回传入值。
+
+Plume 旧式 `plugins.copyCode`、`plugins.shiki`、`plugins.readingTime`、`plugins.comment`、`plugins.watermark`、`plugins.replaceAssets`、`plugins.llmstxt`、`plugins.markdownPower`、`plugins.markdownChart`、`plugins.markdownImage`、`plugins.markdownInclude`、`plugins.markdownMath`、`plugins.search` 和 `plugins.docsearch` 均会回退到对应的新式扁平配置；新旧同时存在时以顶层或 `markdown` 配置为准。`markdown.image` 完整支持 Plume 的 `figure`、`lazyload`、`mark`、`size`、`legacySize` 和 `obsidianSize` 选项；`codeHighlighter: false` 会回退到普通代码块。`plugins.markdownPower: false` 只关闭该增强组，图片、数学、包含、提示与图表仍由各自开关控制。
+
+`plugins.seo` 对象支持 Plume 的 `hostname`、`author`、`restrictions`、`autoDescription`、`fallBackImage`、`twitterID`、`isArticle`、`ogp`、`jsonLd`、`customHead` 和 `canonical`；设为 `false` 会关闭自动 Open Graph、Twitter Card 与 JSON-LD。Twitter/X 账号优先从 `social` 链接识别，`twitterID` 只作为兼容回退。`plugins.sitemap` 支持 `hostname`、`extraUrls`、`excludePaths`、`sitemapFilename`、`sitemapXSLFilename`、`sitemapXSLTemplate`、`changefreq`、`modifyTimeGetter`、`devServer`、`devHostname` 和 `xmlNameSpace`；设为 `false` 会删除 sitemap 输出及 robots.txt 中的地址。
+
+页面 frontmatter 的 `head` 接受 Plume/VuePress 风格的 `[tag, attributes, content?]` 数组，可添加 `meta`、`link`、`style`、`script` 或其他合法 head 标签。`description`、`keywords`、`robots` 和 `canonical` 会覆盖主题生成值；自定义 `robots: noindex` 也会同时排除 Pagefind 与 sitemap。无刷新导航会同步 JSON-LD 和主题管理的 head 节点；目标页改变外壳、侧栏或自定义 head 时自动回退为完整导航，避免沿用上一页状态。`script` 与 `style` 内容按原文输出，只能填写完全可信的内容。
+
+本地搜索使用 Pagefind；`plugins.search.isSearchable(page)` 会控制页面是否进入索引，`disableQueryPersistence` 和 `locales` 也会生效。Plume 原插件的 `miniSearch` 分词器选项没有 Pagefind 等价能力，因此只为配置迁移保留类型，不会改变 Pagefind 的分词算法。Plume 顶层的 `cache` 和 `configFile` 分别控制 VuePress 编译缓存与配置文件加载；Astro 没有对应运行阶段，这两个字段同样只保留迁移类型，配置后不会改变构建行为，迁移时应删除。
+
+## 可信图表脚本
+
+`chartjs`、`echarts`、`flowchart`、`markmap`、`plantuml`、`mermaid` 与 Plume 一样默认关闭，按需在 `markdown` 中设为 `true`。`plantuml` 也接受 `@mdit/plugin-plantuml` 选项数组，用来限定图表语法、服务地址或输出格式；本示例站为展示能力已显式开启全部六项。
+
+Chart.js 和 ECharts 的 `js` / `javascript` 配置默认不会执行。只有内容完全可信时，才同时开启脚本执行并把对应 Markdown 文件加入允许列表：
+
+```js
+markdown: {
+  DANGEROUS_ALLOW_SCRIPT_EXECUTION: true,
+  DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST: ['docs/guide/chart-demo.md'],
+}
+```
+
+允许列表也接受 `'*'`，但不建议用于包含用户内容的网站；普通图表优先使用 `json` 配置。
+
+## 媒体嵌入
+
+`acfun`、`bilibili`、`youtube`、`pdf`、`audioReader` 和 `artPlayer` 与 Plume 一样默认关闭，可在 `markdown` 中分别开启。本示例站为展示能力已显式开启全部六项；Obsidian 的 PDF 与视频嵌入也分别依赖 `pdf` 与 `artPlayer`。
+
+```js
+markdown: {
+  youtube: true,
+  pdf: { pdfjsUrl: 'https://static.pengzhanbo.cn/pdfjs/' },
+  audioReader: true,
+  artPlayer: true,
+}
+```
+
+桌面浏览器直接嵌入 PDF；移动端按需加载 PDF.js。`pdfjsUrl` 应指向包含 `web/viewer.html` 的 PDF.js 发布目录。ArtPlayer 支持 Plume 的 MP4、MP3、WebM、Ogg、DASH、HLS、TS、FLV、MKV、MOV 与 OGV 类型。
+
+## Markdown 图标
+
+正文使用与 Plume 相同的 `::名称 =尺寸 /颜色::` 语法，例如 `::mdi:home =24 /#336f87::`。默认 Iconify 会直接内联已安装的图标集合，其他集合在浏览器中从 Iconify 官方 API 按需加载；`:[名称 尺寸/颜色]:` 旧语法仍兼容。
+
+```js
+markdown: {
+  icon: { provider: 'iconify', prefix: 'mdi' },
+}
+```
+
+将 `provider` 改为 `iconfont` 或 `fontawesome` 时，可用 `assets` 配置一个或多个 `.css` / `.js` 地址。Font Awesome 支持内置值 `fontawesome` 和 `fontawesome-with-brands`，以及 `::fontawesome fas:house 2xl::` 这种按图标覆盖提供方的写法。
+
+`markdown.repl` 可分别开启 `go`、`kotlin`、`rust`、`python`，并通过 `theme` 指定单个 Shiki 主题或 `{ light, dark }` 主题。可编辑 REPL 会按需加载高亮器并在输入时更新语法高亮。前三者会把代码发往 Plume 所用的公开运行服务，Python 会按需加载 Pyodide 在浏览器本地执行；只应运行可信、轻量的示例代码。`markdown.codeTree` 可写成 `{ height, icon }`，为代码树设置默认高度和文件图标风格，容器自身的同名属性优先。
+
+## 社交链接与页脚
+
+`social` 使用与 Plume 相同的数组结构，支持内置 Simple Icons 名称、`twitter` / `weibo` 兼容别名和自定义 SVG。`navbarSocialInclude` 只限制桌面导航栏与“更多”菜单；移动导航和博客资料卡仍显示完整列表。
+
+```js
+social: [
+  { icon: 'github', link: 'https://github.com/example' },
+  { icon: 'weibo', link: 'https://weibo.com/example', ariaLabel: '微博' },
+  { icon: { svg: '<svg>...</svg>', name: 'custom' }, link: 'https://example.com' },
+],
+navbarSocialInclude: ['github', 'weibo'],
+footer: {
+  message: 'Power by <a href="https://astro.build/">Astro</a>',
+  copyright: 'Copyright © 2026 Example',
+},
+```
+
+将全局 `footer` 设为 `false` 可关闭整站页脚；单页 frontmatter 使用 `footer: false` 只关闭当前页。
+
+## 友情链接页
+
+页面 frontmatter 使用 `pageLayout: friends`（兼容旧写法 `friends: true`）即可启用 Plume 友链布局。`cols` 控制桌面最大列数，`contentPosition` 控制 Markdown 正文位于列表前后；`list` 与 `groups` 均支持头像、描述、所在地、组织、社交链接以及浅色/深色主题颜色。完整示例见 `/friends/`。
+
+## 公告栏
+
+`bulletin` 支持 `top-left`、`top-right`、`bottom-left`、`bottom-right`、`center` 五个位置，以及 `always`、`session`、`once` 三种关闭期限。`enablePage` 可以用布尔值或接收 `{ path }` 的函数限制页面；未填写 `id` 时会根据配置生成稳定标识。示例公告只在 `/landing/` 展示。
+
+## 搜索服务
+
+`llmstxt: true` 会生成 `/llms.txt`、`/llms-full.txt`、每页 Plume 风格的 `index.md` 及兼容的 `/raw/` 路径，并启用标题旁的页面上下文菜单。Plume 默认关闭此能力；设为 `false` 后这些文件和菜单会一起消失，单页 `llmstxt: false` 只排除当前页面。对象写法支持 `llmsTxt`、`llmsFullTxt`、`llmsPageTxt`、`stripHTML`、`locale`、`domain`、`linkExtension`、`filter`、`transformMarkdown`、`llmsTxtTemplate` 和 `llmsTxtTemplateGetter`；`locale` 默认只处理根语言，设为 `'all'` 才处理全部语言。也兼容 `plugins.llmstxt`，但推荐使用顶层字段。
+
+默认使用构建时生成的 Pagefind 本地索引，不需要外部服务：
+
+```js
+search: {
+  provider: 'local',
+  locales: {
+    '/en/': { placeholder: 'Search documentation' },
+  },
+}
+```
+
+本地搜索的 locale 可覆盖 `placeholder`、`buttonText`、`resetButtonTitle`、`backButtonTitle`、`noResultsText` 和 footer 的键盘提示文字；未配置时使用与 Plume 相同的语言预设。
+
+大型文档站也可切换到与 Plume 相同的 Algolia DocSearch 适配器。客户端与样式仅在选择该提供方时加载，并自动为当前语言添加 `lang` facet：
+
+```js
+search: {
+  provider: 'algolia',
+  appId: 'YOUR_APP_ID',
+  apiKey: 'YOUR_SEARCH_API_KEY',
+  indexName: 'YOUR_INDEX_NAME',
+  locales: {
+    '/en/': { placeholder: 'Search documentation' },
+  },
+}
+```
+
+也支持 DocSearch 的 `indices`、`searchParameters`、`translations`、`keyboardShortcuts` 与 `indexBase`。`apiKey` 必须是只能查询索引的公开搜索密钥，不能填写管理密钥。
+
+## 资源链接替换
+
+`replaceAssets` 默认关闭。生产构建可把 `/images/` 下的图片和 `/medias/` 下的视频、音频、字幕、PDF 链接改写到 CDN；源 Markdown、HTML、CSS 和 JavaScript 文件不会被修改：
+
+```js
+replaceAssets: process.env.NODE_ENV === 'production'
+  ? { image: 'https://images.example.com', media: 'https://media.example.com' }
+  : false,
+```
+
+也可直接填写一个字符串或函数以替换全部内置资源类型，或使用 `{ find, replacement }`、规则数组及 `rules` 自定义匹配。字符串 `find` 以 `^` 开头或 `$` 结尾时按正则表达式匹配，否则匹配 URL 的开头或结尾。内置规则与 Plume 一样只识别 `/images/`、`/medias/` 下的已知资源扩展名。
+
+## 构建期图片尺寸
+
+`markdown.imageSize` 默认关闭。设为 `true` 或 `'local'` 后，生产构建会读取本地图片并为正文 `` 自动补齐 `width`、`height`；设为 `'all'` 时也会探测远程图片。旧写法 `plugins.markdownPower.imageSize` 仍兼容：
+
+```js
+markdown: {
+  imageSize: 'local',
+},
+```
+
+已有宽高会保留，只缺一项时按原始比例推算。该处理只改变构建产物，不写回 Markdown；远程模式会增加网络请求，并对无法读取的单个地址最多等待 3 秒，因此除非确实需要，优先使用本地模式。出于解析安全考虑，AVIF、HEIF、HEIC、JXL 与 ICNS 暂不自动探测尺寸；图片本身仍可正常使用。
+
+## 内容加密
+
+`encrypt` 与 Plume 一样支持全站门禁、管理员密码和按 Markdown 文件、目录、访问路径或正则表达式匹配的页面规则。密码可以是单个字符串或字符串数组；同一目录或规则解锁后在当前会话继续有效：
+
+```js
+encrypt: {
+  global: false,
+  admin: ['REPLACE_WITH_ADMIN_PASSWORD'],
+  rules: {
+    'notes/private/': 'directory-password',
+    '/private/': ['reader-password', 'editor-password'],
+    '^/(?:en/)?members/': 'member-password',
+  },
+},
+```
+
+单页仍可在 frontmatter 使用 `password`、`passwordHint`；`::: encrypt` 局部容器可使用自身密码或管理员密码，也可由 `markdown.encrypt: { password: '默认密码' }` 提供默认密码。页面正文和局部内容在构建时使用 PBKDF2 与 AES-GCM 加密，但静态站点门禁不应替代真正的服务端访问控制，敏感数据请勿随公开构建产物发布。示例配置中的密码仅用于演示，实际站点必须替换或删除。
+
+## Git 贡献者与变更记录
+
+生产构建会从每篇 Markdown 的 Git 历史生成最后更新时间和贡献者；开发环境默认跳过，避免反复执行 `git log`。贡献者默认以内联姓名显示，也可以切换为带头像、链接的正文区块。变更记录与 Plume 一样默认关闭：
+
+```js
+lastUpdated: { formatOptions: { dateStyle: 'short', timeStyle: 'short' } },
+contributors: {
+  mode: 'block', // 或 'inline'
+  info: [
+    { username: 'octocat', name: 'Site author', alias: 'Local Git Name' },
+  ],
+},
+changelog: {
+  maxCount: 10,
+  repoUrl: 'https://github.com/owner/repo',
+},
+```
+
+页面 frontmatter 可用 `contributors: false`、`changelog: false`、`lastUpdated: false` 单独关闭，也可用 `contributors: [额外贡献者]` 补充名单。`gitInclude` 可把同一仓库内的关联文件计入本页历史。开发时需要检查该功能，可设置 `plugins: { git: true }`；CI 必须拉取完整历史（GitHub Actions 使用 `fetch-depth: 0`）。没有 Git、浅克隆或文件无提交记录时会安全地不显示这些信息，构建不会失败。
+
+## 评论服务
+
+将 `features.comments` 设为 `true`，再在 `comment.provider` 中选择 `Giscus`、`Waline`、`Twikoo` 或 `Artalk`。四种客户端均按需加载，并沿用 Plume 的服务端字段：
+
+```js
+comment: {
+  provider: 'Giscus',
+  repo: 'owner/repo',
+  repoId: 'R_...',
+  category: 'General',
+  categoryId: 'DIC_...',
+  // inputPosition: 'top',
+  // strict: true,
+},
+```
+
+Waline 使用 `serverURL`，Twikoo 使用 `envId`，Artalk 使用 `server`。页面 frontmatter 设置 `comments: false` 可单独关闭评论；受密码保护的文章会在成功解锁后再加载评论。
+
+## 项目结构
+
+::: file-tree title="ermaozi"
+- content
+  - blog
+  - docs
+  - en
+- public # **静态资源**
+  - **img**
+- theme # **主题实现，通常无需修改**
+  - components
+  - lib
+  - pages
+  - styles
+- astro.config.mjs
+- site.config.mjs
+- package.json
+:::
+
+也可以直接粘贴 `tree` 命令的输出：
+
+```file-tree title="最小项目" icon="simple"
+.
+├── content
+│   └── index.md
+├── public
+│   └── logo.svg
+├── theme
+│   └── ...
+├── astro.config.mjs
+├── site.config.mjs
+└── package.json
+```
+
+## 配置字段组件
+
+:::: field-group
+::: field title
+@type string
+@required
+
+页面标题，同时用于导航、搜索与 SEO 元数据。
+:::
+
+::: field draft
+@type boolean
+@optional
+@default false
+
+启用后只在开发环境预览，不进入生产构建。
+:::
+
+::: field legacy
+@type string
+@deprecated
+
+仅用于演示弃用状态。
+:::
+::::
+
+## 页面字段
+
+| 字段 | 用途 | 必填 |
+| --- | --- | --- |
+| `title` | 页面标题 | 是 |
+| `description` | 搜索与 SEO 摘要 | 是 |
+| `type` | `post`、`doc` 或 `page` | 否 |
+| `order` | 文档侧栏排序 | 否 |
+| `group` | 文档侧栏分组 | 否 |
+| `cover` / `coverStyle` | 文章封面与当前文章的封面布局 | 否 |
+
+没有设置 `permalink` 时，主题会根据文件路径生成稳定路由；需要长期保持 URL 时仍建议显式设置。
+
+---
+url: /docs/guide/content/index.md
+description: 使用代码高亮、脚注、提示框、表格、媒体嵌入和其他 Markdown 扩展。
+---
+# 内容能力
+
+# 内容能力
+
+主题在标准 Markdown 上增加了写作常用能力，并保持静态输出。[功能设计参考][plume] Theme Plume 的公开文档，但实现基于 Astro 和 Markdown-it。
+
+[[TOC]]
+
+## 代码块
+
+代码块支持 Shiki 双主题高亮、标题、行号和指定行高亮。
+
+```ts title="site.config.mjs" line-numbers {2-3}
+export const siteConfig = {
+  origin: 'https://example.com',
+  logo: '/img/logo.svg',
+}
+```
+
+代码注释语法支持聚焦、高亮、差异、警告、错误与词高亮，控制注释不会出现在输出中：
+
+```ts title="notations.ts" line-numbers
+const plain = '普通行'
+const focused = '聚焦行' // [!code focus]
+const removed = false // [!code --]
+const added = true // [!code ++]
+const warning = '注意' // [!code warning]
+const error = '错误' // [!code error]
+const highlighted = '高亮' // [!code highlight]
+const greeting = 'Hello Hello' // [!code word:Hello:2]
+```
+
+长代码块可从指定行开始折叠：
+
+```css :collapsed-lines=4
+.one { color: red; }
+.two { color: orange; }
+.three { color: yellow; }
+.four { color: green; }
+.five { color: blue; }
+.six { color: indigo; }
+.seven { color: violet; }
+.eight { color: black; }
+```
+
+## 脚注和表格
+
+脚注适合补充来源或术语说明。[^static]
+
+::: table copy="all"
+| 能力 | 默认状态 |
+| --- | --- |
+| Pagefind 搜索 | 开启 |
+| Giscus 评论 | 关闭 |
+| 浏览量与点赞 | 关闭 |
+:::
+
+表格右上角可复制为 HTML 或 Markdown。
+
+## 行内扩展与环境预设
+
+Emoji、上标和下标可直接使用：:tada: :100:，X^2^，H~2~O。
+
+全局引用、缩写和内容注释只需在 `markdown.env` 中配置一次，之后可在任意页面使用：[Astro][astro] 是一个 SSG [+preset]。
+
+Markdown 文件链接会自动解析到最终永久链接，例如[站点配置](./configuration.md)。
+
+## 提示容器
+
+::: info
+相关信息使用本地化的默认标题。
+:::
+
+::: note
+注释内容。
+:::
+
+::: tip **自定义标题**
+标题支持 Markdown。
+:::
+
+:::: warning 外层提示
+注意事项可以嵌套。
+
+::: important
+这是内层的重要内容。
+:::
+::::
+
+::: caution
+需要谨慎处理。
+:::
+
+::: danger
+旧版 `danger` 语法兼容为 caution。
+:::
+
+::: details **展开详情**
+这是可折叠的详细内容。
+:::
+
+> [!NOTE]
+> GitHub Alert 使用同一套提示样式。
+
+## Obsidian 兼容
+
+Wiki 链接、内容嵌入、Callout 与 `%%` 注释默认开启，并可在 `site.config.mjs` 的 `markdown.obsidian` 中分别关闭。[[docs/guide/configuration|查看站点配置]]。
+
+当前页标题也可以直接链接：[[#Obsidian 兼容]]。
+
+> [!bug] **自定义 Callout 标题**
+> Obsidian 类型和别名会映射到同一套 Plume 提示样式。
+
+![[/img/logo.svg|48x48]]
+
+下面从配置文档嵌入“页面过渡”小节的正文：
+
+![[docs/guide/configuration#页面过渡]]
+
+这段文字包含 %%仅编辑时可见的注释%%，构建后不会输出注释内容。
+
+## 媒体语法
+
+YouTube、Bilibili、音视频和 PDF 使用简短的块级语法；只有使用时才产生对应标签。块级指令必须独占一行，可以放在引用或列表项中，指令后不能追加正文。
+
+```md
+@[youtube](video-id)
+@[bilibili](BV-id)
+@[video](/media/demo.mp4)
+@[audio](/media/demo.mp3)
+@[pdf](/files/guide.pdf)
+```
+
+audio 美 @[audioReader title="[ˈɔːdioʊ]" start-time="1" end-time="3" volume="0.7"](https://sensearch.baidu.com/gettts?lan=en&spd=3&source=alading&text=audio)
+
+@[artPlayer muted loop ratio="16:9"](https://artplayer.org/assets/sample/video.mp4)
+
+@[youtube autoplay loop start="1:02" end="1:30" width="90%" ratio="4:3" title="YouTube 参数示例"](video-id)
+
+@[bilibili p2 autoplay time="1:05" width="80%" height="180px"](BV1EZ42187Hg 123 456)
+
+@[acfun width="70%" ratio="16:10"](ac47431669)
+
+@[pdf 2 no-toolbar zoom="95" height="180px"](https://plume.pengzhanbo.cn/files/sample-1.pdf)
+
+![可点击预览的主题标志 =160x160](/img/logo.svg)
+
+## 仓库卡片
+
+仓库卡片支持 GitHub 与 Gitee，展示语言、Star、Fork、许可证、模板和归档状态，并在浏览器中缓存 24 小时。
+
+```md
+<RepoCard repo="pengzhanbo/vuepress-theme-plume" />
+```
+
+
+
+## 浏览器兼容性
+
+`caniuse` 指令支持完整兼容表和 Baseline 摘要，也可以指定过去与未来的版本周期。
+
+```md
+@[caniuse{-2,1}](css-matches-pseudo)
+@[caniuse baseline](css-matches-pseudo)
+::: caniuse css-container-queries{-2,1}
+:::
+```
+
+@[caniuse baseline](css-matches-pseudo)
+
+旧版 Plume 文档中的容器语法也可以直接迁移：
+
+::: caniuse css-container-queries{-2,1}
+:::
+
+## 轮播图
+
+`Swiper` 支持 Plume 的轮播、导航、分页、自动播放和动画参数：
+
+
+
+
+
+
+
+
+## 对话记录
+
+::: chat title="主题讨论"
+{:2026-08-05 10:15}
+
+{访客}
+这个主题支持 **Markdown** 消息吗？
+
+{.}
+支持，发送者、时间与本人消息都会按 Plume 样式渲染。
+
+{:2026-08-05 10:18}
+
+{访客}
+很好。
+:::
+
+## 代码演示
+
+::: demo normal title="按钮演示" desc="HTML、CSS 与 JavaScript 在隔离 iframe 中运行。"
+```html
+<button id="demo-button">点击 0</button>
+```
+
+```css
+#demo-button { padding: 8px 14px; border: 0; border-radius: 6px; color: white; background: #336f87; }
+```
+
+```js
+let count = 0
+const button = document.querySelector('#demo-button')
+button.addEventListener('click', () => { button.textContent = `点击 ${++count}` })
+```
+:::
+
+### 普通演示文件与外部资源
+
+@[demo normal title="资源与 TypeScript" desc="嵌入文件会在构建期编译，并在资源菜单列出依赖。"](/snippets/demo/normal.html)
+
+### Vue 演示
+
+::: demo vue title="内联 Vue 计数器" desc="真实 Vue SFC 在构建期编译并挂载。"
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+const count = ref(0)
+</script>
+
+<template>
+  <button id="inline-vue-count" :class="$style.counter" type="button" @click="count += 1">内联计数 {{ count }}</button>
+</template>
+
+<style module>
+.counter { border: 2px solid #336f87; }
+</style>
+```
+:::
+
+@[demo vue title="嵌入 Vue 组件"](/snippets/demo/Counter.vue)
+
+### Markdown 演示
+
+::: demo markdown title="内联 Markdown"
+```md
+#### Markdown 渲染结果
+
+支持 **加粗**、列表和其它 Markdown 语法。
+```
+:::
+
+@[demo markdown title="嵌入 Markdown"](/snippets/demo/example.md.txt)
+
+## 数学公式
+
+默认使用与 Plume 相同的 KaTeX 渲染行内公式 $e^{i\pi}+1=0$，并支持独立块级公式：
+
+$$
+\frac {\partial^r} {\partial \omega^r} \left(\frac {y^{\omega}} {\omega}\right)
+$$
+
+标记为 `twoslash` 的 TypeScript 代码块会执行真实类型分析：
+
+```ts twoslash title="twoslash.ts"
+const greeting = { text: 'hello' } as const
+//    ^?
+```
+
+## 在线代码演示
+
+@[codepen tab="html,result" height="180px"](leimapapa/RwOZQOW)
+
+@[jsfiddle tab="result,js" height="180px"](zalun/NmudS)
+
+@[codesandbox title="CodeSandbox 演示" layout="Editor+Preview" navbar="false" height="180px"](5wyzu#src/index.js)
+
+@[codesandbox button](reaction/5wyzu)
+
+@[replit title="Replit 演示" height="180px"](@TechPandaPro/Cursor-Hangout#package.json)
+
+## 多语言代码运行
+
+Go、Kotlin 与 Rust 会把代码发送到 Plume 使用的在线运行服务；Python 通过 Pyodide 在浏览器本地执行。`editable` 会启用就地编辑器。
+
+::: go-repl editable title="Go playground"
+```go
+package main
+import "fmt"
+func main() { fmt.Println("Hello Go") }
+```
+:::
+
+::: kotlin-repl title="Kotlin playground"
+```kotlin
+fun main() { println("Hello Kotlin") }
+```
+:::
+
+::: rust-repl title="Rust playground"
+```rust
+fn main() { println!("Hello Rust"); }
+```
+:::
+
+::: python-repl editable title="Python playground"
+```python
+print("Hello Python")
+```
+:::
+
+## 隐秘文本
+
+桌面悬停显示：!!这段内容默认被遮住!!；显式点击与模糊效果：!!点击后显示!!{.click .blur}。
+
+组件写法同样可用：点击组件内容。
+
+## 图表
+
+::: chartjs 月度趋势
+```json
+{"type":"line","data":{"labels":["一月","二月","三月"],"datasets":[{"label":"访问量","data":[12,19,8],"borderColor":"#336f87"}]}}
+```
+:::
+
+::: echarts 分类占比
+```json
+{"tooltip":{},"series":[{"type":"pie","radius":"60%","data":[{"value":42,"name":"文档"},{"value":28,"name":"博客"}]}]}
+```
+:::
+
+::: chartjs 未授权脚本不应执行
+```js
+config = { type: 'bar', data: { labels: ['危险'], datasets: [{ data: [1] }] } }
+```
+:::
+
+@startuml
+Alice -> Bob: 认证请求
+Bob --> Alice: 认证通过
+@enduml
+
+```flow:vue
+st=>start: 开始
+op=>operation: 处理
+e=>end: 结束
+st->op->e
+```
+
+```markmap
+---
+markmap:
+  colorFreezeLevel: 2
+---
+
+# ermaozi
+
+## Markdown
+
+- 链接
+- **强调**
+
+## Astro
+
+- 静态输出
+- 双语路由
+```
+
+[^static]: 所有页面在构建阶段生成，部署时不需要 Node.js 服务。
+
+[plume]: https://plume.pengzhanbo.cn/guide/intro/
+
+---
+url: /docs/guide/deployment/index.md
+description: 将 ermaozi 部署到 GitHub Pages、GitLab Pages、Netlify、Vercel、Firebase 或其他静态托管平台。
+---
+# 部署站点
+
+# 部署站点
+
+ermaozi 默认生成纯静态站点。构建命令是 `npm run build`，发布目录是 `dist`；pnpm 和 Yarn 使用同名脚本。
+
+## 创建时生成部署配置
+
+运行创建器并在“部署方式”中选择平台：
+
+```sh
+npm create astro-theme-ermaozi
+```
+
+创建器会按当前包管理器生成最小配置：
+
+| 选项 | 生成文件 | 部署方式 |
+| --- | --- | --- |
+| GitHub Pages | `.github/workflows/deploy.yml` | 推送 `main` 后由 GitHub Actions 构建和发布 |
+| GitLab Pages | `.gitlab-ci.yml` | 默认分支的 Pipeline 构建和发布 `dist` |
+| Netlify | `netlify.toml` | 导入仓库后自动读取构建命令和目录 |
+| Vercel | `vercel.json` | 导入仓库后按 Astro 静态站点部署 |
+| Firebase Hosting | `firebase.json`、`.firebaserc` | 本地构建后运行 `firebase deploy` |
+| Custom | 不生成平台文件 | 手动把 `dist` 交给任意静态托管服务 |
+
+这些文件只负责构建与发布，不会保存访问令牌。GitHub Pages 工作流使用 OIDC 权限；其他平台使用仓库或平台本身的授权。
+
+## 域名和子路径
+
+发布前检查 `site.config.mjs`：
+
+```js
+origin: 'https://blog.example.com',
+base: '/',
+```
+
+- `origin` 是包含协议、不含路径的生产域名，用于 canonical、站点地图和分享卡片。
+- `base` 是部署子路径。自定义域名通常使用 `/`；站点位于 `https://example.com/project/` 时使用 `/project/`。
+- CI 可以用 `SITE_ORIGIN` 和 `BASE_PATH` 临时覆盖这两个值。创建器生成的 GitHub Pages 和 GitLab Pages 配置已经自动处理默认 Pages 地址。
+
+修改 `base` 后，本地预览地址也会带上该前缀。站内链接、图片、搜索、Markdown 源文、站点地图和 SEO 地址都会使用同一前缀。
+
+## GitHub Pages
+
+1. 将仓库推送到 GitHub，默认分支命名为 `main`。
+2. 在仓库的 **Settings → Pages → Build and deployment** 中将 Source 设为 **GitHub Actions**。
+3. 推送代码或手动运行 `Deploy to GitHub Pages` 工作流。
+
+默认工作流自动识别用户站点和项目站点。如果配置了自定义域名，把工作流中的 `SITE_ORIGIN` 改成真实域名，并把 `BASE_PATH` 改为 `/`。
+
+## GitLab Pages
+
+将仓库推送到 GitLab。默认分支的 Pipeline 会读取 `CI_PAGES_URL`，构建站点并通过 `pages.publish: dist` 发布。构建完成后可在 **Deploy → Pages** 查看地址。
+
+## Netlify 和 Vercel
+
+在平台控制台导入仓库即可。生成的配置已固定发布目录为 `dist`；静态站点不需要 Astro 服务端适配器。使用自定义域名时，记得同步修改 `origin`。
+
+## Firebase Hosting
+
+先安装并登录 Firebase CLI：
+
+```sh
+npm install --global firebase-tools
+firebase login
+npm run build
+firebase deploy
+```
+
+创建器会询问 Firebase 项目 ID 并写入 `.firebaserc`。如果项目后来更换，请同步修改其中的 `projects.default`。
+
+## 其他静态托管平台
+
+使用以下通用设置：
+
+```text
+构建命令：npm run build
+发布目录：dist
+Node.js：22.12 或更高版本
+```
+
+本地可以先运行 `npm run build && npm run preview` 检查构建产物。`preview` 只用于验收，不应作为生产服务器。
+
+---
+url: /docs/guide/getting-started/index.md
+description: 不需要修改主题源码，用配置文件和 Markdown 在十分钟内搭建博客。
+---
+# 零基础快速开始
+
+# 零基础快速开始
+
+日常搭建博客只需要接触两个位置：`site.config.mjs` 管站点，`content/` 管文章。不要修改 `theme/`，以后更新主题会更轻松。
+
+## 1. 准备环境
+
+安装 [Node.js 22.12 或更高版本](https://nodejs.org/)，再准备一个文本编辑器。Windows、macOS 和 Linux 都可以使用。
+
+## 2. 创建并打开站点
+
+任选一种已经安装的包管理器：
+
+```sh
+npm create astro-theme-ermaozi my-blog
+pnpm create astro-theme-ermaozi my-blog
+yarn create astro-theme-ermaozi my-blog
+```
+
+向导可选择简体中文或 English 作为站点根语言；启用多语言时，另一种语言会自动放到 `/en/` 或 `/zh/`，无需手动移动内容或修改永久链接。
+
+进入项目并启动预览：
+
+```sh
+cd my-blog
+npm run dev
+```
+
+使用 pnpm 时运行 `pnpm dev`，使用 Yarn 时运行 `yarn dev`。终端会显示本地网址，通常是 `http://localhost:4321/`；修改配置或 Markdown 后会自动刷新。
+
+## 3. 只改这六处配置
+
+打开 `site.config.mjs`。编辑器会根据 `defineSiteConfig()` 提示可用字段，写错常见字段时 `npm run check` 会直接指出位置。
+
+1. `origin`：最终域名，例如 `https://blog.example.com`。
+2. `logo`：Logo 文件地址，例如 `/img/logo.svg`。
+3. `profile`：头像、简介、所在地和资料卡位置。
+4. `locales.zh-CN.siteName`：站名。
+5. `locales.zh-CN.description`：站点说明。
+6. `social`：GitHub 等社交链接；不需要时写成 `social: []`。
+
+先保留其余默认值，站点已经可以使用。导航、搜索、分页、外观、评论和增强 Markdown 的全部选项见[站点配置](/docs/guide/configuration/)。
+
+### 只做中文站
+
+删除 `site.config.mjs` 中完整的 `'en-US': { ... }` 配置块，再删除 `content/en/`。只剩一种语言时不会显示语言切换入口。删除文件前建议先复制整个项目作为备份。
+
+## 4. 发布第一篇文章
+
+在 `content/blog/` 下新建 `hello.md`，粘贴以下内容：
+
+```md
+---
+title: 我的第一篇文章
+description: 这篇文章介绍我的新博客。
+permalink: /blog/hello/
+createTime: 2026-08-07
+tags: [随笔]
+type: post
+---
+
+# 我的第一篇文章
+
+这里开始写正文。
+```
+
+保存后刷新浏览器即可看到文章。分类来自文件夹，例如 `content/blog/教程/hello.md` 会自动进入“教程”分类。图片放在 `public/img/`，Markdown 中写 `![说明](/img/photo.webp)`。
+
+## 5. 调整导航
+
+每种语言都有自己的 `navbar`（旧字段 `navigation` 仍兼容）。最常用的单层链接如下：
+
+```js
+navbar: [
+  { text: '博客', link: '/blog/', icon: 'home' },
+  { text: '关于', link: '/about/', icon: 'info' },
+]
+```
+
+导航可以使用普通链接、下拉菜单、Iconify 图标和徽章；复制现有项目里的写法再替换文字与链接最安全。
+
+## 6. 发布前检查
+
+```sh
+npm run validate
+```
+
+检查通过后会生成 `dist/`。创建时选择的平台配置可以自动发布，也可以把 `dist/` 交给任意静态托管平台；详见[部署站点](/docs/guide/deployment/)。
+
+## 常见问题
+
+- **开发时搜索不到新文章**：开发服务器不生成 Pagefind 索引，改用 `npm run build && npm run preview` 验收搜索。
+- **页面地址重复或失效**：确保每篇文章的 `permalink` 唯一，并以 `/` 开头和结尾。
+- **图片不显示**：文件应放在 `public/`，引用路径不要写 `public`，例如 `/img/photo.webp`。
+- **配置后白屏**：先运行 `npm run check`，根据文件名和行号修正缺失的逗号、引号或括号。
+- **不需要评论或统计**：保持 `features` 中对应开关为 `false`，纯静态博客不需要后端。
+
+下一步可以阅读[内容能力](/docs/guide/content/)；需要深入定制的开发者再查看[公共 API 与样式定制](/docs/guide/api/)。
+
+---
+url: /effects/index.md
+description: 展示 ermaozi 支持的 Plume Hero Canvas 与 WebGL 背景。
+---
+# Hero 背景效果矩阵
+
+
+
+---
+url: /friends/index.md
+description: 展示站点、项目与社区链接的通用友链页面。
+---
+# 友情链接
+
+这里可以放置申请友链的要求；`contentPosition` 决定正文位于列表之前还是之后。
+
+---
+url: /hero/index.md
+description: 展示 ermaozi 自定义首页的全屏 Hero 和向下滚动提示。
+---
+# 全屏 Hero 示例
+
+
+
+---
+url: /landing/index.md
+description: 展示 Plume 风格的 Hero、功能、图文、资料与自定义首页区域。
+---
+# 自定义首页示例
+
+# 自定义内容
+
+`custom` 区域会渲染首页 Markdown 正文，可继续使用主题的 Markdown 扩展。
+
+---
+url: /page-layout/index.md
+description: 验证不带文档导航壳的 Plume 专页布局。
+---
+# 专页布局示例
+
+# 专页布局示例
+
+此页面只呈现正文，适合活动说明、条款或其他不需要文档目录的独立内容。
+
+## 简洁内容
+
+页眉、页脚和全站能力仍然可用，文档标题、元信息、侧边栏与页内目录不会被额外注入。
+
+---
+url: /single-hero/index.md
+description: 验证 Plume onlyOnce Hero、sign-down 与 footer 行为。
+---
+# 单 Hero 首页验收矩阵
+
+
+
