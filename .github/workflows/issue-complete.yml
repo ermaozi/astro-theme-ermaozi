@@ -1,44 +1,66 @@
-name: Mark AI issue ready for testing
+name: Test merged AI issue
 
 on:
   pull_request:
     types: [closed]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to test from ai-testing
+        required: true
+        type: number
+      pr_number:
+        description: Merged AI pull request number
+        required: true
+        type: number
 
 permissions: {}
 
 jobs:
-  ready-for-testing:
+  test:
     if: >-
-      github.event.pull_request.merged == true &&
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
       github.event.pull_request.base.ref == 'ai-testing' &&
-      startsWith(github.event.pull_request.head.ref, 'ai/issue-')
+      startsWith(github.event.pull_request.head.ref, 'ai/issue-'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
     steps:
       - name: Mark the linked issue ready for testing
+        id: issue
         uses: actions/github-script@v7
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
           PR_URL: ${{ github.event.pull_request.html_url }}
           MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          MANUAL_ISSUE_NUMBER: ${{ inputs.issue_number }}
         with:
           script: |
             const match = String(process.env.PR_BODY || '').match(/<!-- ai-issues:issue=(\d+) -->/);
-            if (!match) return;
-            const issueNumber = Number(match[1]);
-            if (!Number.isInteger(issueNumber) || issueNumber < 1) return;
-            const { owner, repo } = context.repo;
-            const marker = `<!-- ai-issues:testing:${process.env.PR_NUMBER} -->`;
-            const comments = await github.paginate(
-              github.rest.issues.listComments,
-              { owner, repo, issue_number: issueNumber, per_page: 100 },
-            );
-            if (comments.some((comment) => comment.body?.includes(marker))) return;
+            const issueNumber = context.eventName === 'pull_request'
+              ? Number(match?.[1])
+              : Number(process.env.MANUAL_ISSUE_NUMBER);
+            if (!Number.isInteger(issueNumber) || issueNumber < 1) {
+              if (context.eventName === 'pull_request') return;
+              throw new Error('A valid issue number is required.');
+            }
 
-            for (const label of ['自动处理：待分析', '自动处理：待补充', '自动处理：待审批', '自动处理：已批准', '自动处理：修复中', '自动处理：待审查', '自动处理：已阻止', '自动处理：已完成']) {
+            const prNumber = Number(process.env.PR_NUMBER);
+            if (!Number.isInteger(prNumber) || prNumber < 1) throw new Error('A valid PR number is required.');
+            const { owner, repo } = context.repo;
+            const checkoutRef = context.eventName === 'pull_request'
+              ? process.env.MERGE_SHA
+              : 'ai-testing';
+            core.setOutput('issue_number', issueNumber);
+            core.setOutput('pr_number', prNumber);
+            core.setOutput('checkout_ref', checkoutRef);
+
+            const stateLabels = ['自动处理：待分析', '自动处理：待补充', '自动处理：待审批', '自动处理：已批准', '自动处理：修复中', '自动处理：待审查', '自动处理：待测试', '自动处理：已阻止', '自动处理：已完成'];
+            for (const label of stateLabels) {
+              if (label === '自动处理：待测试') continue;
               try {
                 await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
               } catch (error) {
@@ -51,9 +73,99 @@ jobs:
               issue_number: issueNumber,
               labels: ['自动处理：待测试'],
             });
+
+            const marker = `<!-- ai-issues:testing:${prNumber} -->`;
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number: issueNumber, per_page: 100 },
+            );
+            if (comments.some((comment) => comment.body?.includes(marker))) return;
+            const prUrl = process.env.PR_URL || `${context.serverUrl}/${owner}/${repo}/pull/${prNumber}`;
             await github.rest.issues.createComment({
               owner,
               repo,
               issue_number: issueNumber,
-              body: `修复 PR #${process.env.PR_NUMBER} 已由维护者审查并合入 \`ai-testing\`，等待测试。\n\n尚未合入 \`main\`，也未发版；此 Issue 将保持开启。\n\n${process.env.PR_URL}\n\n测试分支提交：\`${process.env.MERGE_SHA}\`\n\n${marker}`,
+              body: `修复 PR #${prNumber} 已由维护者审查并合入 \`ai-testing\`，正在自动测试。\n\n尚未合入 \`main\`，也未发版。\n\n${prUrl}\n\n${marker}`,
+            });
+
+      - uses: actions/checkout@v7
+        if: steps.issue.outputs.issue_number != ''
+        with:
+          ref: ${{ steps.issue.outputs.checkout_ref }}
+
+      - uses: actions/setup-node@v7
+        if: steps.issue.outputs.issue_number != ''
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Enable pnpm
+        if: steps.issue.outputs.issue_number != ''
+        run: corepack enable && corepack prepare pnpm@9.10.0 --activate
+
+      - name: Install dependencies
+        if: steps.issue.outputs.issue_number != ''
+        run: pnpm install --frozen-lockfile
+
+      - name: Run repository validation
+        if: steps.issue.outputs.issue_number != ''
+        run: pnpm validate
+
+      - name: Install Chromium
+        if: steps.issue.outputs.issue_number != ''
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run browser tests
+        if: steps.issue.outputs.issue_number != ''
+        timeout-minutes: 30
+        run: pnpm test:visual
+
+      - name: Complete the issue
+        if: success() && steps.issue.outputs.issue_number != ''
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.issue_number }}
+          PR_NUMBER: ${{ steps.issue.outputs.pr_number }}
+        with:
+          script: |
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            const prNumber = Number(process.env.PR_NUMBER);
+            const { owner, repo } = context.repo;
+            for (const label of ['自动处理：待测试', '自动处理：已阻止']) {
+              try {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+            }
+            await github.rest.issues.addLabels({ owner, repo, issue_number: issueNumber, labels: ['自动处理：已完成'] });
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              body: `修复已在 \`ai-testing\` 通过完整校验和浏览器测试，此 Issue 已自动关闭。\n\n尚未合入 \`main\`，也未发版。\n\n<!-- ai-issues:test-passed:${prNumber} -->`,
+            });
+            await github.rest.issues.update({ owner, repo, issue_number: issueNumber, state: 'closed', state_reason: 'completed' });
+
+      - name: Mark the issue blocked
+        if: failure() && steps.issue.outputs.issue_number != ''
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.issue_number }}
+        with:
+          script: |
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            const { owner, repo } = context.repo;
+            try {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: '自动处理：待测试' });
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+            await github.rest.issues.addLabels({ owner, repo, issue_number: issueNumber, labels: ['自动处理：已阻止'] });
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              body: `测试分支自动验证未通过，请维护者检查[工作流记录](${runUrl})。\n\n尚未合入 \`main\`，也未发版。`,
             });
