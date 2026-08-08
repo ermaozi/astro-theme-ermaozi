@@ -25,7 +25,7 @@ jobs:
       startsWith(github.event.pull_request.head.ref, 'ai/issue-'))
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       issues: write
     steps:
       - name: Mark the linked issue ready for testing
@@ -122,6 +122,15 @@ jobs:
           TZ: Asia/Shanghai
         run: pnpm test:visual --retries=1 --grep-invert "all Plume hero effect canvases mount"
 
+      - name: Publish validated dist to dev-gh-pages
+        if: steps.issue.outputs.issue_number != ''
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: dev-gh-pages
+          publish_dir: ./dist
+          force_orphan: true
+
       - name: Complete the issue
         if: success() && steps.issue.outputs.issue_number != ''
         uses: actions/github-script@v7
@@ -145,7 +154,7 @@ jobs:
               owner,
               repo,
               issue_number: issueNumber,
-              body: `修复已在 \`ai-testing\` 通过自动校验和浏览器测试，此 Issue 已自动关闭。\n\n尚未合入 \`main\`，也未发版。\n\n<!-- ai-issues:test-passed:${prNumber} -->`,
+              body: `修复已在 \`ai-testing\` 通过自动校验和浏览器测试，并构建到 \`dev-gh-pages\`，此 Issue 已自动关闭。\n\n尚未合入 \`main\`，也未发版。\n\n<!-- ai-issues:test-passed:${prNumber} -->`,
             });
             await github.rest.issues.update({ owner, repo, issue_number: issueNumber, state: 'closed', state_reason: 'completed' });
 
