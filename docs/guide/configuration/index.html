@@ -1,0 +1,1031 @@
+<!DOCTYPE html><html class="layout-doc" lang="zh-CN" data-page-transition data-katex-copy="true" data-mark-mode="lazy" data-repl-theme="{&quot;light&quot;:&quot;github-light&quot;,&quot;dark&quot;:&quot;github-dark&quot;}" data-photo-swipe-selector=".vp-doc :not(a) > img:not([no-view],.no-view,.ignore)" data-photo-swipe-download="true" data-photo-swipe-fullscreen="true" data-photo-swipe-scroll-close="true" data-photo-swipe-locale="{&quot;close&quot;:&quot;关闭&quot;,&quot;download&quot;:&quot;下载图片&quot;,&quot;fullscreen&quot;:&quot;切换全屏&quot;,&quot;zoom&quot;:&quot;缩放&quot;,&quot;arrowPrev&quot;:&quot;上一个 (左箭头)&quot;,&quot;arrowNext&quot;:&quot;下一个 (右箭头)&quot;}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#336f87"><meta name="color-scheme" content="light dark"><script>(function(){const appearance = true;
+const forceDark = false;
+
+      (() => {
+        const root = document.documentElement
+        const stored = localStorage.getItem('vuepress-theme-appearance')
+        const selected = stored || (appearance === 'dark' ? 'dark' : 'auto')
+        const dark = forceDark || (appearance !== false && (selected === 'dark' || (selected !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)))
+        root.dataset.theme = dark ? 'dark' : 'light'
+        root.classList.toggle('dark', dark)
+      })()
+    })();</script><meta name="referrer" content="strict-origin-when-cross-origin"><title>站点配置 | 文档中心 | ermaozi</title><meta name="description" content="配置站点身份、导航、双语内容和可选服务。"><link data-ermaozi-managed-head rel="canonical" href="https://astro.ermao.net/docs/guide/configuration/"><meta data-ermaozi-managed-head property="og:title" content="站点配置"><meta data-ermaozi-managed-head property="og:description" content="配置站点身份、导航、双语内容和可选服务。"><meta data-ermaozi-managed-head property="og:url" content="https://astro.ermao.net/docs/guide/configuration/"><meta data-ermaozi-managed-head property="og:type" content="article"><meta data-ermaozi-managed-head property="og:site_name" content="ermaozi"><meta data-ermaozi-managed-head property="og:locale" content="zh-CN"><meta data-ermaozi-managed-head property="og:image" content="https://astro.ermao.net/img/logo.svg"><meta data-ermaozi-managed-head property="og:image:alt" content="站点配置"><meta data-ermaozi-managed-head property="og:updated_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:author" content="站点作者"><meta data-ermaozi-managed-head property="article:tag" content="Astro"><meta data-ermaozi-managed-head property="article:tag" content="配置"><meta data-ermaozi-managed-head property="article:published_time" content="2026-08-05T00:00:00.000Z"><meta data-ermaozi-managed-head property="article:modified_time" content="2026-08-05T00:00:00.000Z"><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"站点配置","image":["https://astro.ermao.net/img/logo.svg"],"datePublished":"2026-08-05T00:00:00.000Z","dateModified":"2026-08-05T00:00:00.000Z","author":[{"@type":"Person","name":"站点作者"}],"@id":"https://astro.ermao.net/docs/guide/configuration/#article","mainEntityOfPage":{"@type":"WebPage","@id":"https://astro.ermao.net/docs/guide/configuration/"},"inLanguage":"zh-CN","articleSection":"文档中心","keywords":"配置, Astro","publisher":{"@id":"https://astro.ermao.net/about/#person"},"isPartOf":{"@id":"https://astro.ermao.net/#website"}}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://astro.ermao.net/#website","url":"https://astro.ermao.net/","name":"ermaozi","description":"一个支持全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。","inLanguage":"zh-CN","publisher":{"@id":"https://astro.ermao.net/about/#person"}},{"@type":"Person","@id":"https://astro.ermao.net/about/#person","name":"站点作者","url":"https://astro.ermao.net/about/","image":"https://astro.ermao.net/img/logo.svg","description":"使用 ermaozi 发布文章、文档和项目记录。","sameAs":["https://github.com/ermaozi/astro-theme-ermaozi"]}]}</script><script data-ermaozi-managed-head type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://astro.ermao.net/"},{"@type":"ListItem","position":2,"name":"文档中心","item":"https://astro.ermao.net/docs/"},{"@type":"ListItem","position":3,"name":"指南"},{"@type":"ListItem","position":4,"name":"站点配置","item":"https://astro.ermao.net/docs/guide/configuration/"}]}</script><link rel="icon" href="/img/logo.svg"><meta name="keywords" content="Astro,静态博客,Markdown,博客主题"><link rel="stylesheet" href="/_astro/_..BozvyjkW.css"><link rel="stylesheet" href="/_astro/BaseLayout.DzgLzYEh.css"><style>.home-hero-effect-dark-veil[data-v-d452a4a0]{width:100%;height:100%;display:block;position:absolute;transform:translate(0,0)}
+.home-hero-effect-beams[data-v-7d45be68]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-dot-grid[data-v-60f95dd7]{justify-content:center;align-items:center;width:100%;height:100%;display:flex;position:absolute;overflow:hidden}.dot-grid-container[data-v-60f95dd7]{width:100%;height:100%;position:relative}.dot-grid-container canvas[data-v-60f95dd7]{pointer-events:none;width:100%;height:100%;position:absolute;inset:0}
+.home-hero-hyperspeed[data-v-6103dcc7]{width:100%;height:100%;position:absolute;overflow:hidden}.home-hero-hyperspeed[data-v-6103dcc7] canvas{display:block;width:100%!important;height:100%!important}
+.home-hero-effect-lighting[data-v-11b14641]{width:100%;height:100%;position:absolute;transform:translate(0,0)}.home-hero-effect-lighting canvas[data-v-11b14641]{mix-blend-mode:screen;width:100%;height:100%}
+.home-hero-effect-iridescence[data-v-57569e3d]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-liquid-ether[data-v-4f4b1a4e]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+.home-hero-effect-orb[data-v-0cd01e9e]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-prism[data-v-efa4438a]{width:100%;height:100%;position:absolute;transform:translate(0,0)}
+.home-hero-effect-pixel-blast[data-v-012c650c]{width:100%;height:100%;position:absolute;overflow:hidden;transform:translate(0,0)}
+</style></head><body data-page-shell="PmNoSj3tRCtNHj0z" data-pagefind-ready="true"><div id="nprogress" aria-hidden="true" hidden><div class="bar"></div></div><script id="ermaozi-page-data" type="application/json">{"page":{"path":"/docs/guide/configuration/","title":"站点配置","description":"配置站点身份、导航、双语内容和可选服务。"},"frontmatter":{"title":"站点配置","description":"配置站点身份、导航、双语内容和可选服务。","permalink":"/docs/guide/configuration/","createTime":"2026-08-05T00:00:00.000Z","type":"doc","order":10,"group":"指南","tags":["配置","Astro"]}}</script><div id="app"><div class="theme-plume vp-layout"><div class="global-protected" data-global-protected><span tabindex="-1"></span><a class="vp-skip-link visually-hidden" href="#VPContent">跳到内容</a><header class="vp-nav"><div class="vp-navbar has-sidebar"><div class="wrapper"><div class="container"><div class="title"><div class="vp-navbar-title"><a href="/" aria-label="ermaozi 首页" class="vp-link title link no-icon"><img class="vp-image dark logo" src="/img/logo.svg" alt="" width="24" height="24"><img class="vp-image light logo" src="/img/logo.svg" alt="" width="24" height="24"><span>ermaozi</span></a></div></div><div class="content"><div class="content-body"><div class="vp-navbar-search search"><div class="search-wrapper"><div id="local-search"><button class="mini-search mini-search-button search-button" type="button" aria-label="搜索文档"><span class="mini-search-button-container"><span class="mini-search-search-icon vpi-mini-search" aria-label="search icon"></span><span class="mini-search-button-placeholder">搜索文档</span></span><span class="mini-search-button-keys" aria-hidden="true"><kbd class="mini-search-button-key"></kbd><kbd class="mini-search-button-key">K</kbd></span></button></div></div></div><nav class="vp-navbar-menu menu" aria-labelledby="main-nav-aria-label"><span id="main-nav-aria-label" class="visually-hidden">Main Navigation</span><a tabindex="0" href="/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link navbar-menu-link"><span class="vp-icon nav-symbol icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>博客</span></span></a><div class="vp-flyout vp-navbar-menu-group nav-group active"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span class="nav-label">文档</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span>文档中心<span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></a></div><div class="vp-menu-group"><p class="title"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><span>指南</span></p><div class="vp-menu-link"><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span>快速开始</a></div><div class="vp-menu-link"><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link active"><span class="vp-icon nav-menu-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span>站点配置</a></div><div class="vp-menu-link"><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span>部署站点</a></div><div class="vp-menu-link"><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>内容能力<span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a></div><div class="vp-menu-link"><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><span class="vp-icon nav-menu-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span>Astro<span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></div></div><div class="vp-flyout vp-navbar-menu-group nav-group"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false"><span class="text"><span class="vp-icon nav-symbol icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span class="nav-label">更多</span><span class="vpi-chevron-down text-icon" aria-hidden="true"></span></span></button><div class="menu"><div class="vp-menu nav-dropdown"><div class="items"><div class="vp-menu-link"><a href="/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon-img nav-menu-icon" aria-hidden="true"><img src="/img/logo.svg" alt=""></span>分类</a></div><div class="vp-menu-link"><a href="/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon is-svg nav-menu-icon" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span>标签</a></div><div class="vp-menu-link"><a href="/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span>归档</a></div><div class="vp-menu-link"><a href="/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><span class="vp-icon nav-menu-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span>关于</a></div></div></div></div></div></nav><div class="vp-navbar-appearance appearance"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-navbar-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div><div class="vp-flyout vp-navbar-extra extra"><button class="button flyout-button" type="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation"><span class="vpi-more-horizontal icon" aria-hidden="true"></span></button><div class="menu flyout-menu"><div class="vp-menu flyout-panel extra-panel"><div class="group appearance"><div class="item appearance"><p class="label">外观</p><div class="appearance-action"><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div></div></div><div class="group social"><div class="item social-links"><div class="vp-social-links social-links-list"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></div></div></div><button class="vp-navbar-hamburger hamburger" type="button" aria-label="移动端导航" aria-expanded="false" aria-controls="nav-screen"><span class="container"><span class="top"></span><span class="middle"></span><span class="bottom"></span></span></button></div></div></div></div><div class="divider"><div class="divider-line"></div></div></div><div id="navScreen" class="vp-nav-screen" hidden><div class="container"><nav class="vp-nav-screen-menu menu"><a href="/blog/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-link"><span class="vp-icon icon-home" data-provider="iconify" aria-hidden="true" style></span><span><span>博客</span></span></a><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-文档" aria-expanded="false"><span class="button-text"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>文档</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-文档" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M7 22q-.825 0-1.412-.587T5 20V4q0-.825.588-1.412T7 2h6.175q.4 0 .763.15t.637.425l3.85 3.85q.275.275.425.638t.15.762V20q0 .825-.587 1.413T17 22zm4-18H7v16h10V10h-3q-1.25 0-2.125-.875T11 7zm2 0v3q0 .425.288.713T14 8h3v-.175L13.175 4zm-3 15q-.425 0-.712-.288T9 18t.288-.712T10 17h2q.425 0 .713.288T13 18t-.288.713T12 19zm0-4q-.425 0-.712-.288T9 14t.288-.712T10 13h4q.425 0 .713.288T15 14t-.288.713T14 15z"/></svg></span><span>文档中心</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></a></div><div class="group"><div class="vp-nav-screen-menu-group-section"><p class="title"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span>指南</p><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-rocket" data-provider="iconify" aria-hidden="true" style></span><span>快速开始</span></a><a href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link active"><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><span>站点配置</span></a><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify" data-provider="iconify" data-iconify-remote="material-symbols:cloud-upload-outline" aria-hidden="true" style></span><span>部署站点</span></a><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>内容能力</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></a><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon vp-nav-screen-menu-group-link"><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><span>Astro</span><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></div><div class="vp-nav-screen-menu-group mobile-nav-group"><button class="button" type="button" aria-controls="nav-screen-menu-group-更多" aria-expanded="false"><span class="button-text"><span class="vp-icon icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><span>更多</span></span><span class="vpi-plus button-icon" aria-hidden="true"></span></button><div id="nav-screen-menu-group-更多" class="vp-nav-screen-menu-group-container" style="display:none"><div class="items"><div class="item"><a href="/blog/categories/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon-img" aria-hidden="true"><img src="/img/logo.svg" alt=""></span><span>分类</span></a></div><div class="item"><a href="/blog/tags/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon is-svg" aria-hidden="true" style><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 4h8l10 10-7 7L4 11V4Zm4 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></svg></span><span>标签</span></a></div><div class="item"><a href="/blog/archives/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-archive" data-provider="iconify" aria-hidden="true" style></span><span>归档</span></a></div><div class="item"><a href="/about/" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-nav-screen-menu-group-link"><span class="vp-icon icon-verified" data-provider="iconify" aria-hidden="true" style></span><span>关于</span></a></div></div></div></div></nav><div class="vp-nav-screen-appearance mobile-appearance appearance"><p class="text">外观</p><button class="vp-switch vp-switch-appearance" type="button" role="switch" title="切换为深色主题" aria-checked="false"><span class="check"><span class="icon"><span class="vpi-sun sun" aria-hidden="true"></span><span class="vpi-moon moon" aria-hidden="true"></span></span></span></button></div><div class="vp-social-links vp-nav-screen-social-links social-links"><a class="vp-social-link no-icon" href="https://github.com/ermaozi/astro-theme-ermaozi" aria-label="github" title="github" target="_blank" rel="noopener"><span class="vp-icon is-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a></div></div></div></header><div role="button" aria-expanded="true" aria-haspopup="listbox" aria-labelledby="mini-search-label" class="VPLocalSearchBox" hidden data-no-results="无搜索结果："><div class="backdrop"></div><div class="shell"><form class="search-bar" role="search"><label id="localsearch-label" title="搜索文档" for="localsearch-input"><svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></g></svg></label><div class="search-actions before"><button class="back-button" type="button" title="关闭" aria-label="关闭"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m7 7-7-7 7-7"></path></svg></button></div><input id="localsearch-input" class="search-input" placeholder="搜索文档" aria-labelledby="localsearch-label" autocomplete="off"><div class="search-actions"><span class="search-loading" aria-live="polite"></span><button class="clear-button" type="reset" disabled title="重置搜索"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm-2 4-6 6m0-6 6 6"></path></svg></button></div></form><ul class="results"></ul><div class="search-keyboard-shortcuts" aria-hidden="true"><span><kbd aria-label="向上"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m-7 7 7-7 7 7"></path></svg></kbd><kbd aria-label="向下"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m7-7-7 7-7-7"></path></svg></kbd>切换</span><span><kbd aria-label="输入"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 10-5 5 5 5"></path><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></g></svg></kbd>选择</span><span><kbd aria-label="退出">esc</kbd>关闭</span></div></div></div><script>(function(){const appearanceDefault = "auto";
+const appearanceEnabled = true;
+const appearanceTransition = "fade";
+const searchProvider = "local";
+const disableQueryPersistence = false;
+const basePath = "/";
+const lightModeSwitchTitle = "切换为浅色主题";
+const darkModeSwitchTitle = "切换为深色主题";
+
+  (() => {
+    const root = document.documentElement
+    const updateAppearance = dark => {
+      document.querySelectorAll('.vp-switch-appearance').forEach(button => {
+        button.setAttribute('aria-checked', String(dark))
+        button.setAttribute('title', dark ? lightModeSwitchTitle : darkModeSwitchTitle)
+      })
+    }
+    const preferredDark = matchMedia('(prefers-color-scheme: dark)')
+    const setTheme = dark => {
+      dark ||= root.classList.contains('force-dark')
+      root.dataset.theme = dark ? 'dark' : 'light'
+      root.classList.toggle('dark', dark)
+      updateAppearance(dark)
+      document.querySelector('iframe.giscus-frame')?.contentWindow?.postMessage({ giscus: { setConfig: { theme: dark ? 'dark' : 'light' } } }, 'https://giscus.app')
+      document.dispatchEvent(new CustomEvent('theme-change'))
+    }
+    const appearanceKeyframes = (mode, x, y, dark) => {
+      const reverse = values => dark ? values.toReversed() : values
+      const distance = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+      const strategies = {
+        fade: { opacity: reverse(['0', '1']), duration: 300 },
+        'circle-clip': { clipPath: reverse([`circle(0px at ${x}px ${y}px)`, `circle(${distance}px at ${x}px ${y}px)`]), duration: 650 },
+        'horizontal-clip': { clipPath: reverse([`inset(0px ${innerWidth}px 0px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'vertical-clip': { clipPath: reverse([`inset(0px 0px ${innerHeight}px 0px)`, 'inset(0px 0px 0px 0px)']) },
+        'skew-clip': { clipPath: reverse(['polygon(0px 0px, 0px 0px, 0px 0px)', `polygon(0px 0px, ${innerWidth * 2}px 0px, 0px ${innerHeight * 2}px)`]) },
+        'blinds-vertical': { clipPath: reverse(['inset(50% 0% 50% 0%)', 'inset(0 0 0 0)']) },
+        'blinds-horizontal': { clipPath: reverse(['polygon(50% 0, 50% 100%, 50% 100%, 50% 0)', 'polygon(0 0, 0 100%, 100% 100%, 100% 0)']) },
+        'soft-blur-fade': { opacity: reverse(['0', '1']), filter: reverse(['blur(10px)', 'blur(0px)']), duration: 380 },
+        'diamond-reveal': { clipPath: reverse(['polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)', 'polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%)']), duration: 500 },
+      }
+      const { duration = 400, ...keyframes } = strategies[mode] ?? strategies.fade
+      return { duration, keyframes }
+    }
+    const syncAutomaticAppearance = () => {
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      const appearance = localStorage.getItem('vuepress-theme-appearance') || appearanceDefault
+      if (!appearance || appearance === 'auto') setTheme(preferredDark.matches)
+      else setTheme(appearance === 'dark')
+    }
+    updateAppearance(root.dataset.theme === 'dark')
+    preferredDark.addEventListener('change', syncAutomaticAppearance)
+    addEventListener('storage', event => {
+      if (event.key !== 'vuepress-theme-appearance') return
+      if (!appearanceEnabled) return setTheme(root.classList.contains('force-dark'))
+      if (event.newValue === 'dark' || event.newValue === 'light') setTheme(event.newValue === 'dark')
+      else syncAutomaticAppearance()
+    })
+    let printWasDark = false
+    addEventListener('beforeprint', () => {
+      printWasDark = root.dataset.theme === 'dark'
+      if (printWasDark) { root.dataset.theme = 'light'; root.classList.remove('dark') }
+    })
+    addEventListener('afterprint', () => {
+      if (printWasDark) { root.dataset.theme = 'dark'; root.classList.add('dark') }
+    })
+
+    const navbar = document.querySelector('.vp-navbar')
+    const updateNavbarTop = () => navbar?.classList.toggle('top', scrollY === 0)
+    updateNavbarTop()
+    addEventListener('scroll', updateNavbarTop, { passive: true })
+    document.querySelector('.vp-skip-link')?.addEventListener('click', event => {
+      const link = event.currentTarget
+      if (!(link instanceof HTMLAnchorElement)) return
+      const target = document.querySelector(link.hash)
+      if (!(target instanceof HTMLElement)) return
+      const clear = () => { target.removeAttribute('tabindex'); target.removeEventListener('blur', clear) }
+      target.tabIndex = -1
+      target.addEventListener('blur', clear)
+      target.focus()
+      scrollTo(0, 0)
+    })
+
+    document.querySelectorAll('.vp-switch-appearance').forEach(button => button.addEventListener('click', async event => {
+      const next = root.dataset.theme !== 'dark'
+      const apply = () => {
+        localStorage.setItem('vuepress-theme-appearance', next ? 'dark' : 'light')
+        setTheme(next)
+      }
+      if (appearanceTransition === false || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        apply()
+        return
+      }
+      try {
+        root.classList.add('appearance-transition')
+        const transition = document.startViewTransition(apply)
+        void transition.finished.finally(() => root.classList.remove('appearance-transition'))
+        await transition.ready
+        const { keyframes, duration } = appearanceKeyframes(appearanceTransition, event.clientX, event.clientY, next)
+        root.animate(keyframes, {
+          duration,
+          easing: 'ease-in',
+          fill: 'forwards',
+          pseudoElement: `::view-transition-${next ? 'old' : 'new'}(root)`,
+        })
+      } catch {
+        root.classList.remove('appearance-transition')
+        apply()
+      }
+    }))
+
+    const button = document.querySelector('.vp-navbar-hamburger')
+    const menu = document.querySelector('.vp-nav-screen')
+    let screenTimer
+    let screenFrame
+    const screenClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const resetScreen = visible => {
+      clearTimeout(screenTimer)
+      cancelAnimationFrame(screenFrame)
+      menu?.classList.remove(...screenClasses)
+      if (menu instanceof HTMLElement) menu.hidden = !visible
+    }
+    const toggleScreen = open => {
+      resetScreen(true)
+      if (!(menu instanceof HTMLElement) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        resetScreen(open)
+        if (!open) document.body.style.overflow = ''
+        return
+      }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`)
+      void menu.offsetWidth
+      menu.classList.add(`fade-in-${phase}-active`)
+      screenFrame = requestAnimationFrame(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        screenTimer = setTimeout(() => {
+          resetScreen(open)
+          if (!open) document.body.style.overflow = ''
+        }, 200)
+      })
+    }
+    const expandTimers = new WeakMap()
+    const expandClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetExpand = (container, visible) => {
+      const pending = expandTimers.get(container)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      expandTimers.delete(container)
+      container.classList.remove(...expandClasses)
+      container.style.maxHeight = ''
+      container.style.transition = ''
+      container.style.display = visible ? '' : 'none'
+    }
+    const toggleExpand = (container, open) => {
+      resetExpand(container, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetExpand(container, open)
+      const phase = open ? 'enter' : 'leave'
+      const from = `fade-in-height-expand-${phase}-from`
+      const active = `fade-in-height-expand-${phase}-active`
+      const to = `fade-in-height-expand-${phase}-to`
+      container.classList.add(from, active)
+      if (open) {
+        container.style.transition = 'none'
+        const height = container.offsetHeight
+        container.style.maxHeight = '0px'
+        void container.offsetWidth
+        container.style.transition = ''
+        container.style.maxHeight = `${height}px`
+      } else {
+        container.style.maxHeight = `${container.offsetHeight}px`
+        void container.offsetWidth
+        container.style.maxHeight = '0px'
+      }
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        pending.frame = requestAnimationFrame(() => {
+          container.classList.remove(from)
+          container.classList.add(to)
+          pending.timer = setTimeout(() => resetExpand(container, open), 300)
+        })
+      })
+      expandTimers.set(container, pending)
+    }
+    const closeMobileMenu = () => {
+      button?.setAttribute('aria-expanded', 'false')
+      button?.classList.remove('active')
+      document.querySelector('.vp-navbar')?.classList.remove('screen-open')
+      menu?.querySelectorAll('.vp-nav-screen-menu-group.open').forEach(group => {
+        group.classList.remove('open')
+        group.querySelector('.button')?.setAttribute('aria-expanded', 'false')
+        const container = group.querySelector('.vp-nav-screen-menu-group-container')
+        if (container instanceof HTMLElement) resetExpand(container, false)
+      })
+      const translations = menu?.querySelector('.vp-nav-screen-translations.open')
+      translations?.classList.remove('open')
+      translations?.querySelector('.title')?.setAttribute('aria-expanded', 'false')
+      const translationsContainer = translations?.querySelector('.vp-nav-screen-translations-container')
+      if (translationsContainer instanceof HTMLElement) resetExpand(translationsContainer, false)
+      toggleScreen(false)
+    }
+    button?.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true'
+      if (!open) return closeMobileMenu()
+      button.setAttribute('aria-expanded', 'true')
+      button.classList.add('active')
+      document.querySelector('.vp-navbar')?.classList.add('screen-open')
+      document.body.style.overflow = 'hidden'
+      toggleScreen(true)
+    })
+    menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu))
+    menu?.querySelectorAll('.vp-nav-screen-menu-group > .button').forEach(groupButton => groupButton.addEventListener('click', () => {
+      const group = groupButton.closest('.vp-nav-screen-menu-group')
+      const container = group?.querySelector('.vp-nav-screen-menu-group-container')
+      const open = groupButton.getAttribute('aria-expanded') !== 'true'
+      groupButton.setAttribute('aria-expanded', String(open))
+      group?.classList.toggle('open', open)
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    }))
+    const mobileTranslations = menu?.querySelector('.vp-nav-screen-translations')
+    const mobileTranslationsButton = mobileTranslations?.querySelector('.title')
+    mobileTranslationsButton?.addEventListener('click', () => {
+      const open = mobileTranslationsButton.getAttribute('aria-expanded') !== 'true'
+      mobileTranslationsButton.setAttribute('aria-expanded', String(open))
+      mobileTranslations?.classList.toggle('open', open)
+      const container = mobileTranslations?.querySelector('.vp-nav-screen-translations-container')
+      if (container instanceof HTMLElement) toggleExpand(container, open)
+    })
+
+    const flyouts = [...document.querySelectorAll('.vp-flyout')]
+    const closeFlyouts = except => flyouts.forEach(flyout => {
+      if (flyout === except) return
+      const button = flyout.querySelector('.flyout-button')
+      button?.setAttribute('aria-expanded', 'false')
+      if (button instanceof HTMLElement) delete button.dataset.clickedOpen
+    })
+    flyouts.forEach(flyout => {
+      const trigger = flyout.querySelector('.flyout-button')
+      const setOpen = open => trigger?.setAttribute('aria-expanded', String(open))
+      flyout.addEventListener('mouseenter', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('mouseleave', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      })
+      flyout.addEventListener('focusin', () => { closeFlyouts(flyout); setOpen(true) })
+      flyout.addEventListener('focusout', event => {
+        if (!(event.relatedTarget instanceof Node) || !flyout.contains(event.relatedTarget)) {
+          if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+          setOpen(false)
+        }
+      })
+      trigger?.addEventListener('click', () => {
+        const open = !(trigger instanceof HTMLElement && trigger.dataset.clickedOpen === 'true')
+        closeFlyouts(flyout)
+        if (trigger instanceof HTMLElement) {
+          if (open) trigger.dataset.clickedOpen = 'true'
+          else delete trigger.dataset.clickedOpen
+        }
+        setOpen(open)
+      })
+      flyout.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+        if (trigger instanceof HTMLElement) delete trigger.dataset.clickedOpen
+        setOpen(false)
+      }))
+    })
+
+    document.addEventListener('pointerdown', event => {
+      if (!(event.target instanceof Element)) return
+      if (!event.target.closest('.vp-flyout')) closeFlyouts()
+    })
+
+    const dialog = document.querySelector('.VPLocalSearchBox')
+    const searchButton = document.querySelector('.search-button')
+    if (dialog) document.body.append(dialog)
+    const searchInput = dialog?.querySelector('.search-input')
+    const results = dialog?.querySelector('.results')
+    const clearButton = dialog?.querySelector('.clear-button')
+    const loading = dialog?.querySelector('.search-loading')
+    const searchNoResultsText = dialog instanceof HTMLElement ? dialog.dataset.noResults || 'No results for' : 'No results for'
+    let pagefind
+    let searchTimer
+    let searchRun = 0
+    let selectedIndex = -1
+    let bodyOverflow = ''
+    const searchResults = []
+    const closeSearch = () => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      dialog.hidden = true
+      document.body.style.overflow = bodyOverflow
+      searchButton?.focus()
+    }
+    const setLoading = active => {
+      loading?.classList.toggle('active', active)
+      if (active) {
+        loading?.setAttribute('role', 'status')
+        loading?.setAttribute('aria-label', 'Loading search results')
+      } else {
+        loading?.removeAttribute('role')
+        loading?.removeAttribute('aria-label')
+      }
+    }
+    const selectResult = index => {
+      const links = [...(results?.querySelectorAll('.result') || [])]
+      selectedIndex = links.length ? (index + links.length) % links.length : -1
+      links.forEach((link, i) => {
+        link.classList.toggle('selected', i === selectedIndex)
+        link.parentElement?.setAttribute('aria-selected', String(i === selectedIndex))
+      })
+      links[selectedIndex]?.scrollIntoView({ block: 'nearest' })
+    }
+    const appendHighlighted = (target, value, query) => {
+      const text = String(value || '')
+      const needle = query.trim().toLocaleLowerCase(root.lang)
+      if (!needle) {
+        target.textContent = text
+        return
+      }
+      const lower = text.toLocaleLowerCase(root.lang)
+      let offset = 0
+      let index
+      while ((index = lower.indexOf(needle, offset)) >= 0) {
+        target.append(document.createTextNode(text.slice(offset, index)))
+        const mark = document.createElement('mark')
+        mark.textContent = text.slice(index, index + needle.length)
+        target.append(mark)
+        offset = index + needle.length
+      }
+      target.append(document.createTextNode(text.slice(offset)))
+    }
+    const chevron = () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      svg.setAttribute('width', '18')
+      svg.setAttribute('height', '18')
+      svg.setAttribute('viewBox', '0 0 24 24')
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      for (const [name, value] of Object.entries({ fill: 'none', stroke: 'currentColor', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2', d: 'm9 18 6-6-6-6' })) path.setAttribute(name, value)
+      svg.append(path)
+      return svg
+    }
+    const renderResults = (items, query) => {
+      searchResults.splice(0, searchResults.length, ...items)
+      results?.replaceChildren()
+      if (!results) return
+      for (const attribute of ['id', 'role', 'aria-labelledby']) results.removeAttribute(attribute)
+      if (items.length) {
+        results.id = 'localsearch-list'
+        results.setAttribute('role', 'listbox')
+        results.setAttribute('aria-labelledby', 'localsearch-label')
+        dialog?.setAttribute('aria-owns', 'localsearch-list')
+      } else {
+        dialog?.removeAttribute('aria-owns')
+      }
+      if (query && !items.length) {
+        const empty = document.createElement('li')
+        empty.className = 'no-results'
+        const strong = document.createElement('strong')
+        strong.textContent = query
+        empty.append(`${searchNoResultsText} "`, strong, '"')
+        results.append(empty)
+      }
+      items.forEach((item, index) => {
+        const li = document.createElement('li')
+        li.setAttribute('role', 'option')
+        li.setAttribute('aria-selected', String(index === 0))
+        const link = document.createElement('a')
+        link.href = !item.url?.startsWith('/') || basePath === '/' || item.url.startsWith(basePath) ? item.url : `${basePath}${item.url.replace(/^\/+/, '')}`
+        link.className = `result${index === 0 ? ' selected' : ''}`
+        link.setAttribute('aria-label', [...item.parents, item.title].join(' > '))
+        const body = document.createElement('div')
+        const titles = document.createElement('div')
+        titles.className = 'titles'
+        const icon = document.createElement('span')
+        icon.className = 'title-icon'
+        icon.textContent = '#'
+        titles.append(icon)
+        for (const parent of item.parents) {
+          const title = document.createElement('span')
+          title.className = 'title'
+          const text = document.createElement('span')
+          text.className = 'text'
+          text.textContent = parent
+          title.append(text, chevron())
+          titles.append(title)
+        }
+        const main = document.createElement('span')
+        main.className = 'title main'
+        const text = document.createElement('span')
+        text.className = 'text'
+        appendHighlighted(text, item.title, query)
+        main.append(text)
+        titles.append(main)
+        body.append(titles)
+        link.append(body)
+        link.addEventListener('mouseenter', () => selectResult(index))
+        link.addEventListener('focus', () => selectResult(index))
+        link.addEventListener('click', closeSearch)
+        li.append(link)
+        results.append(li)
+      })
+      selectedIndex = items.length ? 0 : -1
+    }
+    const runSearch = async query => {
+      const run = ++searchRun
+      if (!query.trim()) {
+        renderResults([], '')
+        setLoading(false)
+        return
+      }
+      setLoading(true)
+      try {
+        pagefind ||= await import(/* @vite-ignore */ `${basePath}pagefind/pagefind.js`).then(async module => {
+          await module.init()
+          return module
+        })
+        const response = await pagefind.search(query)
+        const pages = await Promise.all(response.results.map(result => result.data()))
+        if (run !== searchRun) return
+        const items = pages.flatMap(data => {
+          const pageTitle = data.meta?.title || data.title || data.url
+          const matches = data.sub_results?.length ? data.sub_results : [{ title: pageTitle, url: data.url }]
+          return matches.map(match => ({
+            title: match.title || pageTitle,
+            url: match.url || data.url,
+            parents: (match.url || data.url) === data.url ? [] : [pageTitle],
+          }))
+        }).slice(0, 16)
+        renderResults(items, query)
+      } catch {
+        if (run === searchRun) renderResults([], query)
+      } finally {
+        if (run === searchRun) setLoading(false)
+      }
+    }
+    const openSearch = async () => {
+      if (!(dialog instanceof HTMLElement) || !dialog.hidden) return
+      closeFlyouts()
+      closeMobileMenu()
+      dialog.hidden = false
+      bodyOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      history.pushState(null, '', null)
+      if (document.body.dataset.pagefindReady !== 'true') {
+        renderResults([{ title: root.lang.startsWith('zh') ? '快速开发模式未生成搜索索引，请先执行 pnpm build。' : 'The development preview has no search index. Run pnpm build first.', url: location.pathname, parents: [] }], '')
+        return
+      }
+      const saved = disableQueryPersistence ? '' : sessionStorage.getItem('vuepress-plume:mini-search-filter') || ''
+      if (searchInput instanceof HTMLInputElement) searchInput.value = saved
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !saved
+      await runSearch(saved)
+      requestAnimationFrame(() => { searchInput?.focus(); searchInput?.select() })
+    }
+    searchButton?.addEventListener('click', openSearch)
+    dialog?.querySelector('.back-button')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.backdrop')?.addEventListener('click', closeSearch)
+    dialog?.querySelector('.search-bar')?.addEventListener('pointerup', event => {
+      if (event.pointerType === 'mouse') {
+        searchInput?.focus()
+        searchInput?.select()
+      }
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('submit', event => {
+      event.preventDefault()
+      if (selectedIndex >= 0) location.href = searchResults[selectedIndex].url
+    })
+    dialog?.querySelector('.search-bar')?.addEventListener('reset', event => {
+      event.preventDefault()
+      clearTimeout(searchTimer)
+      if (searchInput instanceof HTMLInputElement) searchInput.value = ''
+      if (!disableQueryPersistence) sessionStorage.removeItem('vuepress-plume:mini-search-filter')
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = true
+      runSearch('')
+      searchInput?.focus()
+    })
+    searchInput?.addEventListener('input', () => {
+      const query = searchInput.value
+      if (!disableQueryPersistence) sessionStorage.setItem('vuepress-plume:mini-search-filter', query)
+      if (clearButton instanceof HTMLButtonElement) clearButton.disabled = !query
+      clearTimeout(searchTimer)
+      searchTimer = setTimeout(() => runSearch(query), 200)
+    })
+    dialog?.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        closeSearch()
+        return
+      }
+      if (event.key === 'Tab') {
+        const focusable = [...dialog.querySelectorAll('button:not([disabled]), input, a[href]')].filter(element => element instanceof HTMLElement && !element.hidden && element.getClientRects().length)
+        const first = focusable[0]
+        const last = focusable.at(-1)
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault()
+          last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          first?.focus()
+        }
+      }
+      const macControl = root.classList.contains('mac') && event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey
+      const offset = event.key === 'ArrowDown' || (macControl && event.key.toLowerCase() === 'n') ? 1
+        : event.key === 'ArrowUp' || (macControl && event.key.toLowerCase() === 'p') ? -1 : 0
+      if (!offset || !searchResults.length) return
+      event.preventDefault()
+      selectResult(selectedIndex + offset)
+    })
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeSearch()
+        closeFlyouts()
+        closeMobileMenu()
+      }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        if (searchProvider !== 'local') return
+        event.preventDefault()
+        openSearch()
+      }
+      const target = event.target
+      const editing = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName))
+      if (searchProvider === 'local' && event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !editing) {
+        event.preventDefault()
+        openSearch()
+      }
+    })
+    addEventListener('popstate', event => {
+      if (!(dialog instanceof HTMLElement) || dialog.hidden) return
+      event.preventDefault()
+      closeSearch()
+    })
+  })()
+})();</script><div class="vp-local-nav has-sidebar"><button class="menu" type="button" aria-expanded="false" aria-controls="SidebarNav"><span class="vpi-align-left menu-icon" aria-hidden="true"></span><span class="menu-text">菜单</span></button><div class="vp-local-nav-outline-dropdown"><button class="outline-toggle" type="button" aria-expanded="false">此页内容<span class="vpi-chevron-right icon" aria-hidden="true"></span></button><div class="outline-mask" hidden></div><div class="items" hidden><div class="outline"><ul class="nested"><li><a class="outline-link" href="#公告板">公告板</a></li><li><a class="outline-link" href="#文章封面">文章封面</a></li><li><a class="outline-link" href="#页面过渡">页面过渡</a></li><li><a class="outline-link" href="#外观">外观</a></li><li><a class="outline-link" href="#多语言">多语言</a></li><li><a class="outline-link" href="#导航栏">导航栏</a></li><li><a class="outline-link" href="#页面与正文选项">页面与正文选项</a></li><li><a class="outline-link" href="#布局插槽">布局插槽</a></li><li><a class="outline-link" href="#自动-frontmatter">自动 frontmatter</a></li><li><a class="outline-link" href="#文章分页">文章分页</a></li><li><a class="outline-link" href="#post-与-doc-集合">Post 与 doc 集合</a></li><li><a class="outline-link" href="#可信图表脚本">可信图表脚本</a></li><li><a class="outline-link" href="#媒体嵌入">媒体嵌入</a></li><li><a class="outline-link" href="#markdown-图标">Markdown 图标</a></li><li><a class="outline-link" href="#社交链接与页脚">社交链接与页脚</a></li><li><a class="outline-link" href="#友情链接页">友情链接页</a></li><li><a class="outline-link" href="#公告栏">公告栏</a></li><li><a class="outline-link" href="#搜索服务">搜索服务</a></li><li><a class="outline-link" href="#资源链接替换">资源链接替换</a></li><li><a class="outline-link" href="#构建期图片尺寸">构建期图片尺寸</a></li><li><a class="outline-link" href="#内容加密">内容加密</a></li><li><a class="outline-link" href="#git-贡献者与变更记录">Git 贡献者与变更记录</a></li><li><a class="outline-link" href="#评论服务">评论服务</a></li><li><a class="outline-link" href="#项目结构">项目结构</a></li><li><a class="outline-link" href="#配置字段组件">配置字段组件</a></li><li><a class="outline-link" href="#页面字段">页面字段</a></li></ul></div></div></div></div><div class="vp-backdrop" hidden></div><aside class="vp-sidebar" data-sidebar-signature="Gc339bMWFobppkKd"><div class="curtain"></div><nav id="SidebarNav" class="nav" aria-labelledby="sidebar-aria-label" tabindex="-1"><span id="sidebar-aria-label" class="visually-hidden">侧边栏导航</span><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0 collapsible has-active"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path stroke-linecap="round" d="M24 4v37"/><path d="M24 8h15.545L42 12l-2.455 4H24zm0 14H8.455L6 26l2.455 4H24z"/><path stroke-linecap="round" d="M16 42h16"/></g></svg></span><h2 class="text"><span>指南</span></h2><button class="caret" type="button" aria-label="Collapse 指南" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><section class="vp-sidebar-item sidebar-item level-1 collapsible has-active"><div class="item" role="button" tabindex="0"><div class="indicator"></div><span class="vp-icon icon-construction" data-provider="iconify" aria-hidden="true" style></span><h3 class="text"><span>基础</span></h3><button class="caret" type="button" aria-label="Collapse 基础" aria-expanded="true" tabindex="-1"><span class="vpi-chevron-right caret-icon"></span></button></div><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>零基础快速开始</span><span class="vp-badge tip vp-menu-badge" data-astro-cid-3ffhilwq>开始</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link is-active has-active"><div class="item"><div class="indicator"></div><a aria-current="page" href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>站点配置</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>部署站点</span></p></a></div></div><div class="vp-sidebar-item sidebar-item level-2 is-link"><div class="item"><div class="indicator"></div><a href="/docs/guide/api/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>公共 API 与样式定制</span><span class="vp-badge warning vp-menu-badge" data-astro-cid-3ffhilwq>New</span></p></a></div></div></div></div></section><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="/docs/guide/content/" data-astro-cid-p2o5vn2b="true" class="vp-link link"><p class="text"><span>内容能力</span></p></a></div></div></div></div></section></div><div class="group no-transition"><section class="vp-sidebar-item sidebar-item level-0"><div class="items-wrapper"><div class="items"><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon separator icon-more-circle" data-provider="iconify" aria-hidden="true" style></span><p class="text separator"><span>参考</span></p></div></div><div class="vp-sidebar-item sidebar-item level-1 is-link"><div class="item"><div class="indicator"></div><span class="vp-icon iconify is-svg" data-provider="iconify" aria-hidden="true" style><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.358 20.162c-1.186-1.07-1.532-3.316-1.038-4.944c.856 1.026 2.043 1.352 3.272 1.535c1.897.283 3.76.177 5.522-.678c.202-.098.388-.229.608-.36c.166.473.209.95.151 1.437c-.14 1.185-.738 2.1-1.688 2.794c-.38.277-.782.525-1.175.787c-1.205.804-1.531 1.747-1.078 3.119l.044.148a3.16 3.16 0 0 1-1.407-1.188a3.3 3.3 0 0 1-.544-1.815c-.004-.32-.004-.642-.048-.958c-.106-.769-.472-1.113-1.161-1.133c-.707-.02-1.267.411-1.415 1.09c-.012.053-.028.104-.045.165zm-5.961-4.445s3.24-1.575 6.49-1.575l2.451-7.565c.092-.366.36-.614.662-.614s.57.248.662.614l2.45 7.565c3.85 0 6.491 1.575 6.491 1.575L16.088.727C15.93.285 15.663 0 15.303 0H8.697c-.36 0-.615.285-.784.727z"/></svg></span><a href="https://astro.build/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link vp-external-link-icon"><p class="text"><span>Astro</span></p><span class="visually-hidden" data-astro-cid-p2o5vn2b>（在新窗口打开）</span></a></div></div></div></div></section></div></nav></aside><div class="vp-sidebar-control"><button class="toggle-sidebar-btn" type="button" aria-label="收起侧边栏"><span class="vpi-sidebar-close" aria-hidden="true"></span></button></div><script>
+  (() => {
+    const sidebar = document.querySelector('.vp-sidebar')
+    const backdrop = document.querySelector('.vp-backdrop')
+    const menu = document.querySelector('.vp-local-nav .menu')
+    let backdropTimer
+    const closeSidebar = () => {
+      sidebar?.classList.remove('open')
+      menu?.setAttribute('aria-expanded', 'false')
+      if (backdrop instanceof HTMLElement) {
+        backdrop.classList.remove('show')
+        clearTimeout(backdropTimer)
+        backdropTimer = setTimeout(() => { backdrop.hidden = true }, 250)
+      }
+      document.body.style.overflow = ''
+    }
+    menu?.addEventListener('click', () => {
+      sidebar?.classList.add('open')
+      menu.setAttribute('aria-expanded', 'true')
+      if (backdrop instanceof HTMLElement) {
+        clearTimeout(backdropTimer)
+        backdrop.hidden = false
+        requestAnimationFrame(() => backdrop.classList.add('show'))
+      }
+      document.body.style.overflow = 'hidden'
+      sidebar?.querySelector('.nav')?.focus()
+    })
+    backdrop?.addEventListener('click', closeSidebar)
+    sidebar?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeSidebar))
+
+    const collapseTimers = new WeakMap()
+    const collapseClasses = ['fade-in-height-expand-enter-from', 'fade-in-height-expand-enter-active', 'fade-in-height-expand-enter-to', 'fade-in-height-expand-leave-from', 'fade-in-height-expand-leave-active', 'fade-in-height-expand-leave-to']
+    const resetCollapse = (element, visible) => {
+      const pending = collapseTimers.get(element)
+      clearTimeout(pending?.timer)
+      cancelAnimationFrame(pending?.frame)
+      collapseTimers.delete(element)
+      element.classList.remove(...collapseClasses)
+      element.style.removeProperty('max-height')
+      element.hidden = !visible
+    }
+    const setCollapse = (element, visible) => {
+      resetCollapse(element, true)
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return resetCollapse(element, visible)
+      const phase = visible ? 'enter' : 'leave'
+      const height = element.scrollHeight
+      element.style.maxHeight = `${visible ? 0 : height}px`
+      element.classList.add(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-active`)
+      void element.offsetHeight
+      const pending = {}
+      pending.frame = requestAnimationFrame(() => {
+        element.classList.replace(`fade-in-height-expand-${phase}-from`, `fade-in-height-expand-${phase}-to`)
+        element.style.maxHeight = `${visible ? height : 0}px`
+        pending.timer = setTimeout(() => resetCollapse(element, visible), 320)
+      })
+      collapseTimers.set(element, pending)
+    }
+    setTimeout(() => sidebar?.querySelectorAll('.group.no-transition').forEach(group => group.classList.remove('no-transition')), 300)
+
+    sidebar?.addEventListener('click', event => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const item = target.closest('.vp-sidebar-item.collapsible > .item')
+      if (!(item instanceof HTMLElement) || (target.closest('a') && !target.closest('.caret'))) return
+      const group = item.parentElement
+      const content = group?.querySelector(':scope > .items-wrapper')
+      const caret = item.querySelector('.caret')
+      const collapsed = !group?.classList.contains('collapsed')
+      group?.classList.toggle('collapsed', collapsed)
+      if (content instanceof HTMLElement) setCollapse(content, !collapsed)
+      caret?.setAttribute('aria-expanded', String(!collapsed))
+    })
+    sidebar?.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return
+      const target = event.target
+      if (target instanceof HTMLElement && target.matches('.vp-sidebar-item.collapsible > .item')) target.click()
+    })
+
+    const control = document.querySelector('.vp-sidebar-control')
+    control?.querySelector('button')?.addEventListener('click', () => {
+      const collapsed = sidebar?.classList.toggle('collapsed') ?? false
+      control.classList.toggle('collapsed', collapsed)
+      document.querySelector('.vp-doc-container')?.classList.toggle('sidebar-collapsed', collapsed)
+      document.querySelector('.vp-navbar')?.classList.toggle('sidebar-collapsed', collapsed)
+      const icon = control.querySelector('span')
+      icon?.classList.toggle('vpi-sidebar-close', !collapsed)
+      icon?.classList.toggle('vpi-sidebar-open', collapsed)
+    })
+    addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar() })
+
+    requestAnimationFrame(() => {
+      const active = sidebar?.querySelector('.vp-link[aria-current="page"]')
+      if (!(sidebar instanceof HTMLElement) || !(active instanceof HTMLElement)) return
+      const navRect = sidebar.getBoundingClientRect()
+      const activeRect = active.getBoundingClientRect()
+      if (activeRect.top < navRect.top || activeRect.bottom > navRect.bottom) active.scrollIntoView({ block: 'center' })
+    })
+  })()
+</script><div id="VPContent" class="vp-content has-sidebar"><div class="vp-doc-container has-sidebar has-aside" data-outline-range="[2,3]" data-outline-label="此页内容" data-outline-menu-label="菜单" data-outline-print-label="打印" data-outline-aside="right"><div class="container"><div class="aside"><div class="aside-curtain"></div><div class="aside-container"><div class="aside-content"><div class="vp-doc-aside"><nav class="vp-doc-aside-outline has-outline" aria-labelledby="doc-outline-aria-label" role="navigation"><div class="content"><div class="outline-marker"></div><div id="doc-outline-aria-label" aria-level="2" class="outline-title" role="heading"><span>此页内容</span><span class="vpi-print icon" role="button" tabindex="0" aria-label="打印"></span></div><ul class="root"><li><a class="outline-link" href="#公告板">公告板</a></li><li><a class="outline-link" href="#文章封面">文章封面</a></li><li><a class="outline-link" href="#页面过渡">页面过渡</a></li><li><a class="outline-link" href="#外观">外观</a></li><li><a class="outline-link" href="#多语言">多语言</a></li><li><a class="outline-link" href="#导航栏">导航栏</a></li><li><a class="outline-link" href="#页面与正文选项">页面与正文选项</a></li><li><a class="outline-link" href="#布局插槽">布局插槽</a></li><li><a class="outline-link" href="#自动-frontmatter">自动 frontmatter</a></li><li><a class="outline-link" href="#文章分页">文章分页</a></li><li><a class="outline-link" href="#post-与-doc-集合">Post 与 doc 集合</a></li><li><a class="outline-link" href="#可信图表脚本">可信图表脚本</a></li><li><a class="outline-link" href="#媒体嵌入">媒体嵌入</a></li><li><a class="outline-link" href="#markdown-图标">Markdown 图标</a></li><li><a class="outline-link" href="#社交链接与页脚">社交链接与页脚</a></li><li><a class="outline-link" href="#友情链接页">友情链接页</a></li><li><a class="outline-link" href="#公告栏">公告栏</a></li><li><a class="outline-link" href="#搜索服务">搜索服务</a></li><li><a class="outline-link" href="#资源链接替换">资源链接替换</a></li><li><a class="outline-link" href="#构建期图片尺寸">构建期图片尺寸</a></li><li><a class="outline-link" href="#内容加密">内容加密</a></li><li><a class="outline-link" href="#git-贡献者与变更记录">Git 贡献者与变更记录</a></li><li><a class="outline-link" href="#评论服务">评论服务</a></li><li><a class="outline-link" href="#项目结构">项目结构</a></li><li><a class="outline-link" href="#配置字段组件">配置字段组件</a></li><li><a class="outline-link" href="#页面字段">页面字段</a></li></ul></div></nav><div class="spacer"></div></div></div></div></div><div class="content"><div class="content-container"><main class="main"><nav class="vp-breadcrumb" aria-label="面包屑"><ol vocab="https://schema.org/" typeof="BreadcrumbList"><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">首页</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="首页"><meta property="position" content="1"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="/docs/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb">文档中心</a><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="文档中心"><meta property="position" content="2"></li><li property="itemListElement" typeof="ListItem"><span property="item" typeof="WebPage" data-astro-cid-p2o5vn2b="true" class="vp-link no-icon breadcrumb">指南</span><span class="vpi-chevron-right" aria-hidden="true"></span><meta property="name" content="指南"><meta property="position" content="3"></li><li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" aria-current="page" href="/docs/guide/configuration/" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon breadcrumb current">站点配置</a><meta property="name" content="站点配置"><meta property="position" content="4"></li></ol></nav><div class="vp-doc-title"><h1 class="page-title">站点配置</h1><div class="vp-page-context-menu" data-raw-route="/docs/guide/configuration/index.md" data-copy-label="复制页面" data-copying-label="复制中.." data-copied-label="复制成功"><div class="page-context-button"><span class="page-context-copy" role="button" tabindex="0" data-copy-page="/docs/guide/configuration/index.md"><span class="vpi-copy" aria-hidden="true"></span><span class="text">复制页面</span></span><span class="page-context-toggle" role="button" tabindex="0" aria-expanded="false" aria-label="更多页面操作"><span class="vpi-chevron-down" aria-hidden="true"></span></span></div><ul class="page-context-menu" hidden><li><a href="javascript:void(0)" data-copy-page="/docs/guide/configuration/index.md"><span class="vpi-copy" aria-hidden="true"></span><span><span class="text">复制页面</span><small>将页面以 Markdown 格式复制供 LLMs 使用</small></span></a></li><li><a href="/docs/guide/configuration/index.md" target="_blank" rel="noopener noreferrer" aria-label="以 Markdown 格式查看" type="text/markdown"><span class="vpi-markdown" aria-hidden="true"></span><span>以 Markdown 格式查看<span class="vpi-external-link" aria-hidden="true"></span><small>以纯文本查看此页面</small></span></a></li><li><a href="https://chat.openai.com/?prompt=" data-ai-url="https://chat.openai.com/?prompt=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 ChatGPT 中打开"><span class="vpi-chatgpt" aria-hidden="true"></span><span>在 ChatGPT 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 ChatGPT 提问有关此页面</small></span></a></li><li><a href="https://claude.ai/new?q=" data-ai-url="https://claude.ai/new?q=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 Claude 中打开"><span class="vpi-claude" aria-hidden="true"></span><span>在 Claude 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 Claude 提问有关此页面</small></span></a></li><li><a href="https://perplexity.ai/?q=" data-ai-url="https://perplexity.ai/?q=" data-ai-prompt="阅读 {link} 并回答内容相关的问题。" target="_blank" rel="noopener noreferrer" aria-label="在 Perplexity 中打开"><span class="vpi-perplexity" aria-hidden="true"></span><span>在 Perplexity 中打开<span class="vpi-external-link" aria-hidden="true"></span><small>向 Perplexity 提问有关此页面</small></span></a></li></ul></div><script>
+  (() => {
+    const root = document.currentScript?.previousElementSibling
+    if (!(root instanceof HTMLElement)) return
+    const toggle = root.querySelector('.page-context-toggle')
+    const menu = root.querySelector('.page-context-menu')
+    const markdownUrl = new URL(root.dataset.rawRoute || '', location.origin).href
+    root.querySelectorAll('[data-ai-url]').forEach(item => {
+      if (!(item instanceof HTMLAnchorElement)) return
+      item.href = `${item.dataset.aiUrl}${encodeURIComponent((item.dataset.aiPrompt || '').replace('{link}', markdownUrl))}`
+    })
+
+    let markdown = ''
+    let pending
+    const load = () => pending ||= fetch(markdownUrl)
+      .then(response => response.ok ? response.text() : Promise.reject(new Error('Source unavailable')))
+      .then(source => markdown = source.trimStart().replace(/^---[\s\S]+?---/, '').trimStart())
+      .finally(() => { pending = undefined })
+    const setCopyState = state => {
+      const label = root.dataset[state === 'copying' ? 'copyingLabel' : state === 'copied' ? 'copiedLabel' : 'copyLabel'] || ''
+      root.querySelectorAll('[data-copy-page] .text').forEach(item => { item.textContent = label })
+      root.querySelectorAll('[data-copy-page] .vpi-copy').forEach(item => {
+        item.classList.toggle('loading', state === 'copying')
+        item.classList.toggle('copied', state === 'copied')
+      })
+    }
+    root.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => {
+      setCopyState('copying')
+      try {
+        if (!markdown) await load()
+        if (markdown) await navigator.clipboard.writeText(markdown)
+        setCopyState('copied')
+        setTimeout(() => setCopyState('copy'), 1500)
+      } catch {
+        setCopyState('copy')
+      }
+    }))
+    const idle = window.requestIdleCallback || window.requestAnimationFrame || (callback => setTimeout(callback, 0))
+    idle(() => { void load() })
+
+    const close = () => {
+      if (toggle?.getAttribute('aria-expanded') !== 'true') return
+      toggle?.setAttribute('aria-expanded', 'false')
+      toggle?.classList.remove('open')
+      transitionMenu(false)
+    }
+    let transitionTimer
+    let transitionStartTimer
+    const transitionClasses = ['fade-in-enter-from', 'fade-in-enter-active', 'fade-in-enter-to', 'fade-in-leave-from', 'fade-in-leave-active', 'fade-in-leave-to']
+    const transitionMenu = open => {
+      clearTimeout(transitionTimer)
+      clearTimeout(transitionStartTimer)
+      if (!(menu instanceof HTMLElement)) return
+      menu.classList.remove(...transitionClasses)
+      menu.hidden = false
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { menu.hidden = !open; return }
+      const phase = open ? 'enter' : 'leave'
+      menu.classList.add(`fade-in-${phase}-from`, `fade-in-${phase}-active`)
+      void menu.offsetWidth
+      transitionStartTimer = setTimeout(() => {
+        menu.classList.replace(`fade-in-${phase}-from`, `fade-in-${phase}-to`)
+        transitionTimer = setTimeout(() => {
+          menu.classList.remove(...transitionClasses)
+          menu.hidden = !open
+        }, 200)
+      }, 16)
+    }
+    root.querySelectorAll('[role="button"]').forEach(button => button.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); button.click() }
+    }))
+    toggle?.addEventListener('click', event => {
+      event.stopPropagation()
+      const open = toggle.getAttribute('aria-expanded') !== 'true'
+      toggle.setAttribute('aria-expanded', String(open))
+      toggle.classList.toggle('open', open)
+      transitionMenu(open)
+    })
+    document.addEventListener('pointerdown', event => { if (!(event.target instanceof Node) || !root.contains(event.target)) close() })
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') close() })
+  })()
+</script></div><div class="vp-doc-meta"><p class="reading-time"><span class="vpi-books icon" aria-hidden="true"></span><span>约 5188 字</span><span>大约 17 分钟</span></p><p><span class="vpi-tag icon" aria-hidden="true"></span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-15">配置</span><span data-astro-cid-p2o5vn2b="true" class="vp-link tag vp-tag-color-13">Astro</span></p><p class="create-time"><span class="vpi-clock icon" aria-hidden="true"></span><span>2026-08-05</span></p></div><article class="vp-doc plume-content external-link-icon-enabled" data-pagefind-body><p>公共配置位于 <code>site.config.mjs</code>。修改站名、域名和导航后，Astro 开发服务器会自动刷新。最外层的 <code>defineSiteConfig()</code> 提供自动补全，为省略的可选区块补充安全默认值，并在启动时报告无效域名、路径和分页等配置。</p>
+<h2 id="公告板" tabindex="-1"><a class="header-anchor" href="#公告板"><span>公告板</span></a></h2>
+<p>公告板默认关闭。将 <code>siteConfig.bulletin.enabled</code> 改为 <code>true</code> 后，可选择 <code>top-left</code>、<code>top-right</code>、<code>bottom-left</code>、<code>bottom-right</code> 或 <code>center</code> 布局，并通过 <code>always</code>、<code>session</code>、<code>once</code> 控制关闭后的显示周期。<code>contentType: 'markdown'</code> 会使用与正文相同的 Markdown 渲染器，也可以通过 <code>contentFile</code> 读取独立的 Markdown 或 HTML 文件。</p>
+<h2 id="文章封面" tabindex="-1"><a class="header-anchor" href="#文章封面"><span>文章封面</span></a></h2>
+<p><code>siteConfig.postCover</code> 设置全站文章封面布局，支持 <code>left</code>、<code>right</code>、<code>odd-left</code>、<code>odd-right</code> 和 <code>top</code>。文章 frontmatter 可用 <code>coverStyle</code> 覆盖布局、比例、侧栏宽度和紧凑模式：</p>
+<div class="language-yaml" data-highlighter="shiki" data-ext="yaml"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#998418;--shiki-dark:#B8A965">cover</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> /img/cover.webp</span></span>
+<span class="line"><span style="--shiki-light:#998418;--shiki-dark:#B8A965">coverStyle</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">layout</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> right</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">ratio</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D"> 4/3</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">width</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 240</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">compact</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span></span>
+<span class="line"></span></code></pre></div><p><code>siteConfig.profile</code> 支持 <code>avatar</code>（兼容旧名 <code>url</code>）、<code>name</code>、<code>description</code>、<code>circle</code>、<code>location</code>、<code>organization</code> 和 <code>layout: 'left' | 'right'</code>。移动端会使用同一份资料显示底部弹窗和分类导航；Plume 已弃用的顶层或 locale <code>avatar: { ... }</code> 也会回退为 <code>profile</code>。</p>
+<p>将 <code>profile</code> 设为 <code>false</code> 会移除桌面资料卡，并像 Plume 一样在文章列表上方显示标签、分类和归档的横向本地导航；移动端仍保留包含这三项入口的弹层按钮。</p>
+<p>在手机宽度下，左右封面会与 Plume 一样自动切换到顶部。</p>
+<h2 id="页面过渡" tabindex="-1"><a class="header-anchor" href="#页面过渡"><span>页面过渡</span></a></h2>
+<p><code>transition.page</code> 在完整页面导航时对内容区域执行与 Plume 一致的 <code>fade-slide-y</code> 先退出、再进入动画，不会创建容易造成主题闪烁的整页浏览器快照；文档左侧栏不会执行完整页面导航，而会像 Plume 一样保留公共页面外壳，只更新正文、目录和当前导航状态。博客列表、分类、标签与归档之间也会保留共用的头部和资料侧栏，只切换集合内容。系统开启“减少动态效果”时自动禁用完整页面动画。设置 <code>transition: false</code> 可关闭全部过渡，或仅设置 <code>transition.page: false</code> 关闭完整页面跳转动画。</p>
+<h2 id="外观" tabindex="-1"><a class="header-anchor" href="#外观"><span>外观</span></a></h2>
+<p><code>appearance</code> 与 Plume 一致，默认为 <code>true</code>，会跟随系统首选配色并记住用户手动选择。设为 <code>'dark'</code> 会在没有已保存选择时默认使用深色；设为 <code>false</code> 会固定浅色并隐藏所有外观开关；设为 <code>'force-dark'</code> 会固定深色并隐藏开关。locale 内的同名配置可覆盖全局值。</p>
+<p><code>transition.appearance</code> 支持 <code>fade</code>、<code>circle-clip</code>、<code>horizontal-clip</code>、<code>vertical-clip</code>、<code>skew-clip</code>、<code>blinds-vertical</code>、<code>blinds-horizontal</code>、<code>soft-blur-fade</code> 和 <code>diamond-reveal</code>。设置为 <code>false</code>，或系统开启“减少动态效果”时，会立即切换而不执行 View Transition。打印深色页面时会临时使用浅色，打印完成后恢复。</p>
+<h2 id="多语言" tabindex="-1"><a class="header-anchor" href="#多语言"><span>多语言</span></a></h2>
+<p><code>locales</code> 可配置任意数量的语言；每种语言用 <code>home</code> 指定路径前缀，内容放在同名目录或在 frontmatter 显式填写 <code>lang</code>。框架会为每种已配置语言生成博客、标签、分类、归档、分页数据、LLM 文档和 SEO alternate，并在语言下拉框列出确实存在的翻译页面。</p>
+<p>Plume 的简体中文、繁体中文、英语、德语、法语、俄语、日语和韩语预设均已内置，识别 <code>zh-CN</code>、<code>zh-TW</code>、<code>en-US</code>、<code>de-DE</code>、<code>fr-FR</code>、<code>ru-RU</code>、<code>ja-JP</code>、<code>ko-KR</code> 及其短名称。站点名称、说明、导航等业务字段仍应在对应 locale 中填写；同名字段可覆盖预设文案。</p>
+<h2 id="导航栏" tabindex="-1"><a class="header-anchor" href="#导航栏"><span>导航栏</span></a></h2>
+<p>每个 locale 的 <code>navbar</code> 接受 Plume 的字符串链接，以及 <code>{ text, link, icon, badge, activeMatch, prefix, items, target, rel, noIcon }</code>；旧字段 <code>navigation</code> 继续兼容。<code>label</code> 与 <code>href</code> 也作为兼容别名保留。字符串指向站内内容时会自动读取页面标题、图标和徽章；<code>prefix</code> 会递归拼接组内相对链接，最多显示两层下拉分组。省略 <code>navbar</code> 时会根据当前语言的第一个 Post 集合自动生成首页、文章、标签和归档入口。</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">navbar</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/docs/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">博客</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/blog/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> activeMatch</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">^/(blog|article)/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">material-symbols:article-outline</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">指南</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">prefix</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/docs/guide/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">items</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">[</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">配置</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">configuration/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> badge</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#bda437;--shiki-dark:#e6cc77">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">New</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">warning</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#bda437;--shiki-dark:#e6cc77">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> text</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Astro</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://astro.build/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">simple-icons:astro</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>外链默认在新窗口打开并显示外链标识，<code>noIcon: true</code> 可隐藏该标识。导航图标复用 Markdown 图标提供方，因此支持 Iconify、IconFont、Font Awesome、图片 URL 和 <code>{ svg }</code>。</p>
+<p>全局配置先作为默认值，再与当前 locale 的对象字段浅合并；一个语言只需填写不同的部分。locale 可独立覆盖 <code>logo</code>、<code>logoDark</code>、<code>profile</code>、<code>social</code>、<code>navbarSocialInclude</code>、<code>appearance</code>、<code>transition</code>、<code>footer</code>、<code>outline</code>、<code>aside</code>、<code>externalLinkIcon</code> 和 <code>createTime</code>，不会继承另一种语言的导航或文案。单页 frontmatter 使用 <code>navbar: false</code> 可隐藏导航栏。</p>
+<h2 id="页面与正文选项" tabindex="-1"><a class="header-anchor" href="#页面与正文选项"><span>页面与正文选项</span></a></h2>
+<p><code>pageLayout</code> 支持 <code>home</code>、<code>posts</code>、<code>doc</code>、<code>page</code>、<code>friends</code>、<code>custom</code>、<code>false</code> 和自定义组件名，并兼容 Plume 旧名 <code>blog</code>（等同于 <code>posts</code>）。<code>posts</code> 可配合 <code>collection</code> 指定 Post 集合；<code>page</code> 保留导航栏与专页正文；<code>custom</code>/<code>false</code> 只输出 Markdown 正文；命名组件布局替换主内容区域，但保留主题导航、页脚以及适用的集合侧栏。自定义组件放在 <code>theme/components/layouts/</code>，文件名就是布局名。</p>
+<p>正文目录可通过全局、locale 或单页的 <code>outline</code> 与 <code>aside</code> 配置。<code>externalLinkIcon</code> 默认开启，单页也可关闭；旧字段 <code>externalLink</code> 仍兼容。<code>createTime: 'only-posts'</code> 只在博客文章和文章列表显示创建时间，<code>false</code> 则全站隐藏。<code>plugins.nprogress: false</code> 可关闭站内页面切换时的顶部进度条。</p>
+<h2 id="布局插槽" tabindex="-1"><a class="header-anchor" href="#布局插槽"><span>布局插槽</span></a></h2>
+<p>在 <code>theme/components/slots/</code> 新建与 Plume 插槽同名的 <code>.astro</code> 或 <code>.vue</code> 文件即可注入内容，例如 <code>doc-top.astro</code> 或 <code>DocTop.astro</code>。组件会收到当前可用的 <code>lang</code>、<code>route</code>、<code>entry</code>、<code>layout</code>、<code>posts</code> 等属性；没有对应文件时不会增加额外 DOM。</p>
+<p>支持的布局文件名包括：</p>
+<ul>
+<li>通用：<code>layout-top</code>、<code>layout-bottom</code>、<code>custom-content</code>、<code>footer-content</code>、<code>bulletin-content</code>、<code>not-found</code>；</li>
+<li>导航：<code>nav-bar-title-before/after</code>、<code>nav-bar-content-before/after</code>、<code>nav-bar-menu-before/after</code>、<code>nav-screen-content-before/after</code>、<code>nav-screen-menu-before/after</code>；</li>
+<li>文档与页面：<code>page-top/bottom</code>、<code>doc-top/bottom</code>、<code>doc-before/after</code>、<code>doc-content-before</code>、<code>doc-footer-before</code>、<code>doc-title-before/after</code>、<code>doc-meta-top/bottom/before/after</code>、<code>sidebar-nav-before/after</code>、<code>aside-top/bottom</code>、<code>aside-outline-before/after</code>；</li>
+<li>博客：<code>posts-top/bottom</code>、<code>posts-aside-top/bottom</code>、<code>posts-extract-before/after</code>、<code>posts-post-list-before/after</code>、<code>posts-post-list-pagination-after</code>，以及 <code>posts-tags-*</code>、<code>posts-categories-*</code>、<code>posts-archives-before/after</code>。</li>
+</ul>
+<p><code>FooterContent.astro</code> 与 <code>BulletinContent.astro</code> 的旧式组件覆盖仍兼容；同名插槽文件优先。</p>
+<h2 id="自动-frontmatter" tabindex="-1"><a class="header-anchor" href="#自动-frontmatter"><span>自动 frontmatter</span></a></h2>
+<p><code>autoFrontmatter</code> 默认启用。新 Markdown 缺少字段时，开发、检查或构建前会像 Plume 一样把 <code>title</code>、文件创建时间 <code>createTime</code> 和 8 位随机 <code>permalink</code> 写回源文件，已有字段绝不覆盖。设为 <code>{ permalink: 'filepath' }</code> 可按路径生成稳定链接；安装可选的 <code>pinyin-pro</code> 后会把中文路径转换为拼音。</p>
+<p>全局或集合级配置均可分别关闭 <code>title</code>、<code>createTime</code>、<code>permalink</code>，也可提供同步或异步 <code>transform(data, context, locale)</code>。<code>context</code> 包含 <code>filepath</code>、<code>relativePath</code> 与正文 <code>content</code>；集合配置优先于全局配置。设置 <code>autoFrontmatter: false</code> 可完全关闭源文件写回。</p>
+<h2 id="文章分页" tabindex="-1"><a class="header-anchor" href="#文章分页"><span>文章分页</span></a></h2>
+<p><code>siteConfig.pagination</code> 接受 <code>false</code>、每页文章数，或 <code>{ perPage: 文章数 }</code>。示例项目与 Plume 的默认值均为每页 15 篇。</p>
+<p><code>siteConfig.categoriesExpand</code> 控制分类树默认展开深度，接受数字或 <code>'deep'</code>。分类目录可使用 <code>01.名称</code> 形式控制顺序；数字前缀不会显示，并且任意层级都会保留在分类页和文章面包屑中。</p>
+<p><code>siteConfig.tagsTheme</code> 可设为 <code>'colored'</code>、<code>'gray'</code> 或 <code>'brand'</code>；彩色模式使用 Plume 的完整 18 色预设。<code>siteConfig.meta</code> 可分别开关 <code>tags</code>、<code>readingTime</code>、<code>wordCount</code>、<code>createTime</code>，其中创建时间支持 <code>'short'</code> 和 <code>'long'</code>；设为 <code>false</code> 会全部隐藏，集合仍可单独重新开启字段。<code>postCover: false</code> 会关闭列表封面。单页可用 <code>readingTime: false</code> 隐藏阅读统计。</p>
+<p><code>siteConfig.readingTime</code> 与 Plume 的阅读统计插件一致，支持 <code>false</code>、<code>wordPerMinute</code>，以及按 locale 路径配置的 <code>locales</code>。每个 locale 可覆盖包含 <code>$word</code> 的 <code>word</code>、包含 <code>$time</code> 的 <code>time</code> 和 <code>less1Minute</code>；未配置时使用 Plume 内置的中、英、繁中、德、法、俄、日、韩文案。</p>
+<h2 id="post-与-doc-集合" tabindex="-1"><a class="header-anchor" href="#post-与-doc-集合"><span>Post 与 doc 集合</span></a></h2>
+<p>每个 locale 可配置任意多个 Plume 风格集合；<code>dir</code> 相对于该语言的内容目录：</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">locales</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">zh-CN</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">home</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#998418;--shiki-dark:#B8A965">collections</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">[</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">post</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> dir</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">blog</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> title</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">博客</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">post</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> dir</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">news</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> title</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">新闻</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/updates/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> type</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">doc</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> dir</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">docs</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> title</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">文档</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> sidebar</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">auto</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a13865;--shiki-dark:#d9739f">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Post 集合支持 <code>include</code>、<code>exclude</code>、<code>pagination</code>、<code>postList</code>、<code>link</code>、<code>linkPrefix</code>，标签/分类/归档页的开关、自定义路径与标题，以及集合级 <code>tagsTheme</code>、<code>meta</code>、<code>postCover</code>、<code>profile</code>、<code>social</code>、<code>categoriesExpand</code> 和 <code>categoriesTransform</code>。<code>categoriesTransform</code> 会像 Plume 一样为每篇文章接收从外到内的 <code>{ id, name, sort }[]</code> 分类链，返回值会统一用于文章卡片、面包屑、统计和分类树。生成页、分页 JSON、站点地图和多语言切换都会使用集合的实际路径。</p>
+<p>从旧版 Plume 迁移时，已弃用的顶层 <code>blog</code>、<code>article</code>、<code>notes</code> 以及 locale 内的 <code>notes</code> 会在启动时转换为集合；目标位置已有非空 <code>collections</code> 时以新配置为准。全局、locale 和 Post 集合中的旧 <code>profile.url</code> 也会归一化为 <code>profile.avatar</code>。这些兼容项只用于平滑迁移，新配置应直接使用 <code>collections</code> 与 <code>profile.avatar</code>。</p>
+<p>Doc 集合支持 <code>sidebar: 'auto'</code>，会按目录层级和数字前缀递归生成导航；<code>sidebarCollapsed</code> 控制自动分组初始折叠，<code>sidebarScrollbar</code> 控制滚动条。也可传入字符串或 <code>{ text, link, prefix, icon, badge, collapsed, items }</code> 数组手动编排，<code>items: 'auto'</code> 只自动读取当前分组，<code>link: '---'</code> 生成分隔符。</p>
+<p>还可使用 Plume 的全局多侧栏写法：<code>sidebar: { '/docs/': 'auto', '/guide/': [...] }</code>，按最长路径前缀匹配。值也可写成 <code>{ items, prefix }</code>；单页 <code>sidebar: '/guide/'</code> 可强制选择指定侧栏，<code>sidebar: false</code> 关闭当前页侧栏。侧栏项兼容旧 <code>dir</code> 字段以及 <code>target</code>、<code>rel</code>。</p>
+<p><code>site.config.mjs</code> 已从 <code>./theme/config.mjs</code> 导入 <code>defineSiteConfig</code>。它保留传入的对象引用，并为主题运行必需的可选区块补充默认值。开发主题集成时还可从 <code>theme/node.ts</code> 使用 <code>defineThemeConfig</code>、<code>defineNavbarConfig</code>、<code>defineCollections</code> 和 <code>defineCollection</code>；其余帮助函数仍原样返回传入值。</p>
+<p>Plume 旧式 <code>plugins.copyCode</code>、<code>plugins.shiki</code>、<code>plugins.readingTime</code>、<code>plugins.comment</code>、<code>plugins.watermark</code>、<code>plugins.replaceAssets</code>、<code>plugins.llmstxt</code>、<code>plugins.markdownPower</code>、<code>plugins.markdownChart</code>、<code>plugins.markdownImage</code>、<code>plugins.markdownInclude</code>、<code>plugins.markdownMath</code>、<code>plugins.search</code> 和 <code>plugins.docsearch</code> 均会回退到对应的新式扁平配置；新旧同时存在时以顶层或 <code>markdown</code> 配置为准。<code>markdown.image</code> 完整支持 Plume 的 <code>figure</code>、<code>lazyload</code>、<code>mark</code>、<code>size</code>、<code>legacySize</code> 和 <code>obsidianSize</code> 选项；<code>codeHighlighter: false</code> 会回退到普通代码块。<code>plugins.markdownPower: false</code> 只关闭该增强组，图片、数学、包含、提示与图表仍由各自开关控制。</p>
+<p><code>plugins.seo</code> 对象支持 Plume 的 <code>hostname</code>、<code>author</code>、<code>restrictions</code>、<code>autoDescription</code>、<code>fallBackImage</code>、<code>twitterID</code>、<code>isArticle</code>、<code>ogp</code>、<code>jsonLd</code>、<code>customHead</code> 和 <code>canonical</code>；设为 <code>false</code> 会关闭自动 Open Graph、Twitter Card 与 JSON-LD。Twitter/X 账号优先从 <code>social</code> 链接识别，<code>twitterID</code> 只作为兼容回退。<code>plugins.sitemap</code> 支持 <code>hostname</code>、<code>extraUrls</code>、<code>excludePaths</code>、<code>sitemapFilename</code>、<code>sitemapXSLFilename</code>、<code>sitemapXSLTemplate</code>、<code>changefreq</code>、<code>modifyTimeGetter</code>、<code>devServer</code>、<code>devHostname</code> 和 <code>xmlNameSpace</code>；设为 <code>false</code> 会删除 sitemap 输出及 robots.txt 中的地址。</p>
+<p>页面 frontmatter 的 <code>head</code> 接受 Plume/VuePress 风格的 <code>[tag, attributes, content?]</code> 数组，可添加 <code>meta</code>、<code>link</code>、<code>style</code>、<code>script</code> 或其他合法 head 标签。<code>description</code>、<code>keywords</code>、<code>robots</code> 和 <code>canonical</code> 会覆盖主题生成值；自定义 <code>robots: noindex</code> 也会同时排除 Pagefind 与 sitemap。无刷新导航会同步 JSON-LD 和主题管理的 head 节点；目标页改变外壳、侧栏或自定义 head 时自动回退为完整导航，避免沿用上一页状态。<code>script</code> 与 <code>style</code> 内容按原文输出，只能填写完全可信的内容。</p>
+<p>本地搜索使用 Pagefind；<code>plugins.search.isSearchable(page)</code> 会控制页面是否进入索引，<code>disableQueryPersistence</code> 和 <code>locales</code> 也会生效。Plume 原插件的 <code>miniSearch</code> 分词器选项没有 Pagefind 等价能力，因此只为配置迁移保留类型，不会改变 Pagefind 的分词算法。Plume 顶层的 <code>cache</code> 和 <code>configFile</code> 分别控制 VuePress 编译缓存与配置文件加载；Astro 没有对应运行阶段，这两个字段同样只保留迁移类型，配置后不会改变构建行为，迁移时应删除。</p>
+<h2 id="可信图表脚本" tabindex="-1"><a class="header-anchor" href="#可信图表脚本"><span>可信图表脚本</span></a></h2>
+<p><code>chartjs</code>、<code>echarts</code>、<code>flowchart</code>、<code>markmap</code>、<code>plantuml</code>、<code>mermaid</code> 与 Plume 一样默认关闭，按需在 <code>markdown</code> 中设为 <code>true</code>。<code>plantuml</code> 也接受 <code>@mdit/plugin-plantuml</code> 选项数组，用来限定图表语法、服务地址或输出格式；本示例站为展示能力已显式开启全部六项。</p>
+<p>Chart.js 和 ECharts 的 <code>js</code> / <code>javascript</code> 配置默认不会执行。只有内容完全可信时，才同时开启脚本执行并把对应 Markdown 文件加入允许列表：</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">DANGEROUS_ALLOW_SCRIPT_EXECUTION</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">docs/guide/chart-demo.md</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>允许列表也接受 <code>'*'</code>，但不建议用于包含用户内容的网站；普通图表优先使用 <code>json</code> 配置。</p>
+<h2 id="媒体嵌入" tabindex="-1"><a class="header-anchor" href="#媒体嵌入"><span>媒体嵌入</span></a></h2>
+<p><code>acfun</code>、<code>bilibili</code>、<code>youtube</code>、<code>pdf</code>、<code>audioReader</code> 和 <code>artPlayer</code> 与 Plume 一样默认关闭，可在 <code>markdown</code> 中分别开启。本示例站为展示能力已显式开启全部六项；Obsidian 的 PDF 与视频嵌入也分别依赖 <code>pdf</code> 与 <code>artPlayer</code>。</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">youtube</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">pdf</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> pdfjsUrl</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://static.pengzhanbo.cn/pdfjs/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">audioReader</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">artPlayer</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> true</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>桌面浏览器直接嵌入 PDF；移动端按需加载 PDF.js。<code>pdfjsUrl</code> 应指向包含 <code>web/viewer.html</code> 的 PDF.js 发布目录。ArtPlayer 支持 Plume 的 MP4、MP3、WebM、Ogg、DASH、HLS、TS、FLV、MKV、MOV 与 OGV 类型。</p>
+<h2 id="markdown-图标" tabindex="-1"><a class="header-anchor" href="#markdown-图标"><span>Markdown 图标</span></a></h2>
+<p>正文使用与 Plume 相同的 <code>::名称 =尺寸 /颜色::</code> 语法，例如 <code>::mdi:home =24 /#336f87::</code>。默认 Iconify 会直接内联已安装的图标集合，其他集合在浏览器中从 Iconify 官方 API 按需加载；<code>:[名称 尺寸/颜色]:</code> 旧语法仍兼容。</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">iconify</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> prefix</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">mdi</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>将 <code>provider</code> 改为 <code>iconfont</code> 或 <code>fontawesome</code> 时，可用 <code>assets</code> 配置一个或多个 <code>.css</code> / <code>.js</code> 地址。Font Awesome 支持内置值 <code>fontawesome</code> 和 <code>fontawesome-with-brands</code>，以及 <code>::fontawesome fas:house 2xl::</code> 这种按图标覆盖提供方的写法。</p>
+<p><code>markdown.repl</code> 可分别开启 <code>go</code>、<code>kotlin</code>、<code>rust</code>、<code>python</code>，并通过 <code>theme</code> 指定单个 Shiki 主题或 <code>{ light, dark }</code> 主题。可编辑 REPL 会按需加载高亮器并在输入时更新语法高亮。前三者会把代码发往 Plume 所用的公开运行服务，Python 会按需加载 Pyodide 在浏览器本地执行；只应运行可信、轻量的示例代码。<code>markdown.codeTree</code> 可写成 <code>{ height, icon }</code>，为代码树设置默认高度和文件图标风格，容器自身的同名属性优先。</p>
+<h2 id="社交链接与页脚" tabindex="-1"><a class="header-anchor" href="#社交链接与页脚"><span>社交链接与页脚</span></a></h2>
+<p><code>social</code> 使用与 Plume 相同的数组结构，支持内置 Simple Icons 名称、<code>twitter</code> / <code>weibo</code> 兼容别名和自定义 SVG。<code>navbarSocialInclude</code> 只限制桌面导航栏与“更多”菜单；移动导航和博客资料卡仍显示完整列表。</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">social</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">github</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://github.com/example</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">weibo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://weibo.com/example</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> ariaLabel</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">微博</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> icon</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> svg</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">&#x3C;svg>...&#x3C;/svg></span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> name</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">custom</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> link</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">navbarSocialInclude</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">github</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">weibo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">footer</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">message</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Power by &#x3C;a href="https://astro.build/">Astro&#x3C;/a></span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">copyright</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Copyright © 2026 Example</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>将全局 <code>footer</code> 设为 <code>false</code> 可关闭整站页脚；单页 frontmatter 使用 <code>footer: false</code> 只关闭当前页。</p>
+<h2 id="友情链接页" tabindex="-1"><a class="header-anchor" href="#友情链接页"><span>友情链接页</span></a></h2>
+<p>页面 frontmatter 使用 <code>pageLayout: friends</code>（兼容旧写法 <code>friends: true</code>）即可启用 Plume 友链布局。<code>cols</code> 控制桌面最大列数，<code>contentPosition</code> 控制 Markdown 正文位于列表前后；<code>list</code> 与 <code>groups</code> 均支持头像、描述、所在地、组织、社交链接以及浅色/深色主题颜色。完整示例见 <code>/friends/</code>。</p>
+<h2 id="公告栏" tabindex="-1"><a class="header-anchor" href="#公告栏"><span>公告栏</span></a></h2>
+<p><code>bulletin</code> 支持 <code>top-left</code>、<code>top-right</code>、<code>bottom-left</code>、<code>bottom-right</code>、<code>center</code> 五个位置，以及 <code>always</code>、<code>session</code>、<code>once</code> 三种关闭期限。<code>enablePage</code> 可以用布尔值或接收 <code>{ path }</code> 的函数限制页面；未填写 <code>id</code> 时会根据配置生成稳定标识。示例公告只在 <code>/landing/</code> 展示。</p>
+<h2 id="搜索服务" tabindex="-1"><a class="header-anchor" href="#搜索服务"><span>搜索服务</span></a></h2>
+<p><code>llmstxt: true</code> 会生成 <code>/llms.txt</code>、<code>/llms-full.txt</code>、每页 Plume 风格的 <code>index.md</code> 及兼容的 <code>/raw/</code> 路径，并启用标题旁的页面上下文菜单。Plume 默认关闭此能力；设为 <code>false</code> 后这些文件和菜单会一起消失，单页 <code>llmstxt: false</code> 只排除当前页面。对象写法支持 <code>llmsTxt</code>、<code>llmsFullTxt</code>、<code>llmsPageTxt</code>、<code>stripHTML</code>、<code>locale</code>、<code>domain</code>、<code>linkExtension</code>、<code>filter</code>、<code>transformMarkdown</code>、<code>llmsTxtTemplate</code> 和 <code>llmsTxtTemplateGetter</code>；<code>locale</code> 默认只处理根语言，设为 <code>'all'</code> 才处理全部语言。也兼容 <code>plugins.llmstxt</code>，但推荐使用顶层字段。</p>
+<p>默认使用构建时生成的 Pagefind 本地索引，不需要外部服务：</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">search</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">local</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">locales</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/en/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> placeholder</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Search documentation</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre></div><p>本地搜索的 locale 可覆盖 <code>placeholder</code>、<code>buttonText</code>、<code>resetButtonTitle</code>、<code>backButtonTitle</code>、<code>noResultsText</code> 和 footer 的键盘提示文字；未配置时使用与 Plume 相同的语言预设。</p>
+<p>大型文档站也可切换到与 Plume 相同的 Algolia DocSearch 适配器。客户端与样式仅在选择该提供方时加载，并自动为当前语言添加 <code>lang</code> facet：</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">search</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">algolia</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">appId</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">YOUR_APP_ID</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">apiKey</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">YOUR_SEARCH_API_KEY</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">indexName</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">YOUR_INDEX_NAME</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">locales</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/en/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> placeholder</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Search documentation</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>也支持 DocSearch 的 <code>indices</code>、<code>searchParameters</code>、<code>translations</code>、<code>keyboardShortcuts</code> 与 <code>indexBase</code>。<code>apiKey</code> 必须是只能查询索引的公开搜索密钥，不能填写管理密钥。</p>
+<h2 id="资源链接替换" tabindex="-1"><a class="header-anchor" href="#资源链接替换"><span>资源链接替换</span></a></h2>
+<p><code>replaceAssets</code> 默认关闭。生产构建可把 <code>/images/</code> 下的图片和 <code>/medias/</code> 下的视频、音频、字幕、PDF 链接改写到 CDN；源 Markdown、HTML、CSS 和 JavaScript 文件不会被修改：</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">replaceAssets</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A"> process</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">env</span><span style="--shiki-light:#999999;--shiki-dark:#666666">.</span><span style="--shiki-light:#B07D48;--shiki-dark:#BD976A">NODE_ENV</span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676"> ===</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">production</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">?</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> image</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://images.example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> media</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://media.example.com</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#AB5959;--shiki-dark:#CB7676">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre></div><p>也可直接填写一个字符串或函数以替换全部内置资源类型，或使用 <code>{ find, replacement }</code>、规则数组及 <code>rules</code> 自定义匹配。字符串 <code>find</code> 以 <code>^</code> 开头或 <code>$</code> 结尾时按正则表达式匹配，否则匹配 URL 的开头或结尾。内置规则与 Plume 一样只识别 <code>/images/</code>、<code>/medias/</code> 下的已知资源扩展名。</p>
+<h2 id="构建期图片尺寸" tabindex="-1"><a class="header-anchor" href="#构建期图片尺寸"><span>构建期图片尺寸</span></a></h2>
+<p><code>markdown.imageSize</code> 默认关闭。设为 <code>true</code> 或 <code>'local'</code> 后，生产构建会读取本地图片并为正文 <code>&lt;img&gt;</code> 自动补齐 <code>width</code>、<code>height</code>；设为 <code>'all'</code> 时也会探测远程图片。旧写法 <code>plugins.markdownPower.imageSize</code> 仍兼容：</p>
+<div class="language-js" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">markdown</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">imageSize</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">local</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre></div><p>已有宽高会保留，只缺一项时按原始比例推算。该处理只改变构建产物，不写回 Markdown；远程模式会增加网络请求，并对无法读取的单个地址最多等待 3 秒，因此除非确实需要，优先使用本地模式。出于解析安全考虑，AVIF、HEIF、HEIC、JXL 与 ICNS 暂不自动探测尺寸；图片本身仍可正常使用。</p>
+<h2 id="内容加密" tabindex="-1"><a class="header-anchor" href="#内容加密"><span>内容加密</span></a></h2>
+<p><code>encrypt</code> 与 Plume 一样支持全站门禁、管理员密码和按 Markdown 文件、目录、访问路径或正则表达式匹配的页面规则。密码可以是单个字符串或字符串数组；同一目录或规则解锁后在当前会话继续有效：</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">encrypt</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">global</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#1E754F;--shiki-dark:#4D9375"> false</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">admin</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">REPLACE_WITH_ADMIN_PASSWORD</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">rules</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">notes/private/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">directory-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">/private/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">[</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">reader-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">editor-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">^/(?:en/)?members/</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#393A34;--shiki-dark:#DBD7CAEE">: </span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">member-password</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>单页仍可在 frontmatter 使用 <code>password</code>、<code>passwordHint</code>；<code>::: encrypt</code> 局部容器可使用自身密码或管理员密码，也可由 <code>markdown.encrypt: { password: '默认密码' }</code> 提供默认密码。页面正文和局部内容在构建时使用 PBKDF2 与 AES-GCM 加密，但静态站点门禁不应替代真正的服务端访问控制，敏感数据请勿随公开构建产物发布。示例配置中的密码仅用于演示，实际站点必须替换或删除。</p>
+<h2 id="git-贡献者与变更记录" tabindex="-1"><a class="header-anchor" href="#git-贡献者与变更记录"><span>Git 贡献者与变更记录</span></a></h2>
+<p>生产构建会从每篇 Markdown 的 Git 历史生成最后更新时间和贡献者；开发环境默认跳过，避免反复执行 <code>git log</code>。贡献者默认以内联姓名显示，也可以切换为带头像、链接的正文区块。变更记录与 Plume 一样默认关闭：</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">lastUpdated</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> formatOptions</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">{</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> dateStyle</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">short</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#59873A;--shiki-dark:#80A665"> timeStyle</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">short</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">contributors</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">mode</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">block</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#A0ADA0;--shiki-dark:#758575DD"> // 或 'inline'</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">info</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">[</span></span>
+<span class="line"><span class="indent">  </span><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">{</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> username</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">octocat</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> name</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Site author</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span><span style="--shiki-light:#998418;--shiki-dark:#B8A965"> alias</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Local Git Name</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#a65e2b;--shiki-dark:#d4976c">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#999999;--shiki-dark:#666666"></span><span style="--shiki-light:#1e754f;--shiki-dark:#4d9375">]</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">changelog</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">maxCount</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#2F798A;--shiki-dark:#4C9A91"> 10</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">repoUrl</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">https://github.com/owner/repo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>页面 frontmatter 可用 <code>contributors: false</code>、<code>changelog: false</code>、<code>lastUpdated: false</code> 单独关闭，也可用 <code>contributors: [额外贡献者]</code> 补充名单。<code>gitInclude</code> 可把同一仓库内的关联文件计入本页历史。开发时需要检查该功能，可设置 <code>plugins: { git: true }</code>；CI 必须拉取完整历史（GitHub Actions 使用 <code>fetch-depth: 0</code>）。没有 Git、浅克隆或文件无提交记录时会安全地不显示这些信息，构建不会失败。</p>
+<h2 id="评论服务" tabindex="-1"><a class="header-anchor" href="#评论服务"><span>评论服务</span></a></h2>
+<p>将 <code>features.comments</code> 设为 <code>true</code>，再在 <code>comment.provider</code> 中选择 <code>Giscus</code>、<code>Waline</code>、<code>Twikoo</code> 或 <code>Artalk</code>。四种客户端均按需加载，并沿用 Plume 的服务端字段：</p>
+<div class="language-js line-numbers-mode" data-highlighter="shiki" data-ext="js"><button type="button" class="vp-copy-code-button" data-copy-code data-copy-duration="2000" aria-label="复制代码" data-copied="已复制"></button><pre class="vp-code shiki shiki-themes vitesse-light vitesse-dark" style="--shiki-light:#393a34;--shiki-dark:#dbd7caee;--shiki-light-bg:#ffffff;--shiki-dark-bg:#121212"><code><span class="line"><span style="--shiki-light:#59873A;--shiki-dark:#80A665">comment</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#999999;--shiki-dark:#666666"> </span><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">{</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">provider</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">Giscus</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">repo</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">owner/repo</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">repoId</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">R_...</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">category</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">General</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#59873A;--shiki-dark:#80A665">categoryId</span><span style="--shiki-light:#999999;--shiki-dark:#666666">:</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77"> '</span><span style="--shiki-light:#B56959;--shiki-dark:#C98A7D">DIC_...</span><span style="--shiki-light:#B5695977;--shiki-dark:#C98A7D77">'</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#A0ADA0;--shiki-dark:#758575DD">// inputPosition: 'top',</span></span>
+<span class="line"><span class="indent">  </span><span style="--shiki-light:#A0ADA0;--shiki-dark:#758575DD">// strict: true,</span></span>
+<span class="line"><span style="--shiki-light:#2993a3;--shiki-dark:#5eaab5">}</span><span style="--shiki-light:#999999;--shiki-dark:#666666">,</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p>Waline 使用 <code>serverURL</code>，Twikoo 使用 <code>envId</code>，Artalk 使用 <code>server</code>。页面 frontmatter 设置 <code>comments: false</code> 可单独关闭评论；受密码保护的文章会在成功解锁后再加载评论。</p>
+<h2 id="项目结构" tabindex="-1"><a class="header-anchor" href="#项目结构"><span>项目结构</span></a></h2>
+<div class="vp-file-tree"><p class="vp-file-tree-title">ermaozi</p><button type="button" class="vp-copy-code-button" data-copy-tree aria-label="复制" data-copied="已复制"></button>
+<div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c09553" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/></svg></span><span class="name folder">content</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">blog</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">docs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">en</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#00a23c" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/><path fill="#aaffa2" d="M22.6 16.3a3.79 3.79 0 0 1 1.8 2.8a3.048 3.048 0 1 0-1.8-2.8m-2 6.3a3.1 3.1 0 1 0-3.1-3.1a3.116 3.116 0 0 0 3.1 3.1m1.3.2h-2.6a3.9 3.9 0 0 0-3.9 3.9V30l.2.1a16.1 16.1 0 0 0 5.4.9a9.64 9.64 0 0 0 4.7-.9l.2-.1v-3.2a4.15 4.15 0 0 0-4-4m5.1-3.2h-2.6a3.23 3.23 0 0 1-1.2 2.6a4.62 4.62 0 0 1 3.3 4.5v1a9.8 9.8 0 0 0 4.1-.9l.2-.1v-3.2a3.82 3.82 0 0 0-3.8-3.9m-11.8-.2a3 3 0 0 0 1.6-.5a3.7 3.7 0 0 1 1.4-2.4v-.2a3.1 3.1 0 0 0-6.2 0a3.27 3.27 0 0 0 3.2 3.1m2.7 2.9a4.2 4.2 0 0 1-1.2-2.6h-2.9a3.9 3.9 0 0 0-3.9 3.9v3.2l.2.1a16.3 16.3 0 0 0 4.4.8v-1a4.81 4.81 0 0 1 3.4-4.4"/></svg></span><span class="name folder">public</span><span class="comment"># <strong>静态资源</strong></span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file focus" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">img</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#bf8e55" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/><path fill="#a86749" d="M27.3 16.881a8 8 0 0 1 1.576 1.419a4.666 4.666 0 0 1 .17 6.087a5.2 5.2 0 0 1-3.163 1.765a9.3 9.3 0 0 1-3.381-.073a11 11 0 0 0-1.608-.176a.9.9 0 0 0-1.046.724v.015a.94.94 0 0 0 .18.742a10.5 10.5 0 0 0 .848 1.108a2.2 2.2 0 0 1 .529.99a.787.787 0 0 1-.491.946a6.4 6.4 0 0 1-3.139.552a15 15 0 0 1-7.736-2.555a6.84 6.84 0 0 1-2.928-4.416a5.87 5.87 0 0 1 1-4.544a10.2 10.2 0 0 1 4.317-3.6a15.05 15.05 0 0 1 11.67-.6c.04.02 3.131 1.677 3.202 1.616"/><path fill="#3783ff" d="M11.247 22.676a2.47 2.47 0 0 1 1.594.514a1.126 1.126 0 0 1 .321 1.533a1.1 1.1 0 0 1-.321.328a2.77 2.77 0 0 1-3.195 0a1.13 1.13 0 0 1-.33-1.535a1.1 1.1 0 0 1 .337-.342a2.46 2.46 0 0 1 1.594-.498"/><path fill="#4de94c" d="M10.965 21.431a1.92 1.92 0 0 1-1.171-.371a.9.9 0 0 1-.3-1.214a.9.9 0 0 1 .29-.3a2.11 2.11 0 0 1 2.458.025a.887.887 0 0 1 .235 1.212a.9.9 0 0 1-.226.234a1.95 1.95 0 0 1-1.286.414"/><path fill="#fe0" d="M14.11 18.49a1.46 1.46 0 0 1-1.072-.385a.72.72 0 0 1-.087-1a1 1 0 0 1 .087-.089a1.656 1.656 0 0 1 2.124 0a.72.72 0 0 1 .087 1a.7.7 0 0 1-.128.123a1.5 1.5 0 0 1-1.011.351"/><path fill="#4c1ac6" d="M15.859 25.412a2.8 2.8 0 0 1 1.793.568a1.235 1.235 0 0 1 .373 1.677a1.2 1.2 0 0 1-.373.382a3.16 3.16 0 0 1-3.6 0a1.24 1.24 0 0 1-.39-1.678a1.2 1.2 0 0 1 .4-.4a2.8 2.8 0 0 1 1.797-.549"/><path fill="#2a3e4f" d="M31 13.466a5.8 5.8 0 0 1-1.151 1.909a47 47 0 0 1-3.749 4.084a.51.51 0 0 1-.537.189a.7.7 0 0 1-.251-.153q-.429-.409-.844-.833a.473.473 0 0 1-.076-.653l.052-.057l.056-.052a48 48 0 0 1 4.1-3.7a8.5 8.5 0 0 1 1.42-.946a2.6 2.6 0 0 1 .508-.189a.353.353 0 0 1 .463.187v.014Z"/><path fill="#7e8c8d" d="M20 22.963a.1.1 0 0 1 .03.006a2.26 2.26 0 0 0 2.977-.465a1.53 1.53 0 0 0 .411-1.21a1.17 1.17 0 0 0-1-1.006a1.02 1.02 0 0 0-.923.408a1.55 1.55 0 0 0-.284.657A2.57 2.57 0 0 1 20 22.938Z"/><path fill="#f89b36" d="M25.16 19.792q-.489-.49-.984-.976a.236.236 0 0 0-.33-.053h-.006a.2.2 0 0 0-.063.072q-.417.544-.83 1.092a.22.22 0 0 0 .008.3l.011.01q.369.366.738.728a.224.224 0 0 0 .316.035c.375-.277.751-.554 1.12-.839a.8.8 0 0 0 .136-.2a1 1 0 0 0-.116-.169"/><path fill="#ff8c00" d="M17.865 17.121a1.15 1.15 0 0 1-.859-.321a.617.617 0 0 1-.048-.856l.048-.05a1.286 1.286 0 0 1 1.7 0a.617.617 0 0 1 .048.857a.6.6 0 0 1-.08.077a1.17 1.17 0 0 1-.809.293"/><path fill="#8f9fa0" d="M20 22.963s3.915-1.136 2.659-2.614c0 0-.857-.393-1.455 1.007A3.9 3.9 0 0 1 20 22.963"/><path fill="#e9bb42" d="m23.306 20.585l1.373-1.272l-.5-.5a.24.24 0 0 0-.336-.045l-.008.006a.3.3 0 0 0-.055.063c-.2.259-1.152 1.07-.812 1.407Z"/><path fill="#32495d" d="M24.878 19.073L31 13.254s.041-.393-.468-.2s-.8-.177-6.094 4.9a.442.442 0 0 0 .024.71Z"/><path fill="#f60000" d="M21.721 17.41a1.15 1.15 0 0 1-.858-.321a.617.617 0 0 1-.048-.857l.048-.049a1.286 1.286 0 0 1 1.7 0a.617.617 0 0 1 .048.855a.6.6 0 0 1-.082.078a1.16 1.16 0 0 1-.808.294"/></svg></span><span class="name folder">theme</span><span class="comment"># <strong>主题实现，通常无需修改</strong></span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">components</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">lib</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">pages</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">styles</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#f5de19" d="M18.774 19.7a3.73 3.73 0 0 0 3.376 2.078c1.418 0 2.324-.709 2.324-1.688c0-1.173-.931-1.589-2.491-2.272l-.856-.367c-2.469-1.052-4.11-2.37-4.11-5.156c0-2.567 1.956-4.52 5.012-4.52A5.06 5.06 0 0 1 26.9 10.52l-2.665 1.711a2.33 2.33 0 0 0-2.2-1.467a1.49 1.49 0 0 0-1.638 1.467c0 1.027.636 1.442 2.1 2.078l.856.366c2.908 1.247 4.549 2.518 4.549 5.376c0 3.081-2.42 4.769-5.671 4.769a6.58 6.58 0 0 1-6.236-3.5ZM6.686 20c.538.954 1.027 1.76 2.2 1.76c1.124 0 1.834-.44 1.834-2.15V7.975h3.422v11.683c0 3.543-2.078 5.156-5.11 5.156A5.31 5.31 0 0 1 3.9 21.688Z"/></svg></span><span class="name file">astro.config.mjs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#f5de19" d="M18.774 19.7a3.73 3.73 0 0 0 3.376 2.078c1.418 0 2.324-.709 2.324-1.688c0-1.173-.931-1.589-2.491-2.272l-.856-.367c-2.469-1.052-4.11-2.37-4.11-5.156c0-2.567 1.956-4.52 5.012-4.52A5.06 5.06 0 0 1 26.9 10.52l-2.665 1.711a2.33 2.33 0 0 0-2.2-1.467a1.49 1.49 0 0 0-1.638 1.467c0 1.027.636 1.442 2.1 2.078l.856.366c2.908 1.247 4.549 2.518 4.549 5.376c0 3.081-2.42 4.769-5.671 4.769a6.58 6.58 0 0 1-6.236-3.5ZM6.686 20c.538.954 1.027 1.76 2.2 1.76c1.124 0 1.834-.44 1.834-2.15V7.975h3.422v11.683c0 3.543-2.078 5.156-5.11 5.156A5.31 5.31 0 0 1 3.9 21.688Z"/></svg></span><span class="name file">site.config.mjs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#83cd29" d="M16 30a2.15 2.15 0 0 1-1.076-.288L11.5 27.685c-.511-.286-.262-.387-.093-.446a6.8 6.8 0 0 0 1.549-.7a.26.26 0 0 1 .255.019l2.631 1.563a.34.34 0 0 0 .318 0l10.26-5.922a.32.32 0 0 0 .157-.278V10.075a.33.33 0 0 0-.159-.283l-10.26-5.917a.32.32 0 0 0-.317 0L5.587 9.794a.33.33 0 0 0-.162.281v11.841a.32.32 0 0 0 .161.274L8.4 23.814c1.525.762 2.459-.136 2.459-1.038V11.085a.3.3 0 0 1 .3-.3h1.3a.3.3 0 0 1 .3.3v11.692c0 2.035-1.108 3.2-3.038 3.2a4.4 4.4 0 0 1-2.363-.642l-2.697-1.547a2.17 2.17 0 0 1-1.076-1.872V10.075A2.16 2.16 0 0 1 4.661 8.2l10.261-5.924a2.25 2.25 0 0 1 2.156 0L27.338 8.2a2.17 2.17 0 0 1 1.077 1.87v11.846a2.17 2.17 0 0 1-1.077 1.872l-10.26 5.924A2.15 2.15 0 0 1 16 30"/><path fill="#83cd29" d="M14.054 17.953a.3.3 0 0 1 .3-.3h1.327a.3.3 0 0 1 .295.251c.2 1.351.8 2.032 3.513 2.032c2.161 0 3.082-.489 3.082-1.636c0-.661-.261-1.152-3.62-1.481c-2.808-.278-4.544-.9-4.544-3.144c0-2.07 1.745-3.305 4.67-3.305c3.287 0 4.914 1.141 5.12 3.589a.3.3 0 0 1-.295.323h-1.336a.3.3 0 0 1-.288-.232c-.319-1.421-1.1-1.875-3.2-1.875c-2.36 0-2.634.822-2.634 1.438c0 .746.324.964 3.51 1.385c3.153.417 4.651 1.007 4.651 3.223c0 2.236-1.864 3.516-5.115 3.516c-4.495.006-5.436-2.055-5.436-3.784"/></svg></span><span class="name file">package.json</span></p></div></div>
+<p>也可以直接粘贴 <code>tree</code> 命令的输出：</p>
+<div class="vp-file-tree"><p class="vp-file-tree-title">最小项目</p><button type="button" class="vp-copy-code-button" data-copy-tree data-copy-tree-text="LgrilJzilIDilIAgY29udGVudArilIIgICDilJTilIDilIAgaW5kZXgubWQK4pSc4pSA4pSAIHB1YmxpYwrilIIgICDilJTilIDilIAgbG9nby5zdmcK4pSc4pSA4pSAIHRoZW1lCuKUgiAgIOKUlOKUgOKUgCAuLi4K4pSc4pSA4pSAIGFzdHJvLmNvbmZpZy5tanMK4pSc4pSA4pSAIHNpdGUuY29uZmlnLm1qcwrilJTilIDilIAgcGFja2FnZS5qc29u" aria-label="复制" data-copied="已复制"></button><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c09553" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/></svg></span><span class="name folder">content</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">index.md</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c09553" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/></svg></span><span class="name folder">public</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">logo.svg</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info folder expanded" style="--file-tree-level:0" role="button" tabindex="0" aria-expanded="true"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c09553" d="M27.5 5.5h-9.3l-2.1 4.2H4.4v16.8h25.2v-21Zm0 4.2h-8.2l1.1-2.1h7.1Z"/></svg></span><span class="name folder">theme</span></p><div class="group"><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:-1"><span class="name file">...</span></p></div></div></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">astro.config.mjs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">site.config.mjs</span></p></div><div class="vp-file-tree-node"><p class="vp-file-tree-info file" style="--file-tree-level:0"><span class="file-tree-icon vp-icon is-svg" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><path fill="#c5c5c5" d="M20.414 2H5v28h22V8.586ZM7 28V4h12v6h6v18Z"/></svg></span><span class="name file">package.json</span></p></div></div>
+<h2 id="配置字段组件" tabindex="-1"><a class="header-anchor" href="#配置字段组件"><span>配置字段组件</span></a></h2>
+<div class="vp-field-group">
+<div class="vp-field required"><p class="field-meta"><span class="name">title</span><span class="required">Required</span><span class="type"><code>string</code></span></p><div class="description">
+<p>页面标题，同时用于导航、搜索与 SEO 元数据。</p>
+</div></div>
+<div class="vp-field optional"><p class="field-meta"><span class="name">draft</span><span class="optional">Optional</span><span class="type"><code>boolean</code></span></p><p class="default-value"><code>false</code></p><div class="description">
+<p>启用后只在开发环境预览，不进入生产构建。</p>
+</div></div>
+<div class="vp-field deprecated"><p class="field-meta"><span class="name">legacy</span><span class="deprecated">Deprecated</span><span class="type"><code>string</code></span></p><div class="description">
+<p>仅用于演示弃用状态。</p>
+</div></div>
+</div>
+<h2 id="页面字段" tabindex="-1"><a class="header-anchor" href="#页面字段"><span>页面字段</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>用途</th>
+<th>必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>页面标题</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>搜索与 SEO 摘要</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>post</code>、<code>doc</code> 或 <code>page</code></td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>文档侧栏排序</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>group</code></td>
+<td>文档侧栏分组</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>cover</code> / <code>coverStyle</code></td>
+<td>文章封面与当前文章的封面布局</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>没有设置 <code>permalink</code> 时，主题会根据文件路径生成稳定路由；需要长期保持 URL 时仍建议显式设置。</p>
+<div><script type="module">document.querySelectorAll(`[data-git-changelog]`).forEach(e=>{let t=e.querySelector(`.vp-changelog-header`);!t||t.dataset.ready||(t.dataset.ready=`true`,t.addEventListener(`click`,()=>{let n=e.classList.toggle(`active`);t.setAttribute(`aria-expanded`,String(n))}))});</script><div class="vp-doc-copyright"><h2 id="doc-copyright" tabindex="-1" class="vp-doc-header"><a href="#doc-copyright" class="header-anchor"><span>版权所有</span></a></h2><div class="vp-copyright"><span class="copyright-mask"></span><p><span>版权归属：</span><span data-astro-cid-p2o5vn2b="true" class="vp-link no-icon">Site Author</span></p><p><span>本文链接：</span><span class="source"><a data-copyright-original href="https://astro.ermao.net/docs/guide/configuration/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">https://astro.ermao.net/docs/guide/configuration/</a></span></p><p><span>许可证：</span><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" data-astro-cid-p2o5vn2b="true" class="vp-link link no-icon vp-external-link-icon">署名 4.0 国际 (CC-BY-4.0)</a><span class="vpi-license-cc" aria-hidden="true"></span><span class="vpi-license-by" aria-hidden="true"></span></p></div></div><script type="module">var e=document.querySelector(`[data-copyright-original]`);if(e){let t=new URL(location.href.split(`#`)[0]);t.searchParams.delete(`giscus`),e.href=t.toString(),e.textContent=decodeURIComponent(t.toString())}</script><footer class="vp-doc-footer"><div class="edit-info"><div class="last-updated" aria-label="Last updated"><p class="last-updated-text">最后更新于: <time datetime="2026-08-07T22:22:34.000Z" class="last-updated-time" data-date-options="{&quot;dateStyle&quot;:&quot;short&quot;,&quot;timeStyle&quot;:&quot;short&quot;}">8/8/26, 6:22 AM</time></p></div></div><div class="contributors right" aria-label="Contributors"><span class="contributors-label">贡献者:</span><span class="contributors-info"><span class="contributor">ermaozi</span></span></div><nav class="prev-next"><div class="pager"><a href="/docs/guide/getting-started/" data-astro-cid-p2o5vn2b="true" class="vp-link link pager-link prev"><span class="desc">上一页</span><span class="title"><span>零基础快速开始</span></span></a></div><div class="pager"><a href="/docs/guide/deployment/" data-astro-cid-p2o5vn2b="true" class="vp-link link pager-link next"><span class="desc">下一页</span><span class="title"><span>部署站点</span></span></a></div></nav></footer><script type="module">document.querySelectorAll(`.last-updated-time[data-date-options]`).forEach(e=>{let t=new Date(e.dateTime);Number.isNaN(t.getTime())||(e.textContent=new Intl.DateTimeFormat(void 0,JSON.parse(e.dataset.dateOptions||`{}`)).format(t))});</script></div></article></main></div></div></div></div></div><footer class="vp-footer has-sidebar" vp-footer><div class="container"><div class="message">Powered by <a target="_blank" rel="noopener" href="https://astro.build/">Astro</a> &amp; <a target="_blank" rel="noopener" href="https://github.com/ermaozi/astro-theme-ermaozi">ermaozi</a></div><div class="copyright">Copyright © 2026 ermaozi</div></div></footer><script>
+    (() => {
+      const footer = document.currentScript?.previousElementSibling
+      if (!(footer instanceof HTMLElement)) return
+      const update = () => document.body.style.setProperty('--vp-footer-height', `${footer.offsetHeight}px`)
+      update()
+      new ResizeObserver(update).observe(footer)
+    })()
+  </script><button type="button" class="vp-back-to-top" aria-label="返回顶部" hidden><span class="percent">0%</span><span class="icon vpi-back-to-top" aria-hidden="true"></span><svg aria-hidden="true" viewBox="0 0 48 48"><circle cx="50%" cy="50%"></circle></svg></button></div></div></div><script>
+      (() => {
+        const content = document.querySelector('#VPContent')
+        if (!(content instanceof HTMLElement)) return
+        const storageKey = '__ERMAOZI_PAGE_TRANSITION__'
+        const classes = ['fade-slide-y-enter-from', 'fade-slide-y-enter-active', 'fade-slide-y-enter-to', 'fade-slide-y-leave-from', 'fade-slide-y-leave-active', 'fade-slide-y-leave-to']
+        const reset = () => content.classList.remove(...classes)
+        const timestamp = Number(sessionStorage.getItem(storageKey))
+        sessionStorage.removeItem(storageKey)
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && Date.now() - timestamp < 10_000) {
+          content.classList.add('fade-slide-y-enter-from', 'fade-slide-y-enter-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-enter-from')
+            content.classList.add('fade-slide-y-enter-to')
+            setTimeout(reset, 150)
+          }))
+        }
+        addEventListener('pageshow', event => { if (event.persisted) reset() })
+        let leaving = false
+        document.addEventListener('click', event => {
+          if (leaving || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+          const link = event.target instanceof Element ? event.target.closest('a[href]') : null
+          if (!(link instanceof HTMLAnchorElement) || link.target && link.target !== '_self' || link.hasAttribute('download')) return
+          if (link.closest('.vp-sidebar')) return
+          const next = new URL(link.href, location.href)
+          if (next.origin !== location.origin || !/^https?:$/.test(next.protocol) || next.pathname === location.pathname && next.search === location.search) return
+          event.preventDefault()
+          document.dispatchEvent(new CustomEvent('plume-navigation-start'))
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            location.href = next.href
+            return
+          }
+          leaving = true
+          content.classList.add('fade-slide-y-leave-from', 'fade-slide-y-leave-active')
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            content.classList.remove('fade-slide-y-leave-from')
+            content.classList.add('fade-slide-y-leave-to')
+            setTimeout(() => {
+              sessionStorage.setItem(storageKey, String(Date.now()))
+              location.href = next.href
+            }, 150)
+          }))
+        })
+      })()
+    </script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.rCwBvc69.js"></script><script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_1_lang.CZuyuKlw.js"></script></body></html>

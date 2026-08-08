@@ -1,0 +1,33 @@
+# ermaozi
+
+> 一个支持全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。
+
+此文件包含所有文档分区的链接。
+
+## Table of Contents
+
+### Pages
+
+- [ermaozi 示例站](/index.md): 一个支持双语内容、全文搜索、深色模式和增强 Markdown 的 Astro 静态博客主题。
+- [关于这个主题](/about/index.md): 了解 ermaozi 的设计目标、功能边界和定制入口。
+- [Banner 首页验收矩阵](/banner/index.md): 验证 Plume 单区块 Banner 首页、主题遮罩、操作按钮与 footer 边界。
+- [自定义布局示例](/custom-layout/index.md): 验证 Plume 自定义布局组件名的迁移能力。
+- [文档中心](/docs/index.md): 了解 ermaozi 的配置、内容模型和内置能力。
+- [公共 API 与样式定制](/docs/guide/api/index.md): 在 Astro 或 Vue 组件中复用 ermaozi 布局、通用组件和响应式数据，并覆盖主题变量。
+- [站点配置](/docs/guide/configuration/index.md): 配置站点身份、导航、双语内容和可选服务。
+- [内容能力](/docs/guide/content/index.md): 使用代码高亮、脚注、提示框、表格、媒体嵌入和其他 Markdown 扩展。
+- [部署站点](/docs/guide/deployment/index.md): 将 ermaozi 部署到 GitHub Pages、GitLab Pages、Netlify、Vercel、Firebase 或其他静态托管平台。
+- [零基础快速开始](/docs/guide/getting-started/index.md): 不需要修改主题源码，用配置文件和 Markdown 在十分钟内搭建博客。
+- [Hero 背景效果矩阵](/effects/index.md): 展示 ermaozi 支持的 Plume Hero Canvas 与 WebGL 背景。
+- [友情链接](/friends/index.md): 展示站点、项目与社区链接的通用友链页面。
+- [全屏 Hero 示例](/hero/index.md): 展示 ermaozi 自定义首页的全屏 Hero 和向下滚动提示。
+- [自定义首页示例](/landing/index.md): 展示 Plume 风格的 Hero、功能、图文、资料与自定义首页区域。
+- [专页布局示例](/page-layout/index.md): 验证不带文档导航壳的 Plume 专页布局。
+- [单 Hero 首页验收矩阵](/single-hero/index.md): 验证 Plume onlyOnce Hero、sign-down 与 footer 行为。
+
+### 博客
+
+- [内容与双语路由指南](/blog/content-guide/index.md): 介绍文章目录、固定链接、分类标签和中英文关联方式。
+- [ermaozi 快速开始](/blog/getting-started/index.md): 安装依赖、修改站点配置并发布第一篇文章。
+- [增强 Markdown 展示](/blog/markdown-showcase/index.md): 查看高亮、提示框、折叠面板、标签页、任务列表和 Mermaid 图表效果。
+- [静态站点性能检查清单](/blog/web-performance-basics/index.md): 用一份简短清单检查页面加载、图片、脚本和布局稳定性。
