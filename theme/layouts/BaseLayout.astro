@@ -336,6 +336,25 @@ const pageShellSignature = createHash('sha256').update(JSON.stringify({
       import { outlineOfHtml, type OutlineItem, type ThemeOutline } from '../lib/outline.ts'
       import { initPageNavigation } from '../lib/page-navigation.ts'
 
+      const seal = [
+        'IEVSTUFPWkkg',
+        'IE9SSUdJTkFMIEFTVFJPIFRIRU1F',
+        'R2l0SHVi',
+        'aHR0cHM6Ly9naXRodWIuY29tL2VybWFvemkvYXN0cm8tdGhlbWUtZXJtYW96aQ==',
+        'V2Vic2l0ZQ==',
+        'aHR0cHM6Ly9lcm1hby5uZXQ=',
+        'IF9fX19fX18gIF9fX19fXyAgICBfXyAgIF9fICBfX19fX19fICBfX19fX19fICAgICAgICAgX18gICAgXyAgX19fX19fXyAgX19fX19fXwp8ICAgICAgIHx8ICAgIF8gfCAgfCAgfF98ICB8fCAgIF8gICB8fCAgICAgICB8ICAgICAgIHwgIHwgIHwgfHwgICAgICAgfHwgICAgICAgfAp8ICAgIF9fX3x8ICAgfCB8fCAgfCAgICAgICB8fCAgfF98ICB8fCAgIF8gICB8ICAgICAgIHwgICB8X3wgfHwgICAgX19ffHxfICAgICBffAp8ICAgfF9fXyB8ICAgfF98fF8gfCAgICAgICB8fCAgICAgICB8fCAgfCB8ICB8ICAgICAgIHwgICAgICAgfHwgICB8X19fICAgfCAgIHwKfCAgICBfX198fCAgICBfXyAgfHwgICAgICAgfHwgICAgICAgfHwgIHxffCAgfCBfX18gICB8ICBfICAgIHx8ICAgIF9fX3wgIHwgICB8CnwgICB8X19fIHwgICB8ICB8IHx8IHx8X3x8IHx8ICAgXyAgIHx8ICAgICAgIHx8ICAgfCAgfCB8IHwgICB8fCAgIHxfX18gICB8ICAgfAp8X19fX19fX3x8X19ffCAgfF98fF98ICAgfF98fF9ffCB8X198fF9fX19fX198fF9fX3wgIHxffCAgfF9ffHxfX19fX19ffCAgfF9fX3w=',
+      ].map(value => atob(value))
+      const write = (...args: unknown[]) => queueMicrotask(console.info.bind(console, ...args))
+      write(`%c${seal[6]}`, 'color:#48a6c5;font-family:"Courier New",monospace;font-size:9px;font-weight:700;line-height:10px;letter-spacing:0;font-variant-ligatures:none;white-space:pre')
+      write(
+        `%c${seal[0]}%c${seal[1]}`,
+        'background:#336f87;color:#fff;padding:4px 8px;border-radius:6px 0 0 6px;font-weight:700;letter-spacing:.08em',
+        'background:#e6a23c;color:#1f2937;padding:4px 8px;border-radius:0 6px 6px 0;font-weight:700',
+      )
+      write(`\u25c6 ${seal[2]}  \u2192`, seal[3])
+      write(`\u25c6 ${seal[4]} \u2192`, seal[5])
+
       const nprogress = document.getElementById('nprogress')
       const nprogressBar = nprogress?.querySelector<HTMLElement>('.bar')
       if (nprogress && nprogressBar) {

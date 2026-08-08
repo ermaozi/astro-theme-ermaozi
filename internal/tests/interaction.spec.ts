@@ -461,6 +461,23 @@ test('enhanced Markdown controls work with pointer and keyboard', async ({ page,
   await page.locator('.vp-navbar-appearance .vp-switch').click()
   await expect(page.locator('html')).toHaveClass(/dark/)
   await expect.poll(() => mermaid.locator('svg').innerHTML()).not.toBe(lightDiagram)
+  for (const button of await page.locator('.mermaid-actions button').all()) {
+    const { buttonBox, iconBox } = await button.evaluate((element) => {
+      const icon = element.querySelector('svg')!
+      const buttonBounds = element.getBoundingClientRect()
+      const iconBounds = icon.getBoundingClientRect()
+      return {
+        buttonBox: { width: buttonBounds.width, height: buttonBounds.height },
+        iconBox: {
+          centerX: iconBounds.left + iconBounds.width / 2 - buttonBounds.left,
+          centerY: iconBounds.top + iconBounds.height / 2 - buttonBounds.top,
+        },
+      }
+    })
+    expect(buttonBox).toEqual({ width: 32, height: 32 })
+    expect(iconBox.centerX).toBeCloseTo(16, 1)
+    expect(iconBox.centerY).toBeCloseTo(16, 1)
+  }
   await page.locator('.mermaid-actions .preview-button').click()
   await expect(page.locator('.mermaid-preview')).toBeVisible()
   await page.locator('.mermaid-preview').click()
@@ -1269,6 +1286,42 @@ test('blog collection navigation keeps the shared profile aside mounted', async 
   await expect(page).toHaveURL(/\/blog\/categories\/$/)
   await expect(page.locator('.vp-post-categories')).toBeVisible()
   expect(await page.evaluate(() => (window as any).__ERMAOZI_PROFILE__ === document.querySelector('.vp-posts-aside'))).toBe(true)
+})
+
+test('blog collection navigation synchronizes desktop and mobile navbar active states', async ({ page }) => {
+  await page.goto('/blog/archives/', { waitUntil: 'domcontentloaded' })
+  const more = page.locator('.vp-navbar-menu-group').nth(1)
+  const archives = more.locator('a[href="/blog/archives/"]')
+  const blog = page.locator('.navbar-menu-link[href="/blog/"]')
+  await expect(more).toHaveClass(/\bactive\b/)
+  await expect(archives).toHaveClass(/\bactive\b/)
+
+  await blog.click()
+  await expect(page).toHaveURL(/\/blog\/$/)
+  await expect(blog).toHaveClass(/\bactive\b/)
+  await expect(more).not.toHaveClass(/\bactive\b/)
+  await expect(archives).not.toHaveClass(/\bactive\b/)
+
+  await page.goBack()
+  await expect(page).toHaveURL(/\/blog\/archives\/$/)
+  await expect(blog).toHaveClass(/\bactive\b/)
+  await expect(more).toHaveClass(/\bactive\b/)
+  await expect(archives).toHaveClass(/\bactive\b/)
+
+  await page.setViewportSize({ width: 390, height: 900 })
+  await page.locator('.vp-navbar-hamburger').click()
+  const mobileBlog = page.locator('.vp-nav-screen-menu-link[href="/blog/"]')
+  const mobileArchives = page.locator('.vp-nav-screen-menu-group-link[href="/blog/archives/"]')
+  await expect(mobileArchives).toHaveClass(/\bactive\b/)
+  await mobileBlog.click()
+  await expect(page).toHaveURL(/\/blog\/$/)
+  await expect(mobileBlog).toHaveClass(/\bactive\b/)
+  await expect(mobileArchives).not.toHaveClass(/\bactive\b/)
+
+  await page.goBack()
+  await expect(page).toHaveURL(/\/blog\/archives\/$/)
+  await expect(mobileBlog).toHaveClass(/\bactive\b/)
+  await expect(mobileArchives).toHaveClass(/\bactive\b/)
 })
 
 test('post breadcrumbs preserve the complete category path', async ({ page }) => {
