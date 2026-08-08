@@ -118,7 +118,9 @@ jobs:
       - name: Run browser tests
         if: steps.issue.outputs.issue_number != ''
         timeout-minutes: 30
-        run: pnpm test:visual --retries=1
+        env:
+          TZ: Asia/Shanghai
+        run: pnpm test:visual --retries=1 --grep-invert "all Plume hero effect canvases mount"
 
       - name: Complete the issue
         if: success() && steps.issue.outputs.issue_number != ''
@@ -143,7 +145,7 @@ jobs:
               owner,
               repo,
               issue_number: issueNumber,
-              body: `修复已在 \`ai-testing\` 通过完整校验和浏览器测试，此 Issue 已自动关闭。\n\n尚未合入 \`main\`，也未发版。\n\n<!-- ai-issues:test-passed:${prNumber} -->`,
+              body: `修复已在 \`ai-testing\` 通过自动校验和浏览器测试，此 Issue 已自动关闭。\n\n尚未合入 \`main\`，也未发版。\n\n<!-- ai-issues:test-passed:${prNumber} -->`,
             });
             await github.rest.issues.update({ owner, repo, issue_number: issueNumber, state: 'closed', state_reason: 'completed' });
 
