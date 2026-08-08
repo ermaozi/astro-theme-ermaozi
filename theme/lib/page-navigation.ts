@@ -114,9 +114,9 @@ export function initPageNavigation() {
       currentPath = url.pathname
       syncHead(nextDocument)
       currentContent.replaceWith(imported)
+      syncNavbar(nextDocument)
       if (mode === 'docs') syncSidebar(url)
       else {
-        syncNavbar(nextDocument)
         persistedAside?.querySelectorAll<HTMLAnchorElement>('.vp-posts-nav .nav-link').forEach(link => link.classList.toggle('active', link.pathname === url.pathname))
       }
       document.body.style.overflow = ''
