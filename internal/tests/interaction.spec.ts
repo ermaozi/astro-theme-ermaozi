@@ -1271,6 +1271,42 @@ test('blog collection navigation keeps the shared profile aside mounted', async 
   expect(await page.evaluate(() => (window as any).__ERMAOZI_PROFILE__ === document.querySelector('.vp-posts-aside'))).toBe(true)
 })
 
+test('blog collection navigation synchronizes desktop and mobile navbar active states', async ({ page }) => {
+  await page.goto('/blog/archives/', { waitUntil: 'domcontentloaded' })
+  const more = page.locator('.vp-navbar-menu-group').nth(1)
+  const archives = more.locator('a[href="/blog/archives/"]')
+  const blog = page.locator('.navbar-menu-link[href="/blog/"]')
+  await expect(more).toHaveClass(/\bactive\b/)
+  await expect(archives).toHaveClass(/\bactive\b/)
+
+  await blog.click()
+  await expect(page).toHaveURL(/\/blog\/$/)
+  await expect(blog).toHaveClass(/\bactive\b/)
+  await expect(more).not.toHaveClass(/\bactive\b/)
+  await expect(archives).not.toHaveClass(/\bactive\b/)
+
+  await page.goBack()
+  await expect(page).toHaveURL(/\/blog\/archives\/$/)
+  await expect(blog).toHaveClass(/\bactive\b/)
+  await expect(more).toHaveClass(/\bactive\b/)
+  await expect(archives).toHaveClass(/\bactive\b/)
+
+  await page.setViewportSize({ width: 390, height: 900 })
+  await page.locator('.vp-navbar-hamburger').click()
+  const mobileBlog = page.locator('.vp-nav-screen-menu-link[href="/blog/"]')
+  const mobileArchives = page.locator('.vp-nav-screen-menu-group-link[href="/blog/archives/"]')
+  await expect(mobileArchives).toHaveClass(/\bactive\b/)
+  await mobileBlog.click()
+  await expect(page).toHaveURL(/\/blog\/$/)
+  await expect(mobileBlog).toHaveClass(/\bactive\b/)
+  await expect(mobileArchives).not.toHaveClass(/\bactive\b/)
+
+  await page.goBack()
+  await expect(page).toHaveURL(/\/blog\/archives\/$/)
+  await expect(mobileBlog).toHaveClass(/\bactive\b/)
+  await expect(mobileArchives).toHaveClass(/\bactive\b/)
+})
+
 test('post breadcrumbs preserve the complete category path', async ({ page }) => {
   await page.goto('/blog/content-guide/')
   const categoryLinks = page.locator('.vp-breadcrumb a[href*="/blog/categories/?id="]')
