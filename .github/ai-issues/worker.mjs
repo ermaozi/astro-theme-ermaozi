@@ -13,15 +13,15 @@ const PNPM = '/home/emz/.npm-global/bin/pnpm';
 const GH = '/usr/bin/gh';
 const GIT = '/usr/bin/git';
 const STATE_LABELS = [
-  'ai:triage',
-  'ai:needs-info',
-  'ai:awaiting-approval',
-  'ai:approved',
-  'ai:in-progress',
-  'ai:pr-open',
-  'ai:testing',
-  'ai:blocked',
-  'ai:completed',
+  '自动处理：待分析',
+  '自动处理：待补充',
+  '自动处理：待审批',
+  '自动处理：已批准',
+  '自动处理：修复中',
+  '自动处理：待审查',
+  '自动处理：待测试',
+  '自动处理：已阻止',
+  '自动处理：已完成',
 ];
 
 fs.mkdirSync(path.join(RUNTIME, 'jobs'), { recursive: true, mode: 0o700 });
@@ -236,8 +236,8 @@ const FIX_SCHEMA = {
 
 function triageNeeded(issue, comments) {
   const labels = labelsOf(issue);
-  if (labels.has('ai:triage')) return true;
-  if (!labels.has('ai:needs-info')) return false;
+  if (labels.has('自动处理：待分析')) return true;
+  if (!labels.has('自动处理：待补充')) return false;
   const marker = '<!-- ai-issues:triage:';
   const lastAi = comments.filter((comment) => comment.body?.includes(marker)).at(-1);
   const lastReply = comments.filter((comment) =>
@@ -250,7 +250,7 @@ function processTriage(issue) {
   const comments = issueComments(issue.number);
   const rounds = comments.filter((comment) => comment.body?.includes('<!-- ai-issues:triage:')).length;
   if (rounds >= 4) {
-    setState(issue.number, 'ai:blocked');
+    setState(issue.number, '自动处理：已阻止');
     postComment(issue.number, 'Codex 已完成四轮信息确认，但仍无法形成可靠的处理范围。请等待维护者人工检查。');
     return;
   }
@@ -284,10 +284,10 @@ ${JSON.stringify(data, null, 2)}
 
     const marker = `<!-- ai-issues:triage:${Date.now()} -->`;
     const statusLabel = {
-      needs_info: 'ai:needs-info',
-      ready: 'ai:awaiting-approval',
-      blocked: 'ai:blocked',
-    }[result.status] ?? 'ai:blocked';
+      needs_info: '自动处理：待补充',
+      ready: '自动处理：待审批',
+      blocked: '自动处理：已阻止',
+    }[result.status] ?? '自动处理：已阻止';
     setState(issue.number, statusLabel);
     let body = `🤖 **Codex 自动分析**\n\n${clean(result.comment, 6000)}`;
     if (result.status === 'ready') {
@@ -296,7 +296,7 @@ ${JSON.stringify(data, null, 2)}
         : '';
       body += `\n\n### 对齐结果\n\n**处理范围：** ${clean(result.summary, 1000)}`;
       if (criteria) body += `\n\n**验收标准：**\n${criteria}`;
-      body += '\n\n维护者确认处理时，请添加 `ai:approved` 标签。';
+      body += '\n\n维护者确认处理时，请添加 `自动处理：已批准` 标签。';
     }
     postComment(issue.number, `${body}\n\n${marker}`);
     log(`Triaged issue #${issue.number} as ${result.status}.`);
@@ -308,7 +308,7 @@ ${JSON.stringify(data, null, 2)}
 function approvalActor(issueNumber) {
   const events = ghApi(`repos/${REPO}/issues/${issueNumber}/timeline?per_page=100`, { paginate: true });
   return events.toReversed().find((event) =>
-    event.event === 'labeled' && event.label?.name === 'ai:approved'
+    event.event === 'labeled' && event.label?.name === '自动处理：已批准'
   )?.actor?.login;
 }
 
@@ -354,23 +354,23 @@ function assertSafePatch(checkout) {
 function processFix(issue) {
   const actor = approvalActor(issue.number);
   if (!actorCanApprove(actor)) {
-    removeLabel(issue.number, 'ai:approved');
+    removeLabel(issue.number, '自动处理：已批准');
     postComment(issue.number, '忽略了未经仓库维护者授权的 AI 处理请求。');
     return;
   }
-  if (!labelsOf(issue).has('ai:awaiting-approval')) {
-    removeLabel(issue.number, 'ai:approved');
+  if (!labelsOf(issue).has('自动处理：待审批')) {
+    removeLabel(issue.number, '自动处理：已批准');
     postComment(issue.number, '此 Issue 尚未完成需求对齐，不能开始自动修复。');
     return;
   }
   const existing = openPullRequest(issue.number);
   if (existing) {
-    setState(issue.number, 'ai:pr-open');
+    setState(issue.number, '自动处理：待审查');
     postComment(issue.number, `该 Issue 已有待审查 PR：${existing.html_url}`);
     return;
   }
 
-  setState(issue.number, 'ai:in-progress');
+  setState(issue.number, '自动处理：修复中');
   postComment(
     issue.number,
     `维护者 @${actor} 已批准处理，本地订阅版 Codex 已开始后台修复。\n\n<!-- ai-issues:fix-start:${Date.now()} -->`,
@@ -451,17 +451,17 @@ function recoverStaleIssue(issue) {
   if (!start || Date.now() - new Date(start.created_at).getTime() < 2 * 60 * 60 * 1000) return false;
   const existing = openPullRequest(issue.number);
   if (existing) {
-    setState(issue.number, 'ai:pr-open');
+    setState(issue.number, '自动处理：待审查');
     return true;
   }
-  setState(issue.number, 'ai:blocked');
+  setState(issue.number, '自动处理：已阻止');
   postComment(issue.number, '后台修复超过两小时仍未创建 PR，已停止自动处理，请维护者检查本机服务日志。');
   return true;
 }
 
 function failIssue(issue, stage, error) {
   log(`${stage} failed for issue #${issue.number}: ${error.stack ?? error.message}`);
-  setState(issue.number, 'ai:blocked');
+  setState(issue.number, '自动处理：已阻止');
   postComment(issue.number, `Codex ${stage === 'triage' ? '需求分析' : '修复或验证'}未能完成，请维护者检查本机后台服务日志。`);
 }
 
@@ -482,10 +482,10 @@ function main() {
   }
 
   const issues = openIssues();
-  const stale = issues.find((issue) => labelsOf(issue).has('ai:in-progress'));
+  const stale = issues.find((issue) => labelsOf(issue).has('自动处理：修复中'));
   if (stale && recoverStaleIssue(stale)) return;
 
-  const approved = issues.find((issue) => labelsOf(issue).has('ai:approved'));
+  const approved = issues.find((issue) => labelsOf(issue).has('自动处理：已批准'));
   if (approved) {
     try {
       processFix(approved);
@@ -497,7 +497,7 @@ function main() {
 
   for (const issue of issues) {
     const labels = labelsOf(issue);
-    if (!labels.has('ai:triage') && !labels.has('ai:needs-info')) continue;
+    if (!labels.has('自动处理：待分析') && !labels.has('自动处理：待补充')) continue;
     const comments = issueComments(issue.number);
     if (!triageNeeded(issue, comments)) continue;
     try {
@@ -515,7 +515,7 @@ function selfTest() {
   assert.deepEqual([...labelsOf({ labels: ['one', { name: 'two' }] })], ['one', 'two']);
   assert.equal('OPENAI_API_KEY' in codexEnvironment(), false);
   assert.equal(triageNeeded(
-    { labels: [{ name: 'ai:needs-info' }], user: { login: 'reporter' } },
+    { labels: [{ name: '自动处理：待补充' }], user: { login: 'reporter' } },
     [
       { user: { login: 'maintainer' }, created_at: '2026-01-01T00:00:00Z', body: '<!-- ai-issues:triage:1 -->' },
       { user: { login: 'reporter' }, created_at: '2026-01-01T00:01:00Z', body: 'More details' },

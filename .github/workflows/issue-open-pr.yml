@@ -66,8 +66,8 @@ jobs:
               issue_number: issueNumber,
             });
             const labels = new Set(issue.labels.map((label) => typeof label === 'string' ? label : label.name));
-            if (issue.pull_request || issue.state !== 'open' || !labels.has('ai:in-progress')) {
-              throw new Error('Issue is not in the expected ai:in-progress state.');
+            if (issue.pull_request || issue.state !== 'open' || !labels.has('自动处理：修复中')) {
+              throw new Error('Issue is not in the expected automated-fix state.');
             }
             await github.rest.git.getRef({ owner, repo, ref: `heads/${branch}` });
 
@@ -106,7 +106,7 @@ jobs:
                 maintainer_can_modify: true,
               });
 
-              for (const label of ['ai:in-progress', 'ai:approved', 'ai:blocked']) {
+              for (const label of ['自动处理：修复中', '自动处理：已批准', '自动处理：已阻止']) {
                 try {
                   await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
                 } catch (error) {
@@ -117,7 +117,7 @@ jobs:
                 owner,
                 repo,
                 issue_number: issueNumber,
-                labels: ['ai:pr-open'],
+                labels: ['自动处理：待审查'],
               });
               await github.rest.issues.createComment({
                 owner,
@@ -126,7 +126,7 @@ jobs:
                 body: `Codex 已完成修改并通过独立验证，请维护者审查后合入 \`ai-testing\`：${pull.html_url}\n\n该操作不会合入 \`main\` 或发版。\n\n<!-- ai-issues:pr:${pull.number} -->`,
               });
             } catch (error) {
-              for (const label of ['ai:in-progress', 'ai:approved', 'ai:pr-open']) {
+              for (const label of ['自动处理：修复中', '自动处理：已批准', '自动处理：待审查']) {
                 try {
                   await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
                 } catch (labelError) {
@@ -137,7 +137,7 @@ jobs:
                 owner,
                 repo,
                 issue_number: issueNumber,
-                labels: ['ai:blocked'],
+                labels: ['自动处理：已阻止'],
               });
               const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${process.env.RUN_ID}`;
               await github.rest.issues.createComment({

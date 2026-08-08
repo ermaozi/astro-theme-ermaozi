@@ -1,7 +1,7 @@
 name: 报告问题或提出改进
 description: 提交可复现的问题、文档缺陷或明确的改进建议
 title: "[Issue] "
-labels: ["ai:triage"]
+labels: ["自动处理：待分析"]
 body:
   - type: dropdown
     id: type

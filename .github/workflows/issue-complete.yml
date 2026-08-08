@@ -38,7 +38,7 @@ jobs:
             );
             if (comments.some((comment) => comment.body?.includes(marker))) return;
 
-            for (const label of ['ai:triage', 'ai:needs-info', 'ai:awaiting-approval', 'ai:approved', 'ai:in-progress', 'ai:pr-open', 'ai:blocked', 'ai:completed']) {
+            for (const label of ['自动处理：待分析', '自动处理：待补充', '自动处理：待审批', '自动处理：已批准', '自动处理：修复中', '自动处理：待审查', '自动处理：已阻止', '自动处理：已完成']) {
               try {
                 await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
               } catch (error) {
@@ -49,7 +49,7 @@ jobs:
               owner,
               repo,
               issue_number: issueNumber,
-              labels: ['ai:testing'],
+              labels: ['自动处理：待测试'],
             });
             await github.rest.issues.createComment({
               owner,
