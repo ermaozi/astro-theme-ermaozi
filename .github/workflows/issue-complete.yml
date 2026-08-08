@@ -1,4 +1,4 @@
-name: Complete AI issue
+name: Mark AI issue ready for testing
 
 on:
   pull_request:
@@ -7,16 +7,17 @@ on:
 permissions: {}
 
 jobs:
-  complete:
+  ready-for-testing:
     if: >-
       github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'ai-testing' &&
       startsWith(github.event.pull_request.head.ref, 'ai/issue-')
     runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
     steps:
-      - name: Reply to and close the linked issue
+      - name: Mark the linked issue ready for testing
         uses: actions/github-script@v7
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -30,14 +31,14 @@ jobs:
             const issueNumber = Number(match[1]);
             if (!Number.isInteger(issueNumber) || issueNumber < 1) return;
             const { owner, repo } = context.repo;
-            const marker = `<!-- ai-issues:completed:${process.env.PR_NUMBER} -->`;
+            const marker = `<!-- ai-issues:testing:${process.env.PR_NUMBER} -->`;
             const comments = await github.paginate(
               github.rest.issues.listComments,
               { owner, repo, issue_number: issueNumber, per_page: 100 },
             );
             if (comments.some((comment) => comment.body?.includes(marker))) return;
 
-            for (const label of ['ai:triage', 'ai:needs-info', 'ai:awaiting-approval', 'ai:approved', 'ai:in-progress', 'ai:pr-open', 'ai:blocked']) {
+            for (const label of ['ai:triage', 'ai:needs-info', 'ai:awaiting-approval', 'ai:approved', 'ai:in-progress', 'ai:pr-open', 'ai:blocked', 'ai:completed']) {
               try {
                 await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
               } catch (error) {
@@ -48,18 +49,11 @@ jobs:
               owner,
               repo,
               issue_number: issueNumber,
-              labels: ['ai:completed'],
+              labels: ['ai:testing'],
             });
             await github.rest.issues.createComment({
               owner,
               repo,
               issue_number: issueNumber,
-              body: `修复 PR #${process.env.PR_NUMBER} 已由维护者审查并合入 \`main\`。感谢反馈！\n\n${process.env.PR_URL}\n\n合并提交：\`${process.env.MERGE_SHA}\`\n\n${marker}`,
-            });
-            await github.rest.issues.update({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              state: 'closed',
-              state_reason: 'completed',
+              body: `修复 PR #${process.env.PR_NUMBER} 已由维护者审查并合入 \`ai-testing\`，等待测试。\n\n尚未合入 \`main\`，也未发版；此 Issue 将保持开启。\n\n${process.env.PR_URL}\n\n测试分支提交：\`${process.env.MERGE_SHA}\`\n\n${marker}`,
             });

@@ -3,6 +3,7 @@ name: Build demo to gh-pages
 on:
   push:
     branches: [main]
+    paths-ignore: [".github/**"]
   workflow_dispatch:
 
 permissions:

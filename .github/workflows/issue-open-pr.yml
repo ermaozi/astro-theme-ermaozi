@@ -83,7 +83,7 @@ jobs:
             try {
               const body = [
                 `<!-- ai-issues:issue=${issueNumber} -->`,
-                `Closes #${issueNumber}`,
+                `Related to #${issueNumber}`,
                 '',
                 '## 变更说明',
                 '',
@@ -94,13 +94,13 @@ jobs:
                 '- 本地订阅版 Codex 完成修改',
                 '- 独立执行 `pnpm validate`：通过',
                 '',
-                '> 此 PR 由维护者批准 Issue 后生成，必须由维护者审查并合并。',
+                '> 此 PR 只合入 `ai-testing` 供测试，不会进入 `main` 或触发发版。',
               ].join('\n');
               const { data: pull } = await github.rest.pulls.create({
                 owner,
                 repo,
                 head: branch,
-                base: 'main',
+                base: 'ai-testing',
                 title: `fix: resolve #${issueNumber}`,
                 body,
                 maintainer_can_modify: true,
@@ -123,7 +123,7 @@ jobs:
                 owner,
                 repo,
                 issue_number: issueNumber,
-                body: `Codex 已完成修改并通过独立验证，请维护者审查：${pull.html_url}\n\n<!-- ai-issues:pr:${pull.number} -->`,
+                body: `Codex 已完成修改并通过独立验证，请维护者审查后合入 \`ai-testing\`：${pull.html_url}\n\n该操作不会合入 \`main\` 或发版。\n\n<!-- ai-issues:pr:${pull.number} -->`,
               });
             } catch (error) {
               for (const label of ['ai:in-progress', 'ai:approved', 'ai:pr-open']) {

@@ -19,6 +19,7 @@ const STATE_LABELS = [
   'ai:approved',
   'ai:in-progress',
   'ai:pr-open',
+  'ai:testing',
   'ai:blocked',
   'ai:completed',
 ];
@@ -115,10 +116,10 @@ function openPullRequest(issueNumber) {
 }
 
 function createCheckout(issueNumber) {
-  git(['fetch', 'origin', 'main', '--prune']);
+  git(['fetch', 'origin', 'ai-testing', '--prune']);
   const checkout = path.join(RUNTIME, 'jobs', `issue-${issueNumber}-${Date.now()}-${process.pid}`);
   if (fs.existsSync(checkout)) throw new Error(`Refusing to reuse checkout: ${checkout}`);
-  git(['worktree', 'add', '--detach', checkout, 'origin/main']);
+  git(['worktree', 'add', '--detach', checkout, 'origin/ai-testing']);
   return checkout;
 }
 
@@ -435,7 +436,7 @@ ${JSON.stringify(data, null, 2)}
       '-f', `branch=${branch}`,
       '-f', `summary=${clean(result.summary, 2000)}`,
     ]);
-    postComment(issue.number, '修复已通过独立验证，正在创建待审查 PR。');
+    postComment(issue.number, '修复已通过独立验证，正在创建指向 `ai-testing` 的待审查 PR；不会合入 `main` 或发版。');
     completed = true;
     log(`Prepared branch ${branch} for issue #${issue.number}.`);
   } finally {
