@@ -1,0 +1,63 @@
+name: 报告问题或提出改进
+description: 提交可复现的问题、文档缺陷或明确的改进建议
+title: "[Issue] "
+labels: ["ai:triage"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: 类型
+      options:
+        - 功能错误
+        - 文档问题
+        - 功能建议
+        - 兼容性问题
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题说明
+      description: 请说明发生了什么，以及它对你的影响。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望结果
+      description: 请说明你希望看到的正确行为。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤或示例
+      description: 可提供最小复现、页面地址、配置片段、截图或错误日志。
+      placeholder: |
+        1. 使用版本……
+        2. 执行……
+        3. 出现……
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      value: |
+        - ermaozi 版本：
+        - Node.js 版本：
+        - 包管理器及版本：
+        - 操作系统：
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已搜索现有 Issues，未发现相同问题。
+          required: true
+        - label: 我确认以上内容不包含密码、Token、Cookie 或其他敏感信息。
+          required: true

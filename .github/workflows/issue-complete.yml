@@ -1,0 +1,65 @@
+name: Complete AI issue
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions: {}
+
+jobs:
+  complete:
+    if: >-
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'ai/issue-')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Reply to and close the linked issue
+        uses: actions/github-script@v7
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        with:
+          script: |
+            const match = String(process.env.PR_BODY || '').match(/<!-- ai-issues:issue=(\d+) -->/);
+            if (!match) return;
+            const issueNumber = Number(match[1]);
+            if (!Number.isInteger(issueNumber) || issueNumber < 1) return;
+            const { owner, repo } = context.repo;
+            const marker = `<!-- ai-issues:completed:${process.env.PR_NUMBER} -->`;
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number: issueNumber, per_page: 100 },
+            );
+            if (comments.some((comment) => comment.body?.includes(marker))) return;
+
+            for (const label of ['ai:triage', 'ai:needs-info', 'ai:awaiting-approval', 'ai:approved', 'ai:in-progress', 'ai:pr-open', 'ai:blocked']) {
+              try {
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
+              } catch (error) {
+                if (error.status !== 404) throw error;
+              }
+            }
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              labels: ['ai:completed'],
+            });
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              body: `修复 PR #${process.env.PR_NUMBER} 已由维护者审查并合入 \`main\`。感谢反馈！\n\n${process.env.PR_URL}\n\n合并提交：\`${process.env.MERGE_SHA}\`\n\n${marker}`,
+            });
+            await github.rest.issues.update({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              state: 'closed',
+              state_reason: 'completed',
+            });

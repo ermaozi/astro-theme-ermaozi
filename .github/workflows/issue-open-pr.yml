@@ -1,0 +1,150 @@
+name: Open approved AI pull request
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Approved issue number
+        required: true
+        type: string
+      branch:
+        description: Existing AI review branch
+        required: true
+        type: string
+      summary:
+        description: Short summary for the pull request
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  open:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Validate request and open pull request
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          BRANCH_NAME: ${{ inputs.branch }}
+          SUMMARY: ${{ inputs.summary }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          script: |
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            const branch = String(process.env.BRANCH_NAME || '');
+            const { owner, repo } = context.repo;
+            const clean = (value, limit) => String(value ?? '')
+              .replace(/<!--[\s\S]*?-->/g, '')
+              .replaceAll('\0', '')
+              .trim()
+              .slice(0, limit);
+
+            if (!Number.isInteger(issueNumber) || issueNumber < 1) {
+              throw new Error('A valid issue number is required.');
+            }
+            if (!new RegExp(`^ai/issue-${issueNumber}-[0-9]+$`).test(branch)) {
+              throw new Error('Unexpected AI branch name.');
+            }
+
+            const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner,
+              repo,
+              username: context.actor,
+            });
+            if (!['admin', 'maintain', 'write'].includes(permission.permission)) {
+              throw new Error(`Actor ${context.actor} cannot publish AI fixes.`);
+            }
+
+            const { data: issue } = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number: issueNumber,
+            });
+            const labels = new Set(issue.labels.map((label) => typeof label === 'string' ? label : label.name));
+            if (issue.pull_request || issue.state !== 'open' || !labels.has('ai:in-progress')) {
+              throw new Error('Issue is not in the expected ai:in-progress state.');
+            }
+            await github.rest.git.getRef({ owner, repo, ref: `heads/${branch}` });
+
+            const pullRequests = await github.paginate(
+              github.rest.pulls.list,
+              { owner, repo, state: 'open', per_page: 100 },
+            );
+            const existing = pullRequests.find((pull) =>
+              pull.body?.includes(`<!-- ai-issues:issue=${issueNumber} -->`)
+            );
+            if (existing) return;
+
+            try {
+              const body = [
+                `<!-- ai-issues:issue=${issueNumber} -->`,
+                `Closes #${issueNumber}`,
+                '',
+                '## 变更说明',
+                '',
+                clean(process.env.SUMMARY, 2000),
+                '',
+                '## 验证',
+                '',
+                '- 本地订阅版 Codex 完成修改',
+                '- 独立执行 `pnpm validate`：通过',
+                '',
+                '> 此 PR 由维护者批准 Issue 后生成，必须由维护者审查并合并。',
+              ].join('\n');
+              const { data: pull } = await github.rest.pulls.create({
+                owner,
+                repo,
+                head: branch,
+                base: 'main',
+                title: `fix: resolve #${issueNumber}`,
+                body,
+                maintainer_can_modify: true,
+              });
+
+              for (const label of ['ai:in-progress', 'ai:approved', 'ai:blocked']) {
+                try {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
+                } catch (error) {
+                  if (error.status !== 404) throw error;
+                }
+              }
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                labels: ['ai:pr-open'],
+              });
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body: `Codex 已完成修改并通过独立验证，请维护者审查：${pull.html_url}\n\n<!-- ai-issues:pr:${pull.number} -->`,
+              });
+            } catch (error) {
+              for (const label of ['ai:in-progress', 'ai:approved', 'ai:pr-open']) {
+                try {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: label });
+                } catch (labelError) {
+                  if (labelError.status !== 404) throw labelError;
+                }
+              }
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                labels: ['ai:blocked'],
+              });
+              const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${process.env.RUN_ID}`;
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body: `修复分支已推送，但自动创建 PR 失败。请维护者检查[工作流记录](${runUrl})。`,
+              });
+              throw error;
+            }
