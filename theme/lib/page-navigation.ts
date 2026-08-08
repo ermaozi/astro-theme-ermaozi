@@ -50,6 +50,14 @@ const postsRoutes = () => {
   ].filter((route): route is string => Boolean(route)).map(route => new URL(route, location.href).pathname))
 }
 
+const syncNavbar = (nextDocument: Document) => {
+  const selector = '.vp-navbar-menu-group, .vp-navbar-menu a, .vp-nav-screen-menu a'
+  const currentItems = document.querySelectorAll<HTMLElement>(selector)
+  const nextItems = nextDocument.querySelectorAll<HTMLElement>(selector)
+  if (currentItems.length !== nextItems.length) return
+  currentItems.forEach((item, index) => item.classList.toggle('active', nextItems[index].classList.contains('active')))
+}
+
 export function initPageNavigation() {
   if ((globalThis as typeof globalThis & { __ERMAOZI_PAGE_NAVIGATION__?: boolean }).__ERMAOZI_PAGE_NAVIGATION__) return
   ;(globalThis as typeof globalThis & { __ERMAOZI_PAGE_NAVIGATION__?: boolean }).__ERMAOZI_PAGE_NAVIGATION__ = true
@@ -107,7 +115,10 @@ export function initPageNavigation() {
       syncHead(nextDocument)
       currentContent.replaceWith(imported)
       if (mode === 'docs') syncSidebar(url)
-      else persistedAside?.querySelectorAll<HTMLAnchorElement>('.vp-posts-nav .nav-link').forEach(link => link.classList.toggle('active', link.pathname === url.pathname))
+      else {
+        syncNavbar(nextDocument)
+        persistedAside?.querySelectorAll<HTMLAnchorElement>('.vp-posts-nav .nav-link').forEach(link => link.classList.toggle('active', link.pathname === url.pathname))
+      }
       document.body.style.overflow = ''
       scrollTo({ top: 0, left: 0 })
       executeScripts(imported)
