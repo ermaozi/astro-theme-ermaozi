@@ -91,7 +91,7 @@ jobs:
                 '',
                 '## 验证',
                 '',
-                '- 本地订阅版 Codex 完成修改',
+                '- Codex 完成修改',
                 '- 独立执行 `pnpm validate`：通过',
                 '',
                 '> 此 PR 只合入 `ai-testing` 供测试，不会进入 `main` 或触发发版。',

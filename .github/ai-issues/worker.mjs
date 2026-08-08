@@ -156,7 +156,6 @@ function runCodex({ issueNumber, checkout, kind, model, effort, profile, prompt,
       '--profile', profile,
       '--strict-config',
       '--ephemeral',
-      '--ignore-user-config',
       '--cd', checkout,
       '--model', model,
       '--config', `model_reasoning_effort="${effort}"`,
@@ -373,7 +372,7 @@ function processFix(issue) {
   setState(issue.number, '自动处理：修复中');
   postComment(
     issue.number,
-    `维护者 @${actor} 已批准处理，本地订阅版 Codex 已开始后台修复。\n\n<!-- ai-issues:fix-start:${Date.now()} -->`,
+    `维护者 @${actor} 已批准处理，Codex 已开始修复。\n\n<!-- ai-issues:fix-start:${Date.now()} -->`,
   );
   const checkout = createCheckout(issue.number);
   let completed = false;
@@ -455,14 +454,14 @@ function recoverStaleIssue(issue) {
     return true;
   }
   setState(issue.number, '自动处理：已阻止');
-  postComment(issue.number, '后台修复超过两小时仍未创建 PR，已停止自动处理，请维护者检查本机服务日志。');
+  postComment(issue.number, '修复超过两小时仍未创建 PR，已停止自动处理，请维护者检查自动处理日志。');
   return true;
 }
 
 function failIssue(issue, stage, error) {
   log(`${stage} failed for issue #${issue.number}: ${error.stack ?? error.message}`);
   setState(issue.number, '自动处理：已阻止');
-  postComment(issue.number, `Codex ${stage === 'triage' ? '需求分析' : '修复或验证'}未能完成，请维护者检查本机后台服务日志。`);
+  postComment(issue.number, `Codex ${stage === 'triage' ? '需求分析' : '修复或验证'}未能完成，请维护者检查自动处理日志。`);
 }
 
 function main() {
