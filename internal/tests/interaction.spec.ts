@@ -461,6 +461,23 @@ test('enhanced Markdown controls work with pointer and keyboard', async ({ page,
   await page.locator('.vp-navbar-appearance .vp-switch').click()
   await expect(page.locator('html')).toHaveClass(/dark/)
   await expect.poll(() => mermaid.locator('svg').innerHTML()).not.toBe(lightDiagram)
+  for (const button of await page.locator('.mermaid-actions button').all()) {
+    const { buttonBox, iconBox } = await button.evaluate((element) => {
+      const icon = element.querySelector('svg')!
+      const buttonBounds = element.getBoundingClientRect()
+      const iconBounds = icon.getBoundingClientRect()
+      return {
+        buttonBox: { width: buttonBounds.width, height: buttonBounds.height },
+        iconBox: {
+          centerX: iconBounds.left + iconBounds.width / 2 - buttonBounds.left,
+          centerY: iconBounds.top + iconBounds.height / 2 - buttonBounds.top,
+        },
+      }
+    })
+    expect(buttonBox).toEqual({ width: 32, height: 32 })
+    expect(iconBox.centerX).toBeCloseTo(16, 1)
+    expect(iconBox.centerY).toBeCloseTo(16, 1)
+  }
   await page.locator('.mermaid-actions .preview-button').click()
   await expect(page.locator('.mermaid-preview')).toBeVisible()
   await page.locator('.mermaid-preview').click()
