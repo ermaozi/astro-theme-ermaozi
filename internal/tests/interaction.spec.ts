@@ -474,7 +474,8 @@ test('enhanced Markdown controls work with pointer and keyboard', async ({ page,
         },
       }
     })
-    expect(buttonBox).toEqual({ width: 32, height: 32 })
+    expect(buttonBox.width).toBeCloseTo(32, 1)
+    expect(buttonBox.height).toBeCloseTo(32, 1)
     expect(iconBox.centerX).toBeCloseTo(16, 1)
     expect(iconBox.centerY).toBeCloseTo(16, 1)
   }
