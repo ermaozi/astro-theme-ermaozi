@@ -137,6 +137,13 @@ function codexEnvironment() {
   return env;
 }
 
+function codexUsesChatGPT() {
+  const result = spawnSync(CODEX, ['login', 'status'], { encoding: 'utf8' });
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error('Unable to read Codex login status.');
+  return `${result.stdout}${result.stderr}`.includes('Logged in using ChatGPT');
+}
+
 function runCodex({ issueNumber, checkout, kind, model, effort, profile, prompt, schema }) {
   const stamp = `${Date.now()}-${process.pid}`;
   const schemaPath = path.join(RUNTIME, `schema-${kind}-${stamp}.json`);
@@ -464,7 +471,7 @@ function main() {
     log('AI issue worker is disabled by AI_ISSUES_ENABLED.');
     return;
   }
-  if (!run(CODEX, ['login', 'status']).includes('Logged in using ChatGPT')) {
+  if (!codexUsesChatGPT()) {
     throw new Error('Codex CLI is not authenticated with ChatGPT.');
   }
 
