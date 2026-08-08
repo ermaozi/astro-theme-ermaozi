@@ -1414,8 +1414,12 @@ audio.vp-media { min-height: 40px; }
 .mermaid-actions .preview-button,
 .mermaid-actions .download-button,
 .image-preview-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
+  padding: 0;
   border: 0;
   border-radius: 6px;
   background: transparent;
