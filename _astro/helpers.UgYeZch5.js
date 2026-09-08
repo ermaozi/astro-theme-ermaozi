@@ -1,0 +1,1 @@
+var e=e=>Object.prototype.toString.call(e)===`[object Object]`,t=()=>{if(typeof navigator>`u`)return!1;let e=navigator,t=e.userAgentData?.platform??e.platform;return/ios/i.test(t)||/\biPhone\b/iu.test(t)||/\biPad\b/iu.test(t)};export{e as n,t};
