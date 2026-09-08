@@ -36,10 +36,10 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
   await page.locator('.vp-navbar-title a').focus()
   await expect(groups.first().locator('.flyout-button')).toHaveAttribute('aria-expanded', 'false')
 
-  await expect(page.locator('.vp-navbar-translations')).toHaveCount(0)
+  await expect(page.locator('.vp-navbar-translations')).toHaveCount(1)
 
   await page.goto('/effects/', { waitUntil: 'domcontentloaded' })
-  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(2)
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/img/logo.svg')
   await page.goto('/', { waitUntil: 'domcontentloaded' })
 
@@ -78,7 +78,7 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
   await expect(mobileGroupContainer).toBeHidden()
   await mobileGroupButton.click()
   await expect(mobileGroupContainer).toBeVisible()
-  await expect(page.locator('.mobile-translations')).toHaveCount(0)
+  await expect(page.locator('.mobile-translations')).toHaveCount(1)
   await expect(page.locator('.mobile-appearance')).toHaveCSS('padding', '12px 14px 12px 16px')
   await hamburger.click()
   await expect(mobileMenu).toHaveClass(/fade-in-leave-active/)
@@ -92,8 +92,8 @@ test('navigation, language, theme, and mobile menu work', async ({ page }) => {
 
 test('desktop navigation resolves every official link, badge, active, and external variant', async ({ page }) => {
   await page.goto('/docs/guide/content/', { waitUntil: 'domcontentloaded' })
-  await expect(page.locator('.vp-navbar-translations')).toHaveCount(0)
-  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
+  await expect(page.locator('.vp-navbar-translations')).toHaveCount(1)
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(3)
   await expect(page.locator('.vp-navbar-menu')).toHaveAttribute('aria-labelledby', 'main-nav-aria-label')
   await expect(page.locator('#main-nav-aria-label')).toHaveText('Main Navigation')
 
@@ -2380,4 +2380,20 @@ test('mobile PDF embeds use the Plume PDF.js fallback', async ({ page }) => {
   const custom = page.locator('[data-pdf-viewer]').nth(1)
   await expect(custom).toHaveAttribute('data-pdf-ready', 'true')
   await expect(custom.locator('iframe.pdf-viewer')).toHaveAttribute('src', /\/vendor\/pdfjs\/web\/viewer\.html\?file=.*\/files\/guide\.pdf#page=3&toolbar=1&zoom=80$/)
+})
+
+
+test('demo switches between translated pages on desktop and mobile', async ({ page }) => {
+  await page.goto('/about/')
+  await page.locator('.vp-navbar-translations button').click()
+  await page.locator('.vp-navbar-translations a[href="/en/about/"]').click()
+  await expect(page).toHaveURL(/\/en\/about\/$/)
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US')
+  await expect(page.locator('#VPContent')).toContainText('About this theme')
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.locator('.vp-navbar-hamburger').click()
+  await page.locator('.mobile-translations button').click()
+  await page.locator('.mobile-translations a[href="/about/"]').click()
+  await expect(page).toHaveURL(/\/about\/$/)
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN')
 })

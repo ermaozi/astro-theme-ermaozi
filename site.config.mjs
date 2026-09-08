@@ -179,7 +179,7 @@ export const siteConfig = defineSiteConfig({
 
   // 多语言总开关。false 会隐藏语言切换器，并停止输出页面及站点地图中的 hreflang；
   // 已存在的 /en/ 示例页仍可直接访问，便于以后启用或测试。改为 true 即可重新开启。
-  multilingual: false,
+  multilingual: true,
 
   // locales 保存各语言的路径、文案、内容集合和导航。对象字段会与全局默认值浅合并；
   // 可按语言覆盖 logo/logoDark、profile、social、navbar、footer、appearance、outline 等。

@@ -127,7 +127,7 @@ test('mobile navigation and local document navigation keep the frozen matrix', a
       await expect(group.locator('.vp-nav-screen-menu-group-link').first()).toHaveCSS('margin-left', '12px')
       await expect(group.locator('.vp-nav-screen-menu-group-link').first()).toHaveCSS('line-height', '32px')
       await expect(group.locator('.vp-nav-screen-menu-group-section > .title')).toHaveCSS('color', colors[theme].muted)
-      await expect(page.locator('.vp-nav-screen-translations')).toHaveCount(0)
+      await expect(page.locator('.vp-nav-screen-translations')).toHaveCount(1)
       await expect(page.locator('.vp-nav-screen-appearance')).toHaveCSS('padding', '12px 14px 12px 16px')
       await expect(page.locator('.vp-nav-screen-appearance')).toHaveCSS('background-color', colors[theme].soft)
       expect(await screen.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true)

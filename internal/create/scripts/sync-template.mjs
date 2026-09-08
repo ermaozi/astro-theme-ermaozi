@@ -9,6 +9,7 @@ const entries = [
   '.gitignore',
   'LICENSE',
   'README.md',
+  'readme-cn.md',
   'astro.config.mjs',
   'content',
   'package.json',
@@ -39,9 +40,11 @@ delete pkg.devDependencies['@clack/prompts']
 pkg.scripts.validate = `${pkg.scripts.build} && node theme/scripts/audit.mjs`
 await writeFile(packagePath, `${JSON.stringify(pkg, null, 2)}\n`)
 
-const readmePath = path.join(templateRoot, 'README.md')
-const readme = (await readFile(readmePath, 'utf8'))
-  .replace(/^npm test\s+.*\n/m, '')
-  .replace(/^npm run test:visual\s+.*\n/m, '')
-  .replace(/\n## 发布初始化器\n[\s\S]*?(?=\n## 项目结构)/, '')
-await writeFile(readmePath, readme)
+for (const name of ['README.md', 'readme-cn.md']) {
+  const readmePath = path.join(templateRoot, name)
+  const readme = (await readFile(readmePath, 'utf8'))
+    .replace(/^npm test\s+.*\n/m, '')
+    .replace(/^npm run test:visual\s+.*\n/m, '')
+    .replace(/\n## (?:发布初始化器|Publishing the Site Generator)\n[\s\S]*?(?=\n## (?:项目结构|Project Structure))/, '')
+  await writeFile(readmePath, readme)
+}
